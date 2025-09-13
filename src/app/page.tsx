@@ -22,6 +22,8 @@ export default function HomePage() {
     return donations.reduce((acc, donation) => acc + donation.amount, 0);
   }, [donations]);
 
+  const currentFunds = totalDonations - totalWithdrawals;
+
   const cardVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -100,21 +102,30 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             </motion.div>
-             <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="md:col-span-2 lg:col-span-1">
-                <Card className="flex flex-col h-full">
+             <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                <Card>
                     <CardHeader>
-                        <CardTitle>A Wise Word</CardTitle>
+                        <CardTitle>Current Funds</CardTitle>
+                         <CardDescription>Available funds for new projects</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex-grow flex flex-col items-center justify-center text-center">
-                        <Quote className="w-8 h-8 text-muted-foreground mb-4" />
-                        <blockquote className="text-lg font-semibold italic">
-                        "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
-                        </blockquote>
-                        <p className="text-muted-foreground mt-2">— শেখ সাদি</p>
+                    <CardContent>
+                       <p className="text-4xl font-bold">৳{currentFunds.toLocaleString('en-IN')}</p>
                     </CardContent>
                 </Card>
             </motion.div>
           </div>
+        </section>
+
+        <section className="mb-12">
+            <Card>
+                <CardContent className="flex flex-col items-center justify-center text-center p-6">
+                    <Quote className="w-8 h-8 text-muted-foreground mb-4" />
+                    <blockquote className="text-lg font-semibold italic">
+                    "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
+                    </blockquote>
+                    <p className="text-muted-foreground mt-2">— শেখ সাদি</p>
+                </CardContent>
+            </Card>
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

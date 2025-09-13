@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   Menu,
   Users,
-  Banknote,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -22,7 +21,6 @@ import { LanguageSwitcher } from './language-switcher';
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, adminOnly: true },
   { href: '/members', label: 'Members', icon: Users, adminOnly: true },
-  { href: '/donations', label: 'Donations', icon: Banknote, adminOnly: false },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
