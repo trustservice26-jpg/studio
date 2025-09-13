@@ -56,7 +56,7 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
                 Add Donation
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
-                Set as {member.status === 'active' ? 'Inactive' : 'Active'}
+                {member.status === 'active' ? 'Set as Inactive' : 'Set as Active'}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
                <AlertDialog>
