@@ -89,7 +89,7 @@ export default function HomePage() {
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            <section className="lg:col-span-1">
+            <section className="lg:col-span-2">
                  <Card className="h-full">
                     <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
                         <Quote className="w-8 h-8 text-muted-foreground mb-4" />
@@ -100,8 +100,8 @@ export default function HomePage() {
                     </CardContent>
                 </Card>
             </section>
-            <section className="lg:col-span-2">
-                <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
+            <section className="lg:col-span-1">
+                <h2 className="text-3xl font-bold mb-6 text-center lg:text-left">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
                 <NoticeBoard />
             </section>
         </div>
@@ -109,11 +109,11 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           <section className="lg:col-span-2">
            <div>
-            <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'মোট সদস্য' : 'Total Members'}</h2>
+            <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
             <DataTable columns={publicMemberColumns} data={members} />
            </div>
           </section>
-          <section className="lg:col-span-1 space-y-6">
+          <section className="lg:col-span-1 space-y-6 pt-16">
              <StatsCards />
              <MemberStatusOverview />
           </section>
