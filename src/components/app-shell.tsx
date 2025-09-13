@@ -77,21 +77,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   const navLinks = (
-    <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
+     <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
       {getNavItems(userRole).map(({ href, label, bn_label, icon: Icon }) => (
-        <React.Fragment key={label}>
-          <Link
-            href={href}
-            className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-              { 'bg-muted text-primary': pathname === href }
-            )}
-          >
-            <Icon className="h-4 w-4" />
-            {language === 'bn' ? bn_label : label}
-          </Link>
-          {href === '/' && <LiveClock />}
-        </React.Fragment>
+        <Link
+          key={label}
+          href={href}
+          className={cn(
+            'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+            { 'bg-muted text-primary': pathname === href }
+          )}
+        >
+          <Icon className="h-4 w-4" />
+          {language === 'bn' ? bn_label : label}
+        </Link>
       ))}
     </nav>
   );
@@ -109,6 +107,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex-1">
              {navLinks}
+             <LiveClock />
             </div>
           </div>
         </div>
@@ -133,6 +132,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   </Link>
                 </div>
                 {navLinks}
+                <LiveClock />
               </SheetContent>
             </Sheet>
             <div className="w-full flex-1">
