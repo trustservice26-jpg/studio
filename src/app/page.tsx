@@ -11,11 +11,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
 import { useMemo } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 export default function HomePage() {
   const { members, donations, notices } = useAppContext();
 
   const totalMembers = members.length;
+  const activeMembers = useMemo(() => members.filter(m => m.status === 'active').length, [members]);
+  const inactiveMembers = useMemo(() => members.filter(m => m.status === 'inactive').length, [members]);
   const totalDonations = useMemo(() => {
     return donations.reduce((acc, donation) => acc + donation.amount, 0);
   }, [donations]);
@@ -87,7 +91,7 @@ export default function HomePage() {
         {/* Quote Section */}
         <section className="mb-12 text-center">
             <motion.blockquote 
-              className="mx-auto max-w-3xl text-xl italic text-foreground"
+              className="mx-auto max-w-3xl text-xl italic font-bold text-foreground"
               variants={cardVariants} initial="hidden" animate="visible"
             >
              "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
@@ -97,15 +101,18 @@ export default function HomePage() {
 
         {/* Stats Section */}
         <section className="mb-12">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <motion.div variants={cardVariants} initial="hidden" animate="visible">
               <Card>
                 <CardHeader>
                   <CardTitle>Our Members</CardTitle>
+                  <CardDescription>Total members in the organization</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-3xl font-bold">{totalMembers}</p>
-                  <p className="text-muted-foreground">Dedicated individuals</p>
+                   <div className="text-xs text-muted-foreground">
+                    <span className="text-green-600">{activeMembers} Active</span> | <span className="text-red-600">{inactiveMembers} Inactive</span>
+                   </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -113,10 +120,21 @@ export default function HomePage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Total Funds Raised</CardTitle>
+                  <CardDescription>Supporting our cause</CardDescription>
                 </CardHeader>
                 <CardContent>
                    <p className="text-3xl font-bold">৳{totalDonations.toLocaleString('en-IN')}</p>
-                   <p className="text-muted-foreground">Supporting our cause</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={2}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Total Withdrawals</CardTitle>
+                   <CardDescription>Funds utilized for projects</CardDescription>
+                </CardHeader>
+                <CardContent>
+                   <p className="text-3xl font-bold">৳{useAppContext().totalWithdrawals.toLocaleString('en-IN')}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -146,6 +164,53 @@ export default function HomePage() {
             ) : (
               <p className="text-center text-muted-foreground">No recent notices.</p>
             )}
+          </motion.div>
+        </section>
+
+        {/* Member Directory Section */}
+        <section className="mb-12">
+           <motion.h2 className="mb-4 text-3xl font-bold text-center" variants={cardVariants} initial="hidden" animate="visible">
+            Our Members
+          </motion.h2>
+          <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={1}>
+            <Card>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Member</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Join Date</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {members.map((member) => (
+                    <TableRow key={member.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Image
+                            src={member.avatar}
+                            alt={member.name}
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                          />
+                          <div>
+                            <div className="font-medium">{member.name}</div>
+                            <div className="text-sm text-muted-foreground">{member.email}</div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={member.status === "active" ? "default" : "secondary"} className={member.status === "active" ? "bg-green-500/20 text-green-700 border-green-500/20" : ""}>
+                          {member.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{new Date(member.joinDate).toLocaleDateString()}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Card>
           </motion.div>
         </section>
 
