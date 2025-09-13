@@ -23,6 +23,7 @@ export default function Dashboard() {
       initial="hidden"
       animate="visible"
     >
+      <h1 className="text-3xl font-bold">Admin Dashboard</h1>
       <NoticeBoard />
       <StatsCards />
       <DonationsChart />
