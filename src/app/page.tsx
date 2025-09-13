@@ -10,7 +10,6 @@ import { useAppContext } from '@/context/app-context';
 import { DataTable } from '@/components/ui/data-table';
 import { publicMemberColumns } from '@/components/home/public-members-columns';
 import { NoticeBoard } from '@/components/dashboard/notice-board';
-import { MemberStatusChart } from '@/components/home/member-status-chart';
 
 export default function HomePage() {
   const { members, language, currentFunds, totalDonations, totalWithdrawals } = useAppContext();
@@ -108,14 +107,10 @@ export default function HomePage() {
             </section>
         </div>
 
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-           <div className="lg:col-span-2">
+        <section>
+           <div>
             <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'আমাদের সদস্য' : 'Our Members'}</h2>
             <DataTable columns={publicMemberColumns} data={members} />
-           </div>
-           <div>
-             <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'সদস্য স্ট্যাটাস ওভারভিউ' : 'Member Status Overview'}</h2>
-              <MemberStatusChart />
            </div>
         </section>
       </div>
