@@ -15,7 +15,9 @@ interface AppContextType {
   language: 'en' | 'bn';
   addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate'>) => void;
   deleteMember: (memberId: string) => void;
+  toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
+  addDonation: (donation: Omit<Donation, 'id' | 'date'>) => void;
   setUserRole: (role: UserRole) => void;
   setLanguage: (language: 'en' | 'bn') => void;
 }
@@ -68,7 +70,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
       title: "Member Deleted",
       description: `The member has been removed from the organization.`,
     })
-  }
+  };
+  
+  const toggleMemberStatus = (memberId: string) => {
+    setMembers(prevMembers =>
+      prevMembers.map(member =>
+        member.id === memberId
+          ? { ...member, status: member.status === 'active' ? 'inactive' : 'active' }
+          : member
+      )
+    );
+     toast({
+      title: "Member Status Updated",
+      description: `The member's status has been changed.`,
+    })
+  };
 
   const addNotice = (message: string) => {
     const newNotice: Notice = {
@@ -81,7 +97,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
       title: "Notice Posted",
       description: "The new notice is now visible to all members.",
     });
-  }
+  };
+
+  const addDonation = (donationData: Omit<Donation, 'id' | 'date'>) => {
+    const newDonation: Donation = {
+      ...donationData,
+      id: `d${donations.length + 1}`,
+      date: new Date().toISOString(),
+    };
+    setDonations(prevDonations => [newDonation, ...prevDonations]);
+    toast({
+      title: "Donation Added",
+      description: `A donation of ৳${donationData.amount} from ${donationData.memberName} has been recorded.`,
+    });
+  };
 
   const contextValue = {
     members,
@@ -91,7 +120,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     userRole,
     addMember,
     deleteMember,
+    toggleMemberStatus,
     addNotice,
+    addDonation,
     setUserRole,
     language,
     setLanguage: handleSetLanguage,

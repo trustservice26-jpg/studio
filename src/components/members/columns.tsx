@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
-import { MoreHorizontal, ArrowUpDown } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown, DollarSign } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -29,11 +29,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { AddDonationDialog } from "./add-donation-dialog"
 
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const [isAdvisorOpen, setAdvisorOpen] = React.useState(false);
-  const { userRole, deleteMember } = useAppContext();
+  const [isDonationOpen, setDonationOpen] = React.useState(false);
+  const { userRole, deleteMember, toggleMemberStatus } = useAppContext();
 
   return (
     <>
@@ -51,8 +53,15 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           </DropdownMenuItem>
           {userRole === 'admin' && (
             <>
+              <DropdownMenuItem onClick={() => setDonationOpen(true)}>
+                <DollarSign className="mr-2 h-4 w-4" />
+                Add Donation
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setAdvisorOpen(true)}>
                 Suggest Role
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
+                Toggle Status
               </DropdownMenuItem>
               <DropdownMenuSeparator />
                <AlertDialog>
@@ -83,7 +92,12 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-      {userRole === 'admin' && <RoleAdvisorModal member={member} open={isAdvisorOpen} onOpenChange={setAdvisorOpen} />}
+      {userRole === 'admin' && (
+        <>
+          <RoleAdvisorModal member={member} open={isAdvisorOpen} onOpenChange={setAdvisorOpen} />
+          <AddDonationDialog member={member} open={isDonationOpen} onOpenChange={setDonationOpen} />
+        </>
+      )}
     </>
   )
 }

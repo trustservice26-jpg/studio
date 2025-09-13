@@ -21,7 +21,6 @@ import { LanguageSwitcher } from './language-switcher';
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/members', label: 'Members', icon: Users },
-  { href: '/donations', label: 'Donations', icon: HeartHandshake },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
