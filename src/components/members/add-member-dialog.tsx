@@ -56,10 +56,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
   });
 
   function onSubmit(values: z.infer<typeof memberSchema>) {
-    addMember({
-      ...values,
-      contributions: '', // Set contributions to an empty string as it's no longer collected
-    });
+    addMember(values);
     form.reset();
     onOpenChange(false);
   }
