@@ -1,16 +1,20 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import type { Member, UserRole, Notice } from '@/lib/types';
-import { initialMembers, initialNotices } from '@/lib/data';
+import { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
+import type { Member, UserRole, Notice, Donation } from '@/lib/types';
+import { initialMembers, initialNotices, initialDonations } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast"
 
 
 interface AppContextType {
   members: Member[];
   notices: Notice[];
+  donations: Donation[];
   userRole: UserRole;
   language: 'en' | 'bn';
+  currentFunds: number;
+  totalDonations: number;
+  totalWithdrawals: number;
   addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>) => void;
   deleteMember: (memberId: string) => void;
   toggleMemberStatus: (memberId: string) => void;
@@ -25,6 +29,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [members, setMembers] = useState<Member[]>(initialMembers);
   const [notices, setNotices] = useState<Notice[]>(initialNotices);
+  const [donations, setDonations] = useState<Donation[]>(initialDonations);
   const [userRole, setUserRole] = useState<UserRole>('member');
   const { toast } = useToast();
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
@@ -37,6 +42,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }
     }
   }, []);
+
+  const { currentFunds, totalDonations, totalWithdrawals } = useMemo(() => {
+    const totalDonations = donations
+      .filter(d => d.type === 'donation')
+      .reduce((sum, d) => sum + d.amount, 0);
+    const totalWithdrawals = donations
+      .filter(d => d.type === 'withdrawal')
+      .reduce((sum, d) => sum + d.amount, 0);
+    const currentFunds = totalDonations - totalWithdrawals;
+    return { currentFunds, totalDonations, totalWithdrawals };
+  }, [donations]);
 
   const handleSetLanguage = (lang: 'en' | 'bn') => {
     setLanguage(lang);
@@ -108,6 +124,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const contextValue = {
     members,
     notices,
+    donations,
     userRole,
     addMember,
     deleteMember,
@@ -117,6 +134,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setUserRole,
     language,
     setLanguage: handleSetLanguage,
+    currentFunds,
+    totalDonations,
+    totalWithdrawals,
   };
 
   return (

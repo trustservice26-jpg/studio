@@ -15,4 +15,12 @@ export type Notice = {
   date: string; // ISO string
 }
 
+export type Donation = {
+  id: string;
+  amount: number;
+  date: string; // ISO string
+  type: 'donation' | 'withdrawal';
+};
+
+
 export type UserRole = 'admin' | 'member';
