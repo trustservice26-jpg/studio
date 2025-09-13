@@ -29,6 +29,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { LanguageSwitcher } from './language-switcher';
+import { LiveClock } from './live-clock';
 
 const navItems = [
   { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, adminOnly: false },
@@ -78,17 +79,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const navLinks = (
     <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
       {getNavItems(userRole).map(({ href, label, bn_label, icon: Icon }) => (
-        <Link
-          key={label}
-          href={href}
-          className={cn(
-            'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-            { 'bg-muted text-primary': pathname === href }
-          )}
-        >
-          <Icon className="h-4 w-4" />
-          {language === 'bn' ? bn_label : label}
-        </Link>
+        <React.Fragment key={label}>
+          <Link
+            href={href}
+            className={cn(
+              'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+              { 'bg-muted text-primary': pathname === href }
+            )}
+          >
+            <Icon className="h-4 w-4" />
+            {language === 'bn' ? bn_label : label}
+          </Link>
+          {href === '/' && <LiveClock />}
+        </React.Fragment>
       ))}
     </nav>
   );
