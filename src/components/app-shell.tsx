@@ -20,8 +20,6 @@ import { useToast } from '@/hooks/use-toast';
 import { LanguageSwitcher } from './language-switcher';
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/members', label: 'Members', icon: Users },
   { href: '/donations', label: 'Donations', icon: Banknote },
 ];
 
