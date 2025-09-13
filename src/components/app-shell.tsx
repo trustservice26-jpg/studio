@@ -31,14 +31,14 @@ import { useToast } from '@/hooks/use-toast';
 import { LanguageSwitcher } from './language-switcher';
 
 const navItems = [
-  { href: '/', label: 'Home', icon: Home, adminOnly: false },
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, adminOnly: true },
-  { href: '/members', label: 'Members', icon: Users, adminOnly: true },
+  { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, adminOnly: false },
+  { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, adminOnly: true },
+  { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, adminOnly: true },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { userRole, setUserRole } = useAppContext();
+  const { userRole, setUserRole, language } = useAppContext();
   const { toast } = useToast();
   const [isPasswordDialogOpen, setPasswordDialogOpen] = React.useState(false);
   const [password, setPassword] = React.useState('');
@@ -50,8 +50,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     } else {
       setUserRole('member');
       toast({
-        title: 'Switched to Member View',
-        description: 'You are now in member view mode.',
+        title: language === 'bn' ? 'সদস্য ভিউতে स्विच করা হয়েছে' : 'Switched to Member View',
+        description: language === 'bn' ? 'আপনি এখন সদস্য ভিউ মোডে আছেন।' : 'You are now in member view mode.',
       });
     }
   };
@@ -60,14 +60,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     if (password === 'admin123') {
       setUserRole('admin');
       toast({
-        title: 'Switched to Admin View',
-        description: 'You now have administrative privileges.',
+        title: language === 'bn' ? 'এডমিন ভিউতে स्विच করা হয়েছে' : 'Switched to Admin View',
+        description: language === 'bn' ? 'আপনার এখন প্রশাসনিকเอกสิทธิ์ রয়েছে।' : 'You now have administrative privileges.',
       });
       setPasswordDialogOpen(false);
       setPassword('');
       setPasswordError('');
     } else {
-      setPasswordError('Incorrect password. Please try again.');
+      setPasswordError(language === 'bn' ? 'ভুল পাসওয়ার্ড। আবার চেষ্টা করুন।' : 'Incorrect password. Please try again.');
     }
   };
 
@@ -77,7 +77,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   const navLinks = (
     <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
-      {getNavItems(userRole).map(({ href, label, icon: Icon }) => (
+      {getNavItems(userRole).map(({ href, label, bn_label, icon: Icon }) => (
         <Link
           key={label}
           href={href}
@@ -87,7 +87,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           )}
         >
           <Icon className="h-4 w-4" />
-          {label}
+          {language === 'bn' ? bn_label : label}
         </Link>
       ))}
     </nav>
@@ -101,7 +101,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <HeartHandshake className="h-6 w-6 text-primary" />
-                <span className="">Seva Sangathan</span>
+                <span className="">{language === 'bn' ? 'सेवा संगठन' : 'Seva Sangathan'}</span>
               </Link>
             </div>
             <div className="flex-1">
@@ -119,14 +119,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   className="shrink-0 md:hidden"
                 >
                   <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
+                  <span className="sr-only">{language === 'bn' ? 'নেভিগেশন মেনু ਟੋਗਲ করুন' : 'Toggle navigation menu'}</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                    <Link href="/" className="flex items-center gap-2 font-semibold">
                       <HeartHandshake className="h-6 w-6 text-primary" />
-                      <span className="">Seva Sangathan</span>
+                      <span className="">{language === 'bn' ? 'सेवा संगठन' : 'Seva Sangathan'}</span>
                   </Link>
                 </div>
                 {navLinks}
@@ -137,12 +137,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <LanguageSwitcher />
             <div className="flex items-center space-x-2">
-              <Label htmlFor="role-switch">Admin</Label>
+              <Label htmlFor="role-switch">{language === 'bn' ? 'এডмин' : 'Admin'}</Label>
               <Switch
                 id="role-switch"
                 checked={userRole === 'admin'}
                 onCheckedChange={handleRoleChange}
-                aria-label="Toggle admin mode"
+                aria-label={language === 'bn' ? 'এডمین মোড ਟੋਗਲ করুন' : 'Toggle admin mode'}
               />
             </div>
           </header>
@@ -156,16 +156,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <DialogHeader>
             <DialogTitle>
               <ShieldCheck className="inline-block mr-2" />
-              Admin Access Required
+              {language === 'bn' ? 'এডমিন Access প্রয়োজন' : 'Admin Access Required'}
             </DialogTitle>
             <DialogDescription>
-              Please enter the password to switch to Admin View.
+              {language === 'bn' ? 'এডমিন ভিউতে स्विच করতে পাসওয়ার্ড লিখুন।' : 'Please enter the password to switch to Admin View.'}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="password" className="text-right">
-                Password
+                {language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}
               </Label>
               <Input
                 id="password"
@@ -183,7 +183,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
           <DialogFooter>
             <Button type="submit" onClick={handlePasswordSubmit}>
-              Enter Admin Mode
+              {language === 'bn' ? 'এডمین মোডে প্রবেশ করুন' : 'Enter Admin Mode'}
             </Button>
           </DialogFooter>
         </DialogContent>

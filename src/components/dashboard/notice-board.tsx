@@ -5,6 +5,7 @@ import * as React from 'react';
 import { motion } from 'framer-motion';
 import { Send, X } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { bn } from 'date-fns/locale';
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -23,7 +24,7 @@ const itemVariants = {
 };
 
 export function NoticeBoard() {
-  const { notices, userRole, addNotice, deleteNotice } = useAppContext();
+  const { notices, userRole, addNotice, deleteNotice, language } = useAppContext();
   const [newMessage, setNewMessage] = React.useState('');
 
   const handlePostNotice = () => {
@@ -37,14 +38,14 @@ export function NoticeBoard() {
     <motion.div variants={itemVariants}>
       <Card>
         <CardHeader>
-          <CardTitle>Notice Board</CardTitle>
+          <CardTitle>{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {userRole === 'admin' && (
               <div className="flex items-center gap-2">
                 <Textarea
-                  placeholder="Type your notice here..."
+                  placeholder={language === 'bn' ? 'আপনার নোটিশ এখানে টাইপ করুন...' : 'Type your notice here...'}
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   className="focus:ring-primary"
@@ -61,7 +62,7 @@ export function NoticeBoard() {
                     <div>
                       <p className="text-sm">{notice.message}</p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        {formatDistanceToNow(new Date(notice.date), { addSuffix: true })}
+                        {formatDistanceToNow(new Date(notice.date), { addSuffix: true, locale: language === 'bn' ? bn : undefined })}
                       </p>
                     </div>
                     {userRole === 'admin' && (
@@ -72,7 +73,7 @@ export function NoticeBoard() {
                         onClick={() => deleteNotice(notice.id)}
                       >
                         <X className="h-4 w-4" />
-                        <span className="sr-only">Delete notice</span>
+                        <span className="sr-only">{language === 'bn' ? 'নোটিশ মুছে ফেলুন' : 'Delete notice'}</span>
                       </Button>
                     )}
                   </div>

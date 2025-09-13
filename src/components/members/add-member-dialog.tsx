@@ -43,7 +43,7 @@ type AddMemberDialogProps = {
 };
 
 export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
-  const { addMember } = useAppContext();
+  const { addMember, language } = useAppContext();
 
   const form = useForm<z.infer<typeof memberSchema>>({
     resolver: zodResolver(memberSchema),
@@ -68,9 +68,9 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Member</DialogTitle>
+          <DialogTitle>{language === 'bn' ? 'নতুন সদস্য যোগ করুন' : 'Add New Member'}</DialogTitle>
           <DialogDescription>
-            Enter the details of the new member to add them to the organization.
+            {language === 'bn' ? 'সংগঠনে নতুন সদস্য যোগ করতে তাদের বিবরণ লিখুন।' : 'Enter the details of the new member to add them to the organization.'}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -80,9 +80,9 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>{language === 'bn' ? 'पूरा नाम' : 'Full Name'}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Anika Sharma" {...field} />
+                    <Input placeholder={language === 'bn' ? 'অনিকা শর্মা' : 'Anika Sharma'} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,7 +93,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{language === 'bn' ? 'ইമെ일' : 'Email'}</FormLabel>
                   <FormControl>
                     <Input placeholder="name@example.com" {...field} />
                   </FormControl>
@@ -106,7 +106,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone</FormLabel>
+                  <FormLabel>{language === 'bn' ? 'ফোন' : 'Phone'}</FormLabel>
                   <FormControl>
                     <Input placeholder="+8801700000000" {...field} />
                   </FormControl>
@@ -119,16 +119,16 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>{language === 'bn' ? 'অবস্থা' : 'Status'}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select member status" />
+                          <SelectValue placeholder={language === 'bn' ? 'সদস্যের অবস্থা নির্বাচন করুন' : 'Select member status'} />
                         </Trigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
+                        <SelectItem value="active">{language === 'bn' ? 'সક્રિય' : 'Active'}</SelectItem>
+                        <SelectItem value="inactive">{language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive'}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -136,7 +136,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
                 )}
               />
             <DialogFooter>
-              <Button type="submit">Add Member</Button>
+              <Button type="submit">{language === 'bn' ? 'সদস্য যোগ করুন' : 'Add Member'}</Button>
             </DialogFooter>
           </form>
         </Form>

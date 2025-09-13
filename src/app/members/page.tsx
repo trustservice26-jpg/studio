@@ -12,7 +12,7 @@ import { AddMemberDialog } from '@/components/members/add-member-dialog';
 import { Input } from '@/components/ui/input';
 
 export default function MembersPage() {
-  const { members, userRole } = useAppContext();
+  const { members, userRole, language } = useAppContext();
   const [isAddMemberOpen, setAddMemberOpen] = React.useState(false);
   const [filter, setFilter] = React.useState('');
 
@@ -32,21 +32,21 @@ export default function MembersPage() {
     >
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Member Directory</h1>
+          <h1 className="text-3xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h1>
           <p className="text-muted-foreground">
-            A list of all members in the organization.
+            {language === 'bn' ? 'সংগঠনের সকল সদস্যদের তালিকা।' : 'A list of all members in the organization.'}
           </p>
         </div>
         {userRole === 'admin' && (
           <Button onClick={() => setAddMemberOpen(true)}>
-            <PlusCircle className="mr-2 h-4 w-4" /> Add Member
+            <PlusCircle className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য যোগ করুন' : 'Add Member'}
           </Button>
         )}
       </div>
 
       <DataTable columns={columns} data={filteredMembers}>
          <Input
-          placeholder="Filter members..."
+          placeholder={language === 'bn' ? 'সদস্য খুঁজুন...' : 'Filter members...'}
           value={filter}
           onChange={(event) => setFilter(event.target.value)}
           className="max-w-sm"

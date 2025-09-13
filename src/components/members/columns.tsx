@@ -30,26 +30,26 @@ import {
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
-  const { userRole, deleteMember, toggleMemberStatus } = useAppContext();
+  const { userRole, deleteMember, toggleMemberStatus, language } = useAppContext();
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{language === 'bn' ? 'মেনু খুলুন' : 'Open menu'}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{language === 'bn' ? 'פעולות' : 'Actions'}</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => navigator.clipboard.writeText(member.email)}>
-            Copy email
+            {language === 'bn' ? 'ইമെ일 কপি করুন' : 'Copy email'}
           </DropdownMenuItem>
           {userRole === 'admin' && (
             <>
               <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
-                {member.status === 'active' ? 'Set as Inactive' : 'Set as Active'}
+                {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সક્રિય হিসাবে সেট করুন' : 'Set as Active')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
                <AlertDialog>
@@ -58,20 +58,20 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
                     onSelect={(e) => e.preventDefault()}
                     className="text-destructive focus:text-destructive"
                   >
-                    Delete Member
+                    {language === 'bn' ? 'সদস্য মুছে ফেলুন' : 'Delete Member'}
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{language === 'bn' ? 'আপনি কি নিশ্চিত?' : 'Are you sure?'}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete {member.name}'s record.
+                      {language === 'bn' ? `এই क्रिया पूर्ववत করা যাবে না। এটি स्थायीভাবে ${member.name} এর রেকর্ড মুছে ফেলবে।` : `This action cannot be undone. This will permanently delete ${member.name}'s record.`}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel>{language === 'bn' ? 'বাতিল করুন' : 'Cancel'}</AlertDialogCancel>
                     <AlertDialogAction onClick={() => deleteMember(member.id)}>
-                      Continue
+                      {language === 'bn' ? 'চালিয়ে যান' : 'Continue'}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -89,12 +89,13 @@ export const columns: ColumnDef<Member>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
+      const { language } = useAppContext();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Member
+          {language === 'bn' ? 'সদস্য' : 'Member'}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -121,36 +122,46 @@ export const columns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => {
+        const { language } = useAppContext();
+        return <div>{language === 'bn' ? 'অবস্থা' : 'Status'}</div>
+    },
     cell: ({ row }) => {
       const status = row.getValue("status") as string
+      const { language } = useAppContext();
+      const translatedStatus = status === 'active' ? (language === 'bn' ? 'সક્રિય' : 'active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'inactive');
       return (
         <Badge variant={status === 'active' ? "default" : "secondary"} className={status === "active" ? "bg-green-500/20 text-green-700 border-green-500/20" : ""}>
-          {status}
+          {translatedStatus}
         </Badge>
       )
     },
   },
   {
     accessorKey: "phone",
-    header: "Phone",
+    header: () => {
+        const { language } = useAppContext();
+        return <div>{language === 'bn' ? 'ফোন' : 'Phone'}</div>
+    },
   },
   {
     accessorKey: "joinDate",
     header: ({ column }) => {
+        const { language } = useAppContext();
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Join Date
+            {language === 'bn' ? 'যোগদানের তারিখ' : 'Join Date'}
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         )
       },
     cell: ({ row }) => {
       const date = new Date(row.getValue("joinDate"))
-      return <div>{date.toLocaleDateString()}</div>
+      const { language } = useAppContext();
+      return <div>{date.toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</div>
     },
   },
   {

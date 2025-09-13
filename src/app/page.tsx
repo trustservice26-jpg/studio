@@ -13,7 +13,7 @@ import { publicMemberColumns } from '@/components/home/public-members-columns';
 import { NoticeBoard } from '@/components/dashboard/notice-board';
 
 export default function HomePage() {
-  const { members } = useAppContext();
+  const { members, language } = useAppContext();
 
   const totalMembers = members.length;
   const activeMembers = useMemo(() => members.filter(m => m.status === 'active').length, [members]);
@@ -45,7 +45,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            Seva Sangathan
+            {language === 'bn' ? 'सेवा संगठन' : 'Seva Sangathan'}
           </motion.h1>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground"
@@ -53,7 +53,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            A non-profit organization dedicated to community development and support in Chandgaon.
+            {language === 'bn' ? 'चांदगांव এ सामुदायिक উন্নয়ন ও সহায়তায় समर्पित একটি μη-লাভজনক সংস্থা।' : 'A non-profit organization dedicated to community development and support in Chandgaon.'}
           </motion.p>
         </div>
       </motion.section>
@@ -63,13 +63,13 @@ export default function HomePage() {
           <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <Card>
                 <CardHeader>
-                  <CardTitle>Our Members</CardTitle>
-                  <CardDescription>Total members in the organization</CardDescription>
+                  <CardTitle>{language === 'bn' ? 'আমাদের সদস্য' : 'Our Members'}</CardTitle>
+                  <CardDescription>{language === 'bn' ? 'সংগঠনে মোট সদস্য' : 'Total members in the organization'}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">{totalMembers}</p>
                    <div className="text-sm text-muted-foreground mt-2">
-                    <span className="font-semibold text-green-600">{activeMembers} Active</span> | <span className="font-semibold text-red-600">{inactiveMembers} Inactive</span>
+                    <span className="font-semibold text-green-600">{activeMembers} {language === 'bn' ? 'সক্রিয়' : 'Active'}</span> | <span className="font-semibold text-red-600">{inactiveMembers} {language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive'}</span>
                    </div>
                 </CardContent>
               </Card>
@@ -83,18 +83,18 @@ export default function HomePage() {
                     <blockquote className="text-lg font-semibold italic">
                     "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
                     </blockquote>
-                    <p className="text-muted-foreground mt-2">— শেখ সাদি</p>
+                    <p className="text-muted-foreground mt-2">— شیخ سعدی</p>
                 </CardContent>
             </Card>
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <section className="lg:col-span-2">
-              <h2 className="text-3xl font-bold mb-6">Our Members</h2>
+              <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'আমাদের সদস্য' : 'Our Members'}</h2>
               <DataTable columns={publicMemberColumns} data={members} />
             </section>
             <section>
-                <h2 className="text-3xl font-bold mb-6">Notice Board</h2>
+                <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
                 <NoticeBoard />
             </section>
         </div>

@@ -55,8 +55,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
     setMembers(prevMembers => [newMember, ...prevMembers]);
     toast({
-      title: "Member Added",
-      description: `${newMember.name} has been successfully added.`,
+      title: language === 'bn' ? "সদস্য যোগ করা হয়েছে" : "Member Added",
+      description: language === 'bn' ? `${newMember.name} সফলভাবে যোগ করা হয়েছে।` : `${newMember.name} has been successfully added.`,
     })
   };
 
@@ -64,8 +64,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setMembers(prevMembers => prevMembers.filter(member => member.id !== memberId));
     toast({
       variant: 'destructive',
-      title: "Member Deleted",
-      description: `The member has been removed from the organization.`,
+      title: language === 'bn' ? "সদস্য মুছে ফেলা হয়েছে" : "Member Deleted",
+      description: language === 'bn' ? `সদস্যকে সংগঠন থেকে মুছে ফেলা হয়েছে।` : `The member has been removed from the organization.`,
     })
   };
   
@@ -78,8 +78,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       )
     );
      toast({
-      title: "Member Status Updated",
-      description: `The member's status has been changed.`,
+      title: language === 'bn' ? "সদস্যের অবস্থা আপডেট করা হয়েছে" : "Member Status Updated",
+      description: language === 'bn' ? `সদস্যের অবস্থা পরিবর্তন করা হয়েছে।` : `The member's status has been changed.`,
     })
   };
 
@@ -91,8 +91,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
     setNotices(prevNotices => [newNotice, ...prevNotices]);
     toast({
-      title: "Notice Posted",
-      description: "The new notice is now visible to all members.",
+      title: language === 'bn' ? "নোটিশ পোস্ট করা হয়েছে" : "Notice Posted",
+      description: language === 'bn' ? "নতুন নোটিশ এখন সকল সদস্যদের কাছে দৃশ্যমান।" : "The new notice is now visible to all members.",
     });
   };
 
@@ -100,8 +100,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setNotices(prevNotices => prevNotices.filter(notice => notice.id !== noticeId));
     toast({
       variant: 'destructive',
-      title: "Notice Deleted",
-      description: "The notice has been removed.",
+      title: language === 'bn' ? "নোটিশ মুছে ফেলা হয়েছে" : "Notice Deleted",
+      description: language === 'bn' ? "নোটিশটি মুছে ফেলা হয়েছে।" : "The notice has been removed.",
     });
   };
 

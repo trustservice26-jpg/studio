@@ -17,13 +17,13 @@ const itemVariants = {
 };
 
 export function StatsCards() {
-  const { members } = useAppContext();
+  const { members, language } = useAppContext();
 
   const totalMembers = members.length;
   
   const stats = [
     {
-      title: 'Total Members',
+      title: language === 'bn' ? 'মোট সদস্য' : 'Total Members',
       value: totalMembers,
       icon: <Users className="h-4 w-4 text-muted-foreground" />,
     },
