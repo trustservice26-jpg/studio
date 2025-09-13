@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -24,8 +25,6 @@ export default function HomePage() {
     return donations.reduce((acc, donation) => acc + donation.amount, 0);
   }, [donations]);
 
-  const recentNotices = notices.slice(0, 3);
-
   const cardVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -41,23 +40,14 @@ export default function HomePage() {
     <div className="flex-1 bg-background">
       {/* Hero Section */}
       <motion.section
-        className="relative h-[60vh] min-h-[400px] w-full"
+        className="relative w-full py-20 lg:py-28"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        <Image
-          src="https://picsum.photos/seed/hero-bg/1600/900"
-          alt="Community gathering"
-          fill
-          className="object-cover"
-          data-ai-hint="community event"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
+        <div className="container mx-auto text-center">
           <motion.h1
-            className="mb-4 text-4xl font-bold tracking-tight md:text-6xl"
+            className="mb-4 text-4xl font-bold tracking-tight md:text-6xl text-foreground"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -65,12 +55,12 @@ export default function HomePage() {
             Shahid Liyakot Shiriti Songo (Chandgaon)
           </motion.h1>
           <motion.p
-            className="mb-8 max-w-2xl text-lg md:text-xl"
+            className="mb-8 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            A non-profit organization dedicated to community development and support in Chandgaon.
+            A non-profit organization dedicated to community development and support in Chandgaon. Welcome to our public dashboard.
           </motion.p>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -78,8 +68,8 @@ export default function HomePage() {
             transition={{ delay: 0.6, duration: 0.5 }}
           >
             <Link href="/dashboard">
-              <Button size="lg" variant="default">
-                Go to Dashboard
+              <Button size="lg">
+                Go to Full Dashboard
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -88,139 +78,143 @@ export default function HomePage() {
       </motion.section>
 
       <div className="container mx-auto py-12">
-        {/* Quote Section */}
-        <section className="mb-12 text-center">
-            <motion.blockquote 
-              className="mx-auto max-w-3xl text-xl italic font-bold text-foreground"
-              variants={cardVariants} initial="hidden" animate="visible"
-            >
-             "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
-            </motion.blockquote>
-            <motion.p className="mt-2 text-muted-foreground" variants={cardVariants} initial="hidden" animate="visible" custom={1}>— Sheikh Saadi</motion.p>
-        </section>
 
         {/* Stats Section */}
         <section className="mb-12">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <motion.div variants={cardVariants} initial="hidden" animate="visible">
+            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <Card>
                 <CardHeader>
                   <CardTitle>Our Members</CardTitle>
                   <CardDescription>Total members in the organization</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-3xl font-bold">{totalMembers}</p>
-                   <div className="text-xs text-muted-foreground">
-                    <span className="text-green-600">{activeMembers} Active</span> | <span className="text-red-600">{inactiveMembers} Inactive</span>
+                  <p className="text-4xl font-bold">{totalMembers}</p>
+                   <div className="text-sm text-muted-foreground mt-2">
+                    <span className="font-semibold text-green-600">{activeMembers} Active</span> | <span className="font-semibold text-red-600">{inactiveMembers} Inactive</span>
                    </div>
                 </CardContent>
               </Card>
             </motion.div>
-            <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={1}>
+            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}>
               <Card>
                 <CardHeader>
                   <CardTitle>Total Funds Raised</CardTitle>
                   <CardDescription>Supporting our cause</CardDescription>
                 </CardHeader>
                 <CardContent>
-                   <p className="text-3xl font-bold">৳{totalDonations.toLocaleString('en-IN')}</p>
+                   <p className="text-4xl font-bold">৳{totalDonations.toLocaleString('en-IN')}</p>
                 </CardContent>
               </Card>
             </motion.div>
-            <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={2}>
+            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>
               <Card>
                 <CardHeader>
                   <CardTitle>Total Withdrawals</CardTitle>
                    <CardDescription>Funds utilized for projects</CardDescription>
                 </CardHeader>
                 <CardContent>
-                   <p className="text-3xl font-bold">৳{useAppContext().totalWithdrawals.toLocaleString('en-IN')}</p>
+                   <p className="text-4xl font-bold">৳{useAppContext().totalWithdrawals.toLocaleString('en-IN')}</p>
                 </CardContent>
               </Card>
             </motion.div>
           </div>
         </section>
 
-        {/* Recent Notices Section */}
-        <section className="mb-12">
-          <motion.h2 className="mb-4 text-3xl font-bold text-center" variants={cardVariants} initial="hidden" animate="visible">
-            Recent Notices
-          </motion.h2>
-          <motion.div className="space-y-4" variants={cardVariants} initial="hidden" animate="visible" custom={1}>
-            {recentNotices.length > 0 ? (
-              recentNotices.map((notice) => (
-                <Card key={notice.id} className="bg-accent/50">
-                  <CardContent className="p-4 flex items-start gap-4">
-                    <MessageSquare className="h-5 w-5 text-primary mt-1" />
-                    <div>
-                      <p className="text-sm">{notice.message}</p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {formatDistanceToNow(new Date(notice.date), { addSuffix: true })}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <p className="text-center text-muted-foreground">No recent notices.</p>
-            )}
-          </motion.div>
-        </section>
-
-        {/* Member Directory Section */}
-        <section className="mb-12">
-           <motion.h2 className="mb-4 text-3xl font-bold text-center" variants={cardVariants} initial="hidden" animate="visible">
-            Our Members
-          </motion.h2>
-          <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={1}>
-            <Card>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Member</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Join Date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {members.map((member) => (
-                    <TableRow key={member.id}>
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src={member.avatar}
-                            alt={member.name}
-                            width={40}
-                            height={40}
-                            className="rounded-full"
-                          />
-                          <div>
-                            <div className="font-medium">{member.name}</div>
-                            <div className="text-sm text-muted-foreground">{member.email}</div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={member.status === "active" ? "default" : "secondary"} className={member.status === "active" ? "bg-green-500/20 text-green-700 border-green-500/20" : ""}>
-                          {member.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{new Date(member.joinDate).toLocaleDateString()}</TableCell>
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* Member Directory */}
+          <section className="lg:col-span-2">
+            <motion.h2 className="mb-4 text-3xl font-bold" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              Member Directory
+            </motion.h2>
+            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}>
+              <Card>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Member</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="hidden md:table-cell">Join Date</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Card>
-          </motion.div>
+                  </TableHeader>
+                  <TableBody>
+                    {members.slice(0, 5).map((member) => (
+                      <TableRow key={member.id}>
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            <Image
+                              src={member.avatar}
+                              alt={member.name}
+                              width={40}
+                              height={40}
+                              className="rounded-full"
+                            />
+                            <div>
+                              <div className="font-medium">{member.name}</div>
+                              <div className="text-sm text-muted-foreground">{member.email}</div>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={member.status === "active" ? "default" : "secondary"} className={member.status === "active" ? "bg-green-500/20 text-green-700 border-green-500/20" : ""}>
+                            {member.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">{new Date(member.joinDate).toLocaleDateString()}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                 <div className="p-4 text-center">
+                    <Link href="/members">
+                        <Button variant="outline">View All Members</Button>
+                    </Link>
+                </div>
+              </Card>
+            </motion.div>
+          </section>
+
+          {/* Notice Board */}
+          <section>
+            <motion.h2 className="mb-4 text-3xl font-bold" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              Notice Board
+            </motion.h2>
+            <motion.div className="space-y-4" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}>
+              <Card>
+                <CardContent className="p-4 space-y-4">
+                  {notices.length > 0 ? (
+                    notices.slice(0, 4).map((notice) => (
+                      <div key={notice.id} className="flex items-start gap-4">
+                        <MessageSquare className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm">{notice.message}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {formatDistanceToNow(new Date(notice.date), { addSuffix: true })}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-muted-foreground py-8">No recent notices.</p>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </section>
+        </div>
+        
+        {/* Quote Section */}
+        <section className="my-16 text-center">
+            <motion.blockquote 
+              className="mx-auto max-w-3xl text-xl italic font-bold text-foreground"
+               variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+             "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
+            </motion.blockquote>
+            <motion.p className="mt-2 text-muted-foreground" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}>— Sheikh Saadi</motion.p>
         </section>
 
-        {/* About Section */}
-        <section className="text-center">
-            <motion.h2 className="mb-4 text-3xl font-bold" variants={cardVariants} initial="hidden" animate="visible">About Us</motion.h2>
-            <motion.p className="mx-auto max-w-3xl text-muted-foreground" variants={cardVariants} initial="hidden" animate="visible" custom={1}>
-              We are a community-focused non-profit organization striving to make a positive impact through various social welfare and development projects in the Chandgaon area. Our strength lies in our passionate members and generous donors.
-            </motion.p>
-        </section>
       </div>
     </div>
   );
