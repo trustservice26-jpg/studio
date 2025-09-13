@@ -17,6 +17,7 @@ interface AppContextType {
   deleteMember: (memberId: string) => void;
   toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
+  deleteNotice: (noticeId: string) => void;
   addDonation: (donation: Omit<Donation, 'id' | 'date'>) => void;
   setUserRole: (role: UserRole) => void;
   setLanguage: (language: 'en' | 'bn') => void;
@@ -89,13 +90,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const addNotice = (message: string) => {
     const newNotice: Notice = {
       id: `n${notices.length + 1}`,
-      message,
+  message,
       date: new Date().toISOString(),
     };
     setNotices(prevNotices => [newNotice, ...prevNotices]);
     toast({
       title: "Notice Posted",
       description: "The new notice is now visible to all members.",
+    });
+  };
+
+  const deleteNotice = (noticeId: string) => {
+    setNotices(prevNotices => prevNotices.filter(notice => notice.id !== noticeId));
+    toast({
+      variant: 'destructive',
+      title: "Notice Deleted",
+      description: "The notice has been removed.",
     });
   };
 
@@ -122,6 +132,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     deleteMember,
     toggleMemberStatus,
     addNotice,
+    deleteNotice,
     addDonation,
     setUserRole,
     language,

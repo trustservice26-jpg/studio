@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Send } from 'lucide-react';
+import { Send, X } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +23,7 @@ const itemVariants = {
 };
 
 export function NoticeBoard() {
-  const { notices, userRole, addNotice } = useAppContext();
+  const { notices, userRole, addNotice, deleteNotice } = useAppContext();
   const [newMessage, setNewMessage] = React.useState('');
 
   const handlePostNotice = () => {
@@ -57,11 +57,24 @@ export function NoticeBoard() {
             <ScrollArea className="h-48 pr-4">
               <div className="space-y-4">
                 {notices.map((notice) => (
-                  <div key={notice.id} className="p-3 rounded-md bg-muted/50">
-                    <p className="text-sm">{notice.message}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {formatDistanceToNow(new Date(notice.date), { addSuffix: true })}
-                    </p>
+                  <div key={notice.id} className="group flex items-start justify-between p-3 rounded-md bg-muted/50">
+                    <div>
+                      <p className="text-sm">{notice.message}</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {formatDistanceToNow(new Date(notice.date), { addSuffix: true })}
+                      </p>
+                    </div>
+                    {userRole === 'admin' && (
+                       <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => deleteNotice(notice.id)}
+                      >
+                        <X className="h-4 w-4" />
+                        <span className="sr-only">Delete notice</span>
+                      </Button>
+                    )}
                   </div>
                 ))}
               </div>

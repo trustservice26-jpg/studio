@@ -1,7 +1,6 @@
 'use client';
 
 import { StatsCards } from '@/components/dashboard/stats-cards';
-import { DonationsChart } from '@/components/dashboard/donations-chart';
 import { NoticeBoard } from '@/components/dashboard/notice-board';
 import { motion } from 'framer-motion';
 
@@ -26,7 +25,6 @@ export default function Dashboard() {
       <h1 className="text-3xl font-bold">Admin Dashboard</h1>
       <NoticeBoard />
       <StatsCards />
-      <DonationsChart />
     </motion.div>
   );
 }
