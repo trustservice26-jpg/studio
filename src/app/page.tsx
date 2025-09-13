@@ -76,28 +76,28 @@ export default function HomePage() {
             </motion.div>
         </section>
 
-        <section className="mb-12">
-            <Card>
-                <CardContent className="flex flex-col items-center justify-center text-center p-6">
-                    <Quote className="w-8 h-8 text-muted-foreground mb-4" />
-                    <blockquote className="text-lg font-semibold italic">
-                    {language === 'bn' ? "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।" : "Do not be ashamed of giving a little, for refusing is a greater shame."}
-                    </blockquote>
-                    <p className="text-muted-foreground mt-2">{language === 'bn' ? '— শেখ সাদী' : '— Sheikh Saadi'}</p>
-                </CardContent>
-            </Card>
-        </section>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <section className="lg:col-span-2">
-              <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'মোট সদস্য' : 'Our Members'}</h2>
-              <DataTable columns={publicMemberColumns} data={members} />
+                <Card className="h-full">
+                    <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
+                        <Quote className="w-8 h-8 text-muted-foreground mb-4" />
+                        <blockquote className="text-lg font-semibold italic">
+                        {language === 'bn' ? "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।" : "Do not be ashamed of giving a little, for refusing is a greater shame."}
+                        </blockquote>
+                        <p className="text-muted-foreground mt-2">{language === 'bn' ? '— শেখ সাদী' : '— Sheikh Saadi'}</p>
+                    </CardContent>
+                </Card>
             </section>
             <section>
                 <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
                 <NoticeBoard />
             </section>
         </div>
+
+        <section>
+            <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'মোট সদস্য' : 'Our Members'}</h2>
+            <DataTable columns={publicMemberColumns} data={members} />
+        </section>
       </div>
     </div>
   );
