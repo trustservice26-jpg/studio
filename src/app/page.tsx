@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
 import { useMemo } from 'react';
+import { DataTable } from '@/components/ui/data-table';
+import { publicMemberColumns } from '@/components/home/public-members-columns';
 
 export default function HomePage() {
   const { members, donations, totalWithdrawals } = useAppContext();
@@ -97,6 +99,11 @@ export default function HomePage() {
               </Card>
             </motion.div>
           </div>
+        </section>
+
+        <section>
+          <h2 className="text-3xl font-bold mb-6 text-center">Our Members</h2>
+          <DataTable columns={publicMemberColumns} data={members} />
         </section>
       </div>
     </div>
