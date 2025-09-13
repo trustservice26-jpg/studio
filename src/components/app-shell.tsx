@@ -34,7 +34,6 @@ const navItems = [
   { href: '/', label: 'Home', icon: Home, adminOnly: false },
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, adminOnly: true },
   { href: '/members', label: 'Members', icon: Users, adminOnly: true },
-  { href: '/donations', label: 'Donations', icon: HeartHandshake, adminOnly: true },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {

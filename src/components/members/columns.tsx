@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
-import { MoreHorizontal, ArrowUpDown, DollarSign } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -28,11 +28,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { AddDonationDialog } from "./add-donation-dialog"
-
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
-  const [isDonationOpen, setDonationOpen] = React.useState(false);
   const { userRole, deleteMember, toggleMemberStatus } = useAppContext();
 
   return (
@@ -51,10 +48,6 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           </DropdownMenuItem>
           {userRole === 'admin' && (
             <>
-              <DropdownMenuItem onClick={() => setDonationOpen(true)}>
-                <DollarSign className="mr-2 h-4 w-4" />
-                Add Donation
-              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
                 {member.status === 'active' ? 'Set as Inactive' : 'Set as Active'}
               </DropdownMenuItem>
@@ -87,11 +80,6 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-      {userRole === 'admin' && (
-        <>
-          <AddDonationDialog member={member} open={isDonationOpen} onOpenChange={setDonationOpen} />
-        </>
-      )}
     </>
   )
 }
