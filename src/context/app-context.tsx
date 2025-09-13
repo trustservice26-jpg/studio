@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import type { Member, Donation, UserRole, Notice } from '@/lib/types';
 import { initialMembers, initialDonations, initialNotices } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast"
@@ -12,10 +12,12 @@ interface AppContextType {
   notices: Notice[];
   totalWithdrawals: number;
   userRole: UserRole;
+  language: 'en' | 'bn';
   addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate'>) => void;
   deleteMember: (memberId: string) => void;
   addNotice: (message: string) => void;
   setUserRole: (role: UserRole) => void;
+  setLanguage: (language: 'en' | 'bn') => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -27,6 +29,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [userRole, setUserRole] = useState<UserRole>('admin');
   const [totalWithdrawals, setTotalWithdrawals] = useState(50000); // Mock data
   const { toast } = useToast();
+  const [language, setLanguage] = useState<'en' | 'bn'>('en');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem('language') as 'en' | 'bn' | null;
+      if (savedLang) {
+        setLanguage(savedLang);
+      }
+    }
+  }, []);
+
+  const handleSetLanguage = (lang: 'en' | 'bn') => {
+    setLanguage(lang);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('language', lang);
+    }
+  };
 
   const addMember = (memberData: Omit<Member, 'id' | 'avatar' | 'joinDate'>) => {
     const newMember: Member = {
@@ -74,6 +93,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     deleteMember,
     addNotice,
     setUserRole,
+    language,
+    setLanguage: handleSetLanguage,
   };
 
   return (

@@ -16,6 +16,7 @@ import { useAppContext } from '@/context/app-context';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
+import { LanguageSwitcher } from './language-switcher';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -98,6 +99,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="w-full flex-1">
             {/* Can add a search bar here if needed */}
           </div>
+          <LanguageSwitcher />
           <div className="flex items-center space-x-2">
             <Label htmlFor="role-switch">Admin</Label>
             <Switch
