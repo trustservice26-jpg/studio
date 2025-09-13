@@ -35,7 +35,6 @@ const memberSchema = z.object({
   email: z.string().email('Invalid email address.'),
   phone: z.string().min(10, 'Phone number is too short.'),
   status: z.enum(['active', 'inactive']),
-  contributions: z.string(),
 });
 
 type AddMemberDialogProps = {
@@ -53,12 +52,14 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
       email: '',
       phone: '',
       status: 'active',
-      contributions: 'N/A',
     },
   });
 
   function onSubmit(values: z.infer<typeof memberSchema>) {
-    addMember(values);
+    addMember({
+      ...values,
+      contributions: 'N/A',
+    });
     form.reset();
     onOpenChange(false);
   }
