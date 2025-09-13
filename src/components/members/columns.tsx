@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import type { Member } from "@/lib/types"
-import { RoleAdvisorModal } from "./role-advisor-modal"
 import { useAppContext } from "@/context/app-context"
 import {
   AlertDialog,
@@ -33,7 +32,6 @@ import { AddDonationDialog } from "./add-donation-dialog"
 
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
-  const [isAdvisorOpen, setAdvisorOpen] = React.useState(false);
   const [isDonationOpen, setDonationOpen] = React.useState(false);
   const { userRole, deleteMember, toggleMemberStatus } = useAppContext();
 
@@ -57,11 +55,8 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
                 <DollarSign className="mr-2 h-4 w-4" />
                 Add Donation
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setAdvisorOpen(true)}>
-                Suggest Role
-              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
-                Toggle Status
+                Set as {member.status === 'active' ? 'Inactive' : 'Active'}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
                <AlertDialog>
@@ -94,7 +89,6 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
       </DropdownMenu>
       {userRole === 'admin' && (
         <>
-          <RoleAdvisorModal member={member} open={isAdvisorOpen} onOpenChange={setAdvisorOpen} />
           <AddDonationDialog member={member} open={isDonationOpen} onOpenChange={setDonationOpen} />
         </>
       )}

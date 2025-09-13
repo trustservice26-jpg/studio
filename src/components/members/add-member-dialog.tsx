@@ -28,7 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { useAppContext } from '@/context/app-context';
 
 const memberSchema = z.object({
@@ -36,7 +35,7 @@ const memberSchema = z.object({
   email: z.string().email('Invalid email address.'),
   phone: z.string().min(10, 'Phone number is too short.'),
   status: z.enum(['active', 'inactive']),
-  contributions: z.string().min(10, 'Please describe contributions.'),
+  contributions: z.string(),
 });
 
 type AddMemberDialogProps = {
@@ -54,7 +53,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
       email: '',
       phone: '',
       status: 'active',
-      contributions: '',
+      contributions: 'N/A',
     },
   });
 
@@ -124,7 +123,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select member status" />
-                        </SelectTrigger>
+                        </Trigger>
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="active">Active</SelectItem>
@@ -135,23 +134,6 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
                   </FormItem>
                 )}
               />
-            <FormField
-              control={form.control}
-              name="contributions"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contributions</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Describe past contributions and involvement..."
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <DialogFooter>
               <Button type="submit">Add Member</Button>
             </DialogFooter>
