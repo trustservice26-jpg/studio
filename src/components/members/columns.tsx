@@ -26,8 +26,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const { userRole, deleteMember, toggleMemberStatus } = useAppContext();
@@ -125,7 +125,7 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => {
       const status = row.getValue("status") as string
       return (
-        <Badge variant={status === "active" ? "default" : "secondary"} className={status === "active" ? "bg-green-500/20 text-green-700 border-green-500/20" : ""}>
+        <Badge variant={status === 'active' ? "default" : "secondary"} className={status === "active" ? "bg-green-500/20 text-green-700 border-green-500/20" : ""}>
           {status}
         </Badge>
       )

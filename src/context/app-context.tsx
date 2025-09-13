@@ -11,7 +11,7 @@ interface AppContextType {
   notices: Notice[];
   userRole: UserRole;
   language: 'en' | 'bn';
-  addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate'>) => void;
+  addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>) => void;
   deleteMember: (memberId: string) => void;
   toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
@@ -45,12 +45,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addMember = (memberData: Omit<Member, 'id' | 'avatar' | 'joinDate'>) => {
+  const addMember = (memberData: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>) => {
     const newMember: Member = {
       ...memberData,
       id: `m${members.length + 1}`,
       joinDate: new Date().toISOString(),
       avatar: `https://picsum.photos/seed/avatar${members.length + 1}/200/200`,
+      contributions: '',
     };
     setMembers(prevMembers => [newMember, ...prevMembers]);
     toast({
@@ -85,7 +86,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const addNotice = (message: string) => {
     const newNotice: Notice = {
       id: `n${notices.length + 1}`,
-  message,
+      message,
       date: new Date().toISOString(),
     };
     setNotices(prevNotices => [newNotice, ...prevNotices]);
