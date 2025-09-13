@@ -20,7 +20,9 @@ import { useToast } from '@/hooks/use-toast';
 import { LanguageSwitcher } from './language-switcher';
 
 const navItems = [
-  { href: '/donations', label: 'Donations', icon: Banknote },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, adminOnly: true },
+  { href: '/members', label: 'Members', icon: Users, adminOnly: true },
+  { href: '/donations', label: 'Donations', icon: Banknote, adminOnly: false },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -39,9 +41,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const getNavItems = (role: 'admin' | 'member') => {
+    return navItems.filter(item => !item.adminOnly || role === 'admin');
+  }
+
   const navLinks = (
     <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
-      {navItems.map(({ href, label, icon: Icon }) => (
+      {getNavItems(userRole).map(({ href, label, icon: Icon }) => (
         <Link
           key={label}
           href={href}
@@ -64,7 +70,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <HeartHandshake className="h-6 w-6 text-primary" />
-              <span className="">Shahid Liyakot Shiriti Songo (Chandgaon)</span>
+              <span className="">Seva Sangathan</span>
             </Link>
           </div>
           <div className="flex-1">
@@ -89,7 +95,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                  <Link href="/" className="flex items-center gap-2 font-semibold">
                     <HeartHandshake className="h-6 w-6 text-primary" />
-                    <span className="">Shahid Liyakot Shiriti Songo (Chandgaon)</span>
+                    <span className="">Seva Sangathan</span>
                 </Link>
               </div>
               {navLinks}

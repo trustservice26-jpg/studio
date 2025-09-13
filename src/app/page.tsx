@@ -3,12 +3,14 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
+import { Quote } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
 import { useMemo } from 'react';
 import { DataTable } from '@/components/ui/data-table';
 import { publicMemberColumns } from '@/components/home/public-members-columns';
+import { NoticeBoard } from '@/components/dashboard/notice-board';
 
 export default function HomePage() {
   const { members, donations, totalWithdrawals } = useAppContext();
@@ -46,7 +48,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            Shahid Liyakot Shiriti Songo (Chandgaon)
+            Seva Sangathan
           </motion.h1>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground"
@@ -59,9 +61,9 @@ export default function HomePage() {
         </div>
       </motion.section>
 
-      <div className="container mx-auto py-12">
+      <div className="container mx-auto py-12 px-4 md:px-6">
         <section className="mb-12">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <Card>
                 <CardHeader>
@@ -76,7 +78,7 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             </motion.div>
-            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}>
+            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <Card>
                 <CardHeader>
                   <CardTitle>Total Funds Raised</CardTitle>
@@ -87,7 +89,7 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             </motion.div>
-            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>
+            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <Card>
                 <CardHeader>
                   <CardTitle>Total Withdrawals</CardTitle>
@@ -98,13 +100,33 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             </motion.div>
+             <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="md:col-span-2 lg:col-span-1">
+                <Card className="flex flex-col h-full">
+                    <CardHeader>
+                        <CardTitle>A Wise Word</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-grow flex flex-col items-center justify-center text-center">
+                        <Quote className="w-8 h-8 text-muted-foreground mb-4" />
+                        <blockquote className="text-lg font-semibold italic">
+                        "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
+                        </blockquote>
+                        <p className="text-muted-foreground mt-2">— শেখ সাদি</p>
+                    </CardContent>
+                </Card>
+            </motion.div>
           </div>
         </section>
 
-        <section>
-          <h2 className="text-3xl font-bold mb-6 text-center">Our Members</h2>
-          <DataTable columns={publicMemberColumns} data={members} />
-        </section>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <section className="lg:col-span-2">
+              <h2 className="text-3xl font-bold mb-6">Our Members</h2>
+              <DataTable columns={publicMemberColumns} data={members} />
+            </section>
+            <section>
+                <h2 className="text-3xl font-bold mb-6">Notice Board</h2>
+                <NoticeBoard />
+            </section>
+        </div>
       </div>
     </div>
   );
