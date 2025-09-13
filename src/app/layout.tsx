@@ -5,7 +5,7 @@ import AppShell from '@/components/app-shell';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'SHAHID LIYAKOT SHIRITI SONGO (CHANDGAON)',
+  title: 'Shahid Liyakot Shiriti Songo (Chandgaon)',
   description: 'Non-profit organization management',
 };
 

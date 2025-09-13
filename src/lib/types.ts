@@ -17,4 +17,10 @@ export type Donation = {
   date: string; // ISO string
 };
 
+export type Notice = {
+  id: string;
+  message: string;
+  date: string; // ISO string
+}
+
 export type UserRole = 'admin' | 'member';

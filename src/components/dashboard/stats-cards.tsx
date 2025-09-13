@@ -2,7 +2,7 @@
 
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, UserCheck, Banknote } from 'lucide-react';
+import { Users, Banknote, Landmark } from 'lucide-react';
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 
@@ -18,10 +18,9 @@ const itemVariants = {
 };
 
 export function StatsCards() {
-  const { members, donations } = useAppContext();
+  const { members, donations, totalWithdrawals } = useAppContext();
 
   const totalMembers = members.length;
-  const activeMembers = members.filter(m => m.status === 'active').length;
   
   const totalDonations = useMemo(() => {
     return donations.reduce((acc, donation) => acc + donation.amount, 0);
@@ -34,14 +33,14 @@ export function StatsCards() {
       icon: <Users className="h-4 w-4 text-muted-foreground" />,
     },
     {
-      title: 'Active Members',
-      value: activeMembers,
-      icon: <UserCheck className="h-4 w-4 text-muted-foreground" />,
-    },
-    {
       title: 'Total Donations',
       value: `৳${totalDonations.toLocaleString('en-IN')}`,
       icon: <Banknote className="h-4 w-4 text-muted-foreground" />,
+    },
+    {
+      title: 'Total Withdrawals',
+      value: `৳${totalWithdrawals.toLocaleString('en-IN')}`,
+      icon: <Landmark className="h-4 w-4 text-muted-foreground" />,
     },
   ];
 

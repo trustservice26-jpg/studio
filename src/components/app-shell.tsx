@@ -8,8 +8,6 @@ import {
   LayoutDashboard,
   Menu,
   Users,
-  Sun,
-  Moon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -66,7 +64,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <HeartHandshake className="h-6 w-6 text-primary" />
-              <span className="">SHAHID LIYAKOT SHIRITI SONGO (CHANDGAON)</span>
+              <span className="">Shahid Liyakot Shiriti Songo (Chandgaon)</span>
             </Link>
           </div>
           <div className="flex-1">
@@ -91,7 +89,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                  <Link href="/" className="flex items-center gap-2 font-semibold">
                     <HeartHandshake className="h-6 w-6 text-primary" />
-                    <span className="">SHAHID LIYAKOT SHIRITI SONGO (CHANDGAON)</span>
+                    <span className="">Shahid Liyakot Shiriti Songo (Chandgaon)</span>
                 </Link>
               </div>
               {navLinks}

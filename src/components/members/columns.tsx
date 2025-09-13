@@ -12,16 +12,28 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import type { Member } from "@/lib/types"
 import { RoleAdvisorModal } from "./role-advisor-modal"
 import { useAppContext } from "@/context/app-context"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const [isAdvisorOpen, setAdvisorOpen] = React.useState(false);
-  const { userRole } = useAppContext();
+  const { userRole, deleteMember } = useAppContext();
 
   return (
     <>
@@ -38,9 +50,36 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
             Copy email
           </DropdownMenuItem>
           {userRole === 'admin' && (
-            <DropdownMenuItem onClick={() => setAdvisorOpen(true)}>
-              Suggest Role
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem onClick={() => setAdvisorOpen(true)}>
+                Suggest Role
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+               <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem
+                    onSelect={(e) => e.preventDefault()}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    Delete Member
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete {member.name}'s record.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => deleteMember(member.id)}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>

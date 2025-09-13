@@ -2,6 +2,7 @@
 
 import { StatsCards } from '@/components/dashboard/stats-cards';
 import { DonationsChart } from '@/components/dashboard/donations-chart';
+import { NoticeBoard } from '@/components/dashboard/notice-board';
 import { motion } from 'framer-motion';
 
 const containerVariants = {
@@ -22,6 +23,7 @@ export default function Dashboard() {
       initial="hidden"
       animate="visible"
     >
+      <NoticeBoard />
       <StatsCards />
       <DonationsChart />
     </motion.div>

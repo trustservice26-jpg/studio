@@ -1,16 +1,20 @@
 'use client';
 
 import { createContext, useContext, useState, ReactNode } from 'react';
-import type { Member, Donation, UserRole } from '@/lib/types';
-import { initialMembers, initialDonations } from '@/lib/data';
+import type { Member, Donation, UserRole, Notice } from '@/lib/types';
+import { initialMembers, initialDonations, initialNotices } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast"
 
 
 interface AppContextType {
   members: Member[];
   donations: Donation[];
+  notices: Notice[];
+  totalWithdrawals: number;
   userRole: UserRole;
   addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate'>) => void;
+  deleteMember: (memberId: string) => void;
+  addNotice: (message: string) => void;
   setUserRole: (role: UserRole) => void;
 }
 
@@ -19,7 +23,9 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [members, setMembers] = useState<Member[]>(initialMembers);
   const [donations, setDonations] = useState<Donation[]>(initialDonations);
+  const [notices, setNotices] = useState<Notice[]>(initialNotices);
   const [userRole, setUserRole] = useState<UserRole>('admin');
+  const [totalWithdrawals, setTotalWithdrawals] = useState(50000); // Mock data
   const { toast } = useToast();
 
   const addMember = (memberData: Omit<Member, 'id' | 'avatar' | 'joinDate'>) => {
@@ -36,11 +42,37 @@ export function AppProvider({ children }: { children: ReactNode }) {
     })
   };
 
+  const deleteMember = (memberId: string) => {
+    setMembers(prevMembers => prevMembers.filter(member => member.id !== memberId));
+    toast({
+      variant: 'destructive',
+      title: "Member Deleted",
+      description: `The member has been removed from the organization.`,
+    })
+  }
+
+  const addNotice = (message: string) => {
+    const newNotice: Notice = {
+      id: `n${notices.length + 1}`,
+      message,
+      date: new Date().toISOString(),
+    };
+    setNotices(prevNotices => [newNotice, ...prevNotices]);
+    toast({
+      title: "Notice Posted",
+      description: "The new notice is now visible to all members.",
+    });
+  }
+
   const contextValue = {
     members,
     donations,
+    notices,
+    totalWithdrawals,
     userRole,
     addMember,
+    deleteMember,
+    addNotice,
     setUserRole,
   };
 

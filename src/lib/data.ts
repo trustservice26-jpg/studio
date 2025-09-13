@@ -1,4 +1,4 @@
-import type { Member, Donation } from './types';
+import type { Member, Donation, Notice } from './types';
 
 export const initialMembers: Member[] = [
   {
@@ -62,4 +62,18 @@ export const initialDonations: Donation[] = [
   { id: 'd6', memberId: 'm1', memberName: 'Anika Sharma', amount: 20000, date: '2024-07-12T00:00:00.000Z' },
   { id: 'd7', memberId: 'm2', memberName: 'Rohan Chowdhury', amount: 12000, date: '2024-04-01T00:00:00.000Z' },
   { id: 'd8', memberId: 'm4', memberName: 'David Biswas', amount: 30000, date: '2024-03-20T00:00:00.000Z' },
+];
+
+
+export const initialNotices: Notice[] = [
+  {
+    id: 'n1',
+    message: 'Monthly meeting on the first Friday of every month. Your participation is highly encouraged!',
+    date: '2024-07-01T10:00:00.000Z'
+  },
+  {
+    id: 'n2',
+    message: 'The annual charity gala is scheduled for September 15th. Volunteers are needed!',
+    date: '2024-07-10T14:30:00.000Z'
+  },
 ];
