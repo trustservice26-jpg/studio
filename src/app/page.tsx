@@ -63,7 +63,7 @@ export default function HomePage() {
           <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <Card>
                 <CardHeader>
-                  <CardTitle>{language === 'bn' ? 'আমাদের সদস্য' : 'Our Members'}</CardTitle>
+                  <CardTitle>{language === 'bn' ? 'মোট সদস্য' : 'Our Members'}</CardTitle>
                   <CardDescription>{language === 'bn' ? 'সংগঠনে মোট সদস্য' : 'Total members in the organization'}</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -90,7 +90,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <section className="lg:col-span-2">
-              <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'আমাদের সদস্য' : 'Our Members'}</h2>
+              <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'মোট সদস্য' : 'Our Members'}</h2>
               <DataTable columns={publicMemberColumns} data={members} />
             </section>
             <section>
