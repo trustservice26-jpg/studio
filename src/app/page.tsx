@@ -3,18 +3,18 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, Users, PiggyBank, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { Quote, ArrowUpCircle, ArrowDownCircle, PiggyBank } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
 import { DataTable } from '@/components/ui/data-table';
 import { publicMemberColumns } from '@/components/home/public-members-columns';
 import { NoticeBoard } from '@/components/dashboard/notice-board';
+import { StatsCards } from '@/components/dashboard/stats-cards';
+import { MemberStatusOverview } from '@/components/dashboard/member-status-overview';
 
 export default function HomePage() {
   const { members, language, currentFunds, totalDonations, totalWithdrawals } = useAppContext();
-
-  const totalMembers = members.length;
 
   const cardVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -35,11 +35,10 @@ export default function HomePage() {
     }).format(amount);
   }
 
-  const stats = [
+  const financialStats = [
     { title: language === 'bn' ? 'বর্তমান তহবিল' : 'Current Funds', value: formatCurrency(currentFunds), icon: PiggyBank },
     { title: language === 'bn' ? 'মোট অনুদান' : 'Total Donations', value: formatCurrency(totalDonations), icon: ArrowUpCircle },
     { title: language === 'bn' ? 'মোট উত্তোলন' : 'Total Withdrawals', value: formatCurrency(totalWithdrawals), icon: ArrowDownCircle },
-    { title: language === 'bn' ? 'মোট সদস্য' : 'Total Members', value: totalMembers, icon: Users },
   ]
 
   return (
@@ -72,8 +71,8 @@ export default function HomePage() {
 
       <div className="container mx-auto py-12 px-4 md:px-6">
         <section className="mb-12">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {stats.map((stat, index) => (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {financialStats.map((stat, index) => (
                 <motion.div key={stat.title} variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} custom={index} transition={{delay: index * 0.1}}>
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -91,7 +90,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <section className="lg:col-span-1">
-                <Card className="h-full">
+                 <Card className="h-full">
                     <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
                         <Quote className="w-8 h-8 text-muted-foreground mb-4" />
                         <blockquote className="text-lg font-semibold italic">
@@ -106,13 +105,19 @@ export default function HomePage() {
                 <NoticeBoard />
             </section>
         </div>
-
-        <section>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <section className="lg:col-span-2">
            <div>
-            <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'আমাদের সদস্য' : 'Our Members'}</h2>
+            <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'মোট সদস্য' : 'Total Members'}</h2>
             <DataTable columns={publicMemberColumns} data={members} />
            </div>
-        </section>
+          </section>
+          <section className="lg:col-span-1 space-y-6">
+             <StatsCards />
+             <MemberStatusOverview />
+          </section>
+        </div>
       </div>
     </div>
   );
