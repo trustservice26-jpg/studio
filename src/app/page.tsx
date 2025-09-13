@@ -13,17 +13,12 @@ import { publicMemberColumns } from '@/components/home/public-members-columns';
 import { NoticeBoard } from '@/components/dashboard/notice-board';
 
 export default function HomePage() {
-  const { members, donations, totalWithdrawals } = useAppContext();
+  const { members } = useAppContext();
 
   const totalMembers = members.length;
   const activeMembers = useMemo(() => members.filter(m => m.status === 'active').length, [members]);
   const inactiveMembers = useMemo(() => members.filter(m => m.status === 'inactive').length, [members]);
-  const totalDonations = useMemo(() => {
-    return donations.reduce((acc, donation) => acc + donation.amount, 0);
-  }, [donations]);
-
-  const currentFunds = totalDonations - totalWithdrawals;
-
+  
   const cardVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -65,8 +60,7 @@ export default function HomePage() {
 
       <div className="container mx-auto py-12 px-4 md:px-6">
         <section className="mb-12">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <Card>
                 <CardHeader>
                   <CardTitle>Our Members</CardTitle>
@@ -80,40 +74,6 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             </motion.div>
-            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Funds Raised</CardTitle>
-                  <CardDescription>Supporting our cause</CardDescription>
-                </CardHeader>
-                <CardContent>
-                   <p className="text-4xl font-bold">৳{totalDonations.toLocaleString('en-IN')}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Withdrawals</CardTitle>
-                   <CardDescription>Funds utilized for projects</CardDescription>
-                </CardHeader>
-                <CardContent>
-                   <p className="text-4xl font-bold">৳{totalWithdrawals.toLocaleString('en-IN')}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-             <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Current Funds</CardTitle>
-                         <CardDescription>Available funds for new projects</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                       <p className="text-4xl font-bold">৳{currentFunds.toLocaleString('en-IN')}</p>
-                    </CardContent>
-                </Card>
-            </motion.div>
-          </div>
         </section>
 
         <section className="mb-12">

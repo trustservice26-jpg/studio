@@ -1,16 +1,14 @@
 'use client';
 
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import type { Member, Donation, UserRole, Notice } from '@/lib/types';
-import { initialMembers, initialDonations, initialNotices } from '@/lib/data';
+import type { Member, UserRole, Notice } from '@/lib/types';
+import { initialMembers, initialNotices } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast"
 
 
 interface AppContextType {
   members: Member[];
-  donations: Donation[];
   notices: Notice[];
-  totalWithdrawals: number;
   userRole: UserRole;
   language: 'en' | 'bn';
   addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate'>) => void;
@@ -18,7 +16,6 @@ interface AppContextType {
   toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
   deleteNotice: (noticeId: string) => void;
-  addDonation: (donation: Omit<Donation, 'id' | 'date'>) => void;
   setUserRole: (role: UserRole) => void;
   setLanguage: (language: 'en' | 'bn') => void;
 }
@@ -27,10 +24,8 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [members, setMembers] = useState<Member[]>(initialMembers);
-  const [donations, setDonations] = useState<Donation[]>(initialDonations);
   const [notices, setNotices] = useState<Notice[]>(initialNotices);
   const [userRole, setUserRole] = useState<UserRole>('admin');
-  const [totalWithdrawals, setTotalWithdrawals] = useState(50000); // Mock data
   const { toast } = useToast();
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
 
@@ -109,31 +104,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const addDonation = (donationData: Omit<Donation, 'id' | 'date'>) => {
-    const newDonation: Donation = {
-      ...donationData,
-      id: `d${donations.length + 1}`,
-      date: new Date().toISOString(),
-    };
-    setDonations(prevDonations => [newDonation, ...prevDonations]);
-    toast({
-      title: "Donation Added",
-      description: `A donation of ৳${donationData.amount} from ${donationData.memberName} has been recorded.`,
-    });
-  };
-
   const contextValue = {
     members,
-    donations,
     notices,
-    totalWithdrawals,
     userRole,
     addMember,
     deleteMember,
     toggleMemberStatus,
     addNotice,
     deleteNotice,
-    addDonation,
     setUserRole,
     language,
     setLanguage: handleSetLanguage,

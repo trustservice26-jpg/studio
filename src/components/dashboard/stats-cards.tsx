@@ -2,8 +2,7 @@
 
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Banknote, Landmark } from 'lucide-react';
-import { useMemo } from 'react';
+import { Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const itemVariants = {
@@ -18,29 +17,15 @@ const itemVariants = {
 };
 
 export function StatsCards() {
-  const { members, donations, totalWithdrawals } = useAppContext();
+  const { members } = useAppContext();
 
   const totalMembers = members.length;
   
-  const totalDonations = useMemo(() => {
-    return donations.reduce((acc, donation) => acc + donation.amount, 0);
-  }, [donations]);
-
   const stats = [
     {
       title: 'Total Members',
       value: totalMembers,
       icon: <Users className="h-4 w-4 text-muted-foreground" />,
-    },
-    {
-      title: 'Total Donations',
-      value: `৳${totalDonations.toLocaleString('en-IN')}`,
-      icon: <Banknote className="h-4 w-4 text-muted-foreground" />,
-    },
-    {
-      title: 'Total Withdrawals',
-      value: `৳${totalWithdrawals.toLocaleString('en-IN')}`,
-      icon: <Landmark className="h-4 w-4 text-muted-foreground" />,
     },
   ];
 

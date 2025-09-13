@@ -9,14 +9,6 @@ export type Member = {
   contributions: string;
 };
 
-export type Donation = {
-  id: string;
-  memberId: string;
-  memberName: string;
-  amount: number;
-  date: string; // ISO string
-};
-
 export type Notice = {
   id: string;
   message: string;

@@ -1,4 +1,4 @@
-import type { Member, Donation, Notice } from './types';
+import type { Member, Notice } from './types';
 
 export const initialMembers: Member[] = [
   {
@@ -52,18 +52,6 @@ export const initialMembers: Member[] = [
     contributions: 'Coordinates our volunteer program, including recruitment, training, and scheduling for over 50 volunteers. Ensures all events are adequately staffed.',
   },
 ];
-
-export const initialDonations: Donation[] = [
-  { id: 'd1', memberId: 'm1', memberName: 'Anika Sharma', amount: 25000, date: '2024-05-15T00:00:00.000Z' },
-  { id: 'd2', memberId: 'm2', memberName: 'Rohan Chowdhury', amount: 10000, date: '2024-05-20T00:00:00.000Z' },
-  { id: 'd3', memberId: 'm4', memberName: 'David Biswas', amount: 50000, date: '2024-06-01T00:00:00.000Z' },
-  { id: 'd4', memberId: 'm3', memberName: 'Fatima Ahmed', amount: 5000, date: '2024-06-10T00:00:00.000Z' },
-  { id: 'd5', memberId: 'm5', memberName: 'Sadia Islam', amount: 15000, date: '2024-07-05T00:00:00.000Z' },
-  { id: 'd6', memberId: 'm1', memberName: 'Anika Sharma', amount: 20000, date: '2024-07-12T00:00:00.000Z' },
-  { id: 'd7', memberId: 'm2', memberName: 'Rohan Chowdhury', amount: 12000, date: '2024-04-01T00:00:00.000Z' },
-  { id: 'd8', memberId: 'm4', memberName: 'David Biswas', amount: 30000, date: '2024-03-20T00:00:00.000Z' },
-];
-
 
 export const initialNotices: Notice[] = [
   {
