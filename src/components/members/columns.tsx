@@ -42,14 +42,14 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{language === 'bn' ? 'פעולות' : 'Actions'}</DropdownMenuLabel>
+          <DropdownMenuLabel>{language === 'bn' ? 'ক্রিয়া' : 'Actions'}</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => navigator.clipboard.writeText(member.email)}>
             {language === 'bn' ? 'ইമെ일 কপি করুন' : 'Copy email'}
           </DropdownMenuItem>
           {userRole === 'admin' && (
             <>
               <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
-                {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সક્રિય হিসাবে সেট করুন' : 'Set as Active')}
+                {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সক্রিয় হিসাবে সেট করুন' : 'Set as Active')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
                <AlertDialog>
@@ -65,7 +65,7 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
                   <AlertDialogHeader>
                     <AlertDialogTitle>{language === 'bn' ? 'আপনি কি নিশ্চিত?' : 'Are you sure?'}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      {language === 'bn' ? `এই क्रिया पूर्ववत করা যাবে না। এটি स्थायीভাবে ${member.name} এর রেকর্ড মুছে ফেলবে।` : `This action cannot be undone. This will permanently delete ${member.name}'s record.`}
+                      {language === 'bn' ? `এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না। এটি স্থায়ীভাবে ${member.name} এর রেকর্ড মুছে ফেলবে।` : `This action cannot be undone. This will permanently delete ${member.name}'s record.`}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -129,7 +129,7 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => {
       const status = row.getValue("status") as string
       const { language } = useAppContext();
-      const translatedStatus = status === 'active' ? (language === 'bn' ? 'সક્રિય' : 'active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'inactive');
+      const translatedStatus = status === 'active' ? (language === 'bn' ? 'সক্রিয়' : 'active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'inactive');
       return (
         <Badge variant={status === 'active' ? "default" : "secondary"} className={status === "active" ? "bg-green-500/20 text-green-700 border-green-500/20" : ""}>
           {translatedStatus}

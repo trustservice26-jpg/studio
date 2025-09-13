@@ -61,7 +61,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       setUserRole('admin');
       toast({
         title: language === 'bn' ? 'এডমিন ভিউতে स्विच করা হয়েছে' : 'Switched to Admin View',
-        description: language === 'bn' ? 'আপনার এখন প্রশাসনিকเอกสิทธิ์ রয়েছে।' : 'You now have administrative privileges.',
+        description: language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.',
       });
       setPasswordDialogOpen(false);
       setPassword('');
@@ -101,7 +101,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <HeartHandshake className="h-6 w-6 text-primary" />
-                <span className="">{language === 'bn' ? 'सेवा संगठन' : 'Seva Sangathan'}</span>
+                <span className="">{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</span>
               </Link>
             </div>
             <div className="flex-1">
@@ -119,14 +119,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   className="shrink-0 md:hidden"
                 >
                   <Menu className="h-5 w-5" />
-                  <span className="sr-only">{language === 'bn' ? 'নেভিগেশন মেনু ਟੋਗਲ করুন' : 'Toggle navigation menu'}</span>
+                  <span className="sr-only">{language === 'bn' ? 'নেভিগেশন মেনু টগল করুন' : 'Toggle navigation menu'}</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                    <Link href="/" className="flex items-center gap-2 font-semibold">
                       <HeartHandshake className="h-6 w-6 text-primary" />
-                      <span className="">{language === 'bn' ? 'सेवा संगठन' : 'Seva Sangathan'}</span>
+                      <span className="">{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</span>
                   </Link>
                 </div>
                 {navLinks}
@@ -137,12 +137,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <LanguageSwitcher />
             <div className="flex items-center space-x-2">
-              <Label htmlFor="role-switch">{language === 'bn' ? 'এডмин' : 'Admin'}</Label>
+              <Label htmlFor="role-switch">{language === 'bn' ? 'এডমিন' : 'Admin'}</Label>
               <Switch
                 id="role-switch"
                 checked={userRole === 'admin'}
                 onCheckedChange={handleRoleChange}
-                aria-label={language === 'bn' ? 'এডمین মোড ਟੋਗਲ করুন' : 'Toggle admin mode'}
+                aria-label={language === 'bn' ? 'এডমিন মোড টগল করুন' : 'Toggle admin mode'}
               />
             </div>
           </header>
@@ -156,7 +156,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <DialogHeader>
             <DialogTitle>
               <ShieldCheck className="inline-block mr-2" />
-              {language === 'bn' ? 'এডমিন Access প্রয়োজন' : 'Admin Access Required'}
+              {language === 'bn' ? 'এডমিন অ্যাক্সেস প্রয়োজন' : 'Admin Access Required'}
             </DialogTitle>
             <DialogDescription>
               {language === 'bn' ? 'এডমিন ভিউতে स्विच করতে পাসওয়ার্ড লিখুন।' : 'Please enter the password to switch to Admin View.'}
@@ -183,7 +183,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
           <DialogFooter>
             <Button type="submit" onClick={handlePasswordSubmit}>
-              {language === 'bn' ? 'এডمین মোডে প্রবেশ করুন' : 'Enter Admin Mode'}
+              {language === 'bn' ? 'এডমিন মোডে প্রবেশ করুন' : 'Enter Admin Mode'}
             </Button>
           </DialogFooter>
         </DialogContent>

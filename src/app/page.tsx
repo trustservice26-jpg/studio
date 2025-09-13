@@ -45,7 +45,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            {language === 'bn' ? 'सेवा संगठन' : 'Seva Sangathan'}
+            {language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}
           </motion.h1>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground"
@@ -53,7 +53,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            {language === 'bn' ? 'चांदगांव এ सामुदायिक উন্নয়ন ও সহায়তায় समर्पित একটি μη-লাভজনক সংস্থা।' : 'A non-profit organization dedicated to community development and support in Chandgaon.'}
+            {language === 'bn' ? 'চাঁদগাঁওয়ে सामुदायिक উন্নয়ন ও সহায়তায় समर्पित একটি অলাভজনক সংস্থা।' : 'A non-profit organization dedicated to community development and support in Chandgaon.'}
           </motion.p>
         </div>
       </motion.section>
@@ -81,9 +81,9 @@ export default function HomePage() {
                 <CardContent className="flex flex-col items-center justify-center text-center p-6">
                     <Quote className="w-8 h-8 text-muted-foreground mb-4" />
                     <blockquote className="text-lg font-semibold italic">
-                    "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
+                    {language === 'bn' ? "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।" : "Do not be ashamed of giving a little, for refusing is a greater shame."}
                     </blockquote>
-                    <p className="text-muted-foreground mt-2">— شیخ سعدی</p>
+                    <p className="text-muted-foreground mt-2">{language === 'bn' ? '— শেখ সাদী' : '— Sheikh Saadi'}</p>
                 </CardContent>
             </Card>
         </section>

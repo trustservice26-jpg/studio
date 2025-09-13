@@ -80,7 +80,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{language === 'bn' ? 'पूरा नाम' : 'Full Name'}</FormLabel>
+                  <FormLabel>{language === 'bn' ? 'পূর্ণ নাম' : 'Full Name'}</FormLabel>
                   <FormControl>
                     <Input placeholder={language === 'bn' ? 'অনিকা শর্মা' : 'Anika Sharma'} {...field} />
                   </FormControl>
@@ -127,7 +127,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
                         </Trigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="active">{language === 'bn' ? 'সક્રિય' : 'Active'}</SelectItem>
+                        <SelectItem value="active">{language === 'bn' ? 'সক্রিয়' : 'Active'}</SelectItem>
                         <SelectItem value="inactive">{language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive'}</SelectItem>
                       </SelectContent>
                     </Select>
