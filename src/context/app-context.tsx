@@ -25,7 +25,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [members, setMembers] = useState<Member[]>(initialMembers);
   const [notices, setNotices] = useState<Notice[]>(initialNotices);
-  const [userRole, setUserRole] = useState<UserRole>('admin');
+  const [userRole, setUserRole] = useState<UserRole>('member');
   const { toast } = useToast();
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
 
