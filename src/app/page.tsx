@@ -10,6 +10,7 @@ import { useAppContext } from '@/context/app-context';
 import { DataTable } from '@/components/ui/data-table';
 import { publicMemberColumns } from '@/components/home/public-members-columns';
 import { TransactionHistory } from '@/components/home/transaction-history';
+import { HomeMemberStatus } from '@/components/home/home-member-status';
 
 export default function HomePage() {
   const { members, language, currentFunds, totalDonations, totalWithdrawals } = useAppContext();
@@ -114,15 +115,17 @@ export default function HomePage() {
         </section>
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          <section className="lg:col-span-2">
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
-                <DataTable columns={publicMemberColumns} data={members} />
-              </div>
+            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'সদস্য অবস্থা' : 'Member Status'}</h2>
+                    <HomeMemberStatus />
+                </section>
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
+                    <DataTable columns={publicMemberColumns} data={members} />
+                </section>
             </div>
-          </section>
-          <section className="lg:col-span-1 space-y-6 pt-16">
+          <section className="lg:col-span-1 space-y-6">
              <TransactionHistory />
           </section>
         </div>

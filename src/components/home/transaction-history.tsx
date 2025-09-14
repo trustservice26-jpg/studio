@@ -38,7 +38,7 @@ export function TransactionHistory() {
           <CardDescription>{language === 'bn' ? 'সংগঠনের সর্বশেষ আর্থিক কার্যকলাপ।' : 'The latest financial activities of the organization.'}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-96">
+          <ScrollArea className="h-[400px]">
             <div className="space-y-4 pr-4">
               {transactions.map((tx) => (
                 <div key={tx.id} className="flex items-center">
