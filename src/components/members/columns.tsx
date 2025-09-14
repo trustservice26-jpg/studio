@@ -45,9 +45,6 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{language === 'bn' ? 'ক্রিয়া' : 'Actions'}</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(member.email)}>
-            {language === 'bn' ? 'ইമെ일 কপি করুন' : 'Copy email'}
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setIsHistoryOpen(true)}>
              <History className="mr-2 h-4 w-4" />
              {language === 'bn' ? 'লেনদেনের ইতিহাস' : 'Transaction History'}
