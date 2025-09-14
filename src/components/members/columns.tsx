@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
-import { MoreHorizontal, ArrowUpDown } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown, History } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -28,9 +28,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
+import { MemberTransactionHistoryModal } from "./member-transaction-history-modal"
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const { userRole, deleteMember, toggleMemberStatus, language } = useAppContext();
+  const [isHistoryOpen, setIsHistoryOpen] = React.useState(false);
 
   return (
     <>
@@ -45,6 +47,10 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           <DropdownMenuLabel>{language === 'bn' ? 'ক্রিয়া' : 'Actions'}</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => navigator.clipboard.writeText(member.email)}>
             {language === 'bn' ? 'ইമെ일 কপি করুন' : 'Copy email'}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsHistoryOpen(true)}>
+             <History className="mr-2 h-4 w-4" />
+             {language === 'bn' ? 'লেনদেনের ইতিহাস' : 'Transaction History'}
           </DropdownMenuItem>
           {userRole === 'admin' && (
             <>
@@ -80,6 +86,11 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      <MemberTransactionHistoryModal
+        member={member}
+        open={isHistoryOpen}
+        onOpenChange={setIsHistoryOpen}
+      />
     </>
   )
 }
