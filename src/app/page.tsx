@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, ArrowUpCircle, ArrowDownCircle, PiggyBank, Users } from 'lucide-react';
+import { Quote, Landmark, TrendingUp, TrendingDown, Users } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
@@ -35,9 +35,9 @@ export default function HomePage() {
   }
 
   const financialStats = [
-    { title: language === 'bn' ? 'বর্তমান তহবিল' : 'Current Funds', value: formatCurrency(currentFunds), icon: PiggyBank },
-    { title: language === 'bn' ? 'মোট অনুদান' : 'Total Donations', value: formatCurrency(totalDonations), icon: ArrowUpCircle },
-    { title: language === 'bn' ? 'মোট উত্তোলন' : 'Total Withdrawals', value: formatCurrency(totalWithdrawals), icon: ArrowDownCircle },
+    { title: language === 'bn' ? 'বর্তমান তহবিল' : 'Current Funds', value: formatCurrency(currentFunds), icon: Landmark },
+    { title: language === 'bn' ? 'মোট অনুদান' : 'Total Donations', value: formatCurrency(totalDonations), icon: TrendingUp },
+    { title: language === 'bn' ? 'মোট উত্তোলন' : 'Total Withdrawals', value: formatCurrency(totalWithdrawals), icon: TrendingDown },
     { title: language === 'bn' ? 'মোট সদস্য' : 'Total Members', value: members.length.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US'), icon: Users },
   ]
 
