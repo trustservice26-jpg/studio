@@ -58,6 +58,14 @@ export default function HomePage() {
           >
             {language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}
           </motion.h1>
+           <motion.p
+            className="mb-4 text-base md:text-lg text-muted-foreground"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ, চাঁদগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ।' : 'community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon,'}
+          </motion.p>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground"
             initial={{ y: 20, opacity: 0 }}
