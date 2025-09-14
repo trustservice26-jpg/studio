@@ -33,56 +33,61 @@ import { MemberTransactionHistoryModal } from "./member-transaction-history-moda
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const { userRole, deleteMember, toggleMemberStatus, language } = useAppContext();
   const [isHistoryOpen, setIsHistoryOpen] = React.useState(false);
+  const [isAlertOpen, setIsAlertOpen] = React.useState(false);
+
 
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">{language === 'bn' ? 'মেনু খুলুন' : 'Open menu'}</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{language === 'bn' ? 'ক্রিয়া' : 'Actions'}</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setIsHistoryOpen(true)}>
-             <History className="mr-2 h-4 w-4" />
-             {language === 'bn' ? 'লেনদেনের ইতিহাস' : 'Transaction History'}
-          </DropdownMenuItem>
-          {userRole === 'admin' && (
-            <>
-              <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
-                {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সক্রিয় হিসাবে সেট করুন' : 'Set as Active')}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-               <AlertDialog>
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">{language === 'bn' ? 'মেনু খুলুন' : 'Open menu'}</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>{language === 'bn' ? 'ক্রিয়া' : 'Actions'}</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => setIsHistoryOpen(true)}>
+               <History className="mr-2 h-4 w-4" />
+               {language === 'bn' ? 'লেনদেনের ইতিহাস' : 'Transaction History'}
+            </DropdownMenuItem>
+            {userRole === 'admin' && (
+              <>
+                <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
+                  {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সক্রিয় হিসাবে সেট করুন' : 'Set as Active')}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem
-                    onSelect={(e) => e.preventDefault()}
+                    onSelect={(e) => {
+                      e.preventDefault()
+                      setIsAlertOpen(true)
+                    }}
                     className="text-destructive focus:text-destructive"
                   >
                     {language === 'bn' ? 'সদস্য মুছে ফেলুন' : 'Delete Member'}
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{language === 'bn' ? 'আপনি কি নিশ্চিত?' : 'Are you sure?'}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {language === 'bn' ? `এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না। এটি স্থায়ীভাবে ${member.name} এর রেকর্ড মুছে ফেলবে।` : `This action cannot be undone. This will permanently delete ${member.name}'s record.`}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{language === 'bn' ? 'বাতিল করুন' : 'Cancel'}</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => deleteMember(member.id)}>
-                      {language === 'bn' ? 'চালিয়ে যান' : 'Continue'}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{language === 'bn' ? 'আপনি কি নিশ্চিত?' : 'Are you sure?'}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {language === 'bn' ? `এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না। এটি স্থায়ীভাবে ${member.name} এর রেকর্ড মুছে ফেলবে।` : `This action cannot be undone. This will permanently delete ${member.name}'s record.`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{language === 'bn' ? 'বাতিল করুন' : 'Cancel'}</AlertDialogCancel>
+            <AlertDialogAction onClick={() => deleteMember(member.id)}>
+              {language === 'bn' ? 'চালিয়ে যান' : 'Continue'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <MemberTransactionHistoryModal
         member={member}
         open={isHistoryOpen}
