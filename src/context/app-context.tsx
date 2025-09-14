@@ -34,6 +34,7 @@ interface AppContextType {
   addNotice: (message: string) => void;
   deleteNotice: (noticeId: string) => void;
   addTransaction: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
+  clearAllTransactions: () => void;
   setUserRole: (role: UserRole) => void;
   setLanguage: (language: 'en' | 'bn') => void;
 }
@@ -220,6 +221,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const clearAllTransactions = async () => {
+    const batch = writeBatch(db);
+    try {
+        const querySnapshot = await getDocs(collection(db, 'transactions'));
+        querySnapshot.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+        await batch.commit();
+        toast({
+            variant: 'destructive',
+            title: language === 'bn' ? 'সমস্ত লেনদেন মুছে ফেলা হয়েছে' : 'All Transactions Cleared',
+            description: language === 'bn' ? 'সমস্ত আর্থিক রেকর্ড স্থায়ীভাবে মুছে ফেলা হয়েছে।' : 'All financial records have been permanently deleted.',
+        });
+    } catch (error) {
+        console.error('Error clearing transactions:', error);
+        toast({
+            variant: 'destructive',
+            title: language === 'bn' ? 'ত্রুটি' : 'Error',
+            description: language === 'bn' ? 'লেনদেন মোছার সময় একটি ত্রুটি ঘটেছে।' : 'An error occurred while clearing transactions.',
+        });
+    }
+};
+
   const contextValue = {
     members,
     notices,
@@ -231,6 +255,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addNotice,
     deleteNotice,
     addTransaction,
+    clearAllTransactions,
     setUserRole,
     language,
     setLanguage: handleSetLanguage,
