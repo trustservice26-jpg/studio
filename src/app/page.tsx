@@ -65,7 +65,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ, চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ।' : 'community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon,'}
+            {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ।' : 'community-driven initiative under Shahid Liyakot Shriti Songo,'}
           </motion.p>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-sm md:text-base text-muted-foreground"
@@ -119,9 +119,6 @@ export default function HomePage() {
             <section className="lg:col-span-2">
                 <h2 className="text-2xl font-bold mb-6 text-center lg:text-left">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
                 <NoticeBoard />
-            </section>
-             <section className="lg:col-span-1">
-               {/* Intentionally left blank for future content */}
             </section>
         </div>
         
