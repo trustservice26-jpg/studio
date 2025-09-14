@@ -82,7 +82,8 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
   };
   
   const selectedMember = members.find(m => m.id === selectedMemberId);
-  const conditions = [
+  
+  const conditions_en = [
     "ALL members will have to active at any time.",
     "If any member will not active in organization team then he will shown as inactive.",
     "IF any members does not give money for orgnisation or making late more then 3 times then he will be inactive also can make resigned from the organization team.",
@@ -96,6 +97,23 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     "Every member will have a chance to talk with organistion team about his idea,so we can growup.",
     "We all are friend and we will support the society and family members also."
   ];
+
+  const conditions_bn = [
+    "সকল সদস্যকে সর্বদা সক্রিয় থাকতে হবে।",
+    "যদি কোনো সদস্য সংগঠনের দলে সক্রিয় না থাকেন তবে তাকে নিষ্ক্রিয় হিসাবে দেখানো হবে।",
+    "যদি কোনো সদস্য সংগঠনের জন্য টাকা না দেন বা ৩ বারের বেশি দেরি করেন তবে তাকে নিষ্ক্রিয় করা হবে এবং সংগঠন থেকে পদত্যাগ করানো হতে পারে।",
+    "পুনরায় সদস্য হিসাবে যোগদানের জন্য তাকে সদস্য হিসাবে নিবন্ধিত হতে হবে এবং পুনরায় সদস্য হিসাবে যোগদানের জন্য ৫০ টাকা বিলম্ব জরিমানা দিতে হবে।",
+    "যদি কোনো সদস্য অশোভন আচরণ করেন তবে তাকে সংগঠন থেকে পদত্যাগ করতে হবে।",
+    "বিলম্ব পরিশোধের জন্য তাকে ২০ টাকা অতিরিক্ত দিতে হবে, যা সংগঠনের তহবিলে যোগ হবে, অন্যথায় অ্যাডমিন তাকে নিষ্ক্রিয় করতে পারে।",
+    "আপনি সদস্য হিসাবে অন্য কোনো সদস্যের কাছ থেকে টাকা সংগ্রহ করতে পারবেন না, যদি তা প্রমাণিত হয় তবে তাকে দল থেকে পদত্যাগ করতে হবে।",
+    "যদি সদস্য বাইরের উৎস থেকে টাকা সংগ্রহ করেন তবে তার প্রমাণ দিতে হবে, অন্যথায় তা গ্রহণযোগ্য হবে না।",
+    "যদি কোনো সদস্য সংগঠনের দলের জন্য অন্য সদস্যকে টাকা দেন তবে সেই ঝুঁকি টাকা সংগ্রহকারী সদস্যকে নিতে হবে।",
+    "মনে রাখবেন, কখনো মিথ্যা বলবেন না, কারণ এই সংগঠনটি तभी বড় হবে যখন সব সদস্য বন্ধু হিসাবে থাকবে।",
+    "প্রত্যেক সদস্যের তার ধারণা সম্পর্কে সংগঠন দলের সাথে কথা বলার সুযোগ থাকবে, যাতে আমরা উন্নতি করতে পারি।",
+    "আমরা সবাই বন্ধু এবং আমরা সমাজ ও পরিবারের সদস্যদেরও সমর্থন করব।"
+  ];
+  
+  const conditions = language === 'bn' ? conditions_bn : conditions_en;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -196,3 +214,5 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     </Dialog>
   );
 }
+
+    
