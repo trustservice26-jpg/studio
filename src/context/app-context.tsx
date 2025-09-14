@@ -1,3 +1,4 @@
+
 'use client';
 
 import { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
@@ -34,6 +35,7 @@ interface AppContextType {
   addNotice: (message: string) => void;
   deleteNotice: (noticeId: string) => void;
   addTransaction: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
+  deleteTransaction: (transactionId: string) => void;
   clearAllTransactions: () => void;
   setUserRole: (role: UserRole) => void;
   setLanguage: (language: 'en' | 'bn') => void;
@@ -221,6 +223,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const deleteTransaction = async (transactionId: string) => {
+    try {
+      await deleteDoc(doc(db, 'transactions', transactionId));
+      toast({
+        variant: 'destructive',
+        title: language === 'bn' ? 'লেনদেন মুছে ফেলা হয়েছে' : 'Transaction Deleted',
+        description: language === 'bn' ? 'লেনদেনটি সফলভাবে মুছে ফেলা হয়েছে।' : 'The transaction has been successfully deleted.',
+      });
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+      toast({
+        variant: 'destructive',
+        title: language === 'bn' ? 'ত্রুটি' : 'Error',
+        description: language === 'bn' ? 'লেনদেন মোছার সময় একটি ত্রুটি ঘটেছে।' : 'An error occurred while deleting the transaction.',
+      });
+    }
+  };
+
   const clearAllTransactions = async () => {
     const batch = writeBatch(db);
     try {
@@ -255,6 +275,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addNotice,
     deleteNotice,
     addTransaction,
+    deleteTransaction,
     clearAllTransactions,
     setUserRole,
     language,
