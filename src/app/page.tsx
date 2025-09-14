@@ -51,7 +51,7 @@ export default function HomePage() {
       >
         <div className="container mx-auto text-center">
           <motion.h1
-            className="mb-4 text-4xl font-bold tracking-tight md:text-6xl text-foreground"
+            className="mb-4 text-4xl font-bold tracking-tight md:text-5xl text-foreground"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -59,7 +59,7 @@ export default function HomePage() {
             {language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}
           </motion.h1>
            <motion.p
-            className="mb-4 text-base md:text-lg text-muted-foreground font-bold"
+            className="mb-4 text-sm md:text-base text-muted-foreground font-bold"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -67,7 +67,7 @@ export default function HomePage() {
             {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ, চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ।' : 'community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon,'}
           </motion.p>
           <motion.p
-            className="mb-8 max-w-3xl mx-auto text-base md:text-lg text-muted-foreground"
+            className="mb-8 max-w-3xl mx-auto text-sm md:text-base text-muted-foreground"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -85,7 +85,7 @@ export default function HomePage() {
                 <Card className="h-full bg-accent/50">
                     <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
                         <Quote className="w-8 h-8 text-muted-foreground mb-4" />
-                        <blockquote className="text-lg font-semibold italic">
+                        <blockquote className="text-base font-semibold italic">
                         {language === 'bn' ? "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।" : "Do not be ashamed of giving a little, for refusing is a greater shame."}
                         </blockquote>
                         <p className="text-muted-foreground mt-2">{language === 'bn' ? '— শেখ সাদী' : '— Sheikh Saadi'}</p>
@@ -106,7 +106,7 @@ export default function HomePage() {
                       <stat.icon className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">{stat.value}</div>
+                      <div className="text-xl font-bold">{stat.value}</div>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -116,7 +116,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <section className="lg:col-span-2">
-                <h2 className="text-3xl font-bold mb-6 text-center lg:text-left">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center lg:text-left">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
                 <NoticeBoard />
             </section>
              <section className="lg:col-span-1">
@@ -127,7 +127,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           <section className="lg:col-span-2">
            <div>
-            <h2 className="text-3xl font-bold mb-6">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
+            <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'মোট সদস্য' : 'Member Directory'}</h2>
             <DataTable columns={publicMemberColumns} data={members} />
            </div>
           </section>
