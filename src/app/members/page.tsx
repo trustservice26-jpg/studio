@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { PlusCircle, DollarSign, CreditCard } from 'lucide-react';
+import { PlusCircle, DollarSign, CreditCard, Download } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
@@ -11,11 +11,13 @@ import { useAppContext } from '@/context/app-context';
 import { AddMemberDialog } from '@/components/members/add-member-dialog';
 import { Input } from '@/components/ui/input';
 import { AddTransactionDialog } from '@/components/members/add-transaction-dialog';
+import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
 
 export default function MembersPage() {
   const { members, userRole, language } = useAppContext();
   const [isAddMemberOpen, setAddMemberOpen] = React.useState(false);
   const [isTransactionOpen, setTransactionOpen] = React.useState(false);
+  const [isPdfOpen, setPdfOpen] = React.useState(false);
   const [transactionType, setTransactionType] = React.useState<'donation' | 'withdrawal'>('donation');
   const [filter, setFilter] = React.useState('');
 
@@ -53,6 +55,9 @@ export default function MembersPage() {
              <Button onClick={() => handleOpenTransactionDialog('withdrawal')} variant="outline">
               <CreditCard className="mr-2 h-4 w-4" /> {language === 'bn' ? 'উত্তোলন যোগ' : 'Add Withdrawal'}
             </Button>
+             <Button onClick={() => setPdfOpen(true)} variant="outline">
+                <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'পিডিএফ ডাউনলোড' : 'Download PDF'}
+            </Button>
             <Button onClick={() => setAddMemberOpen(true)}>
               <PlusCircle className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য যোগ' : 'Add Member'}
             </Button>
@@ -75,6 +80,7 @@ export default function MembersPage() {
         onOpenChange={setTransactionOpen}
         type={transactionType}
       />
+      <DownloadPdfDialog open={isPdfOpen} onOpenChange={setPdfOpen} />
     </motion.div>
   );
 }
