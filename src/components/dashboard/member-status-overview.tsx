@@ -46,13 +46,13 @@ export function MemberStatusOverview() {
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">{language === 'bn' ? 'সক্রিয় সদস্য' : 'Active Members'}</span>
               <Badge variant="default" className="bg-green-500/20 text-green-700 border-green-500/20 text-lg">
-                {statusCounts.active}
+                {language === 'bn' ? statusCounts.active.toLocaleString('bn-BD') : statusCounts.active}
               </Badge>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">{language === 'bn' ? 'নিষ্ক্রিয় সদস্য' : 'Inactive Members'}</span>
                <Badge variant="secondary" className="text-lg">
-                {statusCounts.inactive}
+                {language === 'bn' ? statusCounts.inactive.toLocaleString('bn-BD') : statusCounts.inactive}
               </Badge>
             </div>
           </div>

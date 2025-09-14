@@ -142,7 +142,7 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => {
       const status = row.getValue("status") as string
       const { language } = useAppContext();
-      const translatedStatus = status === 'active' ? (language === 'bn' ? 'সক্রিয়' : 'active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'inactive');
+      const translatedStatus = status === 'active' ? (language === 'bn' ? 'সক্রিয়' : 'Active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive');
       return (
         <Badge variant={status === 'active' ? "default" : "secondary"} className={status === "active" ? "bg-green-500/20 text-green-700 border-green-500/20" : ""}>
           {translatedStatus}
