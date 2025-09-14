@@ -44,7 +44,7 @@ export default function HomePage() {
   return (
     <div className="flex-1 bg-background">
       <motion.section
-        className="relative w-full py-20 lg:py-28"
+        className="relative w-full pt-20 pb-12 lg:pt-28"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -74,6 +74,24 @@ export default function HomePage() {
           >
             {language === 'bn' ? 'চাঁদগাঁওয়ে सामुदायिक উন্নয়ন ও সহায়তায় समर्पित একটি অলাভজনক সংস্থা।' : 'A non-profit organization dedicated to community development and support in Chandgaon.'}
           </motion.p>
+
+           <motion.div 
+            className="max-w-3xl mx-auto"
+            variants={cardVariants} 
+            initial="hidden" 
+            whileInView="visible" 
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{delay: 0.5}}>
+                <Card className="h-full bg-accent/50">
+                    <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
+                        <Quote className="w-8 h-8 text-muted-foreground mb-4" />
+                        <blockquote className="text-lg font-semibold italic">
+                        {language === 'bn' ? "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।" : "Do not be ashamed of giving a little, for refusing is a greater shame."}
+                        </blockquote>
+                        <p className="text-muted-foreground mt-2">{language === 'bn' ? '— শেখ সাদী' : '— Sheikh Saadi'}</p>
+                    </CardContent>
+                </Card>
+           </motion.div>
         </div>
       </motion.section>
 
@@ -98,19 +116,11 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <section className="lg:col-span-2">
-                 <Card className="h-full">
-                    <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
-                        <Quote className="w-8 h-8 text-muted-foreground mb-4" />
-                        <blockquote className="text-lg font-semibold italic">
-                        {language === 'bn' ? "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।" : "Do not be ashamed of giving a little, for refusing is a greater shame."}
-                        </blockquote>
-                        <p className="text-muted-foreground mt-2">{language === 'bn' ? '— শেখ সাদী' : '— Sheikh Saadi'}</p>
-                    </CardContent>
-                </Card>
-            </section>
-            <section className="lg:col-span-1">
                 <h2 className="text-3xl font-bold mb-6 text-center lg:text-left">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
                 <NoticeBoard />
+            </section>
+             <section className="lg:col-span-1">
+               {/* Intentionally left blank for future content */}
             </section>
         </div>
         
