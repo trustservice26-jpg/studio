@@ -105,7 +105,7 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
           {selectedMember && (
              <div id={`pdf-content-${selectedMember.id}`} style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '40px', fontFamily: 'sans-serif', color: '#000', background: '#fff', border: '1px solid #eee' }}>
                 <div style={{ textAlign: 'center', marginBottom: '30px', borderBottom: '2px solid #87CEEB', paddingBottom: '20px' }}>
-                    <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#1976D2', margin: 0 }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
+                    <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '10px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
                     <p style={{ fontSize: '14px', color: '#555' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>
                 <h2 style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', marginBottom: '30px' }}>{language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details'}</h2>
@@ -125,8 +125,14 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px' }}>
                     <tbody>
                         <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ফোন' : 'Phone'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{selectedMember.phone}</td></tr>
-                        <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ঠিকানা' : 'Address'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}></td></tr>
                         <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'যোগদানের তারিখ' : 'Join Date'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{new Date(selectedMember.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</td></tr>
+                        <tr>
+                            <td style={{ padding: '12px 0', fontWeight: 'bold', verticalAlign: 'top' }}>{language === 'bn' ? 'ঠিকানা' : 'Address'}</td>
+                            <td style={{ padding: '12px 0', textAlign: 'right' }}>
+                                <div style={{borderBottom: '1px solid #999', height: '24px', marginBottom: '16px'}}></div>
+                                <div style={{borderBottom: '1px solid #999', height: '24px'}}></div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -160,4 +166,3 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     </Dialog>
   );
 }
-
