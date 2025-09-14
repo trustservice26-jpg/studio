@@ -22,10 +22,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
 
 export function TransactionHistory() {
   const { transactions, language, userRole, deleteTransaction } = useAppContext();
   const [transactionToDelete, setTransactionToDelete] = React.useState<string | null>(null);
+  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState('');
+
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat(language === 'bn' ? 'bn-BD' : 'en-US', {
@@ -40,11 +45,21 @@ export function TransactionHistory() {
   }
 
   const handleDelete = () => {
-    if (transactionToDelete) {
+    if (transactionToDelete && password === 'admin123') {
       deleteTransaction(transactionToDelete);
       setTransactionToDelete(null);
+      setPassword('');
+      setError('');
+    } else {
+        setError(language === 'bn' ? 'ভুল পাসওয়ার্ড।' : 'Incorrect password.');
     }
   }
+
+  const handleCancel = () => {
+    setTransactionToDelete(null);
+    setPassword('');
+    setError('');
+  };
 
   return (
     <motion.div
@@ -100,16 +115,27 @@ export function TransactionHistory() {
         </CardContent>
       </Card>
       
-      <AlertDialog open={!!transactionToDelete} onOpenChange={(open) => !open && setTransactionToDelete(null)}>
+      <AlertDialog open={!!transactionToDelete} onOpenChange={(open) => !open && handleCancel()}>
         <AlertDialogContent>
             <AlertDialogHeader>
                 <AlertDialogTitle>{language === 'bn' ? 'আপনি কি নিশ্চিত?' : 'Are you sure?'}</AlertDialogTitle>
                 <AlertDialogDescription>
-                {language === 'bn' ? 'এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না। এটি এই লেনদেনটি স্থায়ীভাবে মুছে ফেলবে।' : 'This action cannot be undone. This will permanently delete this transaction.'}
+                {language === 'bn' ? 'এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না। এটি এই লেনদেনটি স্থায়ীভাবে মুছে ফেলবে। চালিয়ে যেতে আপনার অ্যাডমিন পাসওয়ার্ড লিখুন।' : 'This action cannot be undone. This will permanently delete this transaction. Please enter your admin password to proceed.'}
                 </AlertDialogDescription>
             </AlertDialogHeader>
+             <div className="space-y-2">
+                <Label htmlFor="delete-password">{language === 'bn' ? 'অ্যাডমিন পাসওয়ার্ড' : 'Admin Password'}</Label>
+                <Input
+                    id="delete-password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder={language === 'bn' ? 'পাসওয়ার্ড লিখুন' : 'Enter password'}
+                />
+                {error && <p className="text-sm text-destructive">{error}</p>}
+            </div>
             <AlertDialogFooter>
-                <AlertDialogCancel>{language === 'bn' ? 'বাতিল' : 'Cancel'}</AlertDialogCancel>
+                <AlertDialogCancel onClick={handleCancel}>{language === 'bn' ? 'বাতিল' : 'Cancel'}</AlertDialogCancel>
                 <AlertDialogAction asChild>
                     <Button onClick={handleDelete} variant="destructive">
                         {language === 'bn' ? 'হ্যাঁ, মুছুন' : 'Yes, delete'}
