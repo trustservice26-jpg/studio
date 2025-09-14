@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, DollarSign, CreditCard } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
@@ -10,10 +10,13 @@ import { columns } from '@/components/members/columns';
 import { useAppContext } from '@/context/app-context';
 import { AddMemberDialog } from '@/components/members/add-member-dialog';
 import { Input } from '@/components/ui/input';
+import { AddTransactionDialog } from '@/components/members/add-transaction-dialog';
 
 export default function MembersPage() {
   const { members, userRole, language } = useAppContext();
   const [isAddMemberOpen, setAddMemberOpen] = React.useState(false);
+  const [isTransactionOpen, setTransactionOpen] = React.useState(false);
+  const [transactionType, setTransactionType] = React.useState<'donation' | 'withdrawal'>('donation');
   const [filter, setFilter] = React.useState('');
 
   const filteredMembers = React.useMemo(() => {
@@ -22,6 +25,11 @@ export default function MembersPage() {
       member.email.toLowerCase().includes(filter.toLowerCase())
     );
   }, [members, filter]);
+  
+  const handleOpenTransactionDialog = (type: 'donation' | 'withdrawal') => {
+    setTransactionType(type);
+    setTransactionOpen(true);
+  }
 
   return (
     <motion.div
@@ -38,9 +46,17 @@ export default function MembersPage() {
           </p>
         </div>
         {userRole === 'admin' && (
-          <Button onClick={() => setAddMemberOpen(true)}>
-            <PlusCircle className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য যোগ করুন' : 'Add Member'}
-          </Button>
+           <div className="flex gap-2">
+            <Button onClick={() => handleOpenTransactionDialog('donation')}>
+              <DollarSign className="mr-2 h-4 w-4" /> {language === 'bn' ? 'অনুদান যোগ' : 'Add Donation'}
+            </Button>
+             <Button onClick={() => handleOpenTransactionDialog('withdrawal')} variant="outline">
+              <CreditCard className="mr-2 h-4 w-4" /> {language === 'bn' ? 'উত্তোলন যোগ' : 'Add Withdrawal'}
+            </Button>
+            <Button onClick={() => setAddMemberOpen(true)}>
+              <PlusCircle className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য যোগ' : 'Add Member'}
+            </Button>
+          </div>
         )}
       </div>
 
@@ -54,6 +70,11 @@ export default function MembersPage() {
       </DataTable>
 
       <AddMemberDialog open={isAddMemberOpen} onOpenChange={setAddMemberOpen} />
+      <AddTransactionDialog 
+        open={isTransactionOpen} 
+        onOpenChange={setTransactionOpen}
+        type={transactionType}
+      />
     </motion.div>
   );
 }

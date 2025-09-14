@@ -9,9 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { useAppContext } from '@/context/app-context';
 import { DataTable } from '@/components/ui/data-table';
 import { publicMemberColumns } from '@/components/home/public-members-columns';
-import { NoticeBoard } from '@/components/dashboard/notice-board';
-import { StatsCards } from '@/components/dashboard/stats-cards';
-import { MemberStatusOverview } from '@/components/dashboard/member-status-overview';
+import { TransactionHistory } from '@/components/home/transaction-history';
 
 export default function HomePage() {
   const { members, language, currentFunds, totalDonations, totalWithdrawals } = useAppContext();
@@ -65,7 +63,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ।' : 'community-driven initiative under Shahid Liyakot Shriti Songo,'}
+            {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ, চান্দগাঁও' : 'community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}
           </motion.p>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-sm md:text-base text-muted-foreground"
@@ -115,23 +113,17 @@ export default function HomePage() {
             </div>
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            <section className="lg:col-span-2">
-                <h2 className="text-2xl font-bold mb-6 text-center lg:text-left">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
-                <NoticeBoard />
-            </section>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           <section className="lg:col-span-2">
-           <div>
-            <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
-            <DataTable columns={publicMemberColumns} data={members} />
-           </div>
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
+                <DataTable columns={publicMemberColumns} data={members} />
+              </div>
+            </div>
           </section>
           <section className="lg:col-span-1 space-y-6 pt-16">
-             <StatsCards />
-             <MemberStatusOverview />
+             <TransactionHistory />
           </section>
         </div>
       </div>

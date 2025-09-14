@@ -20,6 +20,8 @@ export type Donation = {
   amount: number;
   date: string; // ISO string
   type: 'donation' | 'withdrawal';
+  description: string;
+  memberName?: string;
 };
 
 

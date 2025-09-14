@@ -4,6 +4,8 @@
 import { NoticeBoard } from '@/components/dashboard/notice-board';
 import { motion } from 'framer-motion';
 import { useAppContext } from '@/context/app-context';
+import { StatsCards } from '@/components/dashboard/stats-cards';
+import { MemberStatusOverview } from '@/components/dashboard/member-status-overview';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,9 +27,13 @@ export default function Dashboard() {
       animate="visible"
     >
       <h1 className="text-3xl font-bold">{language === 'bn' ? 'এডমিন ড্যাশবোর্ড' : 'Admin Dashboard'}</h1>
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
            <NoticeBoard />
+        </div>
+         <div className="space-y-6">
+            <StatsCards />
+            <MemberStatusOverview />
         </div>
       </div>
     </motion.div>

@@ -20,6 +20,7 @@ interface AppContextType {
   toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
   deleteNotice: (noticeId: string) => void;
+  addTransaction: (transaction: Omit<Donation, 'id' | 'date'>) => void;
   setUserRole: (role: UserRole) => void;
   setLanguage: (language: 'en' | 'bn') => void;
 }
@@ -121,6 +122,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const addTransaction = (transaction: Omit<Donation, 'id' | 'date'>) => {
+    const newTransaction: Donation = {
+      ...transaction,
+      id: `t${donations.length + 1}`,
+      date: new Date().toISOString(),
+    };
+    setDonations(prevDonations => [newTransaction, ...prevDonations]);
+    toast({
+        title: language === 'bn' ? 'লেনদেন সফল' : 'Transaction Successful',
+        description: language === 'bn' ? `একটি নতুন ${transaction.type === 'donation' ? 'অনুদান' : 'উত্তোলন'} রেকর্ড করা হয়েছে।` : `A new ${transaction.type} has been recorded.`,
+    });
+  }
+
   const contextValue = {
     members,
     notices,
@@ -131,6 +145,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     toggleMemberStatus,
     addNotice,
     deleteNotice,
+    addTransaction,
     setUserRole,
     language,
     setLanguage: handleSetLanguage,
