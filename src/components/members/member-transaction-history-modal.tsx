@@ -27,13 +27,13 @@ export function MemberTransactionHistoryModal({
   open,
   onOpenChange,
 }: MemberTransactionHistoryModalProps) {
-  const { donations, language } = useAppContext();
+  const { transactions, language } = useAppContext();
 
   const memberTransactions = React.useMemo(() => {
-    return donations.filter(
+    return transactions.filter(
       (tx) => tx.type === 'donation' && tx.memberName === member.name
     );
-  }, [donations, member.name]);
+  }, [transactions, member.name]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat(language === 'bn' ? 'bn-BD' : 'en-US', {

@@ -15,7 +15,7 @@ export type Notice = {
   date: string; // ISO string
 }
 
-export type Donation = {
+export type Transaction = {
   id: string;
   amount: number;
   date: string; // ISO string

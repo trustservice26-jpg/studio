@@ -12,7 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '../ui/badge';
 
 export function TransactionHistory() {
-  const { donations, language } = useAppContext();
+  const { transactions, language } = useAppContext();
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat(language === 'bn' ? 'bn-BD' : 'en-US', {
@@ -40,7 +40,7 @@ export function TransactionHistory() {
         <CardContent>
           <ScrollArea className="h-96">
             <div className="space-y-4 pr-4">
-              {donations.map((tx) => (
+              {transactions.map((tx) => (
                 <div key={tx.id} className="flex items-center">
                   <div className={`p-2 rounded-full mr-4 ${tx.type === 'donation' ? 'bg-green-100 dark:bg-green-900' : 'bg-red-100 dark:bg-red-900'}`}>
                     {tx.type === 'donation' ? 
