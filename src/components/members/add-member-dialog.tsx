@@ -122,7 +122,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder={language === 'bn' ? 'সদস্যের অবস্থা নির্বাচন করুন' : 'Select member status'} />
-                        </Trigger>
+                        </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="active">{language === 'bn' ? 'সক্রিয়' : 'Active'}</SelectItem>
