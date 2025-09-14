@@ -127,6 +127,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       ...transaction,
       id: `t${donations.length + 1}`,
       date: new Date().toISOString(),
+      description: transaction.description || (transaction.type === 'donation' ? 'Donation' : 'Withdrawal'),
     };
     setDonations(prevDonations => [newTransaction, ...prevDonations]);
     toast({

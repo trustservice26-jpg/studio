@@ -34,7 +34,7 @@ import { Textarea } from '../ui/textarea';
 
 const transactionSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
-  description: z.string().min(2, { message: 'Description must be at least 2 characters.' }),
+  description: z.string().optional(),
   memberName: z.string().optional(),
 });
 
@@ -61,7 +61,8 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
   const description = isDonation ? (language === 'bn' ? 'অনুদান যোগ করতে বিবরণ লিখুন।' : 'Enter the details of the new donation.') : (language === 'bn' ? 'উত্তোলন যোগ করতে বিবরণ লিখুন।' : 'Enter the details of the new withdrawal.');
 
   function onSubmit(values: z.infer<typeof transactionSchema>) {
-    addTransaction({ ...values, type });
+    const description = values.description || (isDonation ? 'Donation' : 'Withdrawal');
+    addTransaction({ ...values, description, type });
     form.reset();
     onOpenChange(false);
   }
@@ -103,7 +104,7 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                         </FormControl>
                         <SelectContent>
                             <SelectItem value="anonymous">{language === 'bn' ? 'অজানা/অন্যান্য' : 'Anonymous/Other'}</SelectItem>
-                            {members.map(member => (
+                            {members.filter(member => member.status === 'active').map(member => (
                                 <SelectItem key={member.id} value={member.name}>{member.name}</SelectItem>
                             ))}
                         </SelectContent>
@@ -113,19 +114,6 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                     )}
                 />
             )}
-             <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{language === 'bn' ? 'বিবরণ' : 'Description'}</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder={language === 'bn' ? 'লেনদেনের উদ্দেশ্য...' : 'Purpose of transaction...'} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <DialogFooter>
               <Button type="submit">{isDonation ? (language === 'bn' ? 'অনুদান যোগ করুন' : 'Add Donation') : (language === 'bn' ? 'উত্তোলন যোগ করুন' : 'Add Withdrawal')}</Button>
             </DialogFooter>
