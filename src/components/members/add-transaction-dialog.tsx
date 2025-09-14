@@ -102,7 +102,7 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            <SelectItem value="">{language === 'bn' ? 'অজানা/অন্যান্য' : 'Anonymous/Other'}</SelectItem>
+                            <SelectItem value="anonymous">{language === 'bn' ? 'অজানা/অন্যান্য' : 'Anonymous/Other'}</SelectItem>
                             {members.map(member => (
                                 <SelectItem key={member.id} value={member.name}>{member.name}</SelectItem>
                             ))}
