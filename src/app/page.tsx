@@ -67,12 +67,12 @@ export default function HomePage() {
             {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ, চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ।' : 'community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon,'}
           </motion.p>
           <motion.p
-            className="mb-8 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground"
+            className="mb-8 max-w-3xl mx-auto text-base md:text-lg text-muted-foreground"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            {language === 'bn' ? 'চান্দগাঁওয়ে সম্প্রদায় উন্নয়ন ও সহায়তায় নিবেদিত একটি অলাভজনক সংস্থা।' : 'A non-profit organization dedicated to community development and support in Chandgaon.'}
+            {language === 'bn' ? 'আমাদের সম্প্রদায়ের শক্তি এবং অগ্রগতির একটি স্বচ্ছ দৃষ্টিভঙ্গি।' : 'A transparent view of our community\'s strength and progress.'}
           </motion.p>
 
            <motion.div 
