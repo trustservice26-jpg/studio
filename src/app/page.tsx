@@ -59,7 +59,7 @@ export default function HomePage() {
             {language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}
           </motion.h1>
            <motion.p
-            className="mb-4 text-base md:text-lg text-muted-foreground"
+            className="mb-4 text-base md:text-lg text-muted-foreground font-bold italic"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
