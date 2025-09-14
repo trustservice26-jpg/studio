@@ -23,7 +23,6 @@ import {
 import { useAppContext } from '@/context/app-context';
 import type { Member } from '@/lib/types';
 import { Download, Loader2 } from 'lucide-react';
-import Image from "next/image"
 
 type DownloadPdfDialogProps = {
   open: boolean;
@@ -49,16 +48,29 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
         return;
     }
 
-    const canvas = await html2canvas(pdfElement, { scale: 2 });
+    const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true });
     const imgData = canvas.toDataURL('image/png');
 
     const pdf = new jsPDF({
         orientation: 'portrait',
-        unit: 'px',
-        format: [canvas.width, canvas.height]
+        unit: 'mm',
+        format: 'a4'
     });
     
-    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+    const ratio = imgWidth / imgHeight;
+    const canvasPdfWidth = pdfWidth - 20; // 10mm margin on each side
+    const canvasPdfHeight = canvasPdfWidth / ratio;
+
+    // Center the image
+    const x = (pdfWidth - canvasPdfWidth) / 2;
+    const y = (pdfHeight - canvasPdfHeight) / 2 > 10 ? (pdfHeight - canvasPdfHeight) / 2 : 10;
+
+
+    pdf.addImage(imgData, 'PNG', x, y, canvasPdfWidth, canvasPdfHeight);
     pdf.save(`${member.name}-details.pdf`);
 
     setIsLoading(false);
@@ -91,28 +103,44 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
 
           {/* Hidden element for PDF generation */}
           {selectedMember && (
-             <div id={`pdf-content-${selectedMember.id}`} style={{ position: 'absolute', left: '-9999px', width: '595px', padding: '40px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
-                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                    <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
-                    <p style={{ fontSize: '18px' }}>{language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details'}</p>
+             <div id={`pdf-content-${selectedMember.id}`} style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '40px', fontFamily: 'sans-serif', color: '#000', background: '#fff', border: '1px solid #eee' }}>
+                <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '2px solid #87CEEB', paddingBottom: '20px' }}>
+                    <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#1976D2', margin: 0 }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
+                    <p style={{ fontSize: '14px', color: '#555' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px' }}>
-                     <img src={selectedMember.avatar} alt={selectedMember.name} style={{ borderRadius: '50%', width: '100px', height: '100px', marginRight: '20px' }} crossOrigin="anonymous"/>
-                     <div>
-                        <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>{selectedMember.name}</h2>
-                        <p style={{ fontSize: '14px', color: '#555', margin: 0 }}>{selectedMember.email}</p>
+                <h2 style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', marginBottom: '30px' }}>{language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details'}</h2>
+                
+                <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '30px', justifyContent: 'space-between' }}>
+                     <div style={{ flex: 1 }}>
+                        <h3 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#333' }}>{selectedMember.name}</h3>
+                        <p style={{ fontSize: '16px', color: '#555', margin: '5px 0 0 0' }}>{selectedMember.email}</p>
+                     </div>
+                     <div style={{ marginLeft: '30px' }}>
+                        <div style={{ width: '150px', height: '180px', border: '2px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9f9f9' }}>
+                           <p style={{ color: '#aaa', fontSize: '12px', textAlign: 'center' }}>{language === 'bn' ? 'পাসপোর্ট সাইজের ছবি' : 'Passport Size Photo'}</p>
+                        </div>
                      </div>
                 </div>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px' }}>
                     <tbody>
-                        <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ফোন' : 'Phone'}</td><td style={{ padding: '10px 0' }}>{selectedMember.phone}</td></tr>
-                        <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'অবস্থা' : 'Status'}</td><td style={{ padding: '10px 0' }}>{selectedMember.status === 'active' ? (language === 'bn' ? 'সক্রিয়' : 'Active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive')}</td></tr>
-                        <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'যোগদানের তারিখ' : 'Join Date'}</td><td style={{ padding: '10px 0' }}>{new Date(selectedMember.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</td></tr>
+                        <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ফোন' : 'Phone'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{selectedMember.phone}</td></tr>
+                        <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'অবস্থা' : 'Status'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{selectedMember.status === 'active' ? (language === 'bn' ? 'সক্রিয়' : 'Active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive')}</td></tr>
+                        <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'যোগদানের তারিখ' : 'Join Date'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{new Date(selectedMember.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</td></tr>
                     </tbody>
                 </table>
-                <div style={{ marginTop: '30px' }}>
-                     <h3 style={{ fontSize: '16px', fontWeight: 'bold' }}>{language === 'bn' ? 'অবদানসমূহ' : 'Contributions'}</h3>
-                     <p style={{ fontSize: '14px', lineHeight: 1.6 }}>{selectedMember.contributions || (language === 'bn' ? 'কোনো অবদান রেকর্ড করা হয়নি।' : 'No contributions recorded.')}</p>
+                
+                <div style={{ marginTop: '40px' }}>
+                     <h3 style={{ fontSize: '18px', fontWeight: 'bold', borderBottom: '1px solid #eee', paddingBottom: '10px', marginBottom: '10px' }}>{language === 'bn' ? 'অবদানসমূহ' : 'Contributions'}</h3>
+                     <p style={{ fontSize: '14px', lineHeight: 1.6, color: '#333' }}>{selectedMember.contributions || (language === 'bn' ? 'কোনো অবদান রেকর্ড করা হয়নি।' : 'No contributions recorded.')}</p>
+                </div>
+
+                <div style={{ marginTop: '80px', paddingTop: '20px', borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                     <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#555' }}>{language === 'bn' ? 'ধন্যবাদ!' : 'Thank you!'}</p>
+                     <div style={{ textAlign: 'center' }}>
+                        <div style={{ borderTop: '2px dotted #aaa', width: '200px', margin: '40px 0 5px 0' }}></div>
+                        <p style={{ fontSize: '14px', color: '#333' }}>{language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature'}</p>
+                     </div>
                 </div>
              </div>
           )}
