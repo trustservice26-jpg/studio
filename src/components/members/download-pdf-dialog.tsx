@@ -155,9 +155,9 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
                 
                 <div style={{marginTop: '20px'}}>
                     <h3 style={{fontSize: '18px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '15px'}}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
-                    <ul style={{ listStyleType: 'decimal', paddingLeft: '20px', fontSize: '12px', color: '#333' }}>
+                    <ul style={{ listStyleType: 'none', paddingLeft: '0px', fontSize: '12px', color: '#333' }}>
                         {conditions.map((condition, index) => (
-                            <li key={index} style={{ marginBottom: '8px' }}>{condition}</li>
+                            <li key={index} style={{ marginBottom: '8px', fontWeight: 'bold', textIndent: '-1em', paddingLeft: '1em' }}>• {condition}</li>
                         ))}
                     </ul>
                 </div>
