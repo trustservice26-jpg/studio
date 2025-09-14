@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, ArrowUpCircle, ArrowDownCircle, PiggyBank } from 'lucide-react';
+import { Quote, ArrowUpCircle, ArrowDownCircle, PiggyBank, Users } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
@@ -39,6 +39,7 @@ export default function HomePage() {
     { title: language === 'bn' ? 'বর্তমান তহবিল' : 'Current Funds', value: formatCurrency(currentFunds), icon: PiggyBank },
     { title: language === 'bn' ? 'মোট অনুদান' : 'Total Donations', value: formatCurrency(totalDonations), icon: ArrowUpCircle },
     { title: language === 'bn' ? 'মোট উত্তোলন' : 'Total Withdrawals', value: formatCurrency(totalWithdrawals), icon: ArrowDownCircle },
+    { title: language === 'bn' ? 'মোট সদস্য' : 'Total Members', value: members.length.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US'), icon: Users },
   ]
 
   return (
@@ -97,7 +98,7 @@ export default function HomePage() {
 
       <div className="container mx-auto py-12 px-4 md:px-6">
         <section className="mb-12">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               {financialStats.map((stat, index) => (
                 <motion.div key={stat.title} variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} custom={index} transition={{delay: index * 0.1}}>
                   <Card>
@@ -127,7 +128,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           <section className="lg:col-span-2">
            <div>
-            <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'মোট সদস্য' : 'Member Directory'}</h2>
+            <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
             <DataTable columns={publicMemberColumns} data={members} />
            </div>
           </section>
