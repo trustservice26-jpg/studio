@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -98,6 +99,18 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
 
 
 export const columns: ColumnDef<Member>[] = [
+  {
+    id: 'serialNumber',
+    header: () => {
+      const { language } = useAppContext();
+      return <span>{language === 'bn' ? 'ক্রমিক' : 'Sl.'}</span>;
+    },
+    cell: ({ row, table }) => {
+      const pageIndex = (table.getState().pagination.pageIndex);
+      const pageSize = table.getState().pagination.pageSize;
+      return <span>{pageIndex * pageSize + row.index + 1}</span>;
+    },
+  },
   {
     accessorKey: "name",
     header: ({ column }) => {

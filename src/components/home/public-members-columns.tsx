@@ -1,3 +1,4 @@
+
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
@@ -9,6 +10,18 @@ import { ArrowUpDown } from "lucide-react"
 import { useAppContext } from "@/context/app-context"
 
 export const publicMemberColumns: ColumnDef<Member>[] = [
+  {
+    id: 'serialNumber',
+    header: () => {
+      const { language } = useAppContext();
+      return <span>{language === 'bn' ? 'ক্রমিক' : 'Sl.'}</span>;
+    },
+    cell: ({ row, table }) => {
+      const pageIndex = (table.getState().pagination.pageIndex);
+      const pageSize = table.getState().pagination.pageSize;
+      return <span>{pageIndex * pageSize + row.index + 1}</span>;
+    },
+  },
   {
     accessorKey: "name",
     header: ({ column }) => {
