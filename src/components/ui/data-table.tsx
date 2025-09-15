@@ -29,12 +29,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   children?: React.ReactNode
+  noPagination?: boolean
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   children,
+  noPagination = false,
 }: DataTableProps<TData, TValue>) {
   const { language } = useAppContext();
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -51,14 +53,14 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: !noPagination ? getPaginationRowModel() : undefined,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     initialState: {
         pagination: {
-            pageSize: 5,
+            pageSize: noPagination ? data.length : 5,
         },
     },
     state: {
@@ -124,24 +126,26 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {language === 'bn' ? 'পূর্ববর্তী' : 'Previous'}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {language === 'bn' ? 'পরবর্তী' : 'Next'}
-        </Button>
-      </div>
+      {!noPagination && (
+        <div className="flex items-center justify-end space-x-2 py-4">
+            <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            >
+            {language === 'bn' ? 'পূর্ববর্তী' : 'Previous'}
+            </Button>
+            <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            >
+            {language === 'bn' ? 'পরবর্তী' : 'Next'}
+            </Button>
+        </div>
+      )}
     </div>
   )
 }
