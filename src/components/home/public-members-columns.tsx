@@ -1,8 +1,6 @@
-
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import Image from "next/image"
 
 import { Badge } from "@/components/ui/badge"
 import type { Member } from "@/lib/types"
@@ -28,16 +26,7 @@ export const publicMemberColumns: ColumnDef<Member>[] = [
     cell: ({ row }) => {
       const member = row.original
       return (
-        <div className="flex items-center gap-3">
-          <Image
-            src={member.avatar}
-            alt={member.name}
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <div className="font-medium">{member.name}</div>
-        </div>
+        <div className="font-medium">{member.name}</div>
       )
     },
   },

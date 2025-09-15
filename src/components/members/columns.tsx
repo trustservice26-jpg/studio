@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import Image from "next/image"
 import { MoreHorizontal, ArrowUpDown, History } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -116,18 +115,9 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => {
       const member = row.original
       return (
-        <div className="flex items-center gap-3">
-          <Image
-            src={member.avatar}
-            alt={member.name}
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <div className="flex flex-col">
-             <div className="font-medium">{member.name}</div>
-             <div className="text-sm text-muted-foreground">{member.email}</div>
-          </div>
+        <div className="flex flex-col">
+           <div className="font-medium">{member.name}</div>
+           <div className="text-sm text-muted-foreground">{member.email}</div>
         </div>
       )
     },

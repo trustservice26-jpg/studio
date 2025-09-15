@@ -146,7 +146,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const newMember: Omit<Member, 'id'> = {
       ...memberData,
       joinDate: new Date().toISOString(),
-      avatar: `https://picsum.photos/seed/avatar${Math.random()}/200/200`,
+      avatar: '',
       contributions: '',
     };
     try {
