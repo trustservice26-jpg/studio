@@ -23,6 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { useAppContext } from "@/context/app-context"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
   data,
   children,
 }: DataTableProps<TData, TValue>) {
+  const { language } = useAppContext();
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -54,6 +56,11 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+        pagination: {
+            pageSize: 5,
+        },
+    },
     state: {
       sorting,
       columnFilters,
@@ -110,7 +117,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {language === 'bn' ? 'কোনো ফলাফল নেই।' : 'No results.'}
                 </TableCell>
               </TableRow>
             )}
@@ -124,7 +131,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          {language === 'bn' ? 'পূর্ববর্তী' : 'Previous'}
         </Button>
         <Button
           variant="outline"
@@ -132,7 +139,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          {language === 'bn' ? 'পরবর্তী' : 'Next'}
         </Button>
       </div>
     </div>

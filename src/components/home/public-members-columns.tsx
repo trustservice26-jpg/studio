@@ -35,7 +35,6 @@ export const publicMemberColumns: ColumnDef<Member>[] = [
             width={40}
             height={40}
             className="rounded-full"
-            data-ai-hint="person portrait"
           />
           <div className="font-medium">{member.name}</div>
         </div>
