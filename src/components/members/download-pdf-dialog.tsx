@@ -191,8 +191,7 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
                      </div>
                 </div>
                  <div style={{ marginTop: '30px', fontSize: '12px', color: '#555', textAlign: 'center', paddingTop: '20px', borderTop: '1px solid #eee' }}>
-                     <p>© 2025 Seva Sangathan</p>
-                     <p>(community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
+                    <p>© 2025 Seva Sangathan (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
                  </div>
              </div>
           )}
@@ -217,5 +216,7 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     </Dialog>
   );
 }
+
+    
 
     
