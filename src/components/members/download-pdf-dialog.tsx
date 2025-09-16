@@ -190,7 +190,10 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
                         <p style={{ fontSize: '14px', color: '#333' }}>{language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature'}</p>
                      </div>
                 </div>
-                 <p style={{ marginTop: '30px', fontSize: '14px', fontStyle: 'italic', color: '#555', fontWeight: 'bold', textAlign: 'center' }}>{language === 'bn' ? 'ধন্যবাদ!' : 'Thank you!'}</p>
+                 <div style={{ marginTop: '30px', fontSize: '12px', color: '#555', textAlign: 'center', paddingTop: '20px', borderTop: '1px solid #eee' }}>
+                     <p>© 2025 Seva Sangathan</p>
+                     <p>(community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
+                 </div>
              </div>
           )}
 

@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, Landmark, TrendingUp, TrendingDown, Users } from 'lucide-react';
+import { Quote, Landmark, TrendingUp, TrendingDown, Users, Download } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
@@ -12,9 +12,12 @@ import { publicMemberColumns } from '@/components/home/public-members-columns';
 import { TransactionHistory } from '@/components/home/transaction-history';
 import { HomeMemberStatus } from '@/components/home/home-member-status';
 import { PublicNoticeBoard } from '@/components/home/public-notice-board';
+import { Button } from '@/components/ui/button';
+import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
 
 export default function HomePage() {
   const { members, language, currentFunds, totalDonations, totalWithdrawals } = useAppContext();
+  const [isPdfOpen, setPdfOpen] = React.useState(false);
 
   const cardVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -127,7 +130,12 @@ export default function HomePage() {
                     <HomeMemberStatus />
                 </section>
                 <section>
-                    <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
+                        <Button onClick={() => setPdfOpen(true)} variant="outline">
+                            <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য ফর্ম ডাউনলোড' : 'Download Member Form'}
+                        </Button>
+                    </div>
                     <DataTable columns={publicMemberColumns} data={members} />
                 </section>
             </div>
@@ -136,6 +144,7 @@ export default function HomePage() {
           </section>
         </div>
       </div>
+      <DownloadPdfDialog open={isPdfOpen} onOpenChange={setPdfOpen} />
     </div>
   );
 }
