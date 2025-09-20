@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useForm } from 'react-hook-form';
@@ -70,61 +70,59 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
 
   const { isSubmitting } = form.formState;
 
-  useEffect(() => {
-    if (!formData) return;
+  const generatePdf = async (data: RegistrationFormValues & { joinDate: string }) => {
+    setIsGeneratingPdf(true);
+    setFormData(data);
 
-    const generatePdf = () => {
-      const pdfElement = document.getElementById('pdf-registration-content');
-      if (!pdfElement) {
-        setIsGeneratingPdf(false);
-        setFormData(null);
-        return;
-      }
+    // This timeout ensures the state is updated and the PdfDocument is rendered off-screen
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const pdfElement = document.getElementById('pdf-registration-content');
+    if (!pdfElement) {
+      console.error("PDF content element not found");
+      setIsGeneratingPdf(false);
+      return;
+    }
+
+    try {
+      const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL('image/png');
       
-      html2canvas(pdfElement, { scale: 2, useCORS: true }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4',
-        });
-        
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-        const ratio = imgWidth / imgHeight;
-        
-        let finalWidth = pdfWidth - 20; // 10mm margin on each side
-        let finalHeight = finalWidth / ratio;
-
-        if (finalHeight > pdfHeight - 20) {
-            finalHeight = pdfHeight - 20;
-            finalWidth = finalHeight * ratio;
-        }
-
-        const x = (pdfWidth - finalWidth) / 2;
-        const y = 10;
-
-        pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
-        pdf.save(`${formData.name}-registration-form.pdf`);
-
-      }).catch(error => {
-        console.error("Error generating PDF:", error);
-      }).finally(() => {
-        setIsGeneratingPdf(false);
-        onOpenChange(false);
-        form.reset();
-        setFormData(null);
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
       });
-    };
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = imgWidth / imgHeight;
+      
+      let finalWidth = pdfWidth - 20; // 10mm margin on each side
+      let finalHeight = finalWidth / ratio;
 
-    // Use a short timeout to ensure the DOM is updated before capturing
-    const timer = setTimeout(generatePdf, 100);
+      if (finalHeight > pdfHeight - 20) {
+          finalHeight = pdfHeight - 20;
+          finalWidth = finalHeight * ratio;
+      }
 
-    return () => clearTimeout(timer);
-  }, [formData, onOpenChange, form]);
+      const x = (pdfWidth - finalWidth) / 2;
+      const y = 10;
+
+      pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+      pdf.save(`${data.name}-registration-form.pdf`);
+
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsGeneratingPdf(false);
+      onOpenChange(false);
+      form.reset();
+      setFormData(null);
+    }
+  };
 
 
   const handleRegistration = async (values: RegistrationFormValues) => {
@@ -137,8 +135,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       },
       true
     );
-    setIsGeneratingPdf(true);
-    setFormData({ ...values, joinDate });
+    await generatePdf({ ...values, joinDate });
   };
   
   return (

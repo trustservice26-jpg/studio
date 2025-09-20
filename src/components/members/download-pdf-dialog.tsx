@@ -49,51 +49,52 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     
     setIsLoading(true);
 
-    // Use a short timeout to ensure the DOM is updated with the selected member
-    setTimeout(() => {
-      const pdfElement = document.getElementById('pdf-content-wrapper');
-      if (!pdfElement) {
-          setIsLoading(false);
-          return;
-      }
+    // This timeout ensures the state is updated and the PdfDocument is rendered off-screen
+    await new Promise(resolve => setTimeout(resolve, 100));
 
-      html2canvas(pdfElement, { scale: 2, useCORS: true }).then(canvas => {
-          const imgData = canvas.toDataURL('image/png');
-          
-          const pdf = new jsPDF({
-              orientation: 'portrait',
-              unit: 'mm',
-              format: 'a4'
-          });
-          
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = pdf.internal.pageSize.getHeight();
-          const imgWidth = canvas.width;
-          const imgHeight = canvas.height;
-          const ratio = imgWidth / imgHeight;
-          
-          let finalWidth = pdfWidth - 20; // 10mm margin on each side
-          let finalHeight = finalWidth / ratio;
+    const pdfElement = document.getElementById('pdf-content-wrapper');
+    if (!pdfElement) {
+        setIsLoading(false);
+        return;
+    }
 
-          if (finalHeight > pdfHeight - 20) {
-              finalHeight = pdfHeight - 20;
-              finalWidth = finalHeight * ratio;
-          }
+    try {
+        const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+        const imgData = canvas.toDataURL('image/png');
+        
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ratio = imgWidth / imgHeight;
+        
+        let finalWidth = pdfWidth - 20; // 10mm margin on each side
+        let finalHeight = finalWidth / ratio;
 
-          const x = (pdfWidth - finalWidth) / 2;
-          const y = 10;
+        if (finalHeight > pdfHeight - 20) {
+            finalHeight = pdfHeight - 20;
+            finalWidth = finalHeight * ratio;
+        }
 
-          pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
-          pdf.save(`${selectedMember.name}-details.pdf`);
-      }).catch(error => {
-          console.error("Error generating PDF:", error);
-      }).finally(() => {
-          setIsLoading(false);
-          onOpenChange(false);
-          setSelectedMemberId(null);
-          setSelectedMember(null);
-      });
-    }, 100);
+        const x = (pdfWidth - finalWidth) / 2;
+        const y = 10;
+
+        pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+        pdf.save(`${selectedMember.name}-details.pdf`);
+    } catch (error) {
+        console.error("Error generating PDF:", error);
+    } finally {
+        setIsLoading(false);
+        onOpenChange(false);
+        setSelectedMemberId(null);
+        setSelectedMember(null);
+    }
   };
 
   return (
