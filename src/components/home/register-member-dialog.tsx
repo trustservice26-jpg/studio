@@ -70,57 +70,10 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
 
   const { isSubmitting } = form.formState;
 
-  const generatePdf = async (data: RegistrationFormValues & { joinDate: string }) => {
-    const pdfElement = document.getElementById('pdf-registration-content');
-    if (!pdfElement) {
-      console.error("PDF content element not found");
-      setIsGeneratingPdf(false);
-      return;
-    }
-
-    try {
-      const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
-      const imgData = canvas.toDataURL('image/png');
-      
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      });
-      
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = imgWidth / imgHeight;
-      
-      let finalWidth = pdfWidth - 20; // 10mm margin on each side
-      let finalHeight = finalWidth / ratio;
-
-      if (finalHeight > pdfHeight - 20) {
-          finalHeight = pdfHeight - 20;
-          finalWidth = finalHeight * ratio;
-      }
-
-      const x = (pdfWidth - finalWidth) / 2;
-      const y = 10;
-
-      pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
-      pdf.save(`${data.name}-registration-form.pdf`);
-
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
-
-
   const handleRegistration = async (values: RegistrationFormValues) => {
-    setIsGeneratingPdf(true);
     const joinDate = new Date().toISOString();
     const fullData = { ...values, joinDate };
     
-    setFormData(fullData);
-
     await addMember(
       {
         ...values,
@@ -129,14 +82,64 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       },
       true
     );
-    
-    // Wait for state to update and component to render
-    setTimeout(async () => {
-        await generatePdf(fullData);
-        setIsGeneratingPdf(false);
-        onOpenChange(false);
-    }, 100);
+
+    setFormData(fullData);
+    setIsGeneratingPdf(true); // Trigger PDF generation via useEffect
   };
+  
+  useEffect(() => {
+    if (isGeneratingPdf && formData) {
+      const generatePdf = async () => {
+        const pdfElement = document.getElementById('pdf-registration-content');
+        if (!pdfElement) {
+          console.error("PDF content element not found");
+          setIsGeneratingPdf(false);
+          return;
+        }
+
+        try {
+          const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+          const imgData = canvas.toDataURL('image/png');
+          
+          const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4',
+          });
+          
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const imgWidth = canvas.width;
+          const imgHeight = canvas.height;
+          const ratio = imgWidth / imgHeight;
+          
+          let finalWidth = pdfWidth - 20; // 10mm margin on each side
+          let finalHeight = finalWidth / ratio;
+
+          if (finalHeight > pdfHeight - 20) {
+              finalHeight = pdfHeight - 20;
+              finalWidth = finalHeight * ratio;
+          }
+
+          const x = (pdfWidth - finalWidth) / 2;
+          const y = 10;
+
+          pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+          pdf.save(`${formData.name}-registration-form.pdf`);
+
+        } catch (error) {
+          console.error("Error generating PDF:", error);
+        } finally {
+          setIsGeneratingPdf(false);
+          onOpenChange(false);
+        }
+      };
+
+      // Delay to ensure the DOM is fully updated
+      const timer = setTimeout(generatePdf, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isGeneratingPdf, formData, onOpenChange]);
   
   useEffect(() => {
     if (!open) {
@@ -144,7 +147,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       setFormData(null);
       setIsGeneratingPdf(false);
     }
-  }, [open]);
+  }, [open, form]);
 
   return (
     <>

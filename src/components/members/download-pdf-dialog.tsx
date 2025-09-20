@@ -32,72 +32,76 @@ type DownloadPdfDialogProps = {
 
 export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps) {
   const { members, language } = useAppContext();
-  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
+  const handleDownloadClick = () => {
+    if (!selectedMember) return;
+    setIsGeneratingPdf(true); // Trigger PDF generation via useEffect
+  };
 
   useEffect(() => {
-    if (selectedMemberId) {
-      const member = members.find(m => m.id === selectedMemberId) || null;
-      setSelectedMember(member);
-    } else {
-      setSelectedMember(null);
-    }
-  }, [selectedMemberId, members]);
-
-  const handleDownload = async () => {
-    if (!selectedMember) return;
-    
-    setIsLoading(true);
-
-    const pdfElement = document.getElementById('pdf-content-wrapper');
-    if (!pdfElement) {
-        setIsLoading(false);
-        console.error("PDF content element not found");
-        return;
-    }
-
-    try {
-        const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
-        const imgData = canvas.toDataURL('image/png');
-        
-        const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4'
-        });
-        
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-        const ratio = imgWidth / imgHeight;
-        
-        let finalWidth = pdfWidth - 20;
-        let finalHeight = finalWidth / ratio;
-
-        if (finalHeight > pdfHeight - 20) {
-            finalHeight = pdfHeight - 20;
-            finalWidth = finalHeight * ratio;
+    if (isGeneratingPdf && selectedMember) {
+      const generatePdf = async () => {
+        const pdfElement = document.getElementById('pdf-content-wrapper');
+        if (!pdfElement) {
+            setIsGeneratingPdf(false);
+            console.error("PDF content element not found");
+            return;
         }
 
-        const x = (pdfWidth - finalWidth) / 2;
-        const y = 10;
+        try {
+            const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+            const imgData = canvas.toDataURL('image/png');
+            
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+            
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const ratio = imgWidth / imgHeight;
+            
+            let finalWidth = pdfWidth - 20;
+            let finalHeight = finalWidth / ratio;
 
-        pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
-        pdf.save(`${selectedMember.name}-details.pdf`);
-    } catch (error) {
-        console.error("Error generating PDF:", error);
-    } finally {
-        setIsLoading(false);
-        onOpenChange(false);
+            if (finalHeight > pdfHeight - 20) {
+                finalHeight = pdfHeight - 20;
+                finalWidth = finalHeight * ratio;
+            }
+
+            const x = (pdfWidth - finalWidth) / 2;
+            const y = 10;
+
+            pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+            pdf.save(`${selectedMember.name}-details.pdf`);
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        } finally {
+            setIsGeneratingPdf(false);
+            onOpenChange(false);
+        }
+      };
+
+      // Use a timeout to ensure the DOM is fully updated before capturing
+      const timer = setTimeout(generatePdf, 100);
+      return () => clearTimeout(timer);
     }
-  };
+  }, [isGeneratingPdf, selectedMember, onOpenChange]);
+
+  const handleMemberSelect = (memberId: string) => {
+    const member = members.find(m => m.id === memberId) || null;
+    setSelectedMember(member);
+  }
   
   useEffect(() => {
     if (!open) {
-      setSelectedMemberId(null);
       setSelectedMember(null);
+      setIsGeneratingPdf(false);
     }
   }, [open]);
 
@@ -112,7 +116,7 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 space-y-4">
-            <Select onValueChange={setSelectedMemberId} value={selectedMemberId || ''}>
+            <Select onValueChange={handleMemberSelect} value={selectedMember?.id || ''}>
               <SelectTrigger>
                 <SelectValue placeholder={language === 'bn' ? 'একজন সদস্য নির্বাচন করুন' : 'Select a member'} />
               </SelectTrigger>
@@ -125,8 +129,8 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
 
           </div>
           <DialogFooter>
-            <Button onClick={handleDownload} disabled={!selectedMemberId || isLoading}>
-              {isLoading ? (
+            <Button onClick={handleDownloadClick} disabled={!selectedMember || isGeneratingPdf}>
+              {isGeneratingPdf ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   {language === 'bn' ? 'ডাউনলোড হচ্ছে...' : 'Downloading...'}
