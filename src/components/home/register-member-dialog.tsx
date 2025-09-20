@@ -269,5 +269,3 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     </>
   );
 }
-
-    
