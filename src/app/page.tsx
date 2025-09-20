@@ -135,9 +135,6 @@ export default function HomePage() {
                     <div className="flex justify-between items-center mb-6">
                          <h2 className="text-2xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
                          <div className="flex gap-2">
-                            <Button onClick={() => setRegisterOpen(true)}>
-                                <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
-                            </Button>
                             <Button onClick={() => setPdfOpen(true)} variant="outline">
                                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য ফর্ম ডাউনলোড' : 'Download Member Form'}
                             </Button>

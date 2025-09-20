@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -10,6 +11,7 @@ import {
   Users,
   Home,
   ShieldCheck,
+  UserPlus,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -30,6 +32,7 @@ import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { LanguageSwitcher } from './language-switcher';
 import { LiveClock } from './live-clock';
+import { RegisterMemberDialog } from './home/register-member-dialog';
 
 const navItems = [
   { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, adminOnly: false },
@@ -44,6 +47,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [isPasswordDialogOpen, setPasswordDialogOpen] = React.useState(false);
   const [password, setPassword] = React.useState('');
   const [passwordError, setPasswordError] = React.useState('');
+  const [isRegisterOpen, setRegisterOpen] = React.useState(false);
 
   const handleRoleChange = (isAdmin: boolean) => {
     if (isAdmin) {
@@ -138,6 +142,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="w-full flex-1">
               {/* Can add a search bar here if needed */}
             </div>
+            <Button variant="ghost" onClick={() => setRegisterOpen(true)}>
+              <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
+            </Button>
             <LanguageSwitcher />
             <div className="flex items-center space-x-2">
               <Label htmlFor="role-switch">{language === 'bn' ? 'এডমিন' : 'Admin'}</Label>
@@ -191,6 +198,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <RegisterMemberDialog open={isRegisterOpen} onOpenChange={setRegisterOpen} />
     </>
   );
 }
