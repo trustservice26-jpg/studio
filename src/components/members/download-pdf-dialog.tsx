@@ -22,8 +22,8 @@ import {
 } from '@/components/ui/select';
 import { useAppContext } from '@/context/app-context';
 import { Download, Loader2 } from 'lucide-react';
-import { PdfDocument } from '../ui/pdf-document';
 import type { Member } from '@/lib/types';
+import { PdfDocument } from '../ui/pdf-document';
 
 type DownloadPdfDialogProps = {
   open: boolean;
@@ -38,7 +38,8 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
 
   useEffect(() => {
     if (selectedMemberId) {
-      setSelectedMember(members.find(m => m.id === selectedMemberId) || null);
+      const member = members.find(m => m.id === selectedMemberId) || null;
+      setSelectedMember(member);
     } else {
       setSelectedMember(null);
     }
@@ -49,12 +50,10 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     
     setIsLoading(true);
 
-    // This timeout ensures the state is updated and the PdfDocument is rendered off-screen
-    await new Promise(resolve => setTimeout(resolve, 100));
-
     const pdfElement = document.getElementById('pdf-content-wrapper');
     if (!pdfElement) {
         setIsLoading(false);
+        console.error("PDF content element not found");
         return;
     }
 
@@ -74,7 +73,7 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
         const imgHeight = canvas.height;
         const ratio = imgWidth / imgHeight;
         
-        let finalWidth = pdfWidth - 20; // 10mm margin on each side
+        let finalWidth = pdfWidth - 20;
         let finalHeight = finalWidth / ratio;
 
         if (finalHeight > pdfHeight - 20) {
@@ -92,20 +91,19 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     } finally {
         setIsLoading(false);
         onOpenChange(false);
-        setSelectedMemberId(null);
-        setSelectedMember(null);
     }
   };
+  
+  useEffect(() => {
+    if (!open) {
+      setSelectedMemberId(null);
+      setSelectedMember(null);
+    }
+  }, [open]);
 
   return (
     <>
-      <Dialog open={open} onOpenChange={(isOpen) => {
-        if(!isOpen) {
-          setSelectedMemberId(null);
-          setSelectedMember(null);
-        }
-        onOpenChange(isOpen);
-      }}>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{language === 'bn' ? 'সদস্যের তথ্য ডাউনলোড' : 'Download Member Info'}</DialogTitle>
@@ -143,8 +141,8 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
+      
+      <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
         {selectedMember && (
             <div id="pdf-content-wrapper">
               <PdfDocument member={selectedMember} language={language} isRegistration={false} />

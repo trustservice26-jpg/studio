@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useForm } from 'react-hook-form';
@@ -71,12 +71,6 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
   const { isSubmitting } = form.formState;
 
   const generatePdf = async (data: RegistrationFormValues & { joinDate: string }) => {
-    setIsGeneratingPdf(true);
-    setFormData(data);
-
-    // This timeout ensures the state is updated and the PdfDocument is rendered off-screen
-    await new Promise(resolve => setTimeout(resolve, 100));
-
     const pdfElement = document.getElementById('pdf-registration-content');
     if (!pdfElement) {
       console.error("PDF content element not found");
@@ -116,17 +110,17 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
 
     } catch (error) {
       console.error("Error generating PDF:", error);
-    } finally {
-      setIsGeneratingPdf(false);
-      onOpenChange(false);
-      form.reset();
-      setFormData(null);
     }
   };
 
 
   const handleRegistration = async (values: RegistrationFormValues) => {
+    setIsGeneratingPdf(true);
     const joinDate = new Date().toISOString();
+    const fullData = { ...values, joinDate };
+    
+    setFormData(fullData);
+
     await addMember(
       {
         ...values,
@@ -135,19 +129,26 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       },
       true
     );
-    await generatePdf({ ...values, joinDate });
+    
+    // Wait for state to update and component to render
+    setTimeout(async () => {
+        await generatePdf(fullData);
+        setIsGeneratingPdf(false);
+        onOpenChange(false);
+    }, 100);
   };
   
+  useEffect(() => {
+    if (!open) {
+      form.reset();
+      setFormData(null);
+      setIsGeneratingPdf(false);
+    }
+  }, [open]);
+
   return (
     <>
-      <Dialog open={open} onOpenChange={(isOpen) => {
-        if (!isOpen) {
-          form.reset();
-          setFormData(null);
-          setIsGeneratingPdf(false);
-        }
-        onOpenChange(isOpen);
-      }}>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>{language === 'bn' ? 'সদস্য নিবন্ধন' : 'Member Registration'}</DialogTitle>
@@ -277,7 +278,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
         </DialogContent>
       </Dialog>
       
-      <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
+      <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
         {formData && <div id="pdf-registration-content"><PdfDocument member={formData} language={language} isRegistration={true} /></div>}
       </div>
     </>
