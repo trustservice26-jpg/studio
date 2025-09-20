@@ -153,6 +153,7 @@ export default function HomePage() {
        <footer className="py-6 px-4 md:px-6 border-t">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
           <p>© 2025 Seva Sangathan (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
+          <p className="font-bold italic mt-2">DEVELOPED BY AL-SADEEQ TEAM</p>
         </div>
       </footer>
     </div>
