@@ -1,10 +1,10 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormState } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { format } from 'date-fns';
@@ -26,19 +26,16 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon, Download, Loader2 } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import { useAppContext } from '@/context/app-context';
-import { cn } from '@/lib/utils';
 import { Textarea } from '../ui/textarea';
-
+import { ScrollArea } from '../ui/scroll-area';
 
 const registrationSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Invalid email address.' }),
   phone: z.string().min(10, { message: 'Phone number is too short.' }),
-  dob: z.date({ required_error: 'Date of birth is required.' }),
+  dob: z.string().min(1, { message: 'Date of birth is required.' }),
   fatherName: z.string().min(2, { message: "Father's name is required." }),
   motherName: z.string().min(2, { message: "Mother's name is required." }),
   nid: z.string().min(10, { message: 'NID or Birth Certificate No. is required.' }),
@@ -54,8 +51,7 @@ type RegisterMemberDialogProps = {
 
 export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialogProps) {
   const { language, addMember } = useAppContext();
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState<RegistrationFormValues | null>(null);
+  const [formData, setFormData] = useState<RegistrationFormValues & { joinDate: string } | null>(null);
 
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
@@ -63,6 +59,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       name: '',
       email: '',
       phone: '',
+      dob: '',
       fatherName: '',
       motherName: '',
       nid: '',
@@ -70,21 +67,14 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     },
   });
 
-  const handleGeneratePdf = async (values: RegistrationFormValues) => {
-    addMember({
-      ...values,
-      dob: values.dob.toISOString(),
-      status: 'inactive'
-    }, true);
-    
-    setFormData(values);
-    setIsLoading(true);
+  const { isSubmitting } = useFormState({ control: form.control });
 
-    // Allow time for the hidden div to render with the new data
-    setTimeout(async () => {
+  useEffect(() => {
+    if (!formData) return;
+
+    const generatePdf = async () => {
       const pdfElement = document.getElementById('pdf-registration-content');
       if (!pdfElement) {
-        setIsLoading(false);
         return;
       }
 
@@ -114,12 +104,30 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       const y = 10;
 
       pdf.addImage(imgData, 'PNG', x, y, canvasPdfWidth, canvasPdfHeight);
-      pdf.save(`${values.name}-registration-form.pdf`);
+      pdf.save(`${formData.name}-registration-form.pdf`);
 
-      setIsLoading(false);
       onOpenChange(false);
       form.reset();
-    }, 1000);
+      setFormData(null);
+    };
+
+    // Use a timeout to ensure the DOM is updated before generating the PDF
+    const timer = setTimeout(generatePdf, 500);
+
+    return () => clearTimeout(timer);
+  }, [formData, onOpenChange, form]);
+
+  const handleRegistration = async (values: RegistrationFormValues) => {
+    const joinDate = new Date().toISOString();
+    await addMember(
+      {
+        ...values,
+        joinDate: joinDate,
+        status: 'inactive'
+      },
+      true
+    );
+    setFormData({ ...values, joinDate });
   };
   
   const conditions_en = [
@@ -157,7 +165,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>{language === 'bn' ? 'সদস্য নিবন্ধন' : 'Member Registration'}</DialogTitle>
             <DialogDescription>
@@ -165,134 +173,110 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleGeneratePdf)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{language === 'bn' ? 'পূর্ণ নাম' : 'Full Name'}</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-               <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{language === 'bn' ? 'ইമെ일' : 'Email'}</FormLabel>
-                  <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{language === 'bn' ? 'ফোন' : 'Phone'}</FormLabel>
-                  <FormControl>
-                    <Input placeholder="+8801700000000" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-               <FormField
-                control={form.control}
-                name="dob"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>{language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth'}</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
+            <form onSubmit={form.handleSubmit(handleRegistration)} className="space-y-4">
+              <ScrollArea className="h-[60vh] pr-6">
+                <div className="space-y-4">
+                   <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{language === 'bn' ? 'পূর্ণ নাম' : 'Full Name'}</FormLabel>
+                        <FormControl><Input {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{language === 'bn' ? 'ইമെ일' : 'Email'}</FormLabel>
                         <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>{language === 'bn' ? 'একটি তারিখ বাছুন' : 'Pick a date'}</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
+                          <Input placeholder="name@example.com" {...field} />
                         </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
                     control={form.control}
-                    name="fatherName"
+                    name="phone"
                     render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{language === 'bn' ? 'পিতার নাম' : "Father's Name"}</FormLabel>
+                      <FormItem>
+                        <FormLabel>{language === 'bn' ? 'ফোন' : 'Phone'}</FormLabel>
+                        <FormControl>
+                          <Input placeholder="+8801700000000" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="dob"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth'}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={language === 'bn' ? 'দিন-মাস-বছর' : 'DD-MM-YYYY'} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="fatherName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{language === 'bn' ? 'পিতার নাম' : "Father's Name"}</FormLabel>
+                          <FormControl><Input {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="motherName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{language === 'bn' ? 'মাতার নাম' : "Mother's Name"}</FormLabel>
+                          <FormControl><Input {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="nid"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{language === 'bn' ? 'এনআইডি / জন্ম সনদ নম্বর' : 'NID / Birth Certificate No.'}</FormLabel>
                         <FormControl><Input {...field} /></FormControl>
                         <FormMessage />
-                    </FormItem>
+                      </FormItem>
                     )}
-                />
-                 <FormField
+                  />
+                  <FormField
                     control={form.control}
-                    name="motherName"
+                    name="address"
                     render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{language === 'bn' ? 'মাতার নাম' : "Mother's Name"}</FormLabel>
-                        <FormControl><Input {...field} /></FormControl>
+                      <FormItem>
+                        <FormLabel>{language === 'bn' ? 'ঠিকানা (ঐচ্ছিক)' : 'Address (Optional)'}</FormLabel>
+                        <FormControl><Textarea {...field} /></FormControl>
                         <FormMessage />
-                    </FormItem>
+                      </FormItem>
                     )}
-                />
-              </div>
-              <FormField
-                control={form.control}
-                name="nid"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{language === 'bn' ? 'এনআইডি / জন্ম সনদ নম্বর' : 'NID / Birth Certificate No.'}</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-               <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{language === 'bn' ? 'ঠিকানা (ঐচ্ছিক)' : 'Address (Optional)'}</FormLabel>
-                    <FormControl><Textarea {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  />
+                </div>
+              </ScrollArea>
               <DialogFooter>
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? (
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       {language === 'bn' ? 'প্রসেসিং...' : 'Processing...'}
@@ -332,7 +316,8 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
 
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px', marginBottom: '30px' }}>
                 <tbody>
-                    <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{format(formData.dob, 'PPP')}</td></tr>
+                    <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{new Date(formData.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</td></tr>
+                    <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{formData.dob}</td></tr>
                     <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'পিতার নাম' : "Father's Name"}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{formData.fatherName}</td></tr>
                     <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'মাতার নাম' : "Mother's Name"}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{formData.motherName}</td></tr>
                     <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{formData.nid}</td></tr>
@@ -377,3 +362,5 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     </>
   );
 }
+
+    
