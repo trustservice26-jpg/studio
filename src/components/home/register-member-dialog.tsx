@@ -98,11 +98,10 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
         
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgProps = pdf.getImageProperties(imgData);
-        const imgWidth = imgProps.width;
-        const imgHeight = imgProps.height;
-        
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
         const ratio = imgWidth / imgHeight;
+        
         let finalWidth = pdfWidth - 20; // 10mm margin on each side
         let finalHeight = finalWidth / ratio;
 

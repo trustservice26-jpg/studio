@@ -48,6 +48,9 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
         return;
     }
 
+    // Temporarily make it visible for rendering, but off-screen
+    pdfElement.style.position = 'absolute';
+    pdfElement.style.left = '-9999px';
     pdfElement.style.display = 'block';
 
     try {
@@ -62,11 +65,10 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
         
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgProps = pdf.getImageProperties(imgData);
-        const imgWidth = imgProps.width;
-        const imgHeight = imgProps.height;
-        
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
         const ratio = imgWidth / imgHeight;
+        
         let finalWidth = pdfWidth - 20; // 10mm margin on each side
         let finalHeight = finalWidth / ratio;
 
@@ -83,7 +85,11 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     } catch(error) {
         console.error("Error generating PDF:", error);
     } finally {
+        // Hide it again
+        pdfElement.style.position = 'fixed';
+        pdfElement.style.left = '-9999px';
         pdfElement.style.display = 'none';
+
         setIsLoading(false);
         onOpenChange(false);
         setSelectedMemberId(null);
@@ -133,7 +139,7 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
       </DialogContent>
     </Dialog>
 
-    <div id="pdf-content" style={{ position: 'absolute', left: '-9999px', display: 'none' }}>
+    <div id="pdf-content" style={{ position: 'fixed', left: '-9999px', display: 'none' }}>
         {selectedMember && (
             <PdfDocument member={selectedMember} language={language} isRegistration={false} />
         )}
