@@ -105,9 +105,9 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
                     <p style={{ fontSize: '13px', color: '#333' }}>{language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature'}</p>
                  </div>
             </div>
-             <div style={{ marginTop: '25px', fontSize: '11px', color: '#555', textAlign: 'center', paddingTop: '15px', borderTop: '1px solid #eee' }}>
+             <div style={{ marginTop: '25px', fontSize: '10px', color: '#555', textAlign: 'center', paddingTop: '15px', borderTop: '1px solid #eee' }}>
                 <p style={{ fontWeight: 'bold' }}>© 2025 Seva Sangathan (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
-                <p style={{ fontWeight: 'bold', fontStyle: 'italic', marginTop: '10px' }}>DEVELOPED BY AL-SADEEQ TEAM</p>
+                <p style={{ fontWeight: 'bold', fontStyle: 'italic', marginTop: '10px' }}>DEVELOPED BY (supported) AL-SADEEQ TEAM</p>
              </div>
         </div>
     );
