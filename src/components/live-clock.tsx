@@ -7,12 +7,10 @@ import { useAppContext } from '@/context/app-context';
 
 export function LiveClock() {
   const { language } = useAppContext();
-  const [isClient, setIsClient] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
   const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
-    setIsClient(true);
     const timer = setInterval(() => {
       const now = new Date();
       
@@ -43,9 +41,6 @@ export function LiveClock() {
     };
   }, [language]);
   
-  if (!isClient) {
-    return null;
-  }
 
   return (
     <div className="px-5 py-3 text-sm text-muted-foreground space-y-2 border-t border-b border-dashed mt-2">

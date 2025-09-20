@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import * as React from 'react';
@@ -33,6 +34,7 @@ import { useToast } from '@/hooks/use-toast';
 import { LanguageSwitcher } from './language-switcher';
 import { LiveClock } from './live-clock';
 import { RegisterMemberDialog } from './home/register-member-dialog';
+import { useIsClient } from '@/hooks/use-is-client';
 
 const navItems = [
   { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, adminOnly: false },
@@ -48,6 +50,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [password, setPassword] = React.useState('');
   const [passwordError, setPasswordError] = React.useState('');
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
+  const isClient = useIsClient();
 
   const handleRoleChange = (isAdmin: boolean) => {
     if (isAdmin) {
@@ -111,7 +114,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex-1">
              {navLinks}
-             <LiveClock />
+             {isClient && <LiveClock />}
             </div>
           </div>
         </div>
@@ -136,13 +139,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   </Link>
                 </div>
                 {navLinks}
-                <LiveClock />
+                {isClient && <LiveClock />}
               </SheetContent>
             </Sheet>
             <div className="w-full flex-1">
               {/* Can add a search bar here if needed */}
             </div>
-            <Button onClick={() => setRegisterOpen(true)}>
+            <Button variant="default" onClick={() => setRegisterOpen(true)}>
               <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
             </Button>
             <LanguageSwitcher />
