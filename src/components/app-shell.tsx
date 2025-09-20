@@ -142,7 +142,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="w-full flex-1">
               {/* Can add a search bar here if needed */}
             </div>
-            <Button variant="ghost" onClick={() => setRegisterOpen(true)}>
+            <Button onClick={() => setRegisterOpen(true)}>
               <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
             </Button>
             <LanguageSwitcher />
