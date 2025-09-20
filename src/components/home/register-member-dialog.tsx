@@ -36,6 +36,8 @@ import { Textarea } from '../ui/textarea';
 
 const registrationSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
+  email: z.string().email({ message: 'Invalid email address.' }),
+  phone: z.string().min(10, { message: 'Phone number is too short.' }),
   dob: z.date({ required_error: 'Date of birth is required.' }),
   fatherName: z.string().min(2, { message: "Father's name is required." }),
   motherName: z.string().min(2, { message: "Mother's name is required." }),
@@ -51,7 +53,7 @@ type RegisterMemberDialogProps = {
 };
 
 export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialogProps) {
-  const { language } = useAppContext();
+  const { language, addMember } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<RegistrationFormValues | null>(null);
 
@@ -59,6 +61,8 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     resolver: zodResolver(registrationSchema),
     defaultValues: {
       name: '',
+      email: '',
+      phone: '',
       fatherName: '',
       motherName: '',
       nid: '',
@@ -67,6 +71,12 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
   });
 
   const handleGeneratePdf = async (values: RegistrationFormValues) => {
+    addMember({
+      ...values,
+      dob: values.dob.toISOString(),
+      status: 'inactive'
+    }, true);
+    
     setFormData(values);
     setIsLoading(true);
 
@@ -109,7 +119,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       setIsLoading(false);
       onOpenChange(false);
       form.reset();
-    }, 500);
+    }, 1000);
   };
   
   const conditions_en = [
@@ -167,6 +177,32 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
                   </FormItem>
                 )}
               />
+               <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{language === 'bn' ? 'ইമെ일' : 'Email'}</FormLabel>
+                  <FormControl>
+                    <Input placeholder="name@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{language === 'bn' ? 'ফোন' : 'Phone'}</FormLabel>
+                  <FormControl>
+                    <Input placeholder="+8801700000000" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
                <FormField
                 control={form.control}
                 name="dob"
@@ -259,12 +295,12 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {language === 'bn' ? 'ডাউনলোড হচ্ছে...' : 'Downloading...'}
+                      {language === 'bn' ? 'প্রসেসিং...' : 'Processing...'}
                     </>
                   ) : (
                     <>
                       <Download className="mr-2 h-4 w-4" />
-                      {language === 'bn' ? 'ফর্ম ডাউনলোড করুন' : 'Download Form'}
+                      {language === 'bn' ? 'নিবন্ধন ও ডাউনলোড' : 'Register & Download'}
                     </>
                   )}
                 </Button>

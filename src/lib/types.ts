@@ -7,6 +7,11 @@ export type Member = {
   status: 'active' | 'inactive';
   joinDate: string; // ISO string
   contributions: string;
+  dob?: string;
+  fatherName?: string;
+  motherName?: string;
+  nid?: string;
+  address?: string;
 };
 
 export type Notice = {

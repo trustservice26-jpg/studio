@@ -30,7 +30,7 @@ interface AppContextType {
   currentFunds: number;
   totalDonations: number;
   totalWithdrawals: number;
-  addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>) => void;
+  addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>, fromRegistration?: boolean) => void;
   deleteMember: (memberId: string) => void;
   toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
@@ -142,18 +142,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addMember = async (memberData: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>) => {
+  const addMember = async (memberData: Partial<Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>>, fromRegistration = false) => {
     const newMember: Omit<Member, 'id'> = {
-      ...memberData,
+      name: memberData.name || '',
+      email: memberData.email || '',
+      phone: memberData.phone || '',
+      status: fromRegistration ? 'inactive' : (memberData.status || 'active'),
       joinDate: new Date().toISOString(),
       avatar: '',
       contributions: '',
+      dob: memberData.dob,
+      fatherName: memberData.fatherName,
+      motherName: memberData.motherName,
+      nid: memberData.nid,
+      address: memberData.address,
     };
     try {
       await addDoc(collection(db, 'members'), newMember);
       toast({
         title: language === 'bn' ? "সদস্য যোগ করা হয়েছে" : "Member Added",
-        description: language === 'bn' ? `${memberData.name} সফলভাবে যোগ করা হয়েছে।` : `${memberData.name} has been successfully added.`,
+        description: fromRegistration 
+          ? (language === 'bn' ? 'আপনার নিবন্ধন সফল হয়েছে। অনুমোদনের জন্য অপেক্ষা করুন।': 'Your registration is successful. Please wait for approval.')
+          : (language === 'bn' ? `${memberData.name} সফলভাবে যোগ করা হয়েছে।` : `${memberData.name} has been successfully added.`),
       })
     } catch (e) {
       handleFirestoreError(e as FirestoreError);
