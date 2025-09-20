@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, Landmark, TrendingUp, TrendingDown, Users, Download } from 'lucide-react';
+import { Quote, Landmark, TrendingUp, TrendingDown, Users, Download, UserPlus } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
@@ -14,10 +14,12 @@ import { HomeMemberStatus } from '@/components/home/home-member-status';
 import { PublicNoticeBoard } from '@/components/home/public-notice-board';
 import { Button } from '@/components/ui/button';
 import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
+import { RegisterMemberDialog } from '@/components/home/register-member-dialog';
 
 export default function HomePage() {
   const { members, language, currentFunds, totalDonations, totalWithdrawals } = useAppContext();
   const [isPdfOpen, setPdfOpen] = React.useState(false);
+  const [isRegisterOpen, setRegisterOpen] = React.useState(false);
 
   const cardVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -131,10 +133,15 @@ export default function HomePage() {
                 </section>
                 <section>
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
-                        <Button onClick={() => setPdfOpen(true)} variant="outline">
-                            <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য ফর্ম ডাউনলোড' : 'Download Member Form'}
-                        </Button>
+                         <h2 className="text-2xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
+                         <div className="flex gap-2">
+                            <Button onClick={() => setRegisterOpen(true)}>
+                                <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
+                            </Button>
+                            <Button onClick={() => setPdfOpen(true)} variant="outline">
+                                <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য ফর্ম ডাউনলোড' : 'Download Member Form'}
+                            </Button>
+                        </div>
                     </div>
                     <DataTable columns={publicMemberColumns} data={members} />
                 </section>
@@ -145,6 +152,7 @@ export default function HomePage() {
         </div>
       </div>
       <DownloadPdfDialog open={isPdfOpen} onOpenChange={setPdfOpen} />
+      <RegisterMemberDialog open={isRegisterOpen} onOpenChange={setRegisterOpen} />
        <footer className="py-6 px-4 md:px-6 border-t">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
           <p>© 2025 Seva Sangathan (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
