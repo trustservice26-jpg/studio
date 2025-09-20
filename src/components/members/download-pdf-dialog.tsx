@@ -48,42 +48,52 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
         return;
     }
 
-    const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true });
-    const imgData = canvas.toDataURL('image/png');
+    pdfElement.style.display = 'block';
 
-    const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-    });
-    
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = canvas.width;
-    const imgHeight = canvas.height;
-    const ratio = imgWidth / imgHeight;
-    let canvasPdfWidth = pdfWidth - 20;
-    let canvasPdfHeight = canvasPdfWidth / ratio;
-    
-    if (canvasPdfHeight > pdfHeight - 20) {
-      canvasPdfHeight = pdfHeight - 20;
-      canvasPdfWidth = canvasPdfHeight * ratio;
+    try {
+        const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+        const imgData = canvas.toDataURL('image/png');
+        
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgProps = pdf.getImageProperties(imgData);
+        const imgWidth = imgProps.width;
+        const imgHeight = imgProps.height;
+        
+        const ratio = imgWidth / imgHeight;
+        let finalWidth = pdfWidth - 20; // 10mm margin on each side
+        let finalHeight = finalWidth / ratio;
+
+        if (finalHeight > pdfHeight - 20) {
+            finalHeight = pdfHeight - 20;
+            finalWidth = finalHeight * ratio;
+        }
+
+        const x = (pdfWidth - finalWidth) / 2;
+        const y = 10;
+
+        pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+        pdf.save(`${member.name}-details.pdf`);
+    } catch(error) {
+        console.error("Error generating PDF:", error);
+    } finally {
+        pdfElement.style.display = 'none';
+        setIsLoading(false);
+        onOpenChange(false);
+        setSelectedMemberId(null);
     }
-
-    const x = (pdfWidth - canvasPdfWidth) / 2;
-    const y = 10;
-
-    pdf.addImage(imgData, 'PNG', x, y, canvasPdfWidth, canvasPdfHeight);
-    pdf.save(`${member.name}-details.pdf`);
-
-    setIsLoading(false);
-    onOpenChange(false);
-    setSelectedMemberId(null);
   };
   
   const selectedMember = members.find(m => m.id === selectedMemberId);
 
   return (
+    <>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -104,12 +114,6 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
             </SelectContent>
           </Select>
 
-          {selectedMember && (
-             <div id="pdf-content">
-                <PdfDocument member={selectedMember} language={language} isRegistration={false} />
-             </div>
-          )}
-
         </div>
         <DialogFooter>
           <Button onClick={handleDownload} disabled={!selectedMemberId || isLoading}>
@@ -128,5 +132,12 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
         </DialogFooter>
       </DialogContent>
     </Dialog>
+
+    <div id="pdf-content" style={{ position: 'absolute', left: '-9999px', display: 'none' }}>
+        {selectedMember && (
+            <PdfDocument member={selectedMember} language={language} isRegistration={false} />
+        )}
+    </div>
+    </>
   );
 }

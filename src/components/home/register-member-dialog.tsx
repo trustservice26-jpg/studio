@@ -52,6 +52,7 @@ type RegisterMemberDialogProps = {
 export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialogProps) {
   const { language, addMember } = useAppContext();
   const [formData, setFormData] = useState<RegistrationFormValues & { joinDate: string } | null>(null);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
@@ -73,48 +74,68 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     if (!formData) return;
 
     const generatePdf = async () => {
+      setIsGeneratingPdf(true);
       const pdfElement = document.getElementById('pdf-registration-content');
       if (!pdfElement) {
+        setIsGeneratingPdf(false);
         return;
       }
 
-      const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true });
-      const imgData = canvas.toDataURL('image/png');
+      // Temporarily make it visible for rendering, but off-screen
+      pdfElement.style.position = 'absolute';
+      pdfElement.style.left = '-9999px';
+      pdfElement.style.display = 'block';
 
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      });
+      try {
+        const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+        const imgData = canvas.toDataURL('image/png');
+        
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+        });
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgProps = pdf.getImageProperties(imgData);
+        const imgWidth = imgProps.width;
+        const imgHeight = imgProps.height;
+        
+        const ratio = imgWidth / imgHeight;
+        let finalWidth = pdfWidth - 20; // 10mm margin on each side
+        let finalHeight = finalWidth / ratio;
 
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = imgWidth / imgHeight;
-      let canvasPdfWidth = pdfWidth - 20;
-      let canvasPdfHeight = canvasPdfWidth / ratio;
+        if (finalHeight > pdfHeight - 20) {
+            finalHeight = pdfHeight - 20;
+            finalWidth = finalHeight * ratio;
+        }
 
-      if (canvasPdfHeight > pdfHeight - 20) {
-        canvasPdfHeight = pdfHeight - 20;
-        canvasPdfWidth = canvasPdfHeight * ratio;
+        const x = (pdfWidth - finalWidth) / 2;
+        const y = 10;
+
+        pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+        pdf.save(`${formData.name}-registration-form.pdf`);
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      } finally {
+        // Hide it again
+        pdfElement.style.position = 'fixed';
+        pdfElement.style.left = '-9999px';
+        pdfElement.style.display = 'none';
+
+        setIsGeneratingPdf(false);
+        onOpenChange(false);
+        form.reset();
+        setFormData(null);
       }
-
-      const x = (pdfWidth - canvasPdfWidth) / 2;
-      const y = 10;
-
-      pdf.addImage(imgData, 'PNG', x, y, canvasPdfWidth, canvasPdfHeight);
-      pdf.save(`${formData.name}-registration-form.pdf`);
-
-      onOpenChange(false);
-      form.reset();
-      setFormData(null);
     };
 
-    const timer = setTimeout(generatePdf, 500);
+    const timer = setTimeout(generatePdf, 100);
 
     return () => clearTimeout(timer);
   }, [formData, onOpenChange, form]);
+
 
   const handleRegistration = async (values: RegistrationFormValues) => {
     const joinDate = new Date().toISOString();
@@ -242,8 +263,8 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
                 </div>
               </ScrollArea>
               <DialogFooter>
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? (
+                <Button type="submit" disabled={isSubmitting || isGeneratingPdf}>
+                  {isSubmitting || isGeneratingPdf ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       {language === 'bn' ? 'প্রসেসিং...' : 'Processing...'}
@@ -261,11 +282,9 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
         </DialogContent>
       </Dialog>
       
-      {formData && (
-         <div id="pdf-registration-content">
-            <PdfDocument member={formData} language={language} isRegistration={true} />
-         </div>
-      )}
+      <div id="pdf-registration-content" style={{ position: 'fixed', left: '-9999px', display: 'none' }}>
+        {formData && <PdfDocument member={formData} language={language} isRegistration={true} />}
+      </div>
     </>
   );
 }
