@@ -179,7 +179,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{language === 'bn' ? 'ইമെ일' : 'Email'}</FormLabel>
+                        <FormLabel>{language === 'bn' ? 'E-Mail' : 'Email'}</FormLabel>
                         <FormControl>
                           <Input placeholder="name@example.com" {...field} />
                         </FormControl>
