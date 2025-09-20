@@ -300,7 +300,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
                   ) : (
                     <>
                       <Download className="mr-2 h-4 w-4" />
-                      {language === 'bn' ? 'নিবন্ধন ও ডাউনলোড' : 'Register & Download'}
+                      {language === 'bn' ? 'এখন নিবন্ধন করুন' : 'Register Now'}
                     </>
                   )}
                 </Button>
