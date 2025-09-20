@@ -147,7 +147,7 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
       </Dialog>
       
       <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
-        {selectedMember && (
+        {selectedMember && isGeneratingPdf && (
             <div id="pdf-content-wrapper">
               <PdfDocument member={selectedMember} language={language} isRegistration={false} />
             </div>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { Member } from "@/lib/types";
@@ -42,7 +43,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
       const conditions = language === 'bn' ? conditions_bn : conditions_en;
 
     return (
-        <div style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '20px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
+        <div style={{ width: '800px', padding: '20px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '2px solid #87CEEB', paddingBottom: '15px' }}>
                 <h1 style={{ fontSize: '30px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '8px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
                 <p style={{ fontSize: '13px', color: '#555', margin: 0 }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>

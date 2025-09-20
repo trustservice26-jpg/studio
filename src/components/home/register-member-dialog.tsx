@@ -282,7 +282,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       </Dialog>
       
       <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
-        {formData && <div id="pdf-registration-content"><PdfDocument member={formData} language={language} isRegistration={true} /></div>}
+        {formData && isGeneratingPdf && <div id="pdf-registration-content"><PdfDocument member={formData} language={language} isRegistration={true} /></div>}
       </div>
     </>
   );
