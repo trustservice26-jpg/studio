@@ -59,25 +59,21 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     
     const pageHeight = pdf.internal.pageSize.getHeight();
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const margin = 25.4; // 1 inch
     
-    const contentWidth = pageWidth - (margin * 2);
-    const contentHeight = pageHeight - (margin * 2);
-
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = imgWidth / imgHeight;
     
-    let finalWidth = contentWidth;
+    let finalWidth = pageWidth;
     let finalHeight = finalWidth / ratio;
 
-    if (finalHeight > contentHeight) {
-        finalHeight = contentHeight;
+    if (finalHeight > pageHeight) {
+        finalHeight = pageHeight;
         finalWidth = finalHeight * ratio;
     }
     
-    const x = margin + (contentWidth - finalWidth) / 2;
-    const y = margin + (contentHeight - finalHeight) / 2;
+    const x = (pageWidth - finalWidth) / 2;
+    const y = (pageHeight - finalHeight) / 2;
 
     pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
     pdf.save(`Seva-Sangathan-Statement-${new Date().toISOString().split('T')[0]}.pdf`);
