@@ -100,7 +100,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         </div>
 
         {/* Hidden element for PDF generation */}
-        <div id="pdf-statement-content" style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '40px 20px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
+        <div id="pdf-statement-content" style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '40px 10px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ textAlign: 'center', marginBottom: '30px', borderBottom: '2px solid #87CEEB', paddingBottom: '20px' }}>
                 <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '10px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
                 <p style={{ fontSize: '14px', color: '#555', marginTop: '5px' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
