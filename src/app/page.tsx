@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, Landmark, TrendingUp, TrendingDown, Users, Download, UserPlus } from 'lucide-react';
+import { Quote, Landmark, TrendingUp, TrendingDown, Users, Download, UserPlus, Trash2 } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useAppContext } from '@/context/app-context';
@@ -15,11 +15,13 @@ import { PublicNoticeBoard } from '@/components/home/public-notice-board';
 import { Button } from '@/components/ui/button';
 import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
 import { RegisterMemberDialog } from '@/components/home/register-member-dialog';
+import { ClearDataDialog } from '@/components/home/clear-data-dialog';
 
 export default function HomePage() {
-  const { members, language, currentFunds, totalDonations, totalWithdrawals } = useAppContext();
+  const { members, language, currentFunds, totalDonations, totalWithdrawals, userRole } = useAppContext();
   const [isPdfOpen, setPdfOpen] = React.useState(false);
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
+  const [isClearDataOpen, setClearDataOpen] = React.useState(false);
 
   const cardVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -102,6 +104,14 @@ export default function HomePage() {
       </motion.section>
 
       <div className="container mx-auto py-12 px-4 md:px-6">
+        {userRole === 'admin' && (
+          <section className="mb-8 text-right">
+              <Button variant="destructive" onClick={() => setClearDataOpen(true)}>
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {language === 'bn' ? 'সমস্ত ডেটা মুছুন' : 'Clear All Data'}
+              </Button>
+          </section>
+        )}
         <section className="mb-12">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               {financialStats.map((stat, index) => (
@@ -150,6 +160,7 @@ export default function HomePage() {
       </div>
       <DownloadPdfDialog open={isPdfOpen} onOpenChange={setPdfOpen} />
       <RegisterMemberDialog open={isRegisterOpen} onOpenChange={setRegisterOpen} />
+      <ClearDataDialog open={isClearDataOpen} onOpenChange={setClearDataOpen} />
        <footer className="py-6 px-4 md:px-6 border-t">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
           <p>© 2025 Seva Sangathan (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>

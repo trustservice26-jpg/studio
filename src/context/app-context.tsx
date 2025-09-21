@@ -39,6 +39,7 @@ interface AppContextType {
   addTransaction: (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => void;
   deleteTransaction: (transactionId: string) => void;
   clearAllTransactions: () => void;
+  clearAllData: () => void;
   setUserRole: (role: UserRole) => void;
   setLanguage: (language: 'en' | 'bn') => void;
 }
@@ -298,6 +299,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
 };
 
+  const clearAllData = async () => {
+    const batch = writeBatch(db);
+    const collectionsToDelete = ['members', 'notices', 'transactions'];
+    try {
+      for (const colName of collectionsToDelete) {
+        const querySnapshot = await getDocs(collection(db, colName));
+        querySnapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+      }
+      await batch.commit();
+      toast({
+        variant: 'destructive',
+        title: language === 'bn' ? 'সমস্ত ডেটা মুছে ফেলা হয়েছে' : 'All Application Data Cleared',
+        description: language === 'bn' ? 'সমস্ত সদস্য, নোটিশ এবং লেনদেন স্থায়ীভাবে মুছে ফেলা হয়েছে।' : 'All members, notices, and transactions have been permanently deleted.',
+      });
+    } catch (error) {
+      handleFirestoreError(error as FirestoreError);
+    }
+  };
+
   const contextValue = {
     members,
     notices,
@@ -311,6 +333,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addTransaction,
     deleteTransaction,
     clearAllTransactions,
+    clearAllData,
     setUserRole,
     language,
     setLanguage: handleSetLanguage,
