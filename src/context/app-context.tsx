@@ -231,12 +231,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => {
+ const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => {
     const { sendEmail, ...restOfTransaction } = transaction;
     const newTransaction: Omit<Transaction, 'id'> = {
       ...restOfTransaction,
       date: new Date().toISOString(),
-      description: transaction.description || (transaction.type === 'donation' ? 'Donation' : 'Withdrawal'),
+      description: transaction.description || (transaction.type === 'donation' ? (language === 'bn' ? 'অনুদান' : 'Donation') : (language === 'bn' ? 'উত্তোলন' : 'Withdrawal')),
     };
 
     try {
@@ -248,23 +248,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       const fullTransaction = { ...newTransaction, id: docRef.id };
 
-      if (transaction.type === 'donation' && sendEmail && transaction.memberName) {
-        const member = members.find(m => m.name === transaction.memberName);
-        if (member && member.email) {
-          await sendTransactionEmail({
-            to: member.email,
-            transaction: fullTransaction,
-          });
-        }
-      } else if (transaction.type === 'withdrawal') {
-        const allMemberEmails = members
-          .filter(m => m.email && m.status === 'active')
-          .map(m => m.email);
-        if (allMemberEmails.length > 0) {
-          await sendTransactionEmail({
-            to: allMemberEmails,
-            transaction: fullTransaction,
-          });
+      if (sendEmail) {
+        if (transaction.type === 'donation' && transaction.memberName) {
+          const member = members.find(m => m.name === transaction.memberName);
+          if (member && member.email) {
+            await sendTransactionEmail({
+              to: member.email,
+              transaction: fullTransaction,
+              language,
+            });
+          }
+        } else if (transaction.type === 'withdrawal') {
+          const activeMemberEmails = members
+            .filter(m => m.status === 'active' && m.email)
+            .map(m => m.email);
+
+          if (activeMemberEmails.length > 0) {
+            await sendTransactionEmail({
+              to: activeMemberEmails,
+              transaction: fullTransaction,
+              language,
+            });
+          }
         }
       }
     } catch (e) {
