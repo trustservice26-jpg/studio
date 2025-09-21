@@ -68,33 +68,24 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
                 format: 'a4'
             });
             
-            const topMargin = 12.7; // 0.5 inch
-            const bottomMargin = 12.7; // 0.5 inch
-            const leftMargin = 6.35; // 0.25 inch
-            const rightMargin = 6.35; // 0.25 inch
-
             const pageHeight = pdf.internal.pageSize.getHeight();
             const pageWidth = pdf.internal.pageSize.getWidth();
-
-            const usableWidth = pageWidth - leftMargin - rightMargin;
-            const usableHeight = pageHeight - topMargin - bottomMargin;
 
             const imgWidth = canvas.width;
             const imgHeight = canvas.height;
             const ratio = imgWidth / imgHeight;
 
-            let finalWidth = usableWidth;
-            let finalHeight = finalWidth / ratio;
-
-            if (finalHeight > usableHeight) {
-                finalHeight = usableHeight;
-                finalWidth = finalHeight * ratio;
+            const finalWidth = pageWidth - 20; // 10mm margin on each side
+            const finalHeight = finalWidth / ratio;
+            
+            let y = 10;
+            if (finalHeight > pageHeight) {
+              y = 0;
+            } else {
+              y = (pageHeight - finalHeight) / 2;
             }
-
-            const x = leftMargin;
-            const y = topMargin;
-
-            pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+            
+            pdf.addImage(imgData, 'PNG', 10, y, finalWidth, finalHeight);
             pdf.save(`${selectedMember!.name}-details.pdf`);
         } catch (error) {
             console.error("Error generating PDF:", error);
