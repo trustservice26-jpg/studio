@@ -34,6 +34,7 @@ import { useAppContext } from '@/context/app-context';
 const memberSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   phone: z.string().min(10, { message: 'Phone number is too short.' }),
+  email: z.string().email({ message: 'Invalid email address.' }).optional().or(z.literal('')),
   status: z.enum(['active', 'inactive']),
 });
 
@@ -50,6 +51,7 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
     defaultValues: {
       name: '',
       phone: '',
+      email: '',
       status: 'active',
     },
   });
@@ -92,6 +94,19 @@ export function AddMemberDialog({ open, onOpenChange }: AddMemberDialogProps) {
                   <FormLabel>{language === 'bn' ? 'ফোন' : 'Phone'}</FormLabel>
                   <FormControl>
                     <Input placeholder="+8801700000000" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{language === 'bn' ? 'ইমেইল (ঐচ্ছিক)' : 'Email (Optional)'}</FormLabel>
+                  <FormControl>
+                    <Input placeholder="member@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

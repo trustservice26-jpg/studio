@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal, ArrowUpDown, History } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown, History, Mail } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -157,6 +157,17 @@ export const columns: ColumnDef<Member>[] = [
         const { language } = useAppContext();
         return <div>{language === 'bn' ? 'ফোন' : 'Phone'}</div>
     },
+  },
+  {
+    accessorKey: "email",
+    header: () => {
+        const { language } = useAppContext();
+        return <div className="flex items-center"><Mail className="mr-2 h-4 w-4" />{language === 'bn' ? 'ইমেইল' : 'Email'}</div>
+    },
+    cell: ({ row }) => {
+        const email = row.getValue("email") as string;
+        return email ? <a href={`mailto:${email}`} className="hover:underline">{email}</a> : <span className="text-muted-foreground/50">N/A</span>
+    }
   },
   {
     accessorKey: "joinDate",

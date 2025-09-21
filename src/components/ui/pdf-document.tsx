@@ -71,6 +71,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
                     {member.motherName && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'মাতার নাম' : "Mother's Name"}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.motherName}</td></tr>}
                     {member.nid && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.'}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.nid}</td></tr>}
                     {member.phone && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ফোন' : 'Phone'}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.phone}</td></tr>}
+                    {member.email && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ইমেইল' : 'Email'}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.email}</td></tr>}
                     <tr>
                         <td style={{ padding: '10px 0', fontWeight: 'bold', verticalAlign: 'top' }}>{language === 'bn' ? 'ঠিকানা' : 'Address'}</td>
                         <td style={{ padding: '10px 0', textAlign: 'right' }}>

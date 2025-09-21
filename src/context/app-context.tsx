@@ -18,7 +18,8 @@ import {
 import { db } from '@/lib/firebase';
 import type { Member, UserRole, Notice, Transaction } from '@/lib/types';
 import { initialMembers, initialNotices, initialTransactions } from '@/lib/data';
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
+import { sendTransactionEmail, sendWelcomeEmail } from '@/lib/email';
 
 
 interface AppContextType {
@@ -35,7 +36,7 @@ interface AppContextType {
   toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
   deleteNotice: (noticeId: string) => void;
-  addTransaction: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
+  addTransaction: (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => void;
   deleteTransaction: (transactionId: string) => void;
   clearAllTransactions: () => void;
   setUserRole: (role: UserRole) => void;
@@ -146,6 +147,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const newMember: Omit<Member, 'id'> = {
       name: memberData.name || '',
       phone: memberData.phone || '',
+      email: memberData.email,
       status: fromRegistration ? 'inactive' : (memberData.status || 'active'),
       joinDate: new Date().toISOString(),
       avatar: '',
@@ -164,6 +166,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
           ? (language === 'bn' ? 'আপনার নিবন্ধন সফল হয়েছে। অনুমোদনের জন্য অপেক্ষা করুন।': 'Your registration is successful. Please wait for approval.')
           : (language === 'bn' ? `${memberData.name} সফলভাবে যোগ করা হয়েছে।` : `${memberData.name} has been successfully added.`),
       });
+
+      if (fromRegistration && newMember.email) {
+        await sendWelcomeEmail({
+          to: newMember.email,
+          member: newMember,
+          language: language,
+        });
+      }
 
     } catch (e) {
       handleFirestoreError(e as FirestoreError);
@@ -229,7 +239,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
- const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'>) => {
+ const addTransaction = async (transactionData: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => {
+    const { sendEmail = false, ...transaction } = transactionData;
     const newTransaction: Omit<Transaction, 'id'> = {
       ...transaction,
       date: new Date().toISOString(),
@@ -237,11 +248,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
 
     try {
-      await addDoc(collection(db, 'transactions'), newTransaction);
+      const docRef = await addDoc(collection(db, 'transactions'), newTransaction);
+      const fullTransaction: Transaction = { ...newTransaction, id: docRef.id };
+      
       toast({
         title: language === 'bn' ? 'লেনদেন সফল' : 'Transaction Successful',
         description: language === 'bn' ? `একটি নতুন ${transaction.type === 'donation' ? 'অনুদান' : 'উত্তোলন'} রেকর্ড করা হয়েছে।` : `A new ${transaction.type} has been recorded.`,
       });
+      
+      if (sendEmail) {
+        if (fullTransaction.type === 'donation' && fullTransaction.memberName) {
+          const member = members.find(m => m.name === fullTransaction.memberName);
+          if (member && member.email) {
+            await sendTransactionEmail({
+              to: member.email,
+              transaction: fullTransaction,
+              language
+            });
+          }
+        } else if (fullTransaction.type === 'withdrawal') {
+          const activeMembers = members.filter(m => m.status === 'active' && m.email);
+          const recipientEmails = activeMembers.map(m => m.email!);
+          if (recipientEmails.length > 0) {
+            await sendTransactionEmail({
+              to: recipientEmails,
+              transaction: fullTransaction,
+              language
+            });
+          }
+        }
+      }
 
     } catch (e) {
       handleFirestoreError(e as FirestoreError);

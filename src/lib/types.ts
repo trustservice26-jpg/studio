@@ -2,6 +2,7 @@ export type Member = {
   id: string;
   name: string;
   phone: string;
+  email?: string;
   avatar: string;
   status: 'active' | 'inactive';
   joinDate: string; // ISO string

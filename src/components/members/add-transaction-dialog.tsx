@@ -1,6 +1,7 @@
 
 'use client';
 
+import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -30,11 +31,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAppContext } from '@/context/app-context';
+import { Checkbox } from '../ui/checkbox';
+import { Label } from '../ui/label';
 
 const transactionSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
   description: z.string().optional(),
   memberName: z.string().optional(),
+  sendEmail: z.boolean().default(true),
 });
 
 type AddTransactionDialogProps = {
@@ -45,6 +49,7 @@ type AddTransactionDialogProps = {
 
 export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactionDialogProps) {
   const { addTransaction, members, language } = useAppContext();
+  const [showEmailCheckbox, setShowEmailCheckbox] = React.useState(false);
 
   const form = useForm<z.infer<typeof transactionSchema>>({
     resolver: zodResolver(transactionSchema),
@@ -52,17 +57,33 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
       amount: 0,
       description: '',
       memberName: '',
+      sendEmail: true,
     },
   });
+
+  React.useEffect(() => {
+    form.reset({
+        amount: 0,
+        description: '',
+        memberName: '',
+        sendEmail: true,
+    });
+    setShowEmailCheckbox(false);
+  }, [open, form]);
+
+  const handleMemberChange = (value: string) => {
+    form.setValue('memberName', value);
+    const member = members.find(m => m.name === value);
+    setShowEmailCheckbox(!!(member && member.email));
+  }
   
   const isDonation = type === 'donation';
   const title = isDonation ? (language === 'bn' ? 'নতুন অনুদান যোগ করুন' : 'Add New Donation') : (language === 'bn' ? 'নতুন উত্তোলন যোগ করুন' : 'Add New Withdrawal');
   const description = isDonation ? (language === 'bn' ? 'অনুদান যোগ করতে বিবরণ লিখুন।' : 'Enter the details of the new donation.') : (language === 'bn' ? 'উত্তোলন যোগ করতে বিবরণ লিখুন।' : 'Enter the details of the new withdrawal.');
   
   function onSubmit(values: z.infer<typeof transactionSchema>) {
-    const description = values.description || (isDonation ? 'Donation' : 'Withdrawal');
+    const description = values.description || (isDonation ? (language === 'bn' ? 'অনুদান' : 'Donation') : (language === 'bn' ? 'উত্তোলন' : 'Withdrawal'));
     addTransaction({ ...values, description, type });
-    form.reset();
     onOpenChange(false);
   }
 
@@ -96,7 +117,7 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>{language === 'bn' ? 'দাতা (ঐচ্ছিক)' : 'Donated By (Optional)'}</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={handleMemberChange} defaultValue={field.value}>
                         <FormControl>
                             <SelectTrigger>
                             <SelectValue placeholder={language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select a member'} />
@@ -113,8 +134,43 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                     </FormItem>
                     )}
                 />
+                {showEmailCheckbox && (
+                    <FormField
+                        control={form.control}
+                        name="sendEmail"
+                        render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                           <FormControl>
+                                <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                                <Label htmlFor="send-email-checkbox">{language === 'bn' ? 'ধন্যবাদ ইমেল পাঠান' : 'Send thank you email'}</Label>
+                                <p className="text-sm text-muted-foreground">
+                                    {language === 'bn' ? 'সদস্যকে তাদের অনুদানের জন্য একটি ইমেল বিজ্ঞপ্তি পাঠান।' : 'Send an email notification to the member for their donation.'}
+                                </p>
+                            </div>
+                        </FormItem>
+                        )}
+                    />
+                )}
               </>
             )}
+             <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{language === 'bn' ? 'বিবরণ (ঐচ্ছিক)' : 'Description (Optional)'}</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <DialogFooter>
               <Button type="submit">{isDonation ? (language === 'bn' ? 'অনুদান যোগ করুন' : 'Add Donation') : (language === 'bn' ? 'উত্তোলন যোগ করুন' : 'Add Withdrawal')}</Button>
             </DialogFooter>

@@ -34,6 +34,7 @@ import { PdfDocument } from '../ui/pdf-document';
 const registrationSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   phone: z.string().min(10, { message: 'Phone number is too short.' }),
+  email: z.string().email({ message: 'Invalid email address.' }).optional().or(z.literal('')),
   dob: z.string().min(1, { message: 'Date of birth is required.' }),
   fatherName: z.string().min(2, { message: "Father's name is required." }),
   motherName: z.string().min(2, { message: "Mother's name is required." }),
@@ -58,6 +59,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     defaultValues: {
       name: '',
       phone: '',
+      email: '',
       dob: '',
       fatherName: '',
       motherName: '',
@@ -180,6 +182,19 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
                         <FormLabel>{language === 'bn' ? 'ফোন' : 'Phone'}</FormLabel>
                         <FormControl>
                           <Input placeholder="+8801700000000" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                   <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{language === 'bn' ? 'ইমেইল (ঐচ্ছিক)' : 'Email (Optional)'}</FormLabel>
+                        <FormControl>
+                          <Input placeholder="you@example.com" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
