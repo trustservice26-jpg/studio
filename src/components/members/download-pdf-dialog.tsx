@@ -74,16 +74,16 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
             const imgHeight = canvas.height;
             const ratio = imgWidth / imgHeight;
             
-            let finalWidth = pdfWidth - 20;
+            let finalWidth = pdfWidth;
             let finalHeight = finalWidth / ratio;
 
-            if (finalHeight > pdfHeight - 20) {
-                finalHeight = pdfHeight - 20;
+            if (finalHeight > pdfHeight) {
+                finalHeight = pdfHeight;
                 finalWidth = finalHeight * ratio;
             }
 
             const x = (pdfWidth - finalWidth) / 2;
-            const y = 10;
+            const y = 0;
 
             pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
             pdf.save(`${selectedMember!.name}-details.pdf`);

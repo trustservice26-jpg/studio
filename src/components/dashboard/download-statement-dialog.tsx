@@ -62,16 +62,16 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = imgWidth / imgHeight;
-    let canvasPdfWidth = pdfWidth - 20;
+    let canvasPdfWidth = pdfWidth;
     let canvasPdfHeight = canvasPdfWidth / ratio;
     
-    if (canvasPdfHeight > pdfHeight - 20) {
-      canvasPdfHeight = pdfHeight - 20;
+    if (canvasPdfHeight > pdfHeight) {
+      canvasPdfHeight = pdfHeight;
       canvasPdfWidth = canvasPdfHeight * ratio;
     }
 
     const x = (pdfWidth - canvasPdfWidth) / 2;
-    const y = 10;
+    const y = 0;
 
     pdf.addImage(imgData, 'PNG', x, y, canvasPdfWidth, canvasPdfHeight);
     pdf.save(`Seva-Sangathan-Statement-${new Date().toISOString().split('T')[0]}.pdf`);

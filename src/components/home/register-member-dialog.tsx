@@ -118,16 +118,16 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
           const imgHeight = canvas.height;
           const ratio = imgWidth / imgHeight;
           
-          let finalWidth = pdfWidth - 20; // 10mm margin on each side
+          let finalWidth = pdfWidth;
           let finalHeight = finalWidth / ratio;
 
-          if (finalHeight > pdfHeight - 20) {
-              finalHeight = pdfHeight - 20;
+          if (finalHeight > pdfHeight) {
+              finalHeight = pdfHeight;
               finalWidth = finalHeight * ratio;
           }
 
           const x = (pdfWidth - finalWidth) / 2;
-          const y = 10;
+          const y = 0;
 
           pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
           pdf.save(`${formDataForPdf.name}-registration-form.pdf`);
