@@ -238,27 +238,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
       description: transaction.description || (transaction.type === 'donation' ? 'Donation' : 'Withdrawal'),
     };
     try {
-        await addDoc(collection(db, "transactions"), newTransaction);
+        const docRef = await addDoc(collection(db, "transactions"), newTransaction);
         toast({
             title: language === 'bn' ? 'লেনদেন সফল' : 'Transaction Successful',
             description: language === 'bn' ? `একটি নতুন ${transaction.type === 'donation' ? 'অনুদান' : 'উত্তোলন'} রেকর্ড করা হয়েছে।` : `A new ${transaction.type} has been recorded.`,
         });
         
+        const fullTransaction = { ...newTransaction, id: docRef.id };
+        
         // Automated email logic
         if (transaction.type === 'donation' && transaction.memberName && sendEmail) {
             const member = members.find(m => m.name === transaction.memberName);
             if (member && member.email) {
-                sendTransactionEmail({
+                await sendTransactionEmail({
                     to: member.email,
-                    transaction: newTransaction as Transaction,
+                    transaction: fullTransaction,
                 });
             }
         } else if (transaction.type === 'withdrawal') {
-            const allMemberEmails = members.filter(m => m.email).map(m => m.email);
-             sendTransactionEmail({
-                to: allMemberEmails,
-                transaction: newTransaction as Transaction,
-            });
+            const allMemberEmails = members.filter(m => m.email && m.status === 'active').map(m => m.email);
+            if (allMemberEmails.length > 0) {
+              await sendTransactionEmail({
+                  to: allMemberEmails,
+                  transaction: fullTransaction,
+              });
+            }
         }
 
     } catch (e) {
