@@ -13,6 +13,7 @@ import {
   Home,
   ShieldCheck,
   UserPlus,
+  DollarSign,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -40,6 +41,7 @@ const navItems = [
   { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, adminOnly: false },
   { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, adminOnly: true },
   { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, adminOnly: true },
+  { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, adminOnly: true },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {

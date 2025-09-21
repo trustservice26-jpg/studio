@@ -3,21 +3,18 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, CreditCard, Download } from 'lucide-react';
+import { Download } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import { columns } from '@/components/members/columns';
 import { useAppContext } from '@/context/app-context';
 import { Input } from '@/components/ui/input';
-import { AddTransactionDialog } from '@/components/members/add-transaction-dialog';
 import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
 
 export default function MembersPage() {
   const { members, userRole, language } = useAppContext();
-  const [isTransactionOpen, setTransactionOpen] = React.useState(false);
   const [isPdfOpen, setPdfOpen] = React.useState(false);
-  const [transactionType, setTransactionType] = React.useState<'donation' | 'withdrawal'>('donation');
   const [filter, setFilter] = React.useState('');
 
   const filteredMembers = React.useMemo(() => {
@@ -26,11 +23,6 @@ export default function MembersPage() {
     );
   }, [members, filter]);
   
-  const handleOpenTransactionDialog = (type: 'donation' | 'withdrawal') => {
-    setTransactionType(type);
-    setTransactionOpen(true);
-  }
-
   return (
     <motion.div
       className="container mx-auto py-10"
@@ -47,12 +39,6 @@ export default function MembersPage() {
         </div>
         {userRole === 'admin' && (
            <div className="flex gap-2">
-            <Button onClick={() => handleOpenTransactionDialog('donation')}>
-              <DollarSign className="mr-2 h-4 w-4" /> {language === 'bn' ? 'অনুদান যোগ' : 'Add Donation'}
-            </Button>
-             <Button onClick={() => handleOpenTransactionDialog('withdrawal')} variant="outline">
-              <CreditCard className="mr-2 h-4 w-4" /> {language === 'bn' ? 'উত্তোলন যোগ' : 'Add Withdrawal'}
-            </Button>
              <Button onClick={() => setPdfOpen(true)} variant="outline">
                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'পিডিএফ ডাউনলোড' : 'Download PDF'}
             </Button>
@@ -69,22 +55,6 @@ export default function MembersPage() {
         />
       </DataTable>
 
-      {userRole === 'admin' && (
-        <div className="flex justify-end gap-2 mt-4">
-          <Button onClick={() => handleOpenTransactionDialog('donation')}>
-            <DollarSign className="mr-2 h-4 w-4" /> {language === 'bn' ? 'অনুদান যোগ' : 'Add Donation'}
-          </Button>
-          <Button onClick={() => handleOpenTransactionDialog('withdrawal')} variant="outline">
-            <CreditCard className="mr-2 h-4 w-4" /> {language === 'bn' ? 'উত্তোলন যোগ' : 'Add Withdrawal'}
-          </Button>
-        </div>
-      )}
-
-      <AddTransactionDialog 
-        open={isTransactionOpen} 
-        onOpenChange={setTransactionOpen}
-        type={transactionType}
-      />
       <DownloadPdfDialog open={isPdfOpen} onOpenChange={setPdfOpen} />
     </motion.div>
   );
