@@ -71,27 +71,27 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
         <div style={{ width: '800px', padding: '0', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px', borderBottom: '2px solid #87CEEB', paddingBottom: '10px' }}>
                 <div style={{ textAlign: 'left' }}>
-                    <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '6px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
-                    <p style={{ fontSize: '12px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
+                    <h1 style={{ fontSize: '30px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '6px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
+                    <p style={{ fontSize: '14px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>
                 {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '70px', height: '70px' }} />}
             </div>
-            <h2 style={{ textAlign: 'center', fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' }}>
+            <h2 style={{ textAlign: 'center', fontSize: '22px', fontWeight: 'bold', marginBottom: '15px' }}>
                 {isRegistration ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Member Registration Form') : (language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details')}
             </h2>
             
             <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '15px', justifyContent: 'space-between' }}>
                  <div style={{ flex: 1 }}>
-                    <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0, color: '#333' }}>{member.name}</h3>
+                    <h3 style={{ fontSize: '22px', fontWeight: 'bold', margin: 0, color: '#333' }}>{member.name}</h3>
                  </div>
                  <div style={{ marginLeft: '20px' }}>
                     <div style={{ width: '100px', height: '125px', border: '2px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9f9f9' }}>
-                       <p style={{ color: '#aaa', fontSize: '12px', textAlign: 'center' }}>{language === 'bn' ? 'পাসপোর্ট সাইজের ছবি' : 'Passport Size Photo'}</p>
+                       <p style={{ color: '#aaa', fontSize: '13px', textAlign: 'center' }}>{language === 'bn' ? 'পাসপোর্ট সাইজের ছবি' : 'Passport Size Photo'}</p>
                     </div>
                  </div>
             </div>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', marginBottom: '15px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', marginBottom: '15px' }}>
                 <tbody>
                     {member.joinDate && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '6px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date'}</td><td style={{ padding: '6px 0', textAlign: 'right' }}>{new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</td></tr>}
                     {member.dob && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '6px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth'}</td><td style={{ padding: '6px 0', textAlign: 'right' }}>{member.dob}</td></tr>}
@@ -115,8 +115,8 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
             </table>
             
             <div style={{marginTop: '10px'}}>
-                <h3 style={{fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '4px', marginBottom: '8px'}}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
-                <ul style={{ listStyleType: 'none', paddingLeft: '0px', fontSize: '10px', color: '#333' }}>
+                <h3 style={{fontSize: '16px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '4px', marginBottom: '8px'}}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
+                <ul style={{ listStyleType: 'none', paddingLeft: '0px', fontSize: '13px', color: '#333' }}>
                     {conditions.map((condition, index) => (
                         <li key={index} style={{ marginBottom: '4px', fontWeight: 'bold', textIndent: '-1.2em', paddingLeft: '1.2em' }}>• {condition}</li>
                     ))}
@@ -126,19 +126,21 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
             <div style={{ marginTop: '25px', paddingTop: '8px', borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ textAlign: 'center' }}>
                     <div style={{ borderTop: '2px dotted #aaa', width: '160px', margin: '15px 0 5px 0' }}></div>
-                    <p style={{ fontSize: '12px', color: '#333' }}>{language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature'}</p>
+                    <p style={{ fontSize: '13px', color: '#333' }}>{language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature'}</p>
                 </div>
                  <div style={{ textAlign: 'center' }}>
                     <div style={{ borderTop: '2px dotted #aaa', width: '160px', margin: '15px 0 5px 0' }}></div>
-                    <p style={{ fontSize: '12px', color: '#333' }}>{language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature'}</p>
+                    <p style={{ fontSize: '13px', color: '#333' }}>{language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature'}</p>
                  </div>
             </div>
-             <div style={{ marginTop: '10px', fontSize: '10px', color: '#000', textAlign: 'center', paddingTop: '8px', borderTop: '1px solid #eee' }}>
+             <div style={{ marginTop: '10px', fontSize: '12px', color: '#000', textAlign: 'center', paddingTop: '8px', borderTop: '1px solid #eee' }}>
                 <p style={{ fontWeight: 'bold' }}>© 2025 Seva Sangathan (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
-                <p style={{ fontWeight: 'bold', fontStyle: 'italic', marginTop: '5px', fontSize: '9px', color: '#000' }}>Developed & Supported by AL-SADEEQ Team.</p>
+                <p style={{ fontWeight: 'bold', fontStyle: 'italic', marginTop: '5px', fontSize: '11px', color: '#000' }}>Developed & Supported by AL-SADEEQ Team.</p>
              </div>
         </div>
     );
 }
+
+    
 
     
