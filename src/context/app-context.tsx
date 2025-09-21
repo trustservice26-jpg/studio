@@ -19,7 +19,7 @@ import { db } from '@/lib/firebase';
 import type { Member, UserRole, Notice, Transaction } from '@/lib/types';
 import { initialMembers, initialNotices, initialTransactions } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast";
-import { sendTransactionEmail, sendWelcomeEmail } from '@/lib/email';
+import { sendTransactionEmail } from '@/lib/email';
 
 
 interface AppContextType {
@@ -167,14 +167,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           : (language === 'bn' ? `${memberData.name} সফলভাবে যোগ করা হয়েছে।` : `${memberData.name} has been successfully added.`),
       });
 
-      if (fromRegistration && newMember.email) {
-        await sendWelcomeEmail({
-          to: newMember.email,
-          member: newMember,
-          language: language,
-        });
-      }
-
     } catch (e) {
       handleFirestoreError(e as FirestoreError);
     }
@@ -263,7 +255,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             await sendTransactionEmail({
               to: member.email,
               transaction: fullTransaction,
-              language
+              language: language
             });
           }
         } else if (fullTransaction.type === 'withdrawal') {
@@ -273,7 +265,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             await sendTransactionEmail({
               to: recipientEmails,
               transaction: fullTransaction,
-              language
+              language: language
             });
           }
         }
@@ -350,3 +342,5 @@ export function useAppContext() {
   }
   return context;
 }
+
+    

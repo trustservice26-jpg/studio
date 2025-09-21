@@ -75,45 +75,6 @@ export async function sendTransactionEmail({ to, transaction, language }: Transa
   }
 }
 
-type WelcomeEmailPayload = {
-    to: string;
-    member: Omit<Member, 'id' | 'avatar' | 'contributions'>;
-    language: 'en' | 'bn';
-}
-
-export async function sendWelcomeEmail({ to, member, language }: WelcomeEmailPayload) {
-    const subject = language === 'bn' ? 'সেবা সংগঠনে স্বাগতম' : 'Welcome to Seva Sangathan';
-
-    const htmlBody = `
-    <div style="font-family: sans-serif; line-height: 1.6;">
-      <h2 style="color: #333;">${language === 'bn' ? `স্বাগতম, ${member.name}!` : `Welcome, ${member.name}!`}</h2>
-      <p>${language === 'bn' ? 'সেবা সংগঠনে আপনার নিবন্ধনের জন্য ধন্যবাদ।' : 'Thank you for registering with Seva Sangathan.'}</p>
-      <p>${language === 'bn' ? 'আপনার সদস্যপদ অনুরোধ পর্যালোচনা করা হচ্ছে। অনুমোদনের পরে আপনাকে অবহিত করা হবে।' : 'Your membership request is under review. You will be notified upon approval.'}</p>
-      <p>${language === 'bn' ? 'আপনার অংশগ্রহণ ও সমর্থনের জন্য ধন্যবাদ।' : 'Thank you for your involvement and support.'}</p>
-      <p>${language === 'bn' ? 'বিনীত,<br><strong>সেবা সংগঠন দল</strong>' : 'Sincerely,<br><strong>The Seva Sangathan Team</strong>'}</p>
-    </div>
-  `;
-
-  if (!resend || !process.env.RESEND_FROM_EMAIL) {
-    console.error('Resend is not configured. Skipping email sending and logging to console instead.');
-    logEmailToConsole({to, subject, htmlBody});
-    return;
-  }
-  
-  try {
-    await resend.emails.send({
-      to,
-      from: process.env.RESEND_FROM_EMAIL,
-      subject,
-      html: htmlBody,
-    });
-    console.log(`Welcome email sent successfully to ${to}`);
-  } catch (error) {
-    console.error('Failed to send welcome email:', error);
-  }
-}
-
-
 function logEmailToConsole({ to, subject, htmlBody }: { to: string | string[], subject: string, htmlBody: string }) {
     console.log('--- Mock Email Sending ---');
     console.log('This is a placeholder. No real email has been sent because Resend is not configured.');
@@ -122,3 +83,5 @@ function logEmailToConsole({ to, subject, htmlBody }: { to: string | string[], s
     console.log(`Body: (HTML content)`);
     console.log('--------------------------');
 }
+
+    
