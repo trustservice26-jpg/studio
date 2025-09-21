@@ -57,23 +57,29 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         format: 'a4'
     });
     
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const margin = 25.4; // 1 inch
+    
+    const contentWidth = pageWidth - (margin * 2);
+    const contentHeight = pageHeight - (margin * 2);
+
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = imgWidth / imgHeight;
-    let canvasPdfWidth = pdfWidth;
-    let canvasPdfHeight = canvasPdfWidth / ratio;
     
-    if (canvasPdfHeight > pdfHeight) {
-      canvasPdfHeight = pdfHeight;
-      canvasPdfWidth = canvasPdfHeight * ratio;
+    let finalWidth = contentWidth;
+    let finalHeight = finalWidth / ratio;
+
+    if (finalHeight > contentHeight) {
+        finalHeight = contentHeight;
+        finalWidth = finalHeight * ratio;
     }
+    
+    const x = margin + (contentWidth - finalWidth) / 2;
+    const y = margin + (contentHeight - finalHeight) / 2;
 
-    const x = (pdfWidth - canvasPdfWidth) / 2;
-    const y = 0;
-
-    pdf.addImage(imgData, 'PNG', x, y, canvasPdfWidth, canvasPdfHeight);
+    pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
     pdf.save(`Seva-Sangathan-Statement-${new Date().toISOString().split('T')[0]}.pdf`);
 
     setIsLoading(false);

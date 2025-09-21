@@ -68,22 +68,27 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
                 format: 'a4'
             });
             
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const margin = 25.4; // 1 inch
+
+            const contentWidth = pageWidth - (margin * 2);
+            const contentHeight = pageHeight - (margin * 2);
+
             const imgWidth = canvas.width;
             const imgHeight = canvas.height;
             const ratio = imgWidth / imgHeight;
-            
-            let finalWidth = pdfWidth;
+
+            let finalWidth = contentWidth;
             let finalHeight = finalWidth / ratio;
 
-            if (finalHeight > pdfHeight) {
-                finalHeight = pdfHeight;
+            if (finalHeight > contentHeight) {
+                finalHeight = contentHeight;
                 finalWidth = finalHeight * ratio;
             }
 
-            const x = (pdfWidth - finalWidth) / 2;
-            const y = 0;
+            const x = margin + (contentWidth - finalWidth) / 2;
+            const y = margin + (contentHeight - finalHeight) / 2;
 
             pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
             pdf.save(`${selectedMember!.name}-details.pdf`);
