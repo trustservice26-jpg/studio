@@ -232,43 +232,45 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => {
-    const { sendEmail = false, ...restOfTransaction } = transaction;
+    const { sendEmail, ...restOfTransaction } = transaction;
     const newTransaction: Omit<Transaction, 'id'> = {
       ...restOfTransaction,
       date: new Date().toISOString(),
       description: transaction.description || (transaction.type === 'donation' ? 'Donation' : 'Withdrawal'),
     };
-    try {
-        const docRef = await addDoc(collection(db, "transactions"), newTransaction);
-        toast({
-            title: language === 'bn' ? 'লেনদেন সফল' : 'Transaction Successful',
-            description: language === 'bn' ? `একটি নতুন ${transaction.type === 'donation' ? 'অনুদান' : 'উত্তোলন'} রেকর্ড করা হয়েছে।` : `A new ${transaction.type} has been recorded.`,
-        });
-        
-        const fullTransaction = { ...newTransaction, id: docRef.id };
-        
-        if (sendEmail && transaction.type === 'donation' && transaction.memberName) {
-            const member = members.find(m => m.name === transaction.memberName);
-            if (member && member.email) {
-                await sendTransactionEmail({
-                    to: member.email,
-                    transaction: fullTransaction,
-                });
-            }
-        } else if (transaction.type === 'withdrawal') {
-            const allMemberEmails = members.filter(m => m.email && m.status === 'active').map(m => m.email);
-            if (allMemberEmails.length > 0) {
-              await sendTransactionEmail({
-                  to: allMemberEmails,
-                  transaction: fullTransaction,
-              });
-            }
-        }
 
+    try {
+      const docRef = await addDoc(collection(db, 'transactions'), newTransaction);
+      toast({
+        title: language === 'bn' ? 'লেনদেন সফল' : 'Transaction Successful',
+        description: language === 'bn' ? `একটি নতুন ${transaction.type === 'donation' ? 'অনুদান' : 'উত্তোলন'} রেকর্ড করা হয়েছে।` : `A new ${transaction.type} has been recorded.`,
+      });
+
+      const fullTransaction = { ...newTransaction, id: docRef.id };
+
+      if (transaction.type === 'donation' && sendEmail && transaction.memberName) {
+        const member = members.find(m => m.name === transaction.memberName);
+        if (member && member.email) {
+          await sendTransactionEmail({
+            to: member.email,
+            transaction: fullTransaction,
+          });
+        }
+      } else if (transaction.type === 'withdrawal') {
+        const allMemberEmails = members
+          .filter(m => m.email && m.status === 'active')
+          .map(m => m.email);
+        if (allMemberEmails.length > 0) {
+          await sendTransactionEmail({
+            to: allMemberEmails,
+            transaction: fullTransaction,
+          });
+        }
+      }
     } catch (e) {
-        handleFirestoreError(e as FirestoreError);
+      handleFirestoreError(e as FirestoreError);
     }
-  }
+  };
 
   const deleteTransaction = async (transactionId: string) => {
     try {
