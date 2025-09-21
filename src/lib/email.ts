@@ -2,14 +2,21 @@
 'use server';
 
 import type { Transaction } from './types';
-import sgMail from '@sendgrid/mail';
+import Mailgun from 'mailgun.js';
+import formData from 'form-data';
 
-// Set the SendGrid API key from environment variables.
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// Initialize Mailgun client
+let mailgun: Mailgun | null = null;
+if (process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN) {
+  mailgun = new Mailgun(formData);
 } else {
-  console.warn('SENDGRID_API_KEY is not set. Emails will not be sent.');
+  console.warn('MAILGUN_API_KEY or MAILGUN_DOMAIN is not set. Emails will be logged to console instead of being sent.');
 }
+
+const mg = mailgun?.client({
+    username: 'api',
+    key: process.env.MAILGUN_API_KEY || '',
+});
 
 type EmailPayload = {
   to: string | string[];
@@ -17,9 +24,9 @@ type EmailPayload = {
 };
 
 /**
- * Sends a transaction-related email using SendGrid.
+ * Sends a transaction-related email using Mailgun.
  * 
- * To send real emails, you must provide a valid SendGrid API key and a
+ * To send real emails, you must provide a valid Mailgun API key, domain, and a
  * "From" email address in your .env file.
  * 
  * @param {EmailPayload} payload - The email payload.
@@ -27,9 +34,9 @@ type EmailPayload = {
  * @param {Transaction} payload.transaction - The transaction details.
  */
 export async function sendTransactionEmail({ to, transaction }: EmailPayload) {
-  if (!process.env.SENDGRID_API_KEY || !process.env.SENDGRID_FROM_EMAIL) {
-    console.error('SendGrid API Key or From Email is not configured. Skipping email.');
-    // Fallback to console logging if SendGrid is not configured
+  if (!mg || !process.env.MAILGUN_FROM_EMAIL) {
+    console.error('Mailgun is not configured. Skipping email.');
+    // Fallback to console logging if Mailgun is not configured
     logEmailToConsole({ to, transaction });
     return;
   }
@@ -70,20 +77,19 @@ export async function sendTransactionEmail({ to, transaction }: EmailPayload) {
   `;
   
   const msg = {
-    to: to,
-    from: process.env.SENDGRID_FROM_EMAIL,
+    to: Array.isArray(to) ? to.join(',') : to,
+    from: process.env.MAILGUN_FROM_EMAIL,
     subject: subject,
     html: body,
   };
 
   try {
-    await sgMail.send(msg);
-    console.log(`Email sent successfully to ${Array.isArray(to) ? to.join(', ') : to}`);
+    if(process.env.MAILGUN_DOMAIN) {
+        await mg.messages.create(process.env.MAILGUN_DOMAIN, msg);
+        console.log(`Email sent successfully to ${msg.to}`);
+    }
   } catch (error) {
     console.error('Failed to send email:', error);
-    if (error.response) {
-      console.error(error.response.body)
-    }
   }
 }
 
