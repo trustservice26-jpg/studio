@@ -64,18 +64,19 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     const imgHeight = canvas.height;
     const ratio = imgWidth / imgHeight;
 
-    let finalWidth = pageWidth;
+    let finalWidth = pageWidth - 20;
     let finalHeight = finalWidth / ratio;
     
+    let y = 10;
     if (finalHeight > pageHeight) {
       finalHeight = pageHeight;
       finalWidth = finalHeight * ratio;
+      y = 0;
+    } else {
+      y = (pageHeight - finalHeight) / 2;
     }
     
-    const x = (pageWidth - finalWidth) / 2;
-    const y = (pageHeight - finalHeight) / 2;
-    
-    pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+    pdf.addImage(imgData, 'PNG', 10, y, finalWidth, finalHeight);
     pdf.save(`Seva-Sangathan-Statement-${new Date().toISOString().split('T')[0]}.pdf`);
 
     setIsLoading(false);
@@ -109,7 +110,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                 </p>
             </div>
 
-            <h2 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>{language === 'bn' ? 'আর্থিক সারাংশ' : 'Financial Summary'}</h2>
+            <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>{language === 'bn' ? 'আর্থিক সারাংশ' : 'Financial Summary'}</h2>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', marginBottom: '15px' }}>
                 <tbody>
                     <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'মোট অনুদান' : 'Total Donations'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalDonations)}</td></tr>
@@ -118,23 +119,23 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                 </tbody>
             </table>
 
-            <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: '15px 0 10px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>{language === 'bn' ? 'অনুদান' : 'Donations'}</h2>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: '15px 0 10px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>{language === 'bn' ? 'অনুদান' : 'Donations'}</h2>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
                 <thead><tr style={{background: '#f2f2f2'}}><th style={{ padding: '5px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>{language === 'bn' ? 'তারিখ' : 'Date'}</th><th style={{ padding: '5px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>{language === 'bn' ? 'বিবরণ' : 'Description'}</th><th style={{ padding: '5px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>{language === 'bn' ? 'দাতা' : 'By'}</th><th style={{ padding: '5px', textAlign: 'right', borderBottom: '1px solid #ddd' }}>{language === 'bn' ? 'পরিমাণ' : 'Amount'}</th></tr></thead>
                 <tbody>
                     {donations.map(tx => (<tr key={tx.id}><td style={{ padding: '4px', borderBottom: '1px solid #eee' }}>{formatDate(tx.date)}</td><td style={{ padding: '4px', borderBottom: '1px solid #eee' }}>{tx.description}</td><td style={{ padding: '4px', borderBottom: '1px solid #eee' }}>{tx.memberName || (language === 'bn' ? 'অজানা' : 'Anonymous')}</td><td style={{ padding: '4px', textAlign: 'right', borderBottom: '1px solid #eee' }}>{formatCurrency(tx.amount)}</td></tr>))}
                 </tbody>
             </table>
 
-            <h2 style={{ fontSize: '18px', fontWeight: 'bold', margin: '15px 0 10px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>{language === 'bn' ? 'উত্তোলন' : 'Withdrawals'}</h2>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: '15px 0 10px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>{language === 'bn' ? 'উত্তোলন' : 'Withdrawals'}</h2>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
                 <thead><tr style={{background: '#f2f2f2'}}><th style={{ padding: '5px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>{language === 'bn' ? 'তারিখ' : 'Date'}</th><th style={{ padding: '5px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>{language === 'bn' ? 'বিবরণ' : 'Description'}</th><th style={{ padding: '5px', textAlign: 'right', borderBottom: '1px solid #ddd' }}>{language === 'bn' ? 'পরিমাণ' : 'Amount'}</th></tr></thead>
                 <tbody>
                     {withdrawals.map(tx => (<tr key={tx.id}><td style={{ padding: '4px', borderBottom: '1px solid #eee' }}>{formatDate(tx.date)}</td><td style={{ padding: '4px', borderBottom: '1px solid #eee' }}>{tx.description}</td><td style={{ padding: '4px', textAlign: 'right', borderBottom: '1px solid #eee' }}>{formatCurrency(tx.amount)}</td></tr>))}
                 </tbody>
             </table>
             
-            <p style={{ marginTop: '20px', fontSize: '11px', fontStyle: 'italic', color: '#555', textAlign: 'center' }}>{language === 'bn' ? 'এটি একটি কম্পিউটার-জেনারেটেড স্টেটমেন্ট।' : 'This is a computer-generated statement.'}</p>
+            <p style={{ marginTop: '20px', fontSize: '10px', fontStyle: 'italic', color: '#555', textAlign: 'center' }}>{language === 'bn' ? 'এটি একটি কম্পিউটার-জেনারেটেড স্টেটমেন্ট।' : 'This is a computer-generated statement.'}</p>
         </div>
 
         <DialogFooter>
@@ -156,6 +157,8 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     </Dialog>
   );
 }
+
+    
 
     
 

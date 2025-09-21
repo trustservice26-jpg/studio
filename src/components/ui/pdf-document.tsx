@@ -76,7 +76,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
                 </div>
                 {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '60px', height: '60px' }} />}
             </div>
-            <h2 style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>
+            <h2 style={{ textAlign: 'center', fontSize: '22px', fontWeight: 'bold', marginBottom: '10px' }}>
                 {isRegistration ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Member Registration Form') : (language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details')}
             </h2>
             
@@ -91,7 +91,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
                  </div>
             </div>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', marginBottom: '10px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', marginBottom: '10px' }}>
                 <tbody>
                     {member.joinDate && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '5px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date'}</td><td style={{ padding: '5px 0', textAlign: 'right' }}>{new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</td></tr>}
                     {member.dob && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '5px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth'}</td><td style={{ padding: '5px 0', textAlign: 'right' }}>{member.dob}</td></tr>}
@@ -115,10 +115,10 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
             </table>
             
             <div style={{marginTop: '8px'}}>
-                <h3 style={{fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '3px', marginBottom: '6px'}}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
-                <ul style={{ listStyleType: 'none', paddingLeft: '0px', fontSize: '11px', color: '#333' }}>
+                <h3 style={{fontSize: '16px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '3px', marginBottom: '6px'}}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
+                <ul style={{ listStyleType: 'none', paddingLeft: '0px', fontSize: '12px', color: '#333' }}>
                     {conditions.map((condition, index) => (
-                        <li key={index} style={{ marginBottom: '3px', fontWeight: 'normal', textIndent: '-1.2em', paddingLeft: '1.2em' }}>• {condition}</li>
+                        <li key={index} style={{ marginBottom: '3px', fontWeight: 'bold', textIndent: '-1.2em', paddingLeft: '1.2em' }}>• {condition}</li>
                     ))}
                 </ul>
             </div>
@@ -140,6 +140,8 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
         </div>
     );
 }
+
+    
 
     
 
