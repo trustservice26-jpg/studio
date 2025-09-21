@@ -230,10 +230,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => {
-    const { sendEmail, ...restTransaction } = transaction;
+  const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'>) => {
     const newTransaction: Omit<Transaction, 'id'> = {
-      ...restTransaction,
+      ...transaction,
       date: new Date().toISOString(),
       description: transaction.description || (transaction.type === 'donation' ? 'Donation' : 'Withdrawal'),
     };
@@ -247,7 +246,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const fullTransaction = { ...newTransaction, id: docRef.id };
         
         // Automated email logic
-        if (transaction.type === 'donation' && transaction.memberName && sendEmail) {
+        if (transaction.type === 'donation' && transaction.memberName) {
             const member = members.find(m => m.name === transaction.memberName);
             if (member && member.email) {
                 await sendTransactionEmail({
