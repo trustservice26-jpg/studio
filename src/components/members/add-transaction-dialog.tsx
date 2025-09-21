@@ -31,7 +31,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAppContext } from '@/context/app-context';
-import { Checkbox } from '../ui/checkbox';
 import { Label } from '../ui/label';
 
 const transactionSchema = z.object({
@@ -39,7 +38,6 @@ const transactionSchema = z.object({
   description: z.string().optional(),
   memberId: z.string().optional(),
   customDonorName: z.string().optional(),
-  sendEmail: z.boolean().default(true),
 }).refine(data => {
     if (data.memberId === 'other') {
         return !!data.customDonorName;
@@ -58,7 +56,8 @@ type AddTransactionDialogProps = {
 
 export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactionDialogProps) {
   const { addTransaction, members, language } = useAppContext();
-  const [showEmailCheckbox, setShowEmailCheckbox] = React.useState(false);
+  const [password, setPassword] = React.useState('');
+  const [passwordError, setPasswordError] = React.useState('');
 
   const form = useForm<z.infer<typeof transactionSchema>>({
     resolver: zodResolver(transactionSchema),
@@ -67,7 +66,6 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
       description: '',
       memberId: '',
       customDonorName: '',
-      sendEmail: true,
     },
   });
 
@@ -79,15 +77,13 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
         description: '',
         memberId: '',
         customDonorName: '',
-        sendEmail: true,
     });
-    setShowEmailCheckbox(false);
+    setPassword('');
+    setPasswordError('');
   }, [open, form]);
 
   const handleMemberChange = (value: string) => {
     form.setValue('memberId', value);
-    const member = members.find(m => m.id === value);
-    setShowEmailCheckbox(!!(member && member.email));
     if (value !== 'other') {
         form.setValue('customDonorName', '');
     }
@@ -98,6 +94,15 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
   const description = isDonation ? (language === 'bn' ? 'অনুদান যোগ করতে বিবরণ লিখুন।' : 'Enter the details of the new donation.') : (language === 'bn' ? 'উত্তোলন যোগ করতে বিবরণ লিখুন।' : 'Enter the details of the new withdrawal.');
   
   function onSubmit(values: z.infer<typeof transactionSchema>) {
+    setPasswordError('');
+
+    if (!isDonation) {
+        if (password !== 'ADMIN') {
+            setPasswordError(language === 'bn' ? 'ভুল পাসওয়ার্ড।' : 'Incorrect password.');
+            return;
+        }
+    }
+
     const description = values.description || (isDonation ? (language === 'bn' ? 'অনুদান' : 'Donation') : (language === 'bn' ? 'উত্তোলন' : 'Withdrawal'));
     
     let memberName = '';
@@ -175,28 +180,6 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                     )}
                   />
                 )}
-                {showEmailCheckbox && (
-                    <FormField
-                        control={form.control}
-                        name="sendEmail"
-                        render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
-                           <FormControl>
-                                <Checkbox
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                />
-                            </FormControl>
-                            <div className="space-y-1 leading-none">
-                                <Label htmlFor="send-email-checkbox">{language === 'bn' ? 'ধন্যবাদ ইমেল পাঠান' : 'Send thank you email'}</Label>
-                                <p className="text-sm text-muted-foreground">
-                                    {language === 'bn' ? 'সদস্যকে তাদের অনুদানের জন্য একটি ইমেল বিজ্ঞপ্তি পাঠান।' : 'Send an email notification to the member for their donation.'}
-                                </p>
-                            </div>
-                        </FormItem>
-                        )}
-                    />
-                )}
               </>
             )}
              <FormField
@@ -212,6 +195,19 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                 </FormItem>
               )}
             />
+            {!isDonation && (
+                <div className="space-y-2">
+                  <Label htmlFor="withdrawal-password">{language === 'bn' ? 'অ্যাডমিন পাসওয়ার্ড' : 'Admin Password'}</Label>
+                  <Input
+                    id="withdrawal-password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder={language === 'bn' ? 'পাসওয়ার্ড লিখুন' : 'Enter password'}
+                  />
+                  {passwordError && <p className="text-sm text-destructive">{passwordError}</p>}
+                </div>
+            )}
             <DialogFooter>
               <Button type="submit">{isDonation ? (language === 'bn' ? 'অনুদান যোগ করুন' : 'Add Donation') : (language === 'bn' ? 'উত্তোলন যোগ করুন' : 'Add Withdrawal')}</Button>
             </DialogFooter>
