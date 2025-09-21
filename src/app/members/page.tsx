@@ -71,6 +71,17 @@ export default function MembersPage() {
         />
       </DataTable>
 
+      {userRole === 'admin' && (
+        <div className="flex justify-end gap-2 mt-4">
+          <Button onClick={() => handleOpenTransactionDialog('donation')}>
+            <DollarSign className="mr-2 h-4 w-4" /> {language === 'bn' ? 'অনুদান যোগ' : 'Add Donation'}
+          </Button>
+          <Button onClick={() => handleOpenTransactionDialog('withdrawal')} variant="outline">
+            <CreditCard className="mr-2 h-4 w-4" /> {language === 'bn' ? 'উত্তোলন যোগ' : 'Add Withdrawal'}
+          </Button>
+        </div>
+      )}
+
       <AddMemberDialog open={isAddMemberOpen} onOpenChange={setAddMemberOpen} />
       <AddTransactionDialog 
         open={isTransactionOpen} 
