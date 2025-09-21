@@ -68,7 +68,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
       const conditions = language === 'bn' ? conditions_bn : conditions_en;
 
     return (
-        <div style={{ width: '800px', padding: '40px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
+        <div style={{ width: '800px', padding: '40px 20px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', borderBottom: '2px solid #87CEEB', paddingBottom: '15px' }}>
                 <div style={{ textAlign: 'left' }}>
                     <h1 style={{ fontSize: '36px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '8px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
