@@ -3,20 +3,18 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { PlusCircle, DollarSign, CreditCard, Download } from 'lucide-react';
+import { DollarSign, CreditCard, Download } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import { columns } from '@/components/members/columns';
 import { useAppContext } from '@/context/app-context';
-import { AddMemberDialog } from '@/components/members/add-member-dialog';
 import { Input } from '@/components/ui/input';
 import { AddTransactionDialog } from '@/components/members/add-transaction-dialog';
 import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
 
 export default function MembersPage() {
   const { members, userRole, language } = useAppContext();
-  const [isAddMemberOpen, setAddMemberOpen] = React.useState(false);
   const [isTransactionOpen, setTransactionOpen] = React.useState(false);
   const [isPdfOpen, setPdfOpen] = React.useState(false);
   const [transactionType, setTransactionType] = React.useState<'donation' | 'withdrawal'>('donation');
@@ -82,7 +80,6 @@ export default function MembersPage() {
         </div>
       )}
 
-      <AddMemberDialog open={isAddMemberOpen} onOpenChange={setAddMemberOpen} />
       <AddTransactionDialog 
         open={isTransactionOpen} 
         onOpenChange={setTransactionOpen}
