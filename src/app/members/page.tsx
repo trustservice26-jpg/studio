@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -56,9 +57,6 @@ export default function MembersPage() {
             </Button>
              <Button onClick={() => setPdfOpen(true)} variant="outline">
                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'পিডিএফ ডাউনলোড' : 'Download PDF'}
-            </Button>
-            <Button onClick={() => setAddMemberOpen(true)}>
-              <PlusCircle className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য যোগ' : 'Add Member'}
             </Button>
           </div>
         )}
