@@ -19,6 +19,7 @@ import { db } from '@/lib/firebase';
 import type { Member, UserRole, Notice, Transaction } from '@/lib/types';
 import { initialMembers, initialNotices, initialTransactions } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast"
+import { sendTransactionEmail } from '@/lib/email';
 
 
 interface AppContextType {
@@ -241,6 +242,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
             title: language === 'bn' ? 'লেনদেন সফল' : 'Transaction Successful',
             description: language === 'bn' ? `একটি নতুন ${transaction.type === 'donation' ? 'অনুদান' : 'উত্তোলন'} রেকর্ড করা হয়েছে।` : `A new ${transaction.type} has been recorded.`,
         });
+        
+        // Automated email logic
+        if (transaction.type === 'donation' && transaction.memberName) {
+            const member = members.find(m => m.name === transaction.memberName);
+            if (member && member.email) {
+                sendTransactionEmail({
+                    to: member.email,
+                    transaction: newTransaction as Transaction,
+                });
+            }
+        } else if (transaction.type === 'withdrawal') {
+            const allMemberEmails = members.filter(m => m.email).map(m => m.email);
+             sendTransactionEmail({
+                to: allMemberEmails,
+                transaction: newTransaction as Transaction,
+            });
+        }
+
     } catch (e) {
         handleFirestoreError(e as FirestoreError);
     }
