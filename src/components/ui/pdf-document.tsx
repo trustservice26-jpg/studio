@@ -1,6 +1,8 @@
 
 "use client";
 
+import { useEffect, useState } from 'react';
+import QRCode from 'qrcode';
 import type { Member } from "@/lib/types";
 
 type PdfDocumentProps = {
@@ -10,6 +12,29 @@ type PdfDocumentProps = {
 };
 
 export function PdfDocument({ member, language, isRegistration }: PdfDocumentProps) {
+    const [qrCodeUrl, setQrCodeUrl] = useState('');
+
+    useEffect(() => {
+        const generateQrCode = async () => {
+            try {
+                const url = await QRCode.toDataURL('https://sevasangathan24.vercel.app', {
+                    errorCorrectionLevel: 'H',
+                    type: 'image/png',
+                    quality: 0.9,
+                    margin: 1,
+                    color: {
+                        dark: '#0D47A1', // Dark blue
+                        light: '#FFFFFF'  // White background
+                    }
+                });
+                setQrCodeUrl(url);
+            } catch (err) {
+                console.error('Failed to generate QR code', err);
+            }
+        };
+        generateQrCode();
+    }, []);
+
     const conditions_en = [
         "ALL members will have to active at any time.",
         "If any member will not active in organization team then he will shown as inactive.",
@@ -44,9 +69,12 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
 
     return (
         <div style={{ width: '800px', padding: '20px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
-            <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '2px solid #87CEEB', paddingBottom: '15px' }}>
-                <h1 style={{ fontSize: '30px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '8px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
-                <p style={{ fontSize: '13px', color: '#555', margin: 0 }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', borderBottom: '2px solid #87CEEB', paddingBottom: '15px' }}>
+                <div style={{ textAlign: 'left' }}>
+                    <h1 style={{ fontSize: '30px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '8px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
+                    <p style={{ fontSize: '13px', color: '#555', margin: 0 }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
+                </div>
+                {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '80px', height: '80px' }} />}
             </div>
             <h2 style={{ textAlign: 'center', fontSize: '18px', fontWeight: 'bold', marginBottom: '25px' }}>
                 {isRegistration ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Member Registration Form') : (language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details')}
