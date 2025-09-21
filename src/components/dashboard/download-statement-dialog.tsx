@@ -56,24 +56,32 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         unit: 'mm',
         format: 'a4'
     });
-    
+
+    const topMargin = 12.7; // 0.5 inch
+    const bottomMargin = 12.7; // 0.5 inch
+    const leftMargin = 6.35; // 0.25 inch
+    const rightMargin = 6.35; // 0.25 inch
+
     const pageHeight = pdf.internal.pageSize.getHeight();
     const pageWidth = pdf.internal.pageSize.getWidth();
-    
+
+    const usableWidth = pageWidth - leftMargin - rightMargin;
+    const usableHeight = pageHeight - topMargin - bottomMargin;
+
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = imgWidth / imgHeight;
-    
-    let finalWidth = pageWidth;
+
+    let finalWidth = usableWidth;
     let finalHeight = finalWidth / ratio;
 
-    if (finalHeight > pageHeight) {
-        finalHeight = pageHeight;
+    if (finalHeight > usableHeight) {
+        finalHeight = usableHeight;
         finalWidth = finalHeight * ratio;
     }
-    
-    const x = (pageWidth - finalWidth) / 2;
-    const y = (pageHeight - finalHeight) / 2;
+
+    const x = leftMargin + (usableWidth - finalWidth) / 2;
+    const y = topMargin + (usableHeight - finalHeight) / 2;
 
     pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
     pdf.save(`Seva-Sangathan-Statement-${new Date().toISOString().split('T')[0]}.pdf`);
