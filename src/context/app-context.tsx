@@ -19,7 +19,7 @@ import { db } from '@/lib/firebase';
 import type { Member, UserRole, Notice, Transaction } from '@/lib/types';
 import { initialMembers, initialNotices, initialTransactions } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast"
-import { sendTransactionEmail, sendWelcomeEmail } from '@/lib/email';
+import { sendTransactionEmail } from '@/lib/email';
 
 
 interface AppContextType {
@@ -167,12 +167,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           : (language === 'bn' ? `${memberData.name} সফলভাবে যোগ করা হয়েছে।` : `${memberData.name} has been successfully added.`),
       });
 
-      if (fromRegistration && newMember.email && newMember.name) {
-        await sendWelcomeEmail({
-          to: newMember.email,
-          name: newMember.name,
-        });
-      }
     } catch (e) {
       handleFirestoreError(e as FirestoreError);
     }
@@ -253,8 +247,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         
         const fullTransaction = { ...newTransaction, id: docRef.id };
         
-        // Automated email logic
-        if (transaction.type === 'donation' && transaction.memberName && sendEmail) {
+        if (sendEmail && transaction.type === 'donation' && transaction.memberName) {
             const member = members.find(m => m.name === transaction.memberName);
             if (member && member.email) {
                 await sendTransactionEmail({

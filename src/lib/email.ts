@@ -15,47 +15,6 @@ type EmailPayload = {
   transaction: Transaction;
 };
 
-type WelcomeEmailPayload = {
-  to: string;
-  name: string;
-}
-
-/**
- * Sends a welcome email to a new member using Resend.
- */
-export async function sendWelcomeEmail({ to, name }: WelcomeEmailPayload) {
-  if (!resend || !process.env.RESEND_FROM_EMAIL) {
-    console.error('Resend is not configured. Skipping welcome email.');
-    return;
-  }
-  
-  const subject = 'Welcome to Seva Sangathan!';
-  const htmlBody = `
-    <div style="font-family: sans-serif; line-height: 1.6;">
-      <h2 style="color: #333;">Welcome, ${name}!</h2>
-      <p>Thank you for registering with Seva Sangathan.</p>
-      <p>Your registration is being reviewed, and your membership will be activated shortly. Once approved, you will have full access to our member portal.</p>
-      <p>We are excited to have you join our community!</p>
-      <p>Sincerely,<br><strong>The Seva Sangathan Team</strong></p>
-    </div>
-  `;
-  
-  const msg = {
-    to,
-    from: process.env.RESEND_FROM_EMAIL,
-    subject,
-    html: htmlBody,
-  };
-
-  try {
-    await resend.emails.send(msg);
-    console.log(`Welcome email sent successfully to ${to}`);
-  } catch (error) {
-    console.error('Failed to send welcome email:', error);
-  }
-}
-
-
 /**
  * Sends a transaction-related email using Resend.
  * 
