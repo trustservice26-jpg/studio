@@ -255,7 +255,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             await sendTransactionEmail({
               to: member.email,
               transaction: fullTransaction,
-              language,
+              language: language,
             });
           }
         } else if (transaction.type === 'withdrawal') {
@@ -267,7 +267,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             await sendTransactionEmail({
               to: activeMemberEmails,
               transaction: fullTransaction,
-              language,
+              language: language,
             });
           }
         }
@@ -343,5 +343,7 @@ export function useAppContext() {
   }
   return context;
 }
+
+    
 
     
