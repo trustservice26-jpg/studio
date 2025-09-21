@@ -2,21 +2,14 @@
 'use server';
 
 import type { Transaction } from './types';
-import Mailgun from 'mailgun.js';
-import formData from 'form-data';
+import { Resend } from 'resend';
 
-// Initialize Mailgun client
-let mailgun: Mailgun | null = null;
-if (process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN) {
-  mailgun = new Mailgun(formData);
+let resend: Resend | null = null;
+if (process.env.RESEND_API_KEY) {
+  resend = new Resend(process.env.RESEND_API_KEY);
 } else {
-  console.warn('MAILGUN_API_KEY or MAILGUN_DOMAIN is not set. Emails will be logged to console instead of being sent.');
+  console.warn('RESEND_API_KEY is not set. Emails will be logged to console instead of being sent.');
 }
-
-const mg = mailgun?.client({
-    username: 'api',
-    key: process.env.MAILGUN_API_KEY || '',
-});
 
 type EmailPayload = {
   to: string | string[];
@@ -24,9 +17,9 @@ type EmailPayload = {
 };
 
 /**
- * Sends a transaction-related email using Mailgun.
+ * Sends a transaction-related email using Resend.
  * 
- * To send real emails, you must provide a valid Mailgun API key, domain, and a
+ * To send real emails, you must provide a valid Resend API key and a
  * "From" email address in your .env file.
  * 
  * @param {EmailPayload} payload - The email payload.
@@ -34,9 +27,8 @@ type EmailPayload = {
  * @param {Transaction} payload.transaction - The transaction details.
  */
 export async function sendTransactionEmail({ to, transaction }: EmailPayload) {
-  if (!mg || !process.env.MAILGUN_FROM_EMAIL) {
-    console.error('Mailgun is not configured. Skipping email.');
-    // Fallback to console logging if Mailgun is not configured
+  if (!resend || !process.env.RESEND_FROM_EMAIL) {
+    console.error('Resend is not configured. Skipping email.');
     logEmailToConsole({ to, transaction });
     return;
   }
@@ -57,7 +49,7 @@ export async function sendTransactionEmail({ to, transaction }: EmailPayload) {
     timeStyle: 'short',
   });
 
-  const body = `
+  const htmlBody = `
     <div style="font-family: sans-serif; line-height: 1.6;">
       <h2 style="color: #333;">Transaction Notification</h2>
       <p>Hello,</p>
@@ -77,17 +69,15 @@ export async function sendTransactionEmail({ to, transaction }: EmailPayload) {
   `;
   
   const msg = {
-    to: Array.isArray(to) ? to.join(',') : to,
-    from: process.env.MAILGUN_FROM_EMAIL,
+    to: to,
+    from: process.env.RESEND_FROM_EMAIL,
     subject: subject,
-    html: body,
+    html: htmlBody,
   };
 
   try {
-    if(process.env.MAILGUN_DOMAIN) {
-        await mg.messages.create(process.env.MAILGUN_DOMAIN, msg);
-        console.log(`Email sent successfully to ${msg.to}`);
-    }
+    await resend.emails.send(msg);
+    console.log(`Email sent successfully to ${Array.isArray(to) ? to.join(',') : to}`);
   } catch (error) {
     console.error('Failed to send email:', error);
   }
