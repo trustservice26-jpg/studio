@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -20,6 +19,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
@@ -30,12 +30,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAppContext } from '@/context/app-context';
-import { Textarea } from '../ui/textarea';
+import { Checkbox } from '../ui/checkbox';
+import { Mail } from 'lucide-react';
 
 const transactionSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
   description: z.string().optional(),
   memberName: z.string().optional(),
+  sendEmail: z.boolean().default(false).optional(),
 });
 
 type AddTransactionDialogProps = {
@@ -53,12 +55,16 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
       amount: 0,
       description: '',
       memberName: '',
+      sendEmail: true,
     },
   });
   
   const isDonation = type === 'donation';
   const title = isDonation ? (language === 'bn' ? 'নতুন অনুদান যোগ করুন' : 'Add New Donation') : (language === 'bn' ? 'নতুন উত্তোলন যোগ করুন' : 'Add New Withdrawal');
   const description = isDonation ? (language === 'bn' ? 'অনুদান যোগ করতে বিবরণ লিখুন।' : 'Enter the details of the new donation.') : (language === 'bn' ? 'উত্তোলন যোগ করতে বিবরণ লিখুন।' : 'Enter the details of the new withdrawal.');
+  
+  const memberName = form.watch('memberName');
+  const selectedMember = members.find(m => m.name === memberName);
 
   function onSubmit(values: z.infer<typeof transactionSchema>) {
     const description = values.description || (isDonation ? 'Donation' : 'Withdrawal');
@@ -113,6 +119,30 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                     </FormItem>
                     )}
                 />
+            )}
+            {isDonation && selectedMember && selectedMember.email && (
+              <FormField
+                control={form.control}
+                name="sendEmail"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                     <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        {language === 'bn' ? 'ধন্যবাদ ইমেল পাঠান' : 'Send thank you email'}
+                      </FormLabel>
+                      <FormDescription>
+                        {language === 'bn' ? `এই অনুদানের জন্য ${selectedMember.name}-কে একটি স্বয়ংক্রিয় ইমেল পাঠান।` : `Send an automated email to ${selectedMember.name} for this donation.`}
+                      </FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
             )}
             <DialogFooter>
               <Button type="submit">{isDonation ? (language === 'bn' ? 'অনুদান যোগ করুন' : 'Add Donation') : (language === 'bn' ? 'উত্তোলন যোগ করুন' : 'Add Withdrawal')}</Button>

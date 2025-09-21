@@ -36,7 +36,7 @@ interface AppContextType {
   toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
   deleteNotice: (noticeId: string) => void;
-  addTransaction: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
+  addTransaction: (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => void;
   deleteTransaction: (transactionId: string) => void;
   clearAllTransactions: () => void;
   setUserRole: (role: UserRole) => void;
@@ -230,9 +230,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'>) => {
+  const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => {
+    const { sendEmail, ...restTransaction } = transaction;
     const newTransaction: Omit<Transaction, 'id'> = {
-      ...transaction,
+      ...restTransaction,
       date: new Date().toISOString(),
       description: transaction.description || (transaction.type === 'donation' ? 'Donation' : 'Withdrawal'),
     };
@@ -244,7 +245,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         });
         
         // Automated email logic
-        if (transaction.type === 'donation' && transaction.memberName) {
+        if (transaction.type === 'donation' && transaction.memberName && sendEmail) {
             const member = members.find(m => m.name === transaction.memberName);
             if (member && member.email) {
                 sendTransactionEmail({
