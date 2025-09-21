@@ -33,7 +33,6 @@ import { PdfDocument } from '../ui/pdf-document';
 
 const registrationSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  email: z.string().email({ message: 'Invalid email address.' }),
   phone: z.string().min(10, { message: 'Phone number is too short.' }),
   dob: z.string().min(1, { message: 'Date of birth is required.' }),
   fatherName: z.string().min(2, { message: "Father's name is required." }),
@@ -58,7 +57,6 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     resolver: zodResolver(registrationSchema),
     defaultValues: {
       name: '',
-      email: '',
       phone: '',
       dob: '',
       fatherName: '',
@@ -170,19 +168,6 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
                       <FormItem>
                         <FormLabel>{language === 'bn' ? 'পূর্ণ নাম' : 'Full Name'}</FormLabel>
                         <FormControl><Input {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{language === 'bn' ? 'E-Mail' : 'Email'}</FormLabel>
-                        <FormControl>
-                          <Input placeholder="name@example.com" {...field} />
-                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}

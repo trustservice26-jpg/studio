@@ -19,7 +19,6 @@ import { db } from '@/lib/firebase';
 import type { Member, UserRole, Notice, Transaction } from '@/lib/types';
 import { initialMembers, initialNotices, initialTransactions } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast"
-import { sendTransactionEmail } from '@/lib/email';
 
 
 interface AppContextType {
@@ -36,7 +35,7 @@ interface AppContextType {
   toggleMemberStatus: (memberId: string) => void;
   addNotice: (message: string) => void;
   deleteNotice: (noticeId: string) => void;
-  addTransaction: (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => void;
+  addTransaction: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
   deleteTransaction: (transactionId: string) => void;
   clearAllTransactions: () => void;
   setUserRole: (role: UserRole) => void;
@@ -146,7 +145,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const addMember = async (memberData: Partial<Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>>, fromRegistration = false) => {
     const newMember: Omit<Member, 'id'> = {
       name: memberData.name || '',
-      email: memberData.email || '',
       phone: memberData.phone || '',
       status: fromRegistration ? 'inactive' : (memberData.status || 'active'),
       joinDate: new Date().toISOString(),
@@ -231,47 +229,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
- const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => {
-    const { sendEmail, ...restOfTransaction } = transaction;
+ const addTransaction = async (transaction: Omit<Transaction, 'id' | 'date'>) => {
     const newTransaction: Omit<Transaction, 'id'> = {
-      ...restOfTransaction,
+      ...transaction,
       date: new Date().toISOString(),
       description: transaction.description || (transaction.type === 'donation' ? (language === 'bn' ? 'অনুদান' : 'Donation') : (language === 'bn' ? 'উত্তোলন' : 'Withdrawal')),
     };
 
     try {
-      const docRef = await addDoc(collection(db, 'transactions'), newTransaction);
+      await addDoc(collection(db, 'transactions'), newTransaction);
       toast({
         title: language === 'bn' ? 'লেনদেন সফল' : 'Transaction Successful',
         description: language === 'bn' ? `একটি নতুন ${transaction.type === 'donation' ? 'অনুদান' : 'উত্তোলন'} রেকর্ড করা হয়েছে।` : `A new ${transaction.type} has been recorded.`,
       });
 
-      const fullTransaction = { ...newTransaction, id: docRef.id };
-
-      if (sendEmail) {
-        if (transaction.type === 'donation' && transaction.memberName) {
-          const member = members.find(m => m.name === transaction.memberName);
-          if (member && member.email) {
-            await sendTransactionEmail({
-              to: member.email,
-              transaction: fullTransaction,
-              language: language,
-            });
-          }
-        } else if (transaction.type === 'withdrawal') {
-          const activeMemberEmails = members
-            .filter(m => m.status === 'active' && m.email)
-            .map(m => m.email);
-
-          if (activeMemberEmails.length > 0) {
-            await sendTransactionEmail({
-              to: activeMemberEmails,
-              transaction: fullTransaction,
-              language: language,
-            });
-          }
-        }
-      }
     } catch (e) {
       handleFirestoreError(e as FirestoreError);
     }
@@ -343,7 +314,3 @@ export function useAppContext() {
   }
   return context;
 }
-
-    
-
-    

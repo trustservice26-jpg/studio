@@ -20,7 +20,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
@@ -31,14 +30,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAppContext } from '@/context/app-context';
-import { Checkbox } from '../ui/checkbox';
-import { Mail } from 'lucide-react';
 
 const transactionSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
   description: z.string().optional(),
   memberName: z.string().optional(),
-  sendEmail: z.boolean().optional(),
 });
 
 type AddTransactionDialogProps = {
@@ -56,7 +52,6 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
       amount: 0,
       description: '',
       memberName: '',
-      sendEmail: true,
     },
   });
   
@@ -117,28 +112,6 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                         <FormMessage />
                     </FormItem>
                     )}
-                />
-                 <FormField
-                  control={form.control}
-                  name="sendEmail"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>
-                          {language === 'bn' ? 'ধন্যবাদ ইমেল পাঠান' : 'Send thank you email'}
-                        </FormLabel>
-                        <FormDescription>
-                           {language === 'bn' ? 'যদি চেক করা হয়, সদস্য একটি ইমেল বিজ্ঞপ্তি পাবেন।' : 'If checked, the member will receive an email notification.'}
-                        </FormDescription>
-                      </div>
-                    </FormItem>
-                  )}
                 />
               </>
             )}

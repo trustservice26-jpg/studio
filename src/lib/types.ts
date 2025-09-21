@@ -1,7 +1,6 @@
 export type Member = {
   id: string;
   name: string;
-  email: string;
   phone: string;
   avatar: string;
   status: 'active' | 'inactive';

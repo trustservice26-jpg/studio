@@ -55,7 +55,6 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
             <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '25px', justifyContent: 'space-between' }}>
                  <div style={{ flex: 1 }}>
                     <h3 style={{ fontSize: '22px', fontWeight: 'bold', margin: 0, color: '#333' }}>{member.name}</h3>
-                    {member.email && <p style={{ fontSize: '15px', color: '#555', margin: '5px 0 0 0' }}>{member.email}</p>}
                  </div>
                  <div style={{ marginLeft: '25px' }}>
                     <div style={{ width: '130px', height: '160px', border: '2px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9f9f9' }}>

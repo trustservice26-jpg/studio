@@ -130,7 +130,6 @@ export const columns: ColumnDef<Member>[] = [
       return (
         <div className="flex flex-col">
            <div className="font-medium">{member.name}</div>
-           <div className="text-sm text-muted-foreground">{member.email}</div>
         </div>
       )
     },

@@ -23,8 +23,7 @@ export default function MembersPage() {
 
   const filteredMembers = React.useMemo(() => {
     return members.filter(member =>
-      member.name.toLowerCase().includes(filter.toLowerCase()) ||
-      member.email.toLowerCase().includes(filter.toLowerCase())
+      member.name.toLowerCase().includes(filter.toLowerCase())
     );
   }, [members, filter]);
   
