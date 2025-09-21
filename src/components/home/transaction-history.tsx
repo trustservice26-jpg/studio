@@ -87,7 +87,7 @@ export function TransactionHistory() {
                     <div className="flex-grow">
                       <p className="font-medium">{tx.description}</p>
                       <p className="text-sm text-muted-foreground">{formatDate(tx.date)}</p>
-                      {tx.memberName && tx.memberName !== 'anonymous' && (
+                      {tx.memberName && tx.memberName.toLowerCase() !== 'anonymous' && (
                         <p className="text-xs text-muted-foreground">{language === 'bn' ? 'দাতা:' : 'By:'} {tx.memberName}</p>
                       )}
                     </div>

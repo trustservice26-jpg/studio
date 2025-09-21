@@ -37,8 +37,17 @@ import { Label } from '../ui/label';
 const transactionSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
   description: z.string().optional(),
-  memberName: z.string().optional(),
+  memberId: z.string().optional(),
+  customDonorName: z.string().optional(),
   sendEmail: z.boolean().default(true),
+}).refine(data => {
+    if (data.memberId === 'other') {
+        return !!data.customDonorName;
+    }
+    return true;
+}, {
+    message: "Donor name is required when 'Other' is selected.",
+    path: ['customDonorName'],
 });
 
 type AddTransactionDialogProps = {
@@ -56,25 +65,32 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
     defaultValues: {
       amount: 0,
       description: '',
-      memberName: '',
+      memberId: '',
+      customDonorName: '',
       sendEmail: true,
     },
   });
+
+  const memberIdValue = form.watch('memberId');
 
   React.useEffect(() => {
     form.reset({
         amount: 0,
         description: '',
-        memberName: '',
+        memberId: '',
+        customDonorName: '',
         sendEmail: true,
     });
     setShowEmailCheckbox(false);
   }, [open, form]);
 
   const handleMemberChange = (value: string) => {
-    form.setValue('memberName', value);
-    const member = members.find(m => m.name === value);
+    form.setValue('memberId', value);
+    const member = members.find(m => m.id === value);
     setShowEmailCheckbox(!!(member && member.email));
+    if (value !== 'other') {
+        form.setValue('customDonorName', '');
+    }
   }
   
   const isDonation = type === 'donation';
@@ -83,7 +99,16 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
   
   function onSubmit(values: z.infer<typeof transactionSchema>) {
     const description = values.description || (isDonation ? (language === 'bn' ? 'অনুদান' : 'Donation') : (language === 'bn' ? 'উত্তোলন' : 'Withdrawal'));
-    addTransaction({ ...values, description, type });
+    
+    let memberName = '';
+    if (values.memberId === 'other') {
+        memberName = values.customDonorName || (language === 'bn' ? 'অজানা' : 'Anonymous');
+    } else {
+        const member = members.find(m => m.id === values.memberId);
+        memberName = member ? member.name : (language === 'bn' ? 'অজানা' : 'Anonymous');
+    }
+    
+    addTransaction({ ...values, memberName, description, type });
     onOpenChange(false);
   }
 
@@ -113,27 +138,43 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
               <>
                  <FormField
                     control={form.control}
-                    name="memberName"
+                    name="memberId"
                     render={({ field }) => (
                     <FormItem>
-                        <FormLabel>{language === 'bn' ? 'দাতা (ঐচ্ছিক)' : 'Donated By (Optional)'}</FormLabel>
+                        <FormLabel>{language === 'bn' ? 'দাতা' : 'Donated By'}</FormLabel>
                         <Select onValueChange={handleMemberChange} defaultValue={field.value}>
                         <FormControl>
                             <SelectTrigger>
-                            <SelectValue placeholder={language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select a member'} />
+                            <SelectValue placeholder={language === 'bn' ? 'দাতা নির্বাচন করুন' : 'Select a donor'} />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            <SelectItem value="anonymous">{language === 'bn' ? 'অজানা/অন্যান্য' : 'Anonymous/Other'}</SelectItem>
+                            <SelectItem value="anonymous">{language === 'bn' ? 'অজানা' : 'Anonymous'}</SelectItem>
                             {members.filter(member => member.status === 'active').map(member => (
-                                <SelectItem key={member.id} value={member.name}>{member.name}</SelectItem>
+                                <SelectItem key={member.id} value={member.id}>{member.name}</SelectItem>
                             ))}
+                             <SelectItem value="other">{language === 'bn' ? 'অন্যান্য...' : 'Other...'}</SelectItem>
                         </SelectContent>
                         </Select>
                         <FormMessage />
                     </FormItem>
                     )}
                 />
+                {memberIdValue === 'other' && (
+                  <FormField
+                    control={form.control}
+                    name="customDonorName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{language === 'bn' ? 'দাতার নাম' : 'Donor Name'}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={language === 'bn' ? 'দাতার নাম লিখুন' : 'Enter donor name'} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
                 {showEmailCheckbox && (
                     <FormField
                         control={form.control}

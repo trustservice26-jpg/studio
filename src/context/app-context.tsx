@@ -231,8 +231,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
- const addTransaction = async (transactionData: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => {
-    const { sendEmail = false, ...transaction } = transactionData;
+ const addTransaction = async (transactionData: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean, memberId?: string }) => {
+    const { sendEmail = false, memberId, ...transaction } = transactionData;
+    
     const newTransaction: Omit<Transaction, 'id'> = {
       ...transaction,
       date: new Date().toISOString(),
@@ -249,23 +250,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
       });
       
       if (sendEmail) {
-        if (fullTransaction.type === 'donation' && fullTransaction.memberName) {
-          const member = members.find(m => m.name === fullTransaction.memberName);
+        if (fullTransaction.type === 'donation' && memberId && memberId !== 'anonymous' && memberId !== 'other') {
+          const member = members.find(m => m.id === memberId);
           if (member && member.email) {
             await sendTransactionEmail({
               to: member.email,
               transaction: fullTransaction,
-              language: language
-            });
-          }
-        } else if (fullTransaction.type === 'withdrawal') {
-          const activeMembers = members.filter(m => m.status === 'active' && m.email);
-          const recipientEmails = activeMembers.map(m => m.email!);
-          if (recipientEmails.length > 0) {
-            await sendTransactionEmail({
-              to: recipientEmails,
-              transaction: fullTransaction,
-              language: language
+              language
             });
           }
         }
