@@ -68,45 +68,45 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
       const conditions = language === 'bn' ? conditions_bn : conditions_en;
 
     return (
-        <div style={{ width: '800px', padding: '40px 0', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
+        <div style={{ width: '800px', padding: '0', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', borderBottom: '2px solid #87CEEB', paddingBottom: '15px' }}>
                 <div style={{ textAlign: 'left' }}>
-                    <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '8px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
-                    <p style={{ fontSize: '16px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
+                    <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '8px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
+                    <p style={{ fontSize: '14px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>
                 {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '90px', height: '90px' }} />}
             </div>
-            <h2 style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', marginBottom: '25px' }}>
+            <h2 style={{ textAlign: 'center', fontSize: '18px', fontWeight: 'bold', marginBottom: '25px' }}>
                 {isRegistration ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Member Registration Form') : (language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details')}
             </h2>
             
             <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '25px', justifyContent: 'space-between' }}>
                  <div style={{ flex: 1 }}>
-                    <h3 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#333' }}>{member.name}</h3>
+                    <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0, color: '#333' }}>{member.name}</h3>
                  </div>
                  <div style={{ marginLeft: '25px' }}>
                     <div style={{ width: '130px', height: '160px', border: '2px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9f9f9' }}>
-                       <p style={{ color: '#aaa', fontSize: '13px', textAlign: 'center' }}>{language === 'bn' ? 'পাসপোর্ট সাইজের ছবি' : 'Passport Size Photo'}</p>
+                       <p style={{ color: '#aaa', fontSize: '12px', textAlign: 'center' }}>{language === 'bn' ? 'পাসপোর্ট সাইজের ছবি' : 'Passport Size Photo'}</p>
                     </div>
                  </div>
             </div>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px', marginBottom: '25px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', marginBottom: '25px' }}>
                 <tbody>
-                    {member.joinDate && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</td></tr>}
-                    {member.dob && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{member.dob}</td></tr>}
-                    {member.fatherName && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'পিতার নাম' : "Father's Name"}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{member.fatherName}</td></tr>}
-                    {member.motherName && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'মাতার নাম' : "Mother's Name"}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{member.motherName}</td></tr>}
-                    {member.nid && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{member.nid}</td></tr>}
-                    {member.phone && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ফোন' : 'Phone'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{member.phone}</td></tr>}
-                    {member.email && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '12px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ইমেইল' : 'Email'}</td><td style={{ padding: '12px 0', textAlign: 'right' }}>{member.email}</td></tr>}
+                    {member.joinDate && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date'}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</td></tr>}
+                    {member.dob && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth'}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.dob}</td></tr>}
+                    {member.fatherName && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'পিতার নাম' : "Father's Name"}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.fatherName}</td></tr>}
+                    {member.motherName && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'মাতার নাম' : "Mother's Name"}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.motherName}</td></tr>}
+                    {member.nid && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.'}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.nid}</td></tr>}
+                    {member.phone && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ফোন' : 'Phone'}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.phone}</td></tr>}
+                    {member.email && <tr style={{ borderBottom: '1px solid #eee' }}><td style={{ padding: '10px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'ইমেইল' : 'Email'}</td><td style={{ padding: '10px 0', textAlign: 'right' }}>{member.email}</td></tr>}
                     <tr>
-                        <td style={{ padding: '12px 0', fontWeight: 'bold', verticalAlign: 'top' }}>{language === 'bn' ? 'ঠিকানা' : 'Address'}</td>
-                        <td style={{ padding: '12px 0', textAlign: 'right' }}>
-                            {member.address ? <div style={{ minHeight: '50px', whiteSpace: 'pre-wrap' }}>{member.address}</div> : (
+                        <td style={{ padding: '10px 0', fontWeight: 'bold', verticalAlign: 'top' }}>{language === 'bn' ? 'ঠিকানা' : 'Address'}</td>
+                        <td style={{ padding: '10px 0', textAlign: 'right' }}>
+                            {member.address ? <div style={{ minHeight: '40px', whiteSpace: 'pre-wrap' }}>{member.address}</div> : (
                                 <>
-                                    <div style={{borderBottom: '1px solid #999', height: '25px', marginBottom: '12px'}}></div>
-                                    <div style={{borderBottom: '1px solid #999', height: '25px'}}></div>
+                                    <div style={{borderBottom: '1px solid #999', height: '20px', marginBottom: '10px'}}></div>
+                                    <div style={{borderBottom: '1px solid #999', height: '20px'}}></div>
                                 </>
                             )}
                         </td>
@@ -114,29 +114,31 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
                 </tbody>
             </table>
             
-            <div style={{marginTop: '30px'}}>
-                <h3 style={{fontSize: '18px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '8px', marginBottom: '15px'}}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
-                <ul style={{ listStyleType: 'none', paddingLeft: '0px', fontSize: '13px', color: '#333' }}>
+            <div style={{marginTop: '20px'}}>
+                <h3 style={{fontSize: '16px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '6px', marginBottom: '12px'}}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
+                <ul style={{ listStyleType: 'none', paddingLeft: '0px', fontSize: '11px', color: '#333' }}>
                     {conditions.map((condition, index) => (
-                        <li key={index} style={{ marginBottom: '8px', fontWeight: 'bold', textIndent: '-1.2em', paddingLeft: '1.2em' }}>• {condition}</li>
+                        <li key={index} style={{ marginBottom: '6px', fontWeight: 'bold', textIndent: '-1.2em', paddingLeft: '1.2em' }}>• {condition}</li>
                     ))}
                 </ul>
             </div>
 
-            <div style={{ marginTop: '50px', paddingTop: '20px', borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginTop: '40px', paddingTop: '15px', borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ textAlign: 'center' }}>
-                    <div style={{ borderTop: '2px dotted #aaa', width: '200px', margin: '30px 0 8px 0' }}></div>
-                    <p style={{ fontSize: '14px', color: '#333' }}>{language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature'}</p>
+                    <div style={{ borderTop: '2px dotted #aaa', width: '200px', margin: '20px 0 6px 0' }}></div>
+                    <p style={{ fontSize: '12px', color: '#333' }}>{language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature'}</p>
                 </div>
                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ borderTop: '2px dotted #aaa', width: '200px', margin: '30px 0 8px 0' }}></div>
-                    <p style={{ fontSize: '14px', color: '#333' }}>{language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature'}</p>
+                    <div style={{ borderTop: '2px dotted #aaa', width: '200px', margin: '20px 0 6px 0' }}></div>
+                    <p style={{ fontSize: '12px', color: '#333' }}>{language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature'}</p>
                  </div>
             </div>
-             <div style={{ marginTop: '30px', fontSize: '12px', color: '#000', textAlign: 'center', paddingTop: '20px', borderTop: '1px solid #eee' }}>
+             <div style={{ marginTop: '20px', fontSize: '10px', color: '#000', textAlign: 'center', paddingTop: '15px', borderTop: '1px solid #eee' }}>
                 <p style={{ fontWeight: 'bold' }}>© 2025 Seva Sangathan (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
-                <p style={{ fontWeight: 'bold', fontStyle: 'italic', marginTop: '10px', fontSize: '11px', color: '#000' }}>Developed & Supported by AL-SADEEQ Team.</p>
+                <p style={{ fontWeight: 'bold', fontStyle: 'italic', marginTop: '8px', fontSize: '9px', color: '#000' }}>Developed & Supported by AL-SADEEQ Team.</p>
              </div>
         </div>
     );
 }
+
+    
