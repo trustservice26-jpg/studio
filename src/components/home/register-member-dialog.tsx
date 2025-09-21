@@ -135,8 +135,8 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
               finalWidth = finalHeight * ratio;
           }
 
-          const x = leftMargin + (usableWidth - finalWidth) / 2;
-          const y = topMargin + (usableHeight - finalHeight) / 2;
+          const x = leftMargin;
+          const y = topMargin;
 
           pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
           pdf.save(`${formDataForPdf.name}-registration-form.pdf`);

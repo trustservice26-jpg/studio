@@ -91,8 +91,8 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
                 finalWidth = finalHeight * ratio;
             }
 
-            const x = leftMargin + (usableWidth - finalWidth) / 2;
-            const y = topMargin + (usableHeight - finalHeight) / 2;
+            const x = leftMargin;
+            const y = topMargin;
 
             pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
             pdf.save(`${selectedMember!.name}-details.pdf`);
