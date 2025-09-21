@@ -71,8 +71,8 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
         <div style={{ width: '800px', padding: '20px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', borderBottom: '2px solid #87CEEB', paddingBottom: '15px' }}>
                 <div style={{ textAlign: 'left' }}>
-                    <h1 style={{ fontSize: '30px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '8px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
-                    <p style={{ fontSize: '13px', color: '#555', margin: 0 }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
+                    <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '8px' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
+                    <p style={{ fontSize: '14px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>
                 {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '80px', height: '80px' }} />}
             </div>
@@ -140,3 +140,5 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
         </div>
     );
 }
+
+    
