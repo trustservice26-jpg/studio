@@ -21,7 +21,7 @@ export default function TransactionsPage() {
   
   if (userRole !== 'admin') {
       return (
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-1 items-center justify-center p-4 text-center">
             <p className="text-muted-foreground">{language === 'bn' ? 'এই পৃষ্ঠাটি অ্যাক্সেস করার জন্য আপনার অনুমতি নেই।' : 'You do not have permission to access this page.'}</p>
         </div>
       )
@@ -29,7 +29,7 @@ export default function TransactionsPage() {
 
   return (
     <motion.div
-      className="container mx-auto py-10"
+      className="container mx-auto py-10 px-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -63,4 +63,3 @@ export default function TransactionsPage() {
     </motion.div>
   );
 }
-

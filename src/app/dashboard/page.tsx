@@ -28,7 +28,7 @@ export default function Dashboard() {
   const [isStatementDialogOpen, setStatementDialogOpen] = React.useState(false);
   return (
     <motion.div
-      className="flex flex-1 flex-col gap-6 p-4 md:p-6"
+      className="container mx-auto flex flex-1 flex-col gap-6 p-4 md:p-6"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

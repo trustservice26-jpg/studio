@@ -25,7 +25,7 @@ export default function MembersPage() {
   
   return (
     <motion.div
-      className="container mx-auto py-10"
+      className="container mx-auto py-10 px-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
