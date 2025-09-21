@@ -28,7 +28,7 @@ export function ClearTransactionsDialog({ open, onOpenChange }: ClearTransaction
   const [error, setError] = React.useState('');
 
   const handleConfirm = () => {
-    if (password === 'ADMIN') {
+    if (password === 'admin123') {
       clearAllTransactions();
       onOpenChange(false);
       setPassword('');
