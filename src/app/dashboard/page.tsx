@@ -33,9 +33,9 @@ export default function Dashboard() {
       initial="hidden"
       animate="visible"
     >
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-3xl font-bold">{language === 'bn' ? 'এডমিন ড্যাশবোর্ড' : 'Admin Dashboard'}</h1>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
             <Button variant="outline" onClick={() => setStatementDialogOpen(true)}>
                 <Download className="mr-2 h-4 w-4" />
                 {language === 'bn' ? 'অ্যাকাউন্ট স্টেটমেন্ট' : 'Account Statement'}

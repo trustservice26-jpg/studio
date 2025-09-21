@@ -29,19 +29,19 @@ export default function TransactionsPage() {
 
   return (
     <motion.div
-      className="container mx-auto py-10 px-4"
+      className="container mx-auto flex-1 p-4 md:p-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold">{language === 'bn' ? 'লেনদেন ব্যবস্থাপনা' : 'Transaction Management'}</h1>
           <p className="text-muted-foreground">
             {language === 'bn' ? 'অনুদান এবং উত্তোলন যোগ করুন এবং দেখুন।' : 'Add and view donations and withdrawals.'}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
             <Button onClick={() => handleOpenTransactionDialog('donation')}>
               <DollarSign className="mr-2 h-4 w-4" /> {language === 'bn' ? 'অনুদান যোগ' : 'Add Donation'}
             </Button>

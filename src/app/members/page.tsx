@@ -25,12 +25,12 @@ export default function MembersPage() {
   
   return (
     <motion.div
-      className="container mx-auto py-10 px-4"
+      className="container mx-auto flex-1 p-4 md:p-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h1>
           <p className="text-muted-foreground">
@@ -51,7 +51,7 @@ export default function MembersPage() {
           placeholder={language === 'bn' ? 'সদস্য খুঁজুন...' : 'Filter members...'}
           value={filter}
           onChange={(event) => setFilter(event.target.value)}
-          className="max-w-sm"
+          className="max-w-sm w-full"
         />
       </DataTable>
 
