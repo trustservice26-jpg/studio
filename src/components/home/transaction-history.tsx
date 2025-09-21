@@ -45,7 +45,7 @@ export function TransactionHistory() {
   }
 
   const handleDelete = () => {
-    if (transactionToDelete && password === 'admin123') {
+    if (transactionToDelete && password === 'ADMIN') {
       deleteTransaction(transactionToDelete);
       setTransactionToDelete(null);
       setPassword('');
