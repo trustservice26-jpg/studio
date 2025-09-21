@@ -19,7 +19,7 @@ import { db } from '@/lib/firebase';
 import type { Member, UserRole, Notice, Transaction } from '@/lib/types';
 import { initialMembers, initialNotices, initialTransactions } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast"
-import { sendTransactionEmail } from '@/lib/email';
+import { sendTransactionEmail, sendWelcomeEmail } from '@/lib/email';
 
 
 interface AppContextType {
@@ -165,7 +165,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
         description: fromRegistration 
           ? (language === 'bn' ? 'আপনার নিবন্ধন সফল হয়েছে। অনুমোদনের জন্য অপেক্ষা করুন।': 'Your registration is successful. Please wait for approval.')
           : (language === 'bn' ? `${memberData.name} সফলভাবে যোগ করা হয়েছে।` : `${memberData.name} has been successfully added.`),
-      })
+      });
+
+      if (fromRegistration && newMember.email && newMember.name) {
+        await sendWelcomeEmail({
+          to: newMember.email,
+          name: newMember.name,
+        });
+      }
     } catch (e) {
       handleFirestoreError(e as FirestoreError);
     }
