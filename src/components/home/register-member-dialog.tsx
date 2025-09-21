@@ -51,8 +51,9 @@ type RegisterMemberDialogProps = {
 
 export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialogProps) {
   const { language, addMember } = useAppContext();
-  const [formData, setFormData] = useState<RegistrationFormValues & { joinDate: string } | null>(null);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [pdfContent, setPdfContent] = useState<React.ReactNode | null>(null);
+  const [formDataForPdf, setFormDataForPdf] = useState<RegistrationFormValues & { joinDate: string } | null>(null);
 
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
@@ -71,6 +72,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
   const { isSubmitting } = form.formState;
 
   const handleRegistration = async (values: RegistrationFormValues) => {
+    setIsGeneratingPdf(true);
     const joinDate = new Date().toISOString();
     const fullData = { ...values, joinDate };
     
@@ -83,17 +85,20 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       true
     );
 
-    setFormData(fullData);
-    setIsGeneratingPdf(true); // Trigger PDF generation via useEffect
+    setFormDataForPdf(fullData);
+    setPdfContent(<PdfDocument member={fullData} language={language} isRegistration={true} />)
   };
   
   useEffect(() => {
-    if (isGeneratingPdf && formData) {
+    if (isGeneratingPdf && pdfContent && formDataForPdf) {
       const generatePdf = async () => {
+         await new Promise(resolve => setTimeout(resolve, 100));
+
         const pdfElement = document.getElementById('pdf-registration-content');
         if (!pdfElement) {
           console.error("PDF content element not found");
           setIsGeneratingPdf(false);
+          setPdfContent(null);
           return;
         }
 
@@ -125,27 +130,27 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
           const y = 10;
 
           pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
-          pdf.save(`${formData.name}-registration-form.pdf`);
+          pdf.save(`${formDataForPdf.name}-registration-form.pdf`);
 
         } catch (error) {
           console.error("Error generating PDF:", error);
         } finally {
           setIsGeneratingPdf(false);
+          setPdfContent(null);
           onOpenChange(false);
         }
       };
 
-      // Delay to ensure the DOM is fully updated
-      const timer = setTimeout(generatePdf, 100);
-      return () => clearTimeout(timer);
+      generatePdf();
     }
-  }, [isGeneratingPdf, formData, onOpenChange]);
+  }, [isGeneratingPdf, pdfContent, formDataForPdf, onOpenChange]);
   
   useEffect(() => {
     if (!open) {
       form.reset();
-      setFormData(null);
+      setPdfContent(null);
       setIsGeneratingPdf(false);
+      setFormDataForPdf(null);
     }
   }, [open, form]);
 
@@ -282,7 +287,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
       </Dialog>
       
       <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
-        {formData && isGeneratingPdf && <div id="pdf-registration-content"><PdfDocument member={formData} language={language} isRegistration={true} /></div>}
+        {isGeneratingPdf && <div id="pdf-registration-content">{pdfContent}</div>}
       </div>
     </>
   );

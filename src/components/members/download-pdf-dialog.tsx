@@ -34,19 +34,27 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
   const { members, language } = useAppContext();
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [pdfContent, setPdfContent] = useState<React.ReactNode | null>(null);
 
-  const handleDownloadClick = () => {
+  const handleDownloadClick = async () => {
     if (!selectedMember) return;
-    setIsGeneratingPdf(true); // Trigger PDF generation via useEffect
-  };
+    setIsGeneratingPdf(true);
 
+    // Prepare the content first
+    setPdfContent(<PdfDocument member={selectedMember} language={language} isRegistration={false} />);
+  };
+  
   useEffect(() => {
-    if (isGeneratingPdf && selectedMember) {
+    if (pdfContent && isGeneratingPdf) {
       const generatePdf = async () => {
+        // A small delay to ensure the DOM is fully updated with the new content
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         const pdfElement = document.getElementById('pdf-content-wrapper');
         if (!pdfElement) {
-            setIsGeneratingPdf(false);
             console.error("PDF content element not found");
+            setIsGeneratingPdf(false);
+            setPdfContent(null);
             return;
         }
 
@@ -78,20 +86,20 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
             const y = 10;
 
             pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
-            pdf.save(`${selectedMember.name}-details.pdf`);
+            pdf.save(`${selectedMember!.name}-details.pdf`);
         } catch (error) {
             console.error("Error generating PDF:", error);
         } finally {
             setIsGeneratingPdf(false);
+            setPdfContent(null);
             onOpenChange(false);
         }
       };
 
-      // Use a timeout to ensure the DOM is fully updated before capturing
-      const timer = setTimeout(generatePdf, 100);
-      return () => clearTimeout(timer);
+      generatePdf();
     }
-  }, [isGeneratingPdf, selectedMember, onOpenChange]);
+  }, [pdfContent, isGeneratingPdf, selectedMember, onOpenChange]);
+
 
   const handleMemberSelect = (memberId: string) => {
     const member = members.find(m => m.id === memberId) || null;
@@ -102,6 +110,7 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
     if (!open) {
       setSelectedMember(null);
       setIsGeneratingPdf(false);
+      setPdfContent(null);
     }
   }, [open]);
 
@@ -147,9 +156,9 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
       </Dialog>
       
       <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
-        {selectedMember && isGeneratingPdf && (
+        {isGeneratingPdf && (
             <div id="pdf-content-wrapper">
-              <PdfDocument member={selectedMember} language={language} isRegistration={false} />
+              {pdfContent}
             </div>
         )}
       </div>
