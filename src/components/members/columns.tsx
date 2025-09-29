@@ -37,6 +37,7 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const [isAlertOpen, setIsAlertOpen] = React.useState(false);
   const [isPermissionsOpen, setPermissionsOpen] = React.useState(false);
 
+  const canManageMembers = userRole === 'admin' || userRole === 'member-moderator';
 
   return (
     <>
@@ -54,11 +55,13 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
                <History className="mr-2 h-4 w-4" />
                {language === 'bn' ? 'লেনদেনের ইতিহাস' : 'Transaction History'}
             </DropdownMenuItem>
+             {canManageMembers && (
+                <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
+                    {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সক্রিয় হিসাবে সেট করুন' : 'Set as Active')}
+                </DropdownMenuItem>
+             )}
             {userRole === 'admin' && (
               <>
-                <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
-                  {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সক্রিয় হিসাবে সেট করুন' : 'Set as Active')}
-                </DropdownMenuItem>
                  <DropdownMenuItem onClick={() => setPermissionsOpen(true)}>
                   <UserCog className="mr-2 h-4 w-4" />
                   {language === 'bn' ? 'অনুমতি সেট করুন' : 'Set Permissions'}
@@ -154,10 +157,17 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => {
       const { language } = useAppContext();
       const role = row.original.role;
+      let roleText = language === 'bn' ? 'সদস্য' : 'Member';
       if (role === 'moderator') {
-        return <Badge variant="secondary">{language === 'bn' ? 'মডারেটর' : 'Moderator'}</Badge>
+        roleText = language === 'bn' ? 'মডারেটর' : 'Moderator';
+      } else if (role === 'member-moderator') {
+        roleText = language === 'bn' ? 'সদস্য মডারেটর' : 'Member Moderator';
       }
-      return <span className="text-muted-foreground">{language === 'bn' ? 'সদস্য' : 'Member'}</span>
+      
+      if (role) {
+        return <Badge variant="secondary">{roleText}</Badge>
+      }
+      return <span className="text-muted-foreground">{roleText}</span>
     },
   },
   {

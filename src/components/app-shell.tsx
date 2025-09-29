@@ -41,16 +41,16 @@ import { ThemeSwitcher } from './theme-switcher';
 import type { UserRole } from '@/lib/types';
 
 const navItems = [
-  { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member'] },
+  { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'] },
   { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'] },
-  { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'] },
+  { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin', 'member-moderator'] },
   { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: UserCog, roles: ['admin', 'moderator'] },
   { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin'] },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { userRole, setUserRole, language, members } = useAppContext();
+  const { userRole, setUserRole, language } = useAppContext();
   const { toast } = useToast();
   const [isPasswordDialogOpen, setPasswordDialogOpen] = React.useState(false);
   const [password, setPassword] = React.useState('');
@@ -90,6 +90,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         toast({
             title: language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator',
             description: language === 'bn' ? 'আপনার এখন লেনদেন পরিচালনার অনুমতি রয়েছে।' : 'You now have transaction management privileges.',
+        });
+        setPasswordDialogOpen(false);
+        setPassword('');
+        setPasswordError('');
+        return;
+    }
+
+    // Member Moderator password
+    if (password === 'mem1234') {
+        setUserRole('member-moderator');
+        toast({
+            title: language === 'bn' ? 'সদস্য মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Member Moderator',
+            description: language === 'bn' ? 'আপনার এখন সদস্য পরিচালনার অনুমতি রয়েছে।' : 'You now have member management privileges.',
         });
         setPasswordDialogOpen(false);
         setPassword('');

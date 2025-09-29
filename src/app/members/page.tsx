@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Download, UserPlus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
@@ -11,10 +11,12 @@ import { columns } from '@/components/members/columns';
 import { useAppContext } from '@/context/app-context';
 import { Input } from '@/components/ui/input';
 import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
+import { AddMemberDialog } from '@/components/members/add-member-dialog';
 
 export default function MembersPage() {
   const { members, userRole, language } = useAppContext();
   const [isPdfOpen, setPdfOpen] = React.useState(false);
+  const [isAddMemberOpen, setAddMemberOpen] = React.useState(false);
   const [filter, setFilter] = React.useState('');
 
   const filteredMembers = React.useMemo(() => {
@@ -22,6 +24,8 @@ export default function MembersPage() {
       member.name.toLowerCase().includes(filter.toLowerCase())
     );
   }, [members, filter]);
+
+  const canManageMembers = userRole === 'admin' || userRole === 'member-moderator';
   
   return (
     <motion.div
@@ -37,13 +41,16 @@ export default function MembersPage() {
             {language === 'bn' ? 'সংগঠনের সকল সদস্যদের তালিকা।' : 'A list of all members in the organization.'}
           </p>
         </div>
-        {userRole === 'admin' && (
-           <div className="flex gap-2">
-             <Button onClick={() => setPdfOpen(true)} variant="outline">
+        <div className="flex gap-2">
+            <Button onClick={() => setPdfOpen(true)} variant="outline">
                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'পিডিএফ ডাউনলোড' : 'Download PDF'}
             </Button>
-          </div>
-        )}
+            {canManageMembers && (
+                <Button onClick={() => setAddMemberOpen(true)}>
+                    <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য যোগ করুন' : 'Add Member'}
+                </Button>
+            )}
+        </div>
       </div>
 
       <DataTable columns={columns} data={filteredMembers} noPagination>
@@ -56,6 +63,7 @@ export default function MembersPage() {
       </DataTable>
 
       <DownloadPdfDialog open={isPdfOpen} onOpenChange={setPdfOpen} />
+      <AddMemberDialog open={isAddMemberOpen} onOpenChange={setAddMemberOpen} />
     </motion.div>
   );
 }

@@ -14,7 +14,6 @@ import { Button } from '@/components/ui/button';
 import { useAppContext } from '@/context/app-context';
 import type { Member } from '@/lib/types';
 import { Switch } from '../ui/switch';
-import { Label } from '../ui/label';
 
 type SetPermissionsDialogProps = {
   member: Member;
@@ -27,16 +26,27 @@ export function SetPermissionsDialog({ member, open, onOpenChange }: SetPermissi
   const [canManageTransactions, setCanManageTransactions] = React.useState(
     !!member.permissions?.canManageTransactions
   );
+  const [canManageMembers, setCanManageMembers] = React.useState(
+    !!member.permissions?.canManageMembers
+  );
 
   React.useEffect(() => {
     if (open) {
       setCanManageTransactions(!!member.permissions?.canManageTransactions);
+      setCanManageMembers(!!member.permissions?.canManageMembers);
     }
   }, [open, member.permissions]);
 
   const handleSave = () => {
-    const newPermissions = { canManageTransactions };
-    const newRole = canManageTransactions ? 'moderator' : 'member';
+    const newPermissions = { canManageTransactions, canManageMembers };
+    
+    let newRole: Member['role'] | undefined = undefined;
+    if (canManageTransactions) {
+      newRole = 'moderator';
+    } else if (canManageMembers) {
+        newRole = 'member-moderator';
+    }
+
     updateMemberPermissions(member.id, newPermissions, newRole);
     onOpenChange(false);
   };
@@ -49,7 +59,7 @@ export function SetPermissionsDialog({ member, open, onOpenChange }: SetPermissi
             {language === 'bn' ? `${member.name}-এর জন্য অনুমতি` : `Permissions for ${member.name}`}
           </DialogTitle>
           <DialogDescription>
-            {language === 'bn' ? 'মডারেটর হিসাবে এই সদস্যের জন্য অনুমতিগুলি পরিচালনা করুন।' : 'Manage permissions for this member as a moderator.'}
+            {language === 'bn' ? 'মডারেটর হিসাবে এই সদস্যের জন্য অনুমতিগুলি পরিচালনা করুন।' : 'Manage permissions for this member.'}
           </DialogDescription>
         </DialogHeader>
         <div className="py-4 space-y-4">
@@ -66,6 +76,21 @@ export function SetPermissionsDialog({ member, open, onOpenChange }: SetPermissi
               checked={canManageTransactions}
               onCheckedChange={setCanManageTransactions}
               id="manage-transactions-permission"
+            />
+          </div>
+          <div className="flex items-center space-x-4 rounded-md border p-4">
+            <div className="flex-1 space-y-1">
+              <p className="text-sm font-medium leading-none">
+                {language === 'bn' ? 'সদস্য পরিচালনা' : 'Manage Members'}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {language === 'bn' ? 'সদস্যদের যোগ, সম্পাদনা এবং মুছে ফেলার অনুমতি দিন।' : 'Allow adding, editing, and deleting members.'}
+              </p>
+            </div>
+            <Switch
+              checked={canManageMembers}
+              onCheckedChange={setCanManageMembers}
+              id="manage-members-permission"
             />
           </div>
         </div>

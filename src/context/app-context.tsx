@@ -210,14 +210,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     try {
       const memberRef = doc(db, 'members', memberId);
       const updateData: { permissions: Member['permissions']; role?: Member['role'] } = { permissions };
-      if (role) {
-        updateData.role = role;
-      } else {
-        // If no role is provided but permissions are cleared, demote from moderator
-        if (!permissions?.canManageTransactions) {
-            updateData.role = 'member';
-        }
-      }
+      
+      updateData.role = role || undefined; // It can be undefined to clear the role
+      
       await updateDoc(memberRef, updateData);
       toast({
         title: language === 'bn' ? 'অনুমতি আপডেট হয়েছে' : 'Permissions Updated',
@@ -382,5 +377,3 @@ export function useAppContext() {
   }
   return context;
 }
-
-    

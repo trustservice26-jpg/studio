@@ -12,9 +12,10 @@ export type Member = {
   motherName?: string;
   nid?: string;
   address?: string;
-  role?: 'moderator';
+  role?: 'moderator' | 'member-moderator';
   permissions?: {
-    canManageTransactions: boolean;
+    canManageTransactions?: boolean;
+    canManageMembers?: boolean;
   };
 };
 
@@ -34,4 +35,4 @@ export type Transaction = {
 };
 
 
-export type UserRole = 'admin' | 'moderator' | 'member';
+export type UserRole = 'admin' | 'moderator' | 'member' | 'member-moderator';
