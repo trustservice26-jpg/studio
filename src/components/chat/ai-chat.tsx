@@ -15,13 +15,13 @@ import { Card, CardContent } from '../ui/card';
 import { format } from 'date-fns';
 import { DownloadPdfDialog } from '../members/download-pdf-dialog';
 import { DownloadStatementDialog } from '../dashboard/download-statement-dialog';
+import type { bn } from 'date-fns/locale';
 
 type Message = {
   id: string;
   role: 'user' | 'model';
   content: React.ReactNode;
-  rawContent: string;
-  toolResponse?: any;
+  rawContentForHistory: { text: string } | { toolResponse: any };
 };
 
 export function AiChat() {
@@ -46,7 +46,7 @@ export function AiChat() {
           id: 'init',
           role: 'model',
           content: initialMessage,
-          rawContent: initialMessage,
+          rawContentForHistory: { text: initialMessage },
         },
       ]);
       setShowSuggestions(true);
@@ -64,46 +64,35 @@ export function AiChat() {
     if (!currentInput.trim()) return;
 
     setShowSuggestions(false);
-    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: currentInput, rawContent: currentInput };
+    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: currentInput, rawContentForHistory: { text: currentInput } };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
     try {
-      const chatHistory = messages.map(msg => {
-        let contentPart;
-        if (msg.toolResponse) {
-          contentPart = [{ toolResponse: msg.toolResponse }];
-        } else {
-          contentPart = [{ text: msg.rawContent }];
-        }
-
-        return {
+      const chatHistory = messages.map(msg => ({
           role: msg.role,
-          content: contentPart,
-        };
-      });
+          content: [msg.rawContentForHistory],
+      }));
       
       const response = await chat({
         history: chatHistory,
         message: currentInput,
       });
 
-      let content: React.ReactNode = response.text;
-      let rawContent: string = response.text || '';
-      let toolResponse: any | undefined;
+      let content: React.ReactNode;
+      let rawContentForHistory: { text: string } | { toolResponse: any };
       
       if (response.toolCalls && response.toolCalls.length > 0) {
         const toolCall = response.toolCalls[0];
-        toolResponse = { ...toolCall, result: toolCall.result };
+        
+        rawContentForHistory = { toolResponse: { name: toolCall.name, result: toolCall.result }};
         
         if (toolCall.name === 'getMemberTransactionHistory') {
             if (toolCall.result?.history) {
               content = <TransactionHistoryDisplay history={toolCall.result.history} />;
-              rawContent = `Displayed transaction history for a member.`;
             } else {
               content = toolCall.result?.error || 'Could not retrieve history.';
-              rawContent = content as string;
             }
         } else if (toolCall.name === 'prepareMemberPdfDownload') {
             if (toolCall.result?.success) {
@@ -122,10 +111,8 @@ export function AiChat() {
                         </Button>
                     </div>
                 );
-                rawContent = `PDF prepared for ${toolCall.result.memberName}.`;
             } else {
                 content = toolCall.result?.error || 'Could not prepare the PDF.';
-                rawContent = content as string;
             }
         } else if (toolCall.name === 'prepareFinancialStatementDownload') {
             if (toolCall.result?.success) {
@@ -141,21 +128,20 @@ export function AiChat() {
                         </Button>
                     </div>
                 );
-                rawContent = 'Financial statement prepared for download.';
             } else {
                  content = 'Could not prepare the financial statement PDF.';
-                 rawContent = content;
             }
         } else if (response.text) {
              content = response.text;
-             rawContent = response.text;
         } else {
             content = "I've processed that request.";
-            rawContent = "Tool call processed.";
         }
+      } else {
+        content = response.text || "Sorry, I'm not sure how to respond to that.";
+        rawContentForHistory = { text: response.text || "No response text." };
       }
       
-      const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContent, toolResponse };
+      const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory };
       setMessages((prev) => [...prev, modelMessage]);
 
     } catch (error) {
@@ -165,7 +151,7 @@ export function AiChat() {
         id: Date.now().toString() + '-error',
         role: 'model',
         content: errorMessageContent,
-        rawContent: errorMessageContent
+        rawContentForHistory: { text: errorMessageContent }
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -281,6 +267,17 @@ export function AiChat() {
 
 function TransactionHistoryDisplay({ history }: { history: { date: string, description: string, amount: number }[] }) {
     const { language } = useAppContext();
+    const [locale, setLocale] = useState<Locale>();
+
+    useEffect(() => {
+        if (language === 'bn') {
+            import('date-fns/locale/bn').then(mod => setLocale(mod.bn));
+        } else {
+            setLocale(undefined);
+        }
+    }, [language]);
+
+
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat(language === 'bn' ? 'bn-BD' : 'en-US', {
             style: 'currency', currency: 'BDT', minimumFractionDigits: 0
@@ -288,7 +285,6 @@ function TransactionHistoryDisplay({ history }: { history: { date: string, descr
     };
     const formatDate = (date: string) => {
         try {
-            const locale = language === 'bn' ? require('date-fns/locale/bn') : undefined;
             return format(new Date(date), 'PP', { locale });
         } catch {
             return date;
