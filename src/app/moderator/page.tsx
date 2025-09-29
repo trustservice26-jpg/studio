@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import * as React from 'react';
@@ -10,7 +9,7 @@ import { useAppContext } from '@/context/app-context';
 import { AddTransactionDialog } from '@/components/members/add-transaction-dialog';
 import { TransactionHistory } from '@/components/home/transaction-history';
 
-export default function TransactionsPage() {
+export default function ModeratorPage() {
   const { language, userRole } = useAppContext();
   const [isTransactionOpen, setTransactionOpen] = React.useState(false);
   const [transactionType, setTransactionType] = React.useState<'donation' | 'withdrawal'>('donation');
@@ -20,7 +19,7 @@ export default function TransactionsPage() {
     setTransactionOpen(true);
   };
   
-  if (userRole !== 'admin') {
+  if (userRole !== 'admin' && userRole !== 'moderator') {
       return (
         <div className="flex flex-1 items-center justify-center p-4 text-center flex-col gap-4">
             <ShieldAlert className="h-16 w-16 text-destructive" />
@@ -39,7 +38,7 @@ export default function TransactionsPage() {
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-bold">{language === 'bn' ? 'লেনদেন ব্যবস্থাপনা' : 'Transaction Management'}</h1>
+          <h1 className="text-3xl font-bold">{language === 'bn' ? 'মডারেটর প্যানেল' : 'Moderator Panel'}</h1>
           <p className="text-muted-foreground">
             {language === 'bn' ? 'অনুদান এবং উত্তোলন যোগ করুন এবং দেখুন।' : 'Add and view donations and withdrawals.'}
           </p>

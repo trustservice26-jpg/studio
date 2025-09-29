@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal, ArrowUpDown, History, Mail } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown, History, Mail, UserCog } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -29,11 +29,13 @@ import {
 } from "@/components/ui/alert-dialog"
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
 import { MemberTransactionHistoryModal } from "./member-transaction-history-modal"
+import { SetPermissionsDialog } from "./set-permissions-dialog"
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const { userRole, deleteMember, toggleMemberStatus, language } = useAppContext();
   const [isHistoryOpen, setIsHistoryOpen] = React.useState(false);
   const [isAlertOpen, setIsAlertOpen] = React.useState(false);
+  const [isPermissionsOpen, setPermissionsOpen] = React.useState(false);
 
 
   return (
@@ -56,6 +58,10 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
               <>
                 <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
                   {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সক্রিয় হিসাবে সেট করুন' : 'Set as Active')}
+                </DropdownMenuItem>
+                 <DropdownMenuItem onClick={() => setPermissionsOpen(true)}>
+                  <UserCog className="mr-2 h-4 w-4" />
+                  {language === 'bn' ? 'অনুমতি সেট করুন' : 'Set Permissions'}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <AlertDialogTrigger asChild>
@@ -92,6 +98,11 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
         member={member}
         open={isHistoryOpen}
         onOpenChange={setIsHistoryOpen}
+      />
+      <SetPermissionsDialog
+        member={member}
+        open={isPermissionsOpen}
+        onOpenChange={setPermissionsOpen}
       />
     </>
   )
@@ -132,6 +143,21 @@ export const columns: ColumnDef<Member>[] = [
            <div className="font-medium">{member.name}</div>
         </div>
       )
+    },
+  },
+  {
+    accessorKey: "role",
+    header: () => {
+        const { language } = useAppContext();
+        return <div>{language === 'bn' ? 'ভূমিকা' : 'Role'}</div>
+    },
+    cell: ({ row }) => {
+      const { language } = useAppContext();
+      const role = row.original.role;
+      if (role === 'moderator') {
+        return <Badge variant="secondary">{language === 'bn' ? 'মডারেটর' : 'Moderator'}</Badge>
+      }
+      return <span className="text-muted-foreground">{language === 'bn' ? 'সদস্য' : 'Member'}</span>
     },
   },
   {

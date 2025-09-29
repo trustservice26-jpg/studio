@@ -15,6 +15,7 @@ import {
   DollarSign,
   LogIn,
   LogOut,
+  UserCog
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -37,17 +38,19 @@ import { LiveClock } from './live-clock';
 import { RegisterMemberDialog } from './home/register-member-dialog';
 import { useIsClient } from '@/hooks/use-is-client';
 import { ThemeSwitcher } from './theme-switcher';
+import type { UserRole } from '@/lib/types';
 
 const navItems = [
-  { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, adminOnly: false },
-  { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, adminOnly: true },
-  { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, adminOnly: true },
-  { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, adminOnly: true },
+  { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member'] },
+  { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'] },
+  { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'] },
+  { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: UserCog, roles: ['admin', 'moderator'] },
+  { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin'] },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { userRole, setUserRole, language } = useAppContext();
+  const { userRole, setUserRole, language, members } = useAppContext();
   const { toast } = useToast();
   const [isPasswordDialogOpen, setPasswordDialogOpen] = React.useState(false);
   const [password, setPassword] = React.useState('');
@@ -56,7 +59,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const isClient = useIsClient();
 
   const handleLoginClick = () => {
-    if (userRole === 'admin') {
+    if (userRole !== 'member') {
       setUserRole('member');
       toast({
         title: language === 'bn' ? 'সদস্য ভিউতে সুইচ করা হয়েছে' : 'Logged Out',
@@ -68,6 +71,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   const handlePasswordSubmit = () => {
+    // Admin password
     if (password === 'admin123') {
       setUserRole('admin');
       toast({
@@ -77,13 +81,28 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       setPasswordDialogOpen(false);
       setPassword('');
       setPasswordError('');
-    } else {
-      setPasswordError(language === 'bn' ? 'ভুল পাসওয়ার্ড। আবার চেষ্টা করুন।' : 'Incorrect password. Please try again.');
+      return;
     }
+    
+    // Check for moderator password (using phone number)
+    const moderator = members.find(m => m.role === 'moderator' && m.phone === password && m.permissions?.canManageTransactions);
+    if (moderator) {
+      setUserRole('moderator');
+      toast({
+        title: language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator',
+        description: language === 'bn' ? 'আপনার এখন লেনদেন পরিচালনার অনুমতি রয়েছে।' : 'You now have transaction management privileges.',
+      });
+      setPasswordDialogOpen(false);
+      setPassword('');
+      setPasswordError('');
+      return;
+    }
+
+    setPasswordError(language === 'bn' ? 'ভুল পাসওয়ার্ড। আবার চেষ্টা করুন।' : 'Incorrect password. Please try again.');
   };
 
-  const getNavItems = (role: 'admin' | 'member') => {
-    return navItems.filter(item => !item.adminOnly || role === 'admin');
+  const getNavItems = (role: UserRole) => {
+    return navItems.filter(item => item.roles.includes(role));
   }
 
   const navLinks = (
@@ -154,7 +173,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <ThemeSwitcher />
             <LanguageSwitcher />
             <Button variant="outline" onClick={handleLoginClick}>
-                {userRole === 'admin' ? (
+                {userRole !== 'member' ? (
                     <>
                         <LogOut className="mr-2 h-4 w-4" />
                         {language === 'bn' ? 'প্রস্থান' : 'Log Out'}
@@ -177,10 +196,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <DialogHeader>
             <DialogTitle>
               <ShieldCheck className="inline-block mr-2" />
-              {language === 'bn' ? 'এডমিন অ্যাক্সেস প্রয়োজন' : 'Admin Access Required'}
+              {language === 'bn' ? 'অ্যাক্সেস প্রয়োজন' : 'Access Required'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'এডমিন ভিউতে स्विच করতে পাসওয়ার্ড লিখুন।' : 'Please enter the password to switch to Admin View.'}
+              {language === 'bn' ? 'প্রশাসনিক বা মডারেটর ভিউতে যেতে পাসওয়ার্ড লিখুন।' : 'Please enter the password for Admin or Moderator View.'}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -204,7 +223,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
           <DialogFooter>
             <Button type="submit" onClick={handlePasswordSubmit}>
-              {language === 'bn' ? 'এডমিন মোডে প্রবেশ করুন' : 'Enter Admin Mode'}
+              {language === 'bn' ? 'প্রবেশ করুন' : 'Enter'}
             </Button>
           </DialogFooter>
         </DialogContent>

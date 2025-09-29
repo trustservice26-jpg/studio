@@ -34,6 +34,7 @@ interface AppContextType {
   addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>, fromRegistration?: boolean) => void;
   deleteMember: (memberId: string) => void;
   toggleMemberStatus: (memberId: string) => void;
+  updateMemberPermissions: (memberId: string, permissions: Member['permissions'], role?: Member['role']) => void;
   addNotice: (message: string) => void;
   deleteNotice: (noticeId: string) => void;
   addTransaction: (transaction: Omit<Transaction, 'id' | 'date'> & { sendEmail?: boolean }) => void;
@@ -202,6 +203,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
         handleFirestoreError(e as FirestoreError);
     }
   };
+  
+  const updateMemberPermissions = async (memberId: string, permissions: Member['permissions'], role?: Member['role']) => {
+    const member = members.find(m => m.id === memberId);
+    if (!member) return;
+    try {
+      const memberRef = doc(db, 'members', memberId);
+      const updateData: { permissions: Member['permissions']; role?: Member['role'] } = { permissions };
+      if (role) {
+        updateData.role = role;
+      } else {
+        // If no role is provided but permissions are cleared, demote from moderator
+        if (!permissions?.canManageTransactions) {
+            updateData.role = 'member';
+        }
+      }
+      await updateDoc(memberRef, updateData);
+      toast({
+        title: language === 'bn' ? 'অনুমতি আপডেট হয়েছে' : 'Permissions Updated',
+        description: language === 'bn' ? `${member.name}-এর অনুমতি সফলভাবে আপডেট করা হয়েছে।` : `Successfully updated permissions for ${member.name}.`,
+      });
+    } catch (e) {
+      handleFirestoreError(e as FirestoreError);
+    }
+  };
 
   const addNotice = async (message: string) => {
     const newNotice: Omit<Notice, 'id'> = {
@@ -328,6 +353,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addMember,
     deleteMember,
     toggleMemberStatus,
+    updateMemberPermissions,
     addNotice,
     deleteNotice,
     addTransaction,

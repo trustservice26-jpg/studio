@@ -12,6 +12,10 @@ export type Member = {
   motherName?: string;
   nid?: string;
   address?: string;
+  role?: 'moderator';
+  permissions?: {
+    canManageTransactions: boolean;
+  };
 };
 
 export type Notice = {
@@ -30,4 +34,4 @@ export type Transaction = {
 };
 
 
-export type UserRole = 'admin' | 'member';
+export type UserRole = 'admin' | 'moderator' | 'member';
