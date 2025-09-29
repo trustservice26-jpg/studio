@@ -44,7 +44,7 @@ const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
     { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'], permissions: ['canManageMembers'] },
-    { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: ShieldCheck, roles: ['admin'], permissions: ['canManageTransactions'] },
+    { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: ShieldCheck, roles: [], permissions: ['canManageTransactions'] },
     { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin'], permissions: [] },
 ];
 
@@ -110,7 +110,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const getNavItems = (user: Member | null) => {
     const role = user?.role || 'member';
     return navItems.filter(item => {
-        if (role === 'admin') return true;
+        if (role === 'admin') {
+            // Admins see everything except the dedicated moderator page
+            return item.href !== '/moderator';
+        }
         if (item.href === '/') return true;
         
         const hasRole = item.roles.includes(role);
@@ -251,5 +254,3 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
-
-    
