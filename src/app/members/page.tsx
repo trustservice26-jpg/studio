@@ -21,7 +21,8 @@ export default function MembersPage() {
 
   const filteredMembers = React.useMemo(() => {
     return members.filter(member =>
-      member.name.toLowerCase().includes(filter.toLowerCase())
+      member.name.toLowerCase().includes(filter.toLowerCase()) ||
+      (member.memberId && member.memberId.toLowerCase().includes(filter.toLowerCase()))
     );
   }, [members, filter]);
 
@@ -55,7 +56,7 @@ export default function MembersPage() {
 
       <DataTable columns={columns} data={filteredMembers} noPagination>
          <Input
-          placeholder={language === 'bn' ? 'সদস্য খুঁজুন...' : 'Filter members...'}
+          placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে সদস্য খুঁজুন...' : 'Filter by name or ID...'}
           value={filter}
           onChange={(event) => setFilter(event.target.value)}
           className="max-w-sm w-full"

@@ -31,7 +31,7 @@ interface AppContextType {
   currentFunds: number;
   totalDonations: number;
   totalWithdrawals: number;
-  addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>, fromRegistration?: boolean) => void;
+  addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions' | 'memberId'>, fromRegistration?: boolean) => void;
   deleteMember: (memberId: string) => void;
   toggleMemberStatus: (memberId: string) => void;
   updateMemberPermissions: (memberId: string, permissions: Member['permissions'], role?: Member['role']) => void;
@@ -69,6 +69,15 @@ async function seedInitialData() {
   }
 
   await batch.commit();
+}
+
+function generateMemberId() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
 }
 
 
@@ -156,6 +165,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const addMember = async (memberData: Partial<Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>>, fromRegistration = false) => {
     const newMember: Omit<Member, 'id'> = {
+      memberId: generateMemberId(),
       name: memberData.name || '',
       phone: memberData.phone || '',
       email: memberData.email,
@@ -218,9 +228,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (!member) return;
     try {
       const memberRef = doc(db, 'members', memberId);
-      const updateData: { permissions: Member['permissions']; role?: Member['role'] | null } = { permissions };
+      const updateData: { permissions: Member['permissions']; role?: Member['role'] } = { permissions };
       
-      updateData.role = role || null;
+      if (role) {
+        updateData.role = role;
+      }
       
       await updateDoc(memberRef, updateData);
       toast({

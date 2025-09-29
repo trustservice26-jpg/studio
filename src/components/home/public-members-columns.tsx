@@ -23,6 +23,25 @@ export const publicMemberColumns: ColumnDef<Member>[] = [
     },
   },
   {
+    accessorKey: "memberId",
+    header: ({ column }) => {
+      const { language } = useAppContext();
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {language === 'bn' ? 'সদস্য আইডি' : 'Member ID'}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+        const memberId = row.original.memberId;
+        return <div className="font-mono uppercase">{memberId}</div>
+    }
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => {
         const { language } = useAppContext();
