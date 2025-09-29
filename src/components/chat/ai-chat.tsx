@@ -4,6 +4,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bot, Loader2, Send, X, Download, History, User, FileDown, FileText } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { format } from 'date-fns';
+import { bn } from 'date-fns/locale';
+import type { Locale } from 'date-fns';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,11 +15,8 @@ import { useAppContext } from '@/context/app-context';
 import { chat } from '@/ai/flows/chat-flow';
 import type { ChatInput } from '@/ai/flows/chat-types';
 import { Card, CardContent } from '../ui/card';
-import { format } from 'date-fns';
 import { DownloadPdfDialog } from '../members/download-pdf-dialog';
 import { DownloadStatementDialog } from '../dashboard/download-statement-dialog';
-import type { Locale } from 'date-fns';
-import { bn } from 'date-fns/locale';
 
 type Message = {
   id: string;
@@ -52,7 +52,7 @@ export function AiChat() {
       ]);
       setShowSuggestions(true);
     }
-  }, [isOpen, messages]);
+  }, [isOpen, messages.length]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -81,7 +81,7 @@ export function AiChat() {
         message: currentInput,
       });
 
-      const response = llmResponse.output;
+      const response = llmResponse;
       let content: React.ReactNode;
       let rawContentForHistory: { text: string } | { toolResponse: any };
       
@@ -89,18 +89,22 @@ export function AiChat() {
         const toolCall = response.toolCalls[0];
         
         rawContentForHistory = { toolResponse: { name: toolCall.name, result: toolCall.result }};
+        let modelTextResponse = response.text || '';
         
         if (toolCall.name === 'getMemberTransactionHistory') {
             if (toolCall.result?.history) {
               content = <TransactionHistoryDisplay history={toolCall.result.history} />;
+              modelTextResponse = "Here is the transaction history:";
             } else {
               content = toolCall.result?.error || 'Could not retrieve history.';
+              modelTextResponse = toolCall.result?.error || 'Could not retrieve history.';
             }
         } else if (toolCall.name === 'prepareMemberPdfDownload') {
             if (toolCall.result?.success) {
+                modelTextResponse = `I've prepared the PDF for ${toolCall.result.memberName}. Would you like to download it?`;
                 content = (
                     <div>
-                        <p>I&apos;ve prepared the PDF for {toolCall.result.memberName}. Would you like to download it?</p>
+                        <p>{modelTextResponse}</p>
                         <Button
                             size="sm"
                             className="mt-2"
@@ -115,12 +119,14 @@ export function AiChat() {
                 );
             } else {
                 content = toolCall.result?.error || 'Could not prepare the PDF.';
+                modelTextResponse = toolCall.result?.error || 'Could not prepare the PDF.';
             }
         } else if (toolCall.name === 'prepareFinancialStatementDownload') {
             if (toolCall.result?.success) {
+                modelTextResponse = "I've prepared the financial statement. Would you like to download it?";
                 content = (
                      <div>
-                        <p>I&apos;ve prepared the financial statement. Would you like to download it?</p>
+                        <p>{modelTextResponse}</p>
                         <Button
                             size="sm"
                             className="mt-2"
@@ -132,20 +138,34 @@ export function AiChat() {
                 );
             } else {
                  content = 'Could not prepare the financial statement PDF.';
+                 modelTextResponse = 'Could not prepare the financial statement PDF.';
             }
         } else if (response.text) {
              content = response.text;
+             modelText_response = response.text;
         } else {
             content = "I've processed that request.";
+            modelTextResponse = "I've processed that request.";
         }
-      } else {
-        content = response.text || "Sorry, I'm not sure how to respond to that.";
-        rawContentForHistory = { text: response.text || "No response text." };
-      }
-      
-      const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory };
-      setMessages((prev) => [...prev, modelMessage]);
 
+        const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory: { text: modelTextResponse }};
+        setMessages((prev) => [...prev, modelMessage]);
+
+      } else if (response.text) {
+        content = response.text;
+        rawContentForHistory = { text: response.text };
+        const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory };
+        setMessages((prev) => [...prev, modelMessage]);
+      } else {
+        const errorMessageContent = "Sorry, I'm not sure how to respond to that.";
+        const errorMessage: Message = {
+            id: Date.now().toString() + '-error',
+            role: 'model',
+            content: errorMessageContent,
+            rawContentForHistory: { text: errorMessageContent }
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      }
     } catch (error) {
       console.error('Chat error:', error);
       const errorMessageContent = 'Sorry, I encountered an error. Please try again.';
@@ -272,11 +292,15 @@ function TransactionHistoryDisplay({ history }: { history: { date: string, descr
     const [locale, setLocale] = useState<Locale>();
 
     useEffect(() => {
-        if (language === 'bn') {
-            setLocale(bn);
-        } else {
-            setLocale(undefined);
-        }
+        const loadLocale = async () => {
+            if (language === 'bn') {
+                const { bn } = await import('date-fns/locale');
+                setLocale(bn);
+            } else {
+                setLocale(undefined);
+            }
+        };
+        loadLocale();
     }, [language]);
 
 

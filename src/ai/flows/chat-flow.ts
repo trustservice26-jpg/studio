@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI chatbot flow to assist members.
@@ -82,7 +83,7 @@ const getMemberTransactionHistory = ai.defineTool(
 const prepareMemberPdfDownload = ai.defineTool(
   {
     name: 'prepareMemberPdfDownload',
-    description: 'Prepares a member information PDF for download.',
+    description: 'Prepares a member information PDF for download after confirming the member name.',
     inputSchema: z.object({
         memberName: z.string().describe('The name of the member whose PDF should be downloaded.'),
     }),
@@ -135,7 +136,8 @@ You have access to the following tools:
 - prepareFinancialStatementDownload: To help a user download the organization's full financial statement.
 
 IMPORTANT RULES:
-- When asked for a member's PDF, ALWAYS confirm the member's name. If the user provides a name, use the 'prepareMemberPdfDownload' tool.
+- When a user asks to download a member PDF, you MUST ask for the member's name first. For example, say: "Of course. Which member's PDF would you like to download?".
+- Once the user provides a name, use the 'prepareMemberPdfDownload' tool with that name. Do not ask for confirmation before using the tool.
 - When asked for a transaction statement or financial statement, use the 'prepareFinancialStatementDownload' tool.
 - When asked for a member's transaction history, you MUST first ask for the member's name. Once they provide a name, use the 'getMemberTransactionHistory' tool.
 - If a tool returns an error (e.g., member not found), relay that information politely to the user.
