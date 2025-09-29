@@ -41,14 +41,8 @@ export function SetPermissionsDialog({ member, open, onOpenChange }: SetPermissi
     const newPermissions = { canManageTransactions, canManageMembers };
     
     let newRole: Member['role'] | undefined = undefined;
-    if (canManageTransactions && canManageMembers) {
-      // User has both permissions. We can set a primary role or leave it.
-      // Let's set it to moderator, but access will be permission-based.
-      newRole = 'moderator'; 
-    } else if (canManageTransactions) {
+    if (canManageTransactions || canManageMembers) {
       newRole = 'moderator';
-    } else if (canManageMembers) {
-      newRole = 'member-moderator';
     }
 
     updateMemberPermissions(member.id, newPermissions, newRole);
@@ -110,3 +104,5 @@ export function SetPermissionsDialog({ member, open, onOpenChange }: SetPermissi
     </Dialog>
   );
 }
+
+    

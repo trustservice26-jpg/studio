@@ -43,8 +43,8 @@ import type { UserRole, Member } from '@/lib/types';
 const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
-    { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin', 'member-moderator'], permissions: ['canManageMembers'] },
-    { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: ShieldCheck, roles: ['admin', 'moderator'], permissions: ['canManageTransactions'] },
+    { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'], permissions: ['canManageMembers'] },
+    { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: ShieldCheck, roles: ['admin'], permissions: ['canManageTransactions'] },
     { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin'], permissions: [] },
 ];
 
@@ -82,12 +82,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     
     if (password === 'admin123') {
         authenticatedUser = foundAdmin || { id: 'temp-admin', name: 'Admin', role: 'admin' } as Member;
-        toastTitle = language === 'bn' ? 'এডমিন ভিউতে स्विच করা হয়েছে' : 'Logged In as Admin';
+        toastTitle = language === 'bn' ? 'এডমিন ভিউতে সুইচ করা হয়েছে' : 'Logged In as Admin';
         toastDescription = language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.';
         loggedIn = true;
     }
     else if (password === 'mode123') {
-        authenticatedUser = members.find(m => m.permissions?.canManageTransactions || m.permissions?.canManageMembers) || null;
+        authenticatedUser = members.find(m => (m.permissions?.canManageTransactions || m.permissions?.canManageMembers) && m.role !== 'admin') || null;
         toastTitle = language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator';
         toastDescription = language === 'bn' ? 'আপনার এখন নির্ধারিত পরিচালনার অনুমতি রয়েছে।' : 'You now have designated management privileges.';
         if (authenticatedUser) loggedIn = true;
@@ -114,9 +114,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         if (item.href === '/') return true;
         
         const hasRole = item.roles.includes(role);
-        const hasPermission = item.permissions.length === 0 || (user && item.permissions.some(p => user?.permissions?.[p as keyof Member['permissions']]));
+        const hasPermission = user && item.permissions.length > 0 && item.permissions.some(p => user?.permissions?.[p as keyof Member['permissions']]);
+        
+        if (role === 'moderator' || role === 'member-moderator') {
+            return hasPermission || item.href === '/';
+        }
 
-        return hasRole || hasPermission;
+        return hasRole;
     });
   }
 
@@ -247,7 +251,5 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
-
-    
 
     
