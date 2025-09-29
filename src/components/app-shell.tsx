@@ -15,7 +15,8 @@ import {
   DollarSign,
   LogIn,
   LogOut,
-  UserCog
+  UserCog,
+  CreditCard,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -44,8 +45,7 @@ const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
     { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'], permissions: ['canManageMembers'] },
-    { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: ShieldCheck, roles: [], permissions: ['canManageTransactions'] },
-    { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin'], permissions: [] },
+    { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: CreditCard, roles: ['admin'], permissions: ['canManageTransactions'] },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -81,10 +81,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     const foundAdmin = members.find(m => m.role === 'admin');
     
     if (password === 'admin123') {
-        authenticatedUser = foundAdmin || { id: 'temp-admin', name: 'Admin', role: 'admin' } as Member;
-        toastTitle = language === 'bn' ? 'এডমিন ভিউতে সুইচ করা হয়েছে' : 'Logged In as Admin';
-        toastDescription = language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.';
-        loggedIn = true;
+        if(foundAdmin?.role === 'admin') {
+            authenticatedUser = foundAdmin;
+            toastTitle = language === 'bn' ? 'এডমিন ভিউতে সুইচ করা হয়েছে' : 'Logged In as Admin';
+            toastDescription = language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.';
+            loggedIn = true;
+        } else {
+            setPasswordError(language === 'bn' ? 'কোনো এডমিন খুঁজে পাওয়া যায়নি।' : 'No admin found.');
+            return;
+        }
     }
     else if (password === 'mode123') {
         authenticatedUser = members.find(m => (m.permissions?.canManageTransactions || m.permissions?.canManageMembers) && m.role !== 'admin') || null;
@@ -111,8 +116,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     const role = user?.role || 'member';
     return navItems.filter(item => {
         if (role === 'admin') {
-            // Admins see everything except the dedicated moderator page
-            return item.href !== '/moderator';
+            return true;
         }
         if (item.href === '/') return true;
         
@@ -120,6 +124,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         const hasPermission = user && item.permissions.length > 0 && item.permissions.some(p => user?.permissions?.[p as keyof Member['permissions']]);
         
         if (role === 'moderator' || role === 'member-moderator') {
+            if(item.href === '/dashboard') return false;
             return hasPermission || item.href === '/';
         }
 

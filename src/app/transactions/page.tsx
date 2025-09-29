@@ -20,7 +20,9 @@ export default function TransactionsPage() {
     setTransactionOpen(true);
   };
   
-  if (user?.role !== 'admin') {
+  const canAccess = user?.role === 'admin' || user?.permissions?.canManageTransactions;
+
+  if (!canAccess) {
       return (
         <div className="flex flex-1 items-center justify-center p-4 text-center flex-col gap-4">
             <ShieldAlert className="h-16 w-16 text-destructive" />
