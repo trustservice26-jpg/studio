@@ -42,7 +42,7 @@ export function AiChat() {
         {
           id: 'init',
           role: 'model',
-          content: 'Assalamu Alaikum! Welcome to Seva Sangathan. How can I assist you today?',
+          content: 'Assalamu Alaikum! Welcome to Seva Sangathan. I hope you are doing well. How can I help you today?',
         },
       ]);
     }
