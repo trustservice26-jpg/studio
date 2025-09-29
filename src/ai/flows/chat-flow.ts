@@ -161,7 +161,7 @@ const chatFlow = ai.defineFlow(
         message: message,
     });
     
-    return llmResponse.output;
+    return llmResponse;
   }
 );
 

@@ -15,7 +15,8 @@ import { Card, CardContent } from '../ui/card';
 import { format } from 'date-fns';
 import { DownloadPdfDialog } from '../members/download-pdf-dialog';
 import { DownloadStatementDialog } from '../dashboard/download-statement-dialog';
-import type { bn } from 'date-fns/locale';
+import type { Locale } from 'date-fns';
+import { bn } from 'date-fns/locale';
 
 type Message = {
   id: string;
@@ -75,11 +76,12 @@ export function AiChat() {
           content: [msg.rawContentForHistory],
       }));
       
-      const response = await chat({
+      const llmResponse = await chat({
         history: chatHistory,
         message: currentInput,
       });
 
+      const response = llmResponse.output;
       let content: React.ReactNode;
       let rawContentForHistory: { text: string } | { toolResponse: any };
       
@@ -271,7 +273,7 @@ function TransactionHistoryDisplay({ history }: { history: { date: string, descr
 
     useEffect(() => {
         if (language === 'bn') {
-            import('date-fns/locale/bn').then(mod => setLocale(mod.bn));
+            setLocale(bn);
         } else {
             setLocale(undefined);
         }
