@@ -38,29 +38,31 @@ import { LiveClock } from './live-clock';
 import { RegisterMemberDialog } from './home/register-member-dialog';
 import { useIsClient } from '@/hooks/use-is-client';
 import { ThemeSwitcher } from './theme-switcher';
-import type { UserRole } from '@/lib/types';
+import type { UserRole, Member } from '@/lib/types';
 
 const navItems = [
-  { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'] },
-  { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'] },
-  { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin', 'member-moderator'] },
-  { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: UserCog, roles: ['admin', 'moderator'] },
-  { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin'] },
+    { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
+    { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
+    { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin', 'member-moderator'], permissions: ['canManageMembers'] },
+    { href: '/moderator', label: 'Moderator', bn_label: 'মডারেটর', icon: ShieldCheck, roles: ['admin', 'moderator'], permissions: ['canManageTransactions'] },
+    { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin'], permissions: [] },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { userRole, setUserRole, language } = useAppContext();
+  const { user, setUser, language, members } = useAppContext();
   const { toast } = useToast();
   const [isPasswordDialogOpen, setPasswordDialogOpen] = React.useState(false);
   const [password, setPassword] = React.useState('');
   const [passwordError, setPasswordError] = React.useState('');
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
   const isClient = useIsClient();
+  
+  const userRole = user?.role || 'member';
 
   const handleLoginClick = () => {
-    if (userRole !== 'member') {
-      setUserRole('member');
+    if (user) {
+      setUser(null);
       toast({
         title: language === 'bn' ? 'সদস্য ভিউতে সুইচ করা হয়েছে' : 'Logged Out',
         description: language === 'bn' ? 'আপনি এখন সদস্য ভিউ মোডে আছেন।' : 'You are now in member view mode.',
@@ -71,55 +73,64 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   const handlePasswordSubmit = () => {
-    // Admin password
+    let authenticatedUser: Member | null = null;
+    let toastTitle = '';
+    let toastDescription = '';
+    let loggedIn = false;
+
+    const foundAdmin = members.find(m => m.role === 'admin');
+    const foundModerator = members.find(m => m.permissions?.canManageTransactions);
+    const foundMemberModerator = members.find(m => m.permissions?.canManageMembers);
+
     if (password === 'admin123') {
-      setUserRole('admin');
-      toast({
-        title: language === 'bn' ? 'এডমিন ভিউতে स्विच করা হয়েছে' : 'Logged In as Admin',
-        description: language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.',
-      });
-      setPasswordDialogOpen(false);
-      setPassword('');
-      setPasswordError('');
-      return;
+        authenticatedUser = foundAdmin || { id: 'temp-admin', name: 'Admin', role: 'admin' } as Member;
+        toastTitle = language === 'bn' ? 'এডমিন ভিউতে स्विच করা হয়েছে' : 'Logged In as Admin';
+        toastDescription = language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.';
+        loggedIn = true;
     }
-    
-    // Moderator password
-    if (password === 'mode1234') {
-        setUserRole('moderator');
-        toast({
-            title: language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator',
-            description: language === 'bn' ? 'আপনার এখন লেনদেন পরিচালনার অনুমতি রয়েছে।' : 'You now have transaction management privileges.',
-        });
+    else if (password === 'mode1234') {
+        authenticatedUser = members.find(m => m.permissions?.canManageTransactions) || null;
+        toastTitle = language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator';
+        toastDescription = language === 'bn' ? 'আপনার এখন লেনদেন পরিচালনার অনুমতি রয়েছে।' : 'You now have transaction management privileges.';
+        if (authenticatedUser) loggedIn = true;
+    }
+    else if (password === 'mem1234') {
+        authenticatedUser = members.find(m => m.permissions?.canManageMembers) || null;
+        toastTitle = language === 'bn' ? 'সদস্য মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Member Moderator';
+        toastDescription = language === 'bn' ? 'আপনার এখন সদস্য পরিচালনার অনুমতি রয়েছে।' : 'You now have member management privileges.';
+        if (authenticatedUser) loggedIn = true;
+    }
+
+    if (loggedIn && authenticatedUser) {
+        setUser(authenticatedUser);
+        toast({ title: toastTitle, description: toastDescription });
         setPasswordDialogOpen(false);
         setPassword('');
         setPasswordError('');
-        return;
+    } else if (password === 'mode1234' || password === 'mem1234') {
+         setPasswordError(language === 'bn' ? 'অনুমতিসহ কোনো মডারেটর খুঁজে পাওয়া যায়নি।' : 'No moderator with that permission found.');
     }
-
-    // Member Moderator password
-    if (password === 'mem1234') {
-        setUserRole('member-moderator');
-        toast({
-            title: language === 'bn' ? 'সদস্য মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Member Moderator',
-            description: language === 'bn' ? 'আপনার এখন সদস্য পরিচালনার অনুমতি রয়েছে।' : 'You now have member management privileges.',
-        });
-        setPasswordDialogOpen(false);
-        setPassword('');
-        setPasswordError('');
-        return;
+    else {
+        setPasswordError(language === 'bn' ? 'ভুল পাসওয়ার্ড। আবার চেষ্টা করুন।' : 'Incorrect password. Please try again.');
     }
-
-    setPasswordError(language === 'bn' ? 'ভুল পাসওয়ার্ড। আবার চেষ্টা করুন।' : 'Incorrect password. Please try again.');
   };
 
-  const getNavItems = (role: UserRole) => {
-    return navItems.filter(item => item.roles.includes(role));
+  const getNavItems = (user: Member | null) => {
+    const role = user?.role || 'member';
+    return navItems.filter(item => {
+        if (role === 'admin') return true;
+        if (item.href === '/') return true;
+        
+        const hasRole = item.roles.includes(role);
+        const hasPermission = item.permissions.length === 0 || (user && item.permissions.some(p => user?.permissions?.[p as keyof Member['permissions']]));
+
+        return hasRole || hasPermission;
+    });
   }
 
   const navLinks = (
      <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
-      {getNavItems(userRole).map(({ href, label, bn_label, icon: Icon }) => (
+      {getNavItems(user).map(({ href, label, bn_label, icon: Icon }) => (
         <Link
           key={label}
           href={href}
@@ -185,7 +196,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <ThemeSwitcher />
             <LanguageSwitcher />
             <Button variant="outline" onClick={handleLoginClick}>
-                {userRole !== 'member' ? (
+                {user ? (
                     <>
                         <LogOut className="mr-2 h-4 w-4" />
                         {language === 'bn' ? 'প্রস্থান' : 'Log Out'}
@@ -244,3 +255,5 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
+
+    

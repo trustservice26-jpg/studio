@@ -14,7 +14,7 @@ import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
 import { AddMemberDialog } from '@/components/members/add-member-dialog';
 
 export default function MembersPage() {
-  const { members, userRole, language } = useAppContext();
+  const { members, user, language } = useAppContext();
   const [isPdfOpen, setPdfOpen] = React.useState(false);
   const [isAddMemberOpen, setAddMemberOpen] = React.useState(false);
   const [filter, setFilter] = React.useState('');
@@ -25,7 +25,7 @@ export default function MembersPage() {
     );
   }, [members, filter]);
 
-  const canManageMembers = userRole === 'admin' || userRole === 'member-moderator';
+  const canManageMembers = user?.role === 'admin' || user?.permissions?.canManageMembers;
   
   return (
     <motion.div

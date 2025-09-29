@@ -10,7 +10,7 @@ import { AddTransactionDialog } from '@/components/members/add-transaction-dialo
 import { TransactionHistory } from '@/components/home/transaction-history';
 
 export default function ModeratorPage() {
-  const { language, userRole } = useAppContext();
+  const { language, user } = useAppContext();
   const [isTransactionOpen, setTransactionOpen] = React.useState(false);
   const [transactionType, setTransactionType] = React.useState<'donation' | 'withdrawal'>('donation');
 
@@ -19,7 +19,9 @@ export default function ModeratorPage() {
     setTransactionOpen(true);
   };
   
-  if (userRole !== 'admin' && userRole !== 'moderator') {
+  const canAccess = user?.role === 'admin' || user?.permissions?.canManageTransactions;
+
+  if (!canAccess) {
       return (
         <div className="flex flex-1 items-center justify-center p-4 text-center flex-col gap-4">
             <ShieldAlert className="h-16 w-16 text-destructive" />

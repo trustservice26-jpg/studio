@@ -42,11 +42,13 @@ export function SetPermissionsDialog({ member, open, onOpenChange }: SetPermissi
     
     let newRole: Member['role'] | undefined = undefined;
     if (canManageTransactions && canManageMembers) {
-      newRole = 'admin';
+      // User has both permissions. We can set a primary role or leave it.
+      // Let's set it to moderator, but access will be permission-based.
+      newRole = 'moderator'; 
     } else if (canManageTransactions) {
       newRole = 'moderator';
     } else if (canManageMembers) {
-        newRole = 'member-moderator';
+      newRole = 'member-moderator';
     }
 
     updateMemberPermissions(member.id, newPermissions, newRole);

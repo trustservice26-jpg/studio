@@ -18,7 +18,7 @@ import { RegisterMemberDialog } from '@/components/home/register-member-dialog';
 import { ClearDataDialog } from '@/components/home/clear-data-dialog';
 
 export default function HomePage() {
-  const { members, language, currentFunds, totalDonations, totalWithdrawals, userRole } = useAppContext();
+  const { members, language, currentFunds, totalDonations, totalWithdrawals, user } = useAppContext();
   const [isPdfOpen, setPdfOpen] = React.useState(false);
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
   const [isClearDataOpen, setClearDataOpen] = React.useState(false);
@@ -104,7 +104,7 @@ export default function HomePage() {
       </motion.section>
 
       <div className="container mx-auto py-12 px-4 md:px-6">
-        {userRole === 'admin' && (
+        {user?.role === 'admin' && (
           <section className="mb-8 text-right">
               <Button variant="destructive" onClick={() => setClearDataOpen(true)}>
                   <Trash2 className="mr-2 h-4 w-4" />

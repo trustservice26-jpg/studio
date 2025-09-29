@@ -32,12 +32,12 @@ import { MemberTransactionHistoryModal } from "./member-transaction-history-moda
 import { SetPermissionsDialog } from "./set-permissions-dialog"
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
-  const { userRole, deleteMember, toggleMemberStatus, language } = useAppContext();
+  const { user, deleteMember, toggleMemberStatus, language } = useAppContext();
   const [isHistoryOpen, setIsHistoryOpen] = React.useState(false);
   const [isAlertOpen, setIsAlertOpen] = React.useState(false);
   const [isPermissionsOpen, setPermissionsOpen] = React.useState(false);
 
-  const canManageMembers = userRole === 'admin' || userRole === 'member-moderator';
+  const canManageMembers = user?.role === 'admin' || user?.permissions?.canManageMembers;
 
   return (
     <>
@@ -60,7 +60,7 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
                     {member.status === 'active' ? (language === 'bn' ? 'নিষ্ক্রিয় হিসাবে সেট করুন' : 'Set as Inactive') : (language === 'bn' ? 'সক্রিয় হিসাবে সেট করুন' : 'Set as Active')}
                 </DropdownMenuItem>
              )}
-            {userRole === 'admin' && (
+            {user?.role === 'admin' && (
               <>
                  <DropdownMenuItem onClick={() => setPermissionsOpen(true)}>
                   <UserCog className="mr-2 h-4 w-4" />
@@ -156,20 +156,27 @@ export const columns: ColumnDef<Member>[] = [
     },
     cell: ({ row }) => {
       const { language } = useAppContext();
-      const role = row.original.role;
-      let roleText = language === 'bn' ? 'সদস্য' : 'Member';
-      if (role === 'admin') {
-        roleText = language === 'bn' ? 'এডমিন' : 'Admin';
-      } else if (role === 'moderator') {
-        roleText = language === 'bn' ? 'মডারেটর' : 'Moderator';
-      } else if (role === 'member-moderator') {
-        roleText = language === 'bn' ? 'সদস্য মডারেটর' : 'Member Moderator';
+      const member = row.original;
+      const roles = [];
+      if(member.role === 'admin') {
+          roles.push(language === 'bn' ? 'এডমিন' : 'Admin');
       }
-      
-      if (role) {
-        return <Badge variant={role === 'admin' ? "default" : "secondary"}>{roleText}</Badge>
+      if (member.permissions?.canManageTransactions) {
+          roles.push(language === 'bn' ? 'লেনদেন মডারেটর' : 'Transaction Moderator');
       }
-      return <span className="text-muted-foreground">{roleText}</span>
+      if (member.permissions?.canManageMembers) {
+          roles.push(language === 'bn' ? 'সদস্য মডারেটর' : 'Member Moderator');
+      }
+
+      if (roles.length > 0) {
+        return (
+          <div className="flex flex-col gap-1">
+            {roles.map(r => <Badge key={r} variant={member.role === 'admin' ? "default" : "secondary"}>{r}</Badge>)}
+          </div>
+        )
+      }
+
+      return <span className="text-muted-foreground">{language === 'bn' ? 'সদস্য' : 'Member'}</span>
     },
   },
   {

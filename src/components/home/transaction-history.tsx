@@ -26,7 +26,7 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 
 export function TransactionHistory() {
-  const { transactions, language, userRole, deleteTransaction } = useAppContext();
+  const { transactions, language, user, deleteTransaction } = useAppContext();
   const [transactionToDelete, setTransactionToDelete] = React.useState<string | null>(null);
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
@@ -95,7 +95,7 @@ export function TransactionHistory() {
                       <div className={`font-semibold mr-2 ${tx.type === 'donation' ? 'text-green-600' : 'text-red-600'}`}>
                         {formatCurrency(tx.amount)}
                       </div>
-                       {userRole === 'admin' && (
+                       {user?.role === 'admin' && (
                           <AlertDialogTrigger asChild>
                               <Button
                                   variant="ghost"

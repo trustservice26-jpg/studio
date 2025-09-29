@@ -26,7 +26,7 @@ interface AppContextType {
   members: Member[];
   notices: Notice[];
   transactions: Transaction[];
-  userRole: UserRole;
+  user: Member | null;
   language: 'en' | 'bn';
   currentFunds: number;
   totalDonations: number;
@@ -41,7 +41,7 @@ interface AppContextType {
   deleteTransaction: (transactionId: string) => void;
   clearAllTransactions: () => void;
   clearAllData: () => void;
-  setUserRole: (role: UserRole) => void;
+  setUser: (user: Member | null) => void;
   setLanguage: (language: 'en' | 'bn') => void;
 }
 
@@ -76,7 +76,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [members, setMembers] = useState<Member[]>([]);
   const [notices, setNotices] = useState<Notice[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [userRole, setUserRole] = useState<UserRole>('member');
+  const [user, setUser] = useState<Member | null>(null);
   const { toast } = useToast();
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
 
@@ -126,6 +126,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
       unsubTransactions();
     };
   }, []);
+  
+  useEffect(() => {
+    if (user) {
+        const latestUserData = members.find(m => m.id === user.id);
+        if (latestUserData) {
+            setUser(latestUserData);
+        }
+    }
+  }, [members, user]);
 
   const { currentFunds, totalDonations, totalWithdrawals } = useMemo(() => {
     const totalDonations = transactions
@@ -209,9 +218,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (!member) return;
     try {
       const memberRef = doc(db, 'members', memberId);
-      const updateData: { permissions: Member['permissions']; role?: Member['role'] } = { permissions };
+      const updateData: { permissions: Member['permissions']; role?: Member['role'] | null } = { permissions };
       
-      updateData.role = role || undefined; // It can be undefined to clear the role
+      updateData.role = role || null;
       
       await updateDoc(memberRef, updateData);
       toast({
@@ -344,7 +353,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     members,
     notices,
     transactions,
-    userRole,
+    user,
     addMember,
     deleteMember,
     toggleMemberStatus,
@@ -355,7 +364,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     deleteTransaction,
     clearAllTransactions,
     clearAllData,
-    setUserRole,
+    setUser,
     language,
     setLanguage: handleSetLanguage,
     currentFunds,

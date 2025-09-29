@@ -24,7 +24,7 @@ const itemVariants = {
 };
 
 export function NoticeBoard() {
-  const { notices, userRole, addNotice, deleteNotice, language } = useAppContext();
+  const { notices, user, addNotice, deleteNotice, language } = useAppContext();
   const [newMessage, setNewMessage] = React.useState('');
 
   const handlePostNotice = () => {
@@ -42,7 +42,7 @@ export function NoticeBoard() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {userRole === 'admin' && (
+            {user?.role === 'admin' && (
               <div className="flex items-center gap-2">
                 <Textarea
                   placeholder={language === 'bn' ? 'আপনার নোটিশ এখানে টাইপ করুন...' : 'Type your notice here...'}
@@ -65,7 +65,7 @@ export function NoticeBoard() {
                         {formatDistanceToNow(new Date(notice.date), { addSuffix: true, locale: language === 'bn' ? bn : undefined })}
                       </p>
                     </div>
-                    {userRole === 'admin' && (
+                    {user?.role === 'admin' && (
                        <Button
                         variant="ghost"
                         size="icon"
