@@ -20,8 +20,8 @@ import { DownloadStatementDialog } from '../dashboard/download-statement-dialog'
 type Message = {
   id: string;
   role: 'user' | 'model';
-  content: React.ReactNode;
-  rawContentForHistory: { text: string }[] | { toolResponse: any }[];
+  uiContent: React.ReactNode;
+  historyContent: { text: string }[] | { toolResponse: any }[];
 };
 
 export function AiChat() {
@@ -45,8 +45,8 @@ export function AiChat() {
         {
           id: 'init',
           role: 'model',
-          content: initialMessage,
-          rawContentForHistory: [{ text: initialMessage }],
+          uiContent: initialMessage,
+          historyContent: [{ text: initialMessage }],
         },
       ]);
       setShowSuggestions(true);
@@ -59,101 +59,117 @@ export function AiChat() {
     }
   }, [messages]);
 
+  const callChatApi = async (history: any[], message: string) => {
+    const chatInput: ChatInput = {
+      history: history,
+      message: message,
+    };
+    return await chat(chatInput);
+  };
+  
   const handleUserInput = async (predefinedInput?: string) => {
     const currentInput = predefinedInput || input;
     if (!currentInput.trim()) return;
-
+  
     setShowSuggestions(false);
-    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: currentInput, rawContentForHistory: [{ text: currentInput }] };
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: 'user',
+      uiContent: currentInput,
+      historyContent: [{ text: currentInput }],
+    };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
-
+  
     try {
-      const chatHistory = messages.map(msg => ({
-          role: msg.role,
-          content: msg.rawContentForHistory,
+      let currentHistory = messages.map(msg => ({
+        role: msg.role,
+        content: msg.historyContent,
       }));
-      
-      const response = await chat({
-        history: chatHistory,
-        message: currentInput,
-      });
-
-      let content: React.ReactNode;
-      let rawContentForHistory: Message['rawContentForHistory'];
-      
+  
+      let response = await callChatApi(currentHistory, currentInput);
+  
       if (response.toolCalls && response.toolCalls.length > 0) {
+        // Handle tool calls
         const toolCall = response.toolCalls[0];
         const toolResult = toolCall.result;
+  
+        const modelToolMessage: Message = {
+          id: Date.now().toString() + '-tool',
+          role: 'model',
+          uiContent: null, // This message won't be rendered
+          historyContent: [{ toolResponse: toolCall }],
+        };
         
-        let modelTextResponse = response.text || '';
-        
+        // Add the tool response to history and make another call to get the final text
+        currentHistory = [...currentHistory, 
+          { role: 'user', content: [{text: currentInput}] },
+          { role: 'model', content: modelToolMessage.historyContent }
+        ];
+
+        response = await callChatApi(currentHistory, ''); // No new user message, just process tool result
+
+        let finalUiContent: React.ReactNode;
+        const modelTextResponse = response.text || "I've processed that request.";
+
         if (toolCall.name === 'getMemberTransactionHistory') {
-            if (toolResult?.history) {
-              content = <TransactionHistoryDisplay history={toolResult.history} />;
-              modelTextResponse = `Here is the transaction history for ${toolCall.args.memberName}:`;
-            } else {
-              content = toolResult?.error || 'Could not retrieve history.';
-              modelTextResponse = toolResult?.error || 'Could not retrieve history.';
-            }
+          if (toolResult?.history) {
+            finalUiContent = <TransactionHistoryDisplay history={toolResult.history} />;
+          } else {
+            finalUiContent = toolResult?.error || 'Could not retrieve history.';
+          }
         } else if (toolCall.name === 'prepareMemberPdfDownload') {
-            if (toolResult?.success) {
-                modelTextResponse = `I've prepared the PDF for ${toolResult.memberName}. Would you like to download it?`;
-                content = (
-                    <div>
-                        <p>{modelTextResponse}</p>
-                        <Button
-                            size="sm"
-                            className="mt-2"
-                            onClick={() => {
-                                setMemberForPdf(toolResult.memberName);
-                                setMemberPdfOpen(true);
-                            }}
-                        >
-                            <Download className="mr-2 h-4 w-4" /> Yes, Download
-                        </Button>
-                    </div>
-                );
-            } else {
-                content = toolResult?.error || 'Could not prepare the PDF.';
-                modelTextResponse = toolResult?.error || 'Could not prepare the PDF.';
-            }
+          if (toolResult?.success) {
+            finalUiContent = (
+              <div>
+                <p>{modelTextResponse}</p>
+                <Button size="sm" className="mt-2" onClick={() => {
+                  setMemberForPdf(toolResult.memberName);
+                  setMemberPdfOpen(true);
+                }}>
+                  <Download className="mr-2 h-4 w-4" /> Yes, Download
+                </Button>
+              </div>
+            );
+          } else {
+            finalUiContent = toolResult?.error || 'Could not prepare the PDF.';
+          }
         } else if (toolCall.name === 'prepareFinancialStatementDownload') {
             if (toolResult?.success) {
-                modelTextResponse = "I've prepared the financial statement. Would you like to download it?";
-                content = (
+                finalUiContent = (
                      <div>
                         <p>{modelTextResponse}</p>
-                        <Button
-                            size="sm"
-                            className="mt-2"
-                            onClick={() => setStatementPdfOpen(true)}
-                        >
+                        <Button size="sm" className="mt-2" onClick={() => setStatementPdfOpen(true)}>
                             <Download className="mr-2 h-4 w-4" /> Yes, Download Statement
                         </Button>
                     </div>
                 );
             } else {
-                 content = 'Could not prepare the financial statement PDF.';
-                 modelTextResponse = 'Could not prepare the financial statement PDF.';
+                 finalUiContent = 'Could not prepare the financial statement PDF.';
             }
-        } else if (response.text) {
-             content = response.text;
-             modelTextResponse = response.text;
         } else {
-            content = "I've processed that request.";
-            modelTextResponse = "I've processed that request.";
+            finalUiContent = response.text;
         }
 
-        const modelToolMessage: Message = { id: Date.now().toString() + '-tool', role: 'model', content, rawContentForHistory: [{ toolResponse: toolCall }] };
-        const modelTextMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory: [{ text: modelTextResponse }] };
-        setMessages((prev) => [...prev, modelTextMessage]);
+        const finalModelMessage: Message = {
+            id: Date.now().toString() + '-ai',
+            role: 'model',
+            uiContent: finalUiContent,
+            historyContent: [{ text: modelTextResponse }],
+        };
+
+        setMessages((prev) => [...prev, modelToolMessage, finalModelMessage]);
+
 
       } else if (response.text) {
-        content = response.text;
-        rawContentForHistory = [{ text: response.text }];
-        const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory };
+        // Handle simple text response
+        const modelMessage: Message = {
+          id: Date.now().toString() + '-ai',
+          role: 'model',
+          uiContent: response.text,
+          historyContent: [{ text: response.text }],
+        };
         setMessages((prev) => [...prev, modelMessage]);
       } else {
         throw new Error("No valid response from AI");
@@ -164,8 +180,8 @@ export function AiChat() {
       const errorMessage: Message = {
         id: Date.now().toString() + '-error',
         role: 'model',
-        content: errorMessageContent,
-        rawContentForHistory: [{ text: errorMessageContent }]
+        uiContent: errorMessageContent,
+        historyContent: [{ text: errorMessageContent }]
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -210,10 +226,10 @@ export function AiChat() {
                 <ScrollArea className="h-full" ref={scrollAreaRef}>
                   <div className="p-4 space-y-4">
                     {messages.map((m) => (
-                      <div key={m.id} className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      m.uiContent && <div key={m.id} className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         {m.role === 'model' && <Bot className="h-6 w-6 text-primary flex-shrink-0" />}
                         <div className={`p-3 rounded-lg max-w-xs sm:max-w-sm ${m.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
-                          {typeof m.content === 'string' ? <p className="text-sm whitespace-pre-wrap">{m.content}</p> : m.content}
+                          {typeof m.uiContent === 'string' ? <p className="text-sm whitespace-pre-wrap">{m.uiContent}</p> : m.uiContent}
                         </div>
                         {m.role === 'user' && <User className="h-6 w-6 text-muted-foreground flex-shrink-0" />}
                       </div>
@@ -286,7 +302,7 @@ function TransactionHistoryDisplay({ history }: { history: { date: string, descr
     useEffect(() => {
         const loadLocale = async () => {
             if (language === 'bn') {
-                const { bn } = await import('date-fns/locale/bn');
+                const { bn } = await import('date-fns/locale');
                 setLocale(bn);
             } else {
                 const { enUS } = await import('date-fns/locale/en-US');
