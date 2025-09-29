@@ -15,12 +15,12 @@ import { Card, CardContent } from '../ui/card';
 import { format } from 'date-fns';
 import { DownloadPdfDialog } from '../members/download-pdf-dialog';
 import { DownloadStatementDialog } from '../dashboard/download-statement-dialog';
-import { Badge } from '../ui/badge';
 
 type Message = {
   id: string;
   role: 'user' | 'model';
   content: React.ReactNode;
+  rawContent: string;
   toolResponse?: any;
 };
 
@@ -40,11 +40,13 @@ export function AiChat() {
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
+      const initialMessage = 'Assalamu Alaikum! Welcome to Seva Sangathan. I hope you are doing well. How can I help you today?';
       setMessages([
         {
           id: 'init',
           role: 'model',
-          content: 'Assalamu Alaikum! Welcome to Seva Sangathan. I hope you are doing well. How can I help you today?',
+          content: initialMessage,
+          rawContent: initialMessage,
         },
       ]);
       setShowSuggestions(true);
@@ -62,7 +64,7 @@ export function AiChat() {
     if (!currentInput.trim()) return;
 
     setShowSuggestions(false);
-    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: currentInput };
+    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: currentInput, rawContent: currentInput };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
@@ -72,11 +74,8 @@ export function AiChat() {
         let contentPart;
         if (msg.toolResponse) {
           contentPart = [{ toolResponse: msg.toolResponse }];
-        } else if (typeof msg.content === 'string') {
-          contentPart = [{ text: msg.content }];
         } else {
-           const textContent = msg.content?.toString() || 'Complex content';
-           contentPart = [{ text: textContent }];
+          contentPart = [{ text: msg.rawContent }];
         }
 
         return {
@@ -91,18 +90,20 @@ export function AiChat() {
       });
 
       let content: React.ReactNode = response.text;
+      let rawContent: string = response.text || '';
       let toolResponse: any | undefined;
       
       if (response.toolCalls && response.toolCalls.length > 0) {
         const toolCall = response.toolCalls[0];
-        console.log('AI wants to use tool:', toolCall);
         toolResponse = { ...toolCall, result: toolCall.result };
         
         if (toolCall.name === 'getMemberTransactionHistory') {
             if (toolCall.result?.history) {
               content = <TransactionHistoryDisplay history={toolCall.result.history} />;
+              rawContent = `Displayed transaction history for a member.`;
             } else {
               content = toolCall.result?.error || 'Could not retrieve history.';
+              rawContent = content as string;
             }
         } else if (toolCall.name === 'prepareMemberPdfDownload') {
             if (toolCall.result?.success) {
@@ -121,8 +122,10 @@ export function AiChat() {
                         </Button>
                     </div>
                 );
+                rawContent = `PDF prepared for ${toolCall.result.memberName}.`;
             } else {
                 content = toolCall.result?.error || 'Could not prepare the PDF.';
+                rawContent = content as string;
             }
         } else if (toolCall.name === 'prepareFinancialStatementDownload') {
             if (toolCall.result?.success) {
@@ -137,26 +140,32 @@ export function AiChat() {
                             <Download className="mr-2 h-4 w-4" /> Yes, Download Statement
                         </Button>
                     </div>
-                )
+                );
+                rawContent = 'Financial statement prepared for download.';
             } else {
                  content = 'Could not prepare the financial statement PDF.';
+                 rawContent = content;
             }
         } else if (response.text) {
              content = response.text;
+             rawContent = response.text;
         } else {
             content = "I've processed that request.";
+            rawContent = "Tool call processed.";
         }
       }
       
-      const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, toolResponse };
+      const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContent, toolResponse };
       setMessages((prev) => [...prev, modelMessage]);
 
     } catch (error) {
       console.error('Chat error:', error);
+      const errorMessageContent = 'Sorry, I encountered an error. Please try again.';
       const errorMessage: Message = {
         id: Date.now().toString() + '-error',
         role: 'model',
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: errorMessageContent,
+        rawContent: errorMessageContent
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
