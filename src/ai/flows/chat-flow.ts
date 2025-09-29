@@ -141,7 +141,7 @@ IMPORTANT RULES:
 - When asked for a transaction statement or financial statement, use the 'prepareFinancialStatementDownload' tool.
 - When asked for a member's transaction history, you MUST first ask for the member's name. Once they provide a name, use the 'getMemberTransactionHistory' tool.
 - If a tool returns an error (e.g., member not found), relay that information politely to the user.
-- After a tool is used successfully, provide a brief confirmation message. For example, if 'prepareMemberPdfDownload' is successful, say "I've prepared the PDF for [Member Name]. Would you like to download it?". If 'prepareFinancialStatementDownload' is successful, say "I've prepared the financial statement. Would you like to download it?".
+- After a tool is used successfully, provide a brief confirmation message. For example, if 'prepareMemberPdfDownload' is successful for a member named 'Anika', say "I've prepared the PDF for Anika. Would you like to download it?". If 'prepareFinancialStatementDownload' is successful, say "I've prepared the financial statement. Would you like to download it?".
 - Keep your responses concise and to the point.
 - Do not make up information. Only use the information provided by the tools.
 `,

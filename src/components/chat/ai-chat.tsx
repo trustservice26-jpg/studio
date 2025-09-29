@@ -6,6 +6,7 @@ import { Bot, Loader2, Send, X, Download, History, User, FileDown, FileText } fr
 import { AnimatePresence, motion } from 'framer-motion';
 import { format } from 'date-fns';
 import type { Locale } from 'date-fns';
+import { bn } from 'date-fns/locale';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,11 +18,13 @@ import { Card, CardContent } from '../ui/card';
 import { DownloadPdfDialog } from '../members/download-pdf-dialog';
 import { DownloadStatementDialog } from '../dashboard/download-statement-dialog';
 
+type ChatMessagePart = { text: string } | { toolResponse: any };
+
 type Message = {
   id: string;
   role: 'user' | 'model';
   uiContent: React.ReactNode;
-  historyContent: { text: string }[] | { toolResponse: any }[];
+  historyContent: ChatMessagePart[];
 };
 
 export function AiChat() {
@@ -36,7 +39,6 @@ export function AiChat() {
   const [isMemberPdfOpen, setMemberPdfOpen] = useState(false);
   const [memberForPdf, setMemberForPdf] = useState<string | null>(null);
   const [isStatementPdfOpen, setStatementPdfOpen] = useState(false);
-
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -55,7 +57,12 @@ export function AiChat() {
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
+      // Use a timeout to allow the DOM to update before scrolling
+      setTimeout(() => {
+        if (scrollAreaRef.current) {
+          scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
+        }
+      }, 100);
     }
   }, [messages]);
 
@@ -70,7 +77,7 @@ export function AiChat() {
   const handleUserInput = async (predefinedInput?: string) => {
     const currentInput = predefinedInput || input;
     if (!currentInput.trim()) return;
-  
+
     setShowSuggestions(false);
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -78,40 +85,47 @@ export function AiChat() {
       uiContent: currentInput,
       historyContent: [{ text: currentInput }],
     };
+    
+    // Optimistically add user message
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
-  
+
     try {
-      let currentHistory = messages.map(msg => ({
+      const currentHistory = messages.map(msg => ({
         role: msg.role,
         content: msg.historyContent,
       }));
-  
-      let response = await callChatApi(currentHistory, currentInput);
-  
+      
+      const response = await callChatApi(currentHistory, currentInput);
+
+      let finalMessages: Message[] = [];
+
       if (response.toolCalls && response.toolCalls.length > 0) {
         // Handle tool calls
         const toolCall = response.toolCalls[0];
         const toolResult = toolCall.result;
-  
-        const modelToolMessage: Message = {
-          id: Date.now().toString() + '-tool',
+        
+        // This is the message that goes into history but is not rendered in UI
+        const toolResponseMessage: Message = {
+          id: Date.now().toString() + '-tool-response',
           role: 'model',
-          uiContent: null, // This message won't be rendered
+          uiContent: null, 
           historyContent: [{ toolResponse: toolCall }],
         };
-        
-        // Add the tool response to history and make another call to get the final text
-        currentHistory = [...currentHistory, 
-          { role: 'user', content: [{text: currentInput}] },
-          { role: 'model', content: modelToolMessage.historyContent }
-        ];
+        finalMessages.push(toolResponseMessage);
 
-        response = await callChatApi(currentHistory, ''); // No new user message, just process tool result
+        // Make another call to get the final text response from the model
+        const historyWithToolResponse = [
+          ...currentHistory,
+          { role: 'user' as const, content: [{ text: currentInput }] },
+          { role: 'model' as const, content: toolResponseMessage.historyContent },
+        ];
+        
+        const finalResponse = await callChatApi(historyWithToolResponse, '');
 
         let finalUiContent: React.ReactNode;
-        const modelTextResponse = response.text || "I've processed that request.";
+        const modelTextResponse = finalResponse.text || "I've processed that request.";
 
         if (toolCall.name === 'getMemberTransactionHistory') {
           if (toolResult?.history) {
@@ -149,18 +163,16 @@ export function AiChat() {
                  finalUiContent = 'Could not prepare the financial statement PDF.';
             }
         } else {
-            finalUiContent = response.text;
+            finalUiContent = finalResponse.text;
         }
 
         const finalModelMessage: Message = {
-            id: Date.now().toString() + '-ai',
+            id: Date.now().toString() + '-ai-final',
             role: 'model',
             uiContent: finalUiContent,
             historyContent: [{ text: modelTextResponse }],
         };
-
-        setMessages((prev) => [...prev, modelToolMessage, finalModelMessage]);
-
+        finalMessages.push(finalModelMessage);
 
       } else if (response.text) {
         // Handle simple text response
@@ -170,10 +182,13 @@ export function AiChat() {
           uiContent: response.text,
           historyContent: [{ text: response.text }],
         };
-        setMessages((prev) => [...prev, modelMessage]);
+        finalMessages.push(modelMessage);
       } else {
         throw new Error("No valid response from AI");
       }
+
+      setMessages((prev) => [...prev, ...finalMessages]);
+
     } catch (error) {
       console.error('Chat error:', error);
       const errorMessageContent = 'Sorry, I encountered an error. Please try again.';
@@ -183,7 +198,8 @@ export function AiChat() {
         uiContent: errorMessageContent,
         historyContent: [{ text: errorMessageContent }]
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      // Replace the user's message with the error to avoid clutter
+      setMessages((prev) => [...prev.slice(0, -1), errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -302,7 +318,6 @@ function TransactionHistoryDisplay({ history }: { history: { date: string, descr
     useEffect(() => {
         const loadLocale = async () => {
             if (language === 'bn') {
-                const { bn } = await import('date-fns/locale');
                 setLocale(bn);
             } else {
                 const { enUS } = await import('date-fns/locale/en-US');
