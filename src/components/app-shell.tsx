@@ -13,6 +13,8 @@ import {
   ShieldCheck,
   UserPlus,
   DollarSign,
+  LogIn,
+  LogOut,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -29,7 +31,6 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAppContext } from '@/context/app-context';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { LanguageSwitcher } from './language-switcher';
 import { LiveClock } from './live-clock';
@@ -54,15 +55,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
   const isClient = useIsClient();
 
-  const handleRoleChange = (isAdmin: boolean) => {
-    if (isAdmin) {
-      setPasswordDialogOpen(true);
-    } else {
+  const handleLoginClick = () => {
+    if (userRole === 'admin') {
       setUserRole('member');
       toast({
-        title: language === 'bn' ? 'সদস্য ভিউতে स्विच করা হয়েছে' : 'Switched to Member View',
+        title: language === 'bn' ? 'সদস্য ভিউতে সুইচ করা হয়েছে' : 'Logged Out',
         description: language === 'bn' ? 'আপনি এখন সদস্য ভিউ মোডে আছেন।' : 'You are now in member view mode.',
       });
+    } else {
+      setPasswordDialogOpen(true);
     }
   };
 
@@ -70,7 +71,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     if (password === 'admin123') {
       setUserRole('admin');
       toast({
-        title: language === 'bn' ? 'এডমিন ভিউতে स्विच করা হয়েছে' : 'Switched to Admin View',
+        title: language === 'bn' ? 'এডমিন ভিউতে स्विच করা হয়েছে' : 'Logged In as Admin',
         description: language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.',
       });
       setPasswordDialogOpen(false);
@@ -152,15 +153,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </Button>
             <ThemeSwitcher />
             <LanguageSwitcher />
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="role-switch">{language === 'bn' ? 'এডমিন' : 'Admin'}</Label>
-              <Switch
-                id="role-switch"
-                checked={userRole === 'admin'}
-                onCheckedChange={handleRoleChange}
-                aria-label={language === 'bn' ? 'এডমিন মোড টগল করুন' : 'Toggle admin mode'}
-              />
-            </div>
+            <Button variant="outline" onClick={handleLoginClick}>
+                {userRole === 'admin' ? (
+                    <>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        {language === 'bn' ? 'প্রস্থান' : 'Log Out'}
+                    </>
+                ) : (
+                    <>
+                        <LogIn className="mr-2 h-4 w-4" />
+                        {language === 'bn' ? 'প্রবেশ' : 'Log In'}
+                    </>
+                )}
+            </Button>
           </header>
           <main className="flex flex-1 flex-col bg-background">
             {children}
