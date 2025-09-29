@@ -27,9 +27,6 @@ export function ThemeSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          {language === 'bn' ? 'লাইট' : 'Light'}
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           {language === 'bn' ? 'ডার্ক' : 'Dark'}
         </DropdownMenuItem>
