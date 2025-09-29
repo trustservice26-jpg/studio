@@ -84,18 +84,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       return;
     }
     
-    // Check for moderator password (using phone number)
-    const moderator = members.find(m => m.role === 'moderator' && m.phone === password && m.permissions?.canManageTransactions);
-    if (moderator) {
-      setUserRole('moderator');
-      toast({
-        title: language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator',
-        description: language === 'bn' ? 'আপনার এখন লেনদেন পরিচালনার অনুমতি রয়েছে।' : 'You now have transaction management privileges.',
-      });
-      setPasswordDialogOpen(false);
-      setPassword('');
-      setPasswordError('');
-      return;
+    // Moderator password
+    if (password === 'mode1234') {
+        setUserRole('moderator');
+        toast({
+            title: language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator',
+            description: language === 'bn' ? 'আপনার এখন লেনদেন পরিচালনার অনুমতি রয়েছে।' : 'You now have transaction management privileges.',
+        });
+        setPasswordDialogOpen(false);
+        setPassword('');
+        setPasswordError('');
+        return;
     }
 
     setPasswordError(language === 'bn' ? 'ভুল পাসওয়ার্ড। আবার চেষ্টা করুন।' : 'Incorrect password. Please try again.');
