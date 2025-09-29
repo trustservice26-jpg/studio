@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
 import { RegisterMemberDialog } from '@/components/home/register-member-dialog';
 import { ClearDataDialog } from '@/components/home/clear-data-dialog';
+import { AiChat } from '@/components/chat/ai-chat';
 
 export default function HomePage() {
   const { members, language, currentFunds, totalDonations, totalWithdrawals, userRole } = useAppContext();
@@ -158,6 +159,7 @@ export default function HomePage() {
           </section>
         </div>
       </div>
+      <AiChat />
       <DownloadPdfDialog open={isPdfOpen} onOpenChange={setPdfOpen} />
       <RegisterMemberDialog open={isRegisterOpen} onOpenChange={setRegisterOpen} />
       <ClearDataDialog open={isClearDataOpen} onOpenChange={setClearDataOpen} />

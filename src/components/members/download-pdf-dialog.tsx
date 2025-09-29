@@ -28,13 +28,21 @@ import { PdfDocument } from '../ui/pdf-document';
 type DownloadPdfDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  preselectedMemberName?: string | null;
 };
 
-export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps) {
+export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = null }: DownloadPdfDialogProps) {
   const { members, language } = useAppContext();
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfContent, setPdfContent] = useState<React.ReactNode | null>(null);
+
+  useEffect(() => {
+    if (preselectedMemberName) {
+        const member = members.find(m => m.name.toLowerCase() === preselectedMemberName.toLowerCase()) || null;
+        setSelectedMember(member);
+    }
+  }, [preselectedMemberName, members, open]);
 
   const handleDownloadClick = async () => {
     if (!selectedMember) return;
@@ -75,12 +83,14 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
             const imgHeight = canvas.height;
             const ratio = imgWidth / imgHeight;
 
-            const finalWidth = pageWidth - 20; // 10mm margin on each side
-            const finalHeight = finalWidth / ratio;
+            let finalWidth = pageWidth - 20; // 10mm margin on each side
+            let finalHeight = finalWidth / ratio;
             
             let y = 10;
             if (finalHeight > pageHeight) {
-              y = 0;
+              finalHeight = pageHeight - 20; // ensure footer is visible
+              finalWidth = finalHeight * ratio;
+               y = 10;
             } else {
               y = (pageHeight - finalHeight) / 2;
             }
@@ -108,11 +118,13 @@ export function DownloadPdfDialog({ open, onOpenChange }: DownloadPdfDialogProps
   
   useEffect(() => {
     if (!open) {
-      setSelectedMember(null);
+      if (!preselectedMemberName) {
+        setSelectedMember(null);
+      }
       setIsGeneratingPdf(false);
       setPdfContent(null);
     }
-  }, [open]);
+  }, [open, preselectedMemberName]);
 
   return (
     <>
