@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Bot, Loader2, Send, X, Download, History, User } from 'lucide-react';
+import { Bot, Loader2, Send, X, Download, History, User, FileDown, FileText } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { Card, CardContent } from '../ui/card';
 import { format } from 'date-fns';
 import { DownloadPdfDialog } from '../members/download-pdf-dialog';
 import { DownloadStatementDialog } from '../dashboard/download-statement-dialog';
+import { Badge } from '../ui/badge';
 
 type Message = {
   id: string;
@@ -29,6 +30,7 @@ export function AiChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   const [isMemberPdfOpen, setMemberPdfOpen] = useState(false);
@@ -45,6 +47,7 @@ export function AiChat() {
           content: 'Assalamu Alaikum! Welcome to Seva Sangathan. I hope you are doing well. How can I help you today?',
         },
       ]);
+      setShowSuggestions(true);
     }
   }, [isOpen, messages]);
 
@@ -54,10 +57,12 @@ export function AiChat() {
     }
   }, [messages]);
 
-  const handleUserInput = async () => {
-    if (!input.trim()) return;
+  const handleUserInput = async (predefinedInput?: string) => {
+    const currentInput = predefinedInput || input;
+    if (!currentInput.trim()) return;
 
-    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: input };
+    setShowSuggestions(false);
+    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: currentInput };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
@@ -70,8 +75,8 @@ export function AiChat() {
         } else if (typeof msg.content === 'string') {
           contentPart = [{ text: msg.content }];
         } else {
-          // Fallback for ReactNode content which is not a simple string - might need more robust handling
-          contentPart = [{ text: 'Complex content - not shown' }];
+           const textContent = msg.content?.toString() || 'Complex content';
+           contentPart = [{ text: textContent }];
         }
 
         return {
@@ -82,7 +87,7 @@ export function AiChat() {
       
       const response = await chat({
         history: chatHistory,
-        message: input,
+        message: currentInput,
       });
 
       let content: React.ReactNode = response.text;
@@ -164,6 +169,12 @@ export function AiChat() {
       handleUserInput();
     }
   };
+  
+  const suggestionChips = [
+    { label: 'Download Member PDF', icon: FileDown, action: () => handleUserInput('I want to download a member PDF')},
+    { label: 'Download Financial Statement', icon: FileText, action: () => handleUserInput('Download financial statement')},
+    { label: 'View Member History', icon: History, action: () => handleUserInput('Show me transaction history for a member')},
+  ]
 
   return (
     <>
@@ -206,6 +217,20 @@ export function AiChat() {
                         </div>
                       </div>
                     )}
+                    {showSuggestions && (
+                       <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex flex-col gap-2 pt-2 items-start"
+                       >
+                         {suggestionChips.map((chip, index) => (
+                           <Button key={index} variant="outline" size="sm" onClick={chip.action} className="justify-start">
+                             <chip.icon className="mr-2 h-4 w-4"/>
+                             {chip.label}
+                           </Button>
+                         ))}
+                       </motion.div>
+                    )}
                   </div>
                 </ScrollArea>
               </CardContent>
@@ -219,7 +244,7 @@ export function AiChat() {
                     disabled={isLoading}
                     className="flex-1"
                   />
-                  <Button onClick={handleUserInput} disabled={isLoading}>
+                  <Button onClick={() => handleUserInput()} disabled={isLoading}>
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
@@ -253,7 +278,12 @@ function TransactionHistoryDisplay({ history }: { history: { date: string, descr
         }).format(amount);
     };
     const formatDate = (date: string) => {
-        return format(new Date(date), 'PP', { locale: language === 'bn' ? require('date-fns/locale/bn') : undefined });
+        try {
+            const locale = language === 'bn' ? require('date-fns/locale/bn') : undefined;
+            return format(new Date(date), 'PP', { locale });
+        } catch {
+            return date;
+        }
     };
 
     return (
