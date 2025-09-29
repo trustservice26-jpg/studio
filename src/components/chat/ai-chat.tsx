@@ -63,10 +63,22 @@ export function AiChat() {
     setIsLoading(true);
 
     try {
-      const chatHistory = messages.map(msg => ({
-        role: msg.role,
-        content: msg.toolResponse ? [{ toolResponse: msg.toolResponse }] : [{ text: msg.content as string }]
-      }));
+      const chatHistory = messages.map(msg => {
+        let contentPart;
+        if (msg.toolResponse) {
+          contentPart = [{ toolResponse: msg.toolResponse }];
+        } else if (typeof msg.content === 'string') {
+          contentPart = [{ text: msg.content }];
+        } else {
+          // Fallback for ReactNode content which is not a simple string - might need more robust handling
+          contentPart = [{ text: 'Complex content - not shown' }];
+        }
+
+        return {
+          role: msg.role,
+          content: contentPart,
+        };
+      });
       
       const response = await chat({
         history: chatHistory,
