@@ -30,6 +30,7 @@ import { useAppContext } from '@/context/app-context';
 import { Textarea } from '../ui/textarea';
 import { ScrollArea } from '../ui/scroll-area';
 import { PdfDocument } from '../ui/pdf-document';
+import type { Member } from '@/lib/types';
 
 const registrationSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -53,7 +54,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
   const { language, addMember } = useAppContext();
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfContent, setPdfContent] = useState<React.ReactNode | null>(null);
-  const [formDataForPdf, setFormDataForPdf] = useState<RegistrationFormValues & { joinDate: string } | null>(null);
+  const [formDataForPdf, setFormDataForPdf] = useState<Partial<Member> | null>(null);
 
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
@@ -73,20 +74,22 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
 
   const handleRegistration = async (values: RegistrationFormValues) => {
     setIsGeneratingPdf(true);
-    const joinDate = new Date().toISOString();
-    const fullData = { ...values, joinDate };
     
-    await addMember(
+    const newMember = await addMember(
       {
         ...values,
-        joinDate: joinDate,
         status: 'inactive'
       },
       true
     );
 
-    setFormDataForPdf(fullData);
-    setPdfContent(<PdfDocument member={fullData} language={language} isRegistration={true} />)
+    if (newMember) {
+      setFormDataForPdf(newMember);
+      setPdfContent(<PdfDocument member={newMember} language={language} isRegistration={true} />);
+    } else {
+        // Handle error case where member creation failed
+        setIsGeneratingPdf(false);
+    }
   };
   
   useEffect(() => {
@@ -293,3 +296,5 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     </>
   );
 }
+
+    

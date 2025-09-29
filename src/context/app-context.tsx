@@ -31,7 +31,7 @@ interface AppContextType {
   currentFunds: number;
   totalDonations: number;
   totalWithdrawals: number;
-  addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions' | 'memberId'>, fromRegistration?: boolean) => void;
+  addMember: (member: Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions' | 'memberId'>, fromRegistration?: boolean) => Promise<Member | null>;
   deleteMember: (memberId: string) => void;
   toggleMemberStatus: (memberId: string) => void;
   updateMemberPermissions: (memberId: string, permissions: Member['permissions'], role?: Member['role']) => void;
@@ -62,7 +62,7 @@ async function seedInitialData() {
     if (snapshot.empty) {
       console.log(`Seeding ${colName}...`);
       data.forEach((item) => {
-        const docRef = doc(colRef, item.id);
+        const docRef = doc(colRef);
         batch.set(docRef, item);
       });
     }
@@ -71,13 +71,10 @@ async function seedInitialData() {
   await batch.commit();
 }
 
-function generateMemberId() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
-  for (let i = 0; i < 6; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
+function generateMemberId(existingMembers: Member[]): string {
+    const existingIds = existingMembers.map(m => parseInt(m.memberId, 10)).filter(id => !isNaN(id));
+    const maxId = existingIds.length > 0 ? Math.max(...existingIds) : 1000;
+    return (maxId + 1).toString();
 }
 
 
@@ -163,9 +160,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addMember = async (memberData: Partial<Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions'>>, fromRegistration = false) => {
+  const addMember = async (memberData: Partial<Omit<Member, 'id' | 'avatar' | 'joinDate' | 'contributions' | 'memberId'>>, fromRegistration = false): Promise<Member | null> => {
     const newMember: Omit<Member, 'id'> = {
-      memberId: generateMemberId(),
+      memberId: generateMemberId(members),
       name: memberData.name || '',
       phone: memberData.phone || '',
       email: memberData.email,
@@ -180,16 +177,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
       address: memberData.address,
     };
     try {
-      await addDoc(collection(db, 'members'), newMember);
+      const docRef = await addDoc(collection(db, 'members'), newMember);
       toast({
         title: language === 'bn' ? "সদস্য যোগ করা হয়েছে" : "Member Added",
         description: fromRegistration 
           ? (language === 'bn' ? 'আপনার নিবন্ধন সফল হয়েছে। অনুমোদনের জন্য অপেক্ষা করুন।': 'Your registration is successful. Please wait for approval.')
           : (language === 'bn' ? `${memberData.name} সফলভাবে যোগ করা হয়েছে।` : `${memberData.name} has been successfully added.`),
       });
+      return { ...newMember, id: docRef.id };
 
     } catch (e) {
       handleFirestoreError(e as FirestoreError);
+      return null;
     }
   };
 
@@ -398,3 +397,5 @@ export function useAppContext() {
   }
   return context;
 }
+
+    
