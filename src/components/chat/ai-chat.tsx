@@ -30,7 +30,7 @@ export function AiChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   const [isMemberPdfOpen, setMemberPdfOpen] = useState(false);
@@ -75,32 +75,31 @@ export function AiChat() {
           content: msg.rawContentForHistory,
       }));
       
-      const llmResponse = await chat({
+      const response = await chat({
         history: chatHistory,
         message: currentInput,
       });
 
-      const response = llmResponse;
       let content: React.ReactNode;
       let rawContentForHistory: Message['rawContentForHistory'];
       
       if (response.toolCalls && response.toolCalls.length > 0) {
         const toolCall = response.toolCalls[0];
+        const toolResult = toolCall.result;
         
-        rawContentForHistory = [{ toolResponse: { name: toolCall.name, result: toolCall.result }}];
         let modelTextResponse = response.text || '';
         
         if (toolCall.name === 'getMemberTransactionHistory') {
-            if (toolCall.result?.history) {
-              content = <TransactionHistoryDisplay history={toolCall.result.history} />;
-              modelTextResponse = "Here is the transaction history:";
+            if (toolResult?.history) {
+              content = <TransactionHistoryDisplay history={toolResult.history} />;
+              modelTextResponse = `Here is the transaction history for ${toolCall.args.memberName}:`;
             } else {
-              content = toolCall.result?.error || 'Could not retrieve history.';
-              modelTextResponse = toolCall.result?.error || 'Could not retrieve history.';
+              content = toolResult?.error || 'Could not retrieve history.';
+              modelTextResponse = toolResult?.error || 'Could not retrieve history.';
             }
         } else if (toolCall.name === 'prepareMemberPdfDownload') {
-            if (toolCall.result?.success) {
-                modelTextResponse = `I've prepared the PDF for ${toolCall.result.memberName}. Would you like to download it?`;
+            if (toolResult?.success) {
+                modelTextResponse = `I've prepared the PDF for ${toolResult.memberName}. Would you like to download it?`;
                 content = (
                     <div>
                         <p>{modelTextResponse}</p>
@@ -108,7 +107,7 @@ export function AiChat() {
                             size="sm"
                             className="mt-2"
                             onClick={() => {
-                                setMemberForPdf(toolCall.result.memberName);
+                                setMemberForPdf(toolResult.memberName);
                                 setMemberPdfOpen(true);
                             }}
                         >
@@ -117,11 +116,11 @@ export function AiChat() {
                     </div>
                 );
             } else {
-                content = toolCall.result?.error || 'Could not prepare the PDF.';
-                modelTextResponse = toolCall.result?.error || 'Could not prepare the PDF.';
+                content = toolResult?.error || 'Could not prepare the PDF.';
+                modelTextResponse = toolResult?.error || 'Could not prepare the PDF.';
             }
         } else if (toolCall.name === 'prepareFinancialStatementDownload') {
-            if (toolCall.result?.success) {
+            if (toolResult?.success) {
                 modelTextResponse = "I've prepared the financial statement. Would you like to download it?";
                 content = (
                      <div>
@@ -147,8 +146,9 @@ export function AiChat() {
             modelTextResponse = "I've processed that request.";
         }
 
-        const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory: [{ text: modelTextResponse }]};
-        setMessages((prev) => [...prev, modelMessage]);
+        const modelToolMessage: Message = { id: Date.now().toString() + '-tool', role: 'model', content, rawContentForHistory: [{ toolResponse: toolCall }] };
+        const modelTextMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory: [{ text: modelTextResponse }] };
+        setMessages((prev) => [...prev, modelTextMessage]);
 
       } else if (response.text) {
         content = response.text;
@@ -156,14 +156,7 @@ export function AiChat() {
         const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory };
         setMessages((prev) => [...prev, modelMessage]);
       } else {
-        const errorMessageContent = "Sorry, I'm not sure how to respond to that.";
-        const errorMessage: Message = {
-            id: Date.now().toString() + '-error',
-            role: 'model',
-            content: errorMessageContent,
-            rawContentForHistory: [{ text: errorMessageContent }]
-        };
-        setMessages((prev) => [...prev, errorMessage]);
+        throw new Error("No valid response from AI");
       }
     } catch (error) {
       console.error('Chat error:', error);
@@ -296,7 +289,8 @@ function TransactionHistoryDisplay({ history }: { history: { date: string, descr
                 const { bn } = await import('date-fns/locale/bn');
                 setLocale(bn);
             } else {
-                setLocale(undefined);
+                const { enUS } = await import('date-fns/locale/en-US');
+                setLocale(enUS);
             }
         };
         loadLocale();
