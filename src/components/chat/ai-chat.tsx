@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -41,7 +42,7 @@ export function AiChat() {
         {
           id: 'init',
           role: 'model',
-          content: 'Hello! How can I help you today? You can ask me to see a member\'s transaction history or download member information.',
+          content: 'Assalamu Alaikum! Welcome to Seva Sangathan. How can I assist you today?',
         },
       ]);
     }
