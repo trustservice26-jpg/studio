@@ -3,6 +3,7 @@ import './globals.css';
 import { AppProvider } from '@/context/app-context';
 import AppShell from '@/components/app-shell';
 import { Toaster } from '@/components/ui/toaster';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
   title: 'Seva Sangathan',
@@ -25,10 +26,17 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <AppProvider>
-          <AppShell>{children}</AppShell>
-        </AppProvider>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppProvider>
+            <AppShell>{children}</AppShell>
+          </AppProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
