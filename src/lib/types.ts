@@ -12,7 +12,7 @@ export type Member = {
   motherName?: string;
   nid?: string;
   address?: string;
-  role?: 'moderator' | 'member-moderator';
+  role?: 'admin' | 'moderator' | 'member-moderator';
   permissions?: {
     canManageTransactions?: boolean;
     canManageMembers?: boolean;

@@ -158,14 +158,16 @@ export const columns: ColumnDef<Member>[] = [
       const { language } = useAppContext();
       const role = row.original.role;
       let roleText = language === 'bn' ? 'সদস্য' : 'Member';
-      if (role === 'moderator') {
+      if (role === 'admin') {
+        roleText = language === 'bn' ? 'এডমিন' : 'Admin';
+      } else if (role === 'moderator') {
         roleText = language === 'bn' ? 'মডারেটর' : 'Moderator';
       } else if (role === 'member-moderator') {
         roleText = language === 'bn' ? 'সদস্য মডারেটর' : 'Member Moderator';
       }
       
       if (role) {
-        return <Badge variant="secondary">{roleText}</Badge>
+        return <Badge variant={role === 'admin' ? "default" : "secondary"}>{roleText}</Badge>
       }
       return <span className="text-muted-foreground">{roleText}</span>
     },

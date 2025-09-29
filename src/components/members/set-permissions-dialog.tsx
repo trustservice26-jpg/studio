@@ -41,7 +41,9 @@ export function SetPermissionsDialog({ member, open, onOpenChange }: SetPermissi
     const newPermissions = { canManageTransactions, canManageMembers };
     
     let newRole: Member['role'] | undefined = undefined;
-    if (canManageTransactions) {
+    if (canManageTransactions && canManageMembers) {
+      newRole = 'admin';
+    } else if (canManageTransactions) {
       newRole = 'moderator';
     } else if (canManageMembers) {
         newRole = 'member-moderator';
