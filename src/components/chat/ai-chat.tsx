@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from 'react';
 import { Bot, Loader2, Send, X, Download, History, User, FileDown, FileText } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { format } from 'date-fns';
-import { bn } from 'date-fns/locale';
 import type { Locale } from 'date-fns';
 
 import { Button } from '@/components/ui/button';
@@ -22,7 +21,7 @@ type Message = {
   id: string;
   role: 'user' | 'model';
   content: React.ReactNode;
-  rawContentForHistory: { text: string } | { toolResponse: any };
+  rawContentForHistory: { text: string }[] | { toolResponse: any }[];
 };
 
 export function AiChat() {
@@ -47,7 +46,7 @@ export function AiChat() {
           id: 'init',
           role: 'model',
           content: initialMessage,
-          rawContentForHistory: { text: initialMessage },
+          rawContentForHistory: [{ text: initialMessage }],
         },
       ]);
       setShowSuggestions(true);
@@ -65,7 +64,7 @@ export function AiChat() {
     if (!currentInput.trim()) return;
 
     setShowSuggestions(false);
-    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: currentInput, rawContentForHistory: { text: currentInput } };
+    const userMessage: Message = { id: Date.now().toString(), role: 'user', content: currentInput, rawContentForHistory: [{ text: currentInput }] };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
@@ -73,7 +72,7 @@ export function AiChat() {
     try {
       const chatHistory = messages.map(msg => ({
           role: msg.role,
-          content: [msg.rawContentForHistory],
+          content: msg.rawContentForHistory,
       }));
       
       const llmResponse = await chat({
@@ -83,12 +82,12 @@ export function AiChat() {
 
       const response = llmResponse;
       let content: React.ReactNode;
-      let rawContentForHistory: { text: string } | { toolResponse: any };
+      let rawContentForHistory: Message['rawContentForHistory'];
       
       if (response.toolCalls && response.toolCalls.length > 0) {
         const toolCall = response.toolCalls[0];
         
-        rawContentForHistory = { toolResponse: { name: toolCall.name, result: toolCall.result }};
+        rawContentForHistory = [{ toolResponse: { name: toolCall.name, result: toolCall.result }}];
         let modelTextResponse = response.text || '';
         
         if (toolCall.name === 'getMemberTransactionHistory') {
@@ -142,18 +141,18 @@ export function AiChat() {
             }
         } else if (response.text) {
              content = response.text;
-             modelText_response = response.text;
+             modelTextResponse = response.text;
         } else {
             content = "I've processed that request.";
             modelTextResponse = "I've processed that request.";
         }
 
-        const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory: { text: modelTextResponse }};
+        const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory: [{ text: modelTextResponse }]};
         setMessages((prev) => [...prev, modelMessage]);
 
       } else if (response.text) {
         content = response.text;
-        rawContentForHistory = { text: response.text };
+        rawContentForHistory = [{ text: response.text }];
         const modelMessage: Message = { id: Date.now().toString() + '-ai', role: 'model', content, rawContentForHistory };
         setMessages((prev) => [...prev, modelMessage]);
       } else {
@@ -162,7 +161,7 @@ export function AiChat() {
             id: Date.now().toString() + '-error',
             role: 'model',
             content: errorMessageContent,
-            rawContentForHistory: { text: errorMessageContent }
+            rawContentForHistory: [{ text: errorMessageContent }]
         };
         setMessages((prev) => [...prev, errorMessage]);
       }
@@ -173,7 +172,7 @@ export function AiChat() {
         id: Date.now().toString() + '-error',
         role: 'model',
         content: errorMessageContent,
-        rawContentForHistory: { text: errorMessageContent }
+        rawContentForHistory: [{ text: errorMessageContent }]
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -294,7 +293,7 @@ function TransactionHistoryDisplay({ history }: { history: { date: string, descr
     useEffect(() => {
         const loadLocale = async () => {
             if (language === 'bn') {
-                const { bn } = await import('date-fns/locale');
+                const { bn } = await import('date-fns/locale/bn');
                 setLocale(bn);
             } else {
                 setLocale(undefined);

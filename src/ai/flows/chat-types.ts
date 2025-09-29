@@ -7,10 +7,10 @@ import { z } from 'genkit';
 export const ChatInputSchema = z.object({
   history: z.array(z.object({
     role: z.enum(['user', 'model']),
-    content: z.array(z.object({
-      text: z.string().optional(),
-      toolResponse: z.any().optional(),
-    }))
+    content: z.array(z.union([
+      z.object({ text: z.string() }),
+      z.object({ toolResponse: z.any() })
+    ]))
   })).describe('The conversation history.'),
   message: z.string().describe('The latest user message.'),
 });
