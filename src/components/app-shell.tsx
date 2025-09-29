@@ -79,25 +79,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     let loggedIn = false;
 
     const foundAdmin = members.find(m => m.role === 'admin');
-    const foundModerator = members.find(m => m.permissions?.canManageTransactions);
-    const foundMemberModerator = members.find(m => m.permissions?.canManageMembers);
-
+    
     if (password === 'admin123') {
         authenticatedUser = foundAdmin || { id: 'temp-admin', name: 'Admin', role: 'admin' } as Member;
         toastTitle = language === 'bn' ? 'এডমিন ভিউতে स्विच করা হয়েছে' : 'Logged In as Admin';
         toastDescription = language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.';
         loggedIn = true;
     }
-    else if (password === 'mode1234') {
-        authenticatedUser = members.find(m => m.permissions?.canManageTransactions) || null;
+    else if (password === 'mode123') {
+        authenticatedUser = members.find(m => m.permissions?.canManageTransactions || m.permissions?.canManageMembers) || null;
         toastTitle = language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator';
-        toastDescription = language === 'bn' ? 'আপনার এখন লেনদেন পরিচালনার অনুমতি রয়েছে।' : 'You now have transaction management privileges.';
-        if (authenticatedUser) loggedIn = true;
-    }
-    else if (password === 'mem1234') {
-        authenticatedUser = members.find(m => m.permissions?.canManageMembers) || null;
-        toastTitle = language === 'bn' ? 'সদস্য মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Member Moderator';
-        toastDescription = language === 'bn' ? 'আপনার এখন সদস্য পরিচালনার অনুমতি রয়েছে।' : 'You now have member management privileges.';
+        toastDescription = language === 'bn' ? 'আপনার এখন নির্ধারিত পরিচালনার অনুমতি রয়েছে।' : 'You now have designated management privileges.';
         if (authenticatedUser) loggedIn = true;
     }
 
@@ -107,8 +99,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         setPasswordDialogOpen(false);
         setPassword('');
         setPasswordError('');
-    } else if (password === 'mode1234' || password === 'mem1234') {
-         setPasswordError(language === 'bn' ? 'অনুমতিসহ কোনো মডারেটর খুঁজে পাওয়া যায়নি।' : 'No moderator with that permission found.');
+    } else if (password === 'mode123') {
+         setPasswordError(language === 'bn' ? 'অনুমতিসহ কোনো মডারেটর খুঁজে পাওয়া যায়নি।' : 'No moderator with permissions found.');
     }
     else {
         setPasswordError(language === 'bn' ? 'ভুল পাসওয়ার্ড। আবার চেষ্টা করুন।' : 'Incorrect password. Please try again.');
@@ -255,5 +247,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
+
+    
 
     
