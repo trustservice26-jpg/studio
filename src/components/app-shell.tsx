@@ -78,21 +78,30 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     let toastDescription = '';
     let loggedIn = false;
 
-    const foundAdmin = members.find(m => m.role === 'admin');
-    
     if (password === 'admin123') {
-        if(foundAdmin?.role === 'admin') {
+        const foundAdmin = members.find(m => m.role === 'admin');
+        if(foundAdmin) {
             authenticatedUser = foundAdmin;
-            toastTitle = language === 'bn' ? 'এডমিন ভিউতে সুইচ করা হয়েছে' : 'Logged In as Admin';
-            toastDescription = language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.';
-            loggedIn = true;
         } else {
-            setPasswordError(language === 'bn' ? 'কোনো এডমিন খুঁজে পাওয়া যায়নি।' : 'No admin found.');
-            return;
+            // If no explicit admin role, create a virtual one for access control.
+            authenticatedUser = {
+                id: 'admin-user',
+                name: 'Admin',
+                role: 'admin',
+                memberId: '0000',
+                phone: '',
+                avatar: '',
+                status: 'active',
+                joinDate: new Date().toISOString(),
+                contributions: '',
+            };
         }
-    }
-    else if (password === 'mode123') {
-        authenticatedUser = members.find(m => (m.permissions?.canManageTransactions || m.permissions?.canManageMembers) && m.role !== 'admin') || null;
+        toastTitle = language === 'bn' ? 'এডমিন ভিউতে সুইচ করা হয়েছে' : 'Logged In as Admin';
+        toastDescription = language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.';
+        loggedIn = true;
+
+    } else if (password === 'mode123') {
+        authenticatedUser = members.find(m => (m.permissions?.canManageTransactions || m.permissions?.canManageMembers)) || null;
         toastTitle = language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator';
         toastDescription = language === 'bn' ? 'আপনার এখন নির্ধারিত পরিচালনার অনুমতি রয়েছে।' : 'You now have designated management privileges.';
         if (authenticatedUser) loggedIn = true;
@@ -120,15 +129,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         }
         if (item.href === '/') return true;
         
-        const hasRole = item.roles.includes(role);
         const hasPermission = user && item.permissions.length > 0 && item.permissions.some(p => user?.permissions?.[p as keyof Member['permissions']]);
         
-        if (role === 'moderator' || role === 'member-moderator') {
-            if(item.href === '/dashboard') return false;
-            return hasPermission || item.href === '/';
+        if (hasPermission) {
+            return true;
         }
 
-        return hasRole;
+        return false;
     });
   }
 
@@ -259,3 +266,5 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
+
+    
