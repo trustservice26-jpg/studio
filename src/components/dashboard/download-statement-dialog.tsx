@@ -205,7 +205,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
             <div style={{ textAlign: 'center', marginBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))', paddingBottom: '8px' }}>
                 <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: '0 0 4px 0', fontFamily: '"Cinzel Decorative", serif' }}>
                   <span style={{color: 'hsl(var(--brand-green))'}}>HADIYA</span>
-                  <span style={{color: 'hsl(var(--brand-gold))'}}> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                  <span style={{color: 'hsl(var(--brand-gold))'}}> –মানবতার উপহার</span>
                 </h1>
                 <p style={{ fontSize: '13px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                  <p style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>
@@ -260,5 +260,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     </Dialog>
   );
 }
+
+    
 
     
