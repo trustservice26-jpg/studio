@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {
@@ -14,13 +14,16 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useAppContext } from '@/context/app-context';
-import { Download, Loader2, CalendarIcon } from 'lucide-react';
-import { format } from 'date-fns';
+import { Download, Loader2 } from 'lucide-react';
+import { format, getYear, getMonth, startOfMonth, endOfMonth } from 'date-fns';
 import { bn } from 'date-fns/locale';
-import { DateRange } from 'react-day-picker';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { cn } from '@/lib/utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 type DownloadStatementDialogProps = {
   open: boolean;
@@ -30,32 +33,58 @@ type DownloadStatementDialogProps = {
 export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatementDialogProps) {
   const { transactions, language } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState<DateRange | undefined>();
+  const [selectedYear, setSelectedYear] = useState<number | undefined>();
+  const [selectedMonth, setSelectedMonth] = useState<number | undefined>();
+
+  const availableYears = useMemo(() => {
+    if (transactions.length === 0) return [getYear(new Date())];
+    const years = new Set(transactions.map(tx => getYear(new Date(tx.date))));
+    return Array.from(years).sort((a, b) => b - a);
+  }, [transactions]);
+
+  const availableMonths = [
+    { value: 0, name: 'January', bn_name: 'জানুয়ারি' },
+    { value: 1, name: 'February', bn_name: 'ফেব্রুয়ারি' },
+    { value: 2, name: 'March', bn_name: 'মার্চ' },
+    { value: 3, name: 'April', bn_name: 'এপ্রিল' },
+    { value: 4, name: 'May', bn_name: 'মে' },
+    { value: 5, name: 'June', bn_name: 'জুন' },
+    { value: 6, name: 'July', bn_name: 'জুলাই' },
+    { value: 7, name: 'August', bn_name: 'আগস্ট' },
+    { value: 8, name: 'September', bn_name: 'সেপ্টেম্বর' },
+    { value: 9, name: 'October', bn_name: 'অক্টোবর' },
+    { value: 10, name: 'November', bn_name: 'নভেম্বর' },
+    { value: 11, name: 'December', bn_name: 'ডিসেম্বর' },
+  ];
+  
+  useEffect(() => {
+    if (open) {
+      const currentYear = getYear(new Date());
+      if (availableYears.includes(currentYear)) {
+          setSelectedYear(currentYear);
+      } else if (availableYears.length > 0) {
+          setSelectedYear(availableYears[0]);
+      }
+      setSelectedMonth(getMonth(new Date()));
+    } else {
+      setSelectedYear(undefined);
+      setSelectedMonth(undefined);
+    }
+  }, [open, availableYears]);
+
 
   const filteredTransactions = useMemo(() => {
-    if (!date?.from && !date?.to) {
-      return transactions;
+    if (selectedYear === undefined || selectedMonth === undefined) {
+      return [];
     }
+    const from = startOfMonth(new Date(selectedYear, selectedMonth));
+    const to = endOfMonth(new Date(selectedYear, selectedMonth));
+    
     return transactions.filter(tx => {
       const txDate = new Date(tx.date);
-      const from = date?.from ? new Date(date.from) : null;
-      const to = date?.to ? new Date(date.to) : null;
-
-      if (from) from.setHours(0, 0, 0, 0);
-      if (to) to.setHours(23, 59, 59, 999);
-
-      if (from && to) {
-        return txDate >= from && txDate <= to;
-      }
-      if (from) {
-        return txDate >= from;
-      }
-      if (to) {
-        return txDate <= to;
-      }
-      return true;
+      return txDate >= from && txDate <= to;
     });
-  }, [transactions, date]);
+  }, [transactions, selectedYear, selectedMonth]);
 
   const { totalDonations, totalWithdrawals, currentFunds } = useMemo(() => {
     const donations = filteredTransactions.filter(t => t.type === 'donation').reduce((sum, d) => sum + d.amount, 0);
@@ -118,7 +147,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     }
     
     pdf.addImage(imgData, 'PNG', 10, y, finalWidth, finalHeight);
-    pdf.save(`HADIYA-Statement-${new Date().toISOString().split('T')[0]}.pdf`);
+    pdf.save(`HADIYA-Statement-${selectedYear}-${(selectedMonth ?? 0) + 1}.pdf`);
 
     setIsLoading(false);
     onOpenChange(false);
@@ -128,17 +157,12 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
   const withdrawals = filteredTransactions.filter(t => t.type === 'withdrawal');
   
   const dateRangeString = useMemo(() => {
-    if (date?.from) {
-      if (date.to) {
-        return `${format(date.from, 'LLL dd, y')} - ${format(date.to, 'LLL dd, y')}`;
-      }
-      return `from ${format(date.from, 'LLL dd, y')}`;
-    }
-    if(date?.to) {
-        return `up to ${format(date.to, 'LLL dd, y')}`;
+    if (selectedYear !== undefined && selectedMonth !== undefined) {
+      const monthName = availableMonths.find(m => m.value === selectedMonth)?.[language === 'bn' ? 'bn_name' : 'name'];
+      return `${monthName}, ${selectedYear}`;
     }
     return language === 'bn' ? 'সম্পূর্ণ ইতিহাস' : 'Full History';
-  }, [date, language]);
+  }, [selectedYear, selectedMonth, language, availableMonths]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -146,47 +170,34 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         <DialogHeader>
           <DialogTitle>{language === 'bn' ? 'অ্যাকাউন্ট স্টেটমেন্ট ডাউনলোড' : 'Download Account Statement'}</DialogTitle>
           <DialogDescription>
-            {language === 'bn' ? 'একটি তারিখ পরিসীমা নির্বাচন করে একটি পিডিএফ ডাউনলোড করুন।' : 'Download a PDF by selecting a date range.'}
+            {language === 'bn' ? 'একটি মাস এবং বছর নির্বাচন করে একটি পিডিএফ ডাউনলোড করুন।' : 'Download a PDF by selecting a month and year.'}
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid gap-2 py-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                id="date"
-                variant={"outline"}
-                className={cn(
-                  "w-full justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      {format(date.from, "LLL dd, y")} -{" "}
-                      {format(date.to, "LLL dd, y")}
-                    </>
-                  ) : (
-                    format(date.from, "LLL dd, y")
-                  )
-                ) : (
-                  <span>{language === 'bn' ? 'একটি তারিখ পরিসীমা বাছুন' : 'Pick a date range'}</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={2}
-              />
-            </PopoverContent>
-          </Popover>
+        <div className="grid grid-cols-2 gap-4 py-4">
+            <Select onValueChange={(v) => setSelectedYear(Number(v))} value={selectedYear?.toString()}>
+              <SelectTrigger>
+                <SelectValue placeholder={language === 'bn' ? 'বছর নির্বাচন করুন' : 'Select Year'} />
+              </SelectTrigger>
+              <SelectContent>
+                {availableYears.map(year => (
+                  <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select onValueChange={(v) => setSelectedMonth(Number(v))} value={selectedMonth?.toString()}>
+              <SelectTrigger>
+                <SelectValue placeholder={language === 'bn' ? 'মাস নির্বাচন করুন' : 'Select Month'} />
+              </SelectTrigger>
+              <SelectContent>
+                {availableMonths.map(month => (
+                  <SelectItem key={month.value} value={month.value.toString()}>
+                    {language === 'bn' ? month.bn_name : month.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
         </div>
 
         {/* Hidden element for PDF generation */}
@@ -198,16 +209,16 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                 </h1>
                 <p style={{ fontSize: '13px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                  <p style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>
-                    {language === 'bn' ? 'স্টেটমেন্ট তারিখ:' : 'Statement Date:'} {dateRangeString}
+                    {language === 'bn' ? 'স্টেটমেন্টের সময়কাল:' : 'Statement for:'} {dateRangeString}
                 </p>
             </div>
 
             <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>{language === 'bn' ? 'আর্থিক সারাংশ' : 'Financial Summary'}</h2>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', marginBottom: '15px' }}>
                 <tbody>
-                    <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'মোট অনুদান' : 'Total Donations'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalDonations)}</td></tr>
-                    <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'মোট উত্তোলন' : 'Total Withdrawals'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalWithdrawals)}</td></tr>
-                    <tr style={{ borderTop: '2px solid #000' }}><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'বর্তমান তহবিল' : 'Net Funds for Period'}</td><td style={{ padding: '4px 0', textAlign: 'right', fontWeight: 'bold' }}>{formatCurrency(currentFunds)}</td></tr>
+                    <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই মাসের মোট অনুদান' : 'Total Donations for Month'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalDonations)}</td></tr>
+                    <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই মাসের মোট উত্তোলন' : 'Total Withdrawals for Month'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalWithdrawals)}</td></tr>
+                    <tr style={{ borderTop: '2px solid #000' }}><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই মাসের নেট তহবিল' : 'Net Funds for Month'}</td><td style={{ padding: '4px 0', textAlign: 'right', fontWeight: 'bold' }}>{formatCurrency(currentFunds)}</td></tr>
                 </tbody>
             </table>
 
@@ -231,7 +242,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         </div>
 
         <DialogFooter>
-          <Button onClick={handleDownload} disabled={isLoading}>
+          <Button onClick={handleDownload} disabled={isLoading || selectedYear === undefined || selectedMonth === undefined}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -249,3 +260,5 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     </Dialog>
   );
 }
+
+    
