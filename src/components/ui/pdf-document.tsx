@@ -23,7 +23,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
                     quality: 0.9,
                     margin: 1,
                     color: {
-                        dark: '#1976D2', // Smart blue color
+                        dark: '#C9A959', // Gold color
                         light: '#FFFFFF'  // White background
                     }
                 });
@@ -69,9 +69,12 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
 
     return (
         <div style={{ width: '800px', padding: '10px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', borderBottom: '2px solid #87CEEB', paddingBottom: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', borderBottom: '2px solid #D8BFD8', paddingBottom: '8px' }}>
                 <div style={{ textAlign: 'left' }}>
-                    <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '4px' }}>HADIYA –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</h1>
+                    <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: 0, marginBottom: '4px' }}>
+                      <span style={{color: '#C9A959'}}>HADIYA</span>
+                      <span style={{color: '#9370DB'}}> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                    </h1>
                     <p style={{ fontSize: '13px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>
                 {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '60px', height: '60px' }} />}

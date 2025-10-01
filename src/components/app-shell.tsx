@@ -167,8 +167,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
-                <HeartHandshake className="h-6 w-6 text-primary" />
-                <span className="whitespace-nowrap">HADIYA –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                <HeartHandshake className="h-6 w-6 text-brand-gold" />
+                <span className="whitespace-nowrap">
+                  <span className="text-brand-gold">HADIYA</span>
+                  <span className="text-brand-purple"> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                </span>
               </Link>
             </div>
             <div className="flex-1">
@@ -193,8 +196,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <SheetContent side="left" className="flex flex-col">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                    <Link href="/" className="flex items-center gap-2 font-semibold">
-                      <HeartHandshake className="h-6 w-6 text-primary" />
-                      <span className="whitespace-nowrap">HADIYA –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                      <HeartHandshake className="h-6 w-6 text-brand-gold" />
+                      <span className="whitespace-nowrap">
+                        <span className="text-brand-gold">HADIYA</span>
+                        <span className="text-brand-purple"> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                      </span>
                   </Link>
                 </div>
                 {navLinks}

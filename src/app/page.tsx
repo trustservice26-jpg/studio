@@ -58,12 +58,13 @@ export default function HomePage() {
       >
         <div className="container mx-auto text-center">
           <motion.h1
-            className="mb-4 text-4xl font-bold tracking-tight md:text-5xl text-foreground whitespace-nowrap"
+            className="mb-4 text-4xl font-bold tracking-tight md:text-5xl whitespace-nowrap"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            HADIYA –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}
+            <span className="text-brand-gold">HADIYA</span>
+            <span className="text-brand-purple"> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
           </motion.h1>
            <motion.p
             className="mb-4 text-sm md:text-base text-muted-foreground font-bold"
