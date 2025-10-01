@@ -63,8 +63,8 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <span className="text-brand-gold">HADIYA</span>
-            <span className="text-brand-purple"> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+            <span className="text-brand-purple">HADIYA</span>
+            <span className="text-brand-gold"> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
           </motion.h1>
            <motion.p
             className="mb-4 text-sm md:text-base text-muted-foreground font-bold"

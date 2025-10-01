@@ -68,12 +68,12 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
       const conditions = language === 'bn' ? conditions_bn : conditions_en;
 
     return (
-        <div style={{ width: '800px', padding: '10px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
+        <div style={{ width: '800px', padding: '10px', fontFamily: '"PT Sans", sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', borderBottom: '2px solid #D8BFD8', paddingBottom: '8px' }}>
                 <div style={{ textAlign: 'left' }}>
-                    <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: 0, marginBottom: '4px' }}>
-                      <span style={{color: '#C9A959'}}>HADIYA</span>
-                      <span style={{color: '#9370DB'}}> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                    <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: 0, marginBottom: '4px', fontFamily: '"Cinzel Decorative", serif' }}>
+                      <span style={{color: '#9370DB'}}>HADIYA</span>
+                      <span style={{color: '#C9A959'}}> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
                     </h1>
                     <p style={{ fontSize: '13px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>
