@@ -122,7 +122,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         if (item.href === '/' || item.href === '/notice-board') return true; 
 
         if (user?.role === 'admin') {
-            if(item.href === '/transactions') return false;
             return true;
         }
 
