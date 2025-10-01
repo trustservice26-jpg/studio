@@ -72,8 +72,8 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', borderBottom: '2px solid #D8BFD8', paddingBottom: '8px' }}>
                 <div style={{ textAlign: 'left' }}>
                     <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: 0, marginBottom: '4px', fontFamily: '"Cinzel Decorative", serif' }}>
-                      <span style={{color: '#2E8B57'}}>HADIYA</span>
-                      <span style={{color: '#C9A959'}}> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                      <span style={{color: 'hsl(145 60% 40%)'}}>HADIYA</span>
+                      <span style={{color: 'hsl(45 86% 50%)'}}> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
                     </h1>
                     <p style={{ fontSize: '13px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>

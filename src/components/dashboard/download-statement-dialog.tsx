@@ -104,8 +104,8 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         <div id="pdf-statement-content" style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '10px', color: '#000', background: '#fff' }}>
             <div style={{ textAlign: 'center', marginBottom: '15px', borderBottom: '2px solid #87CEEB', paddingBottom: '8px' }}>
                 <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: '0 0 4px 0', fontFamily: '"Cinzel Decorative", serif' }}>
-                  <span style={{color: '#2E8B57'}}>HADIYA</span>
-                  <span style={{color: '#C9A959'}}> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
+                  <span style={{color: 'hsl(145 60% 40%)'}}>HADIYA</span>
+                  <span style={{color: 'hsl(45 86% 50%)'}}> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
                 </h1>
                 <p style={{ fontSize: '13px', color: '#555', margin: '0' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                  <p style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>
