@@ -42,7 +42,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     return Array.from(years).sort((a, b) => b - a);
   }, [transactions]);
 
-  const availableMonths = [
+  const allMonths = [
     { value: 0, name: 'January', bn_name: 'জানুয়ারি' },
     { value: 1, name: 'February', bn_name: 'ফেব্রুয়ারি' },
     { value: 2, name: 'March', bn_name: 'মার্চ' },
@@ -158,11 +158,11 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
   
   const dateRangeString = useMemo(() => {
     if (selectedYear !== undefined && selectedMonth !== undefined) {
-      const monthName = availableMonths.find(m => m.value === selectedMonth)?.[language === 'bn' ? 'bn_name' : 'name'];
+      const monthName = allMonths.find(m => m.value === selectedMonth)?.[language === 'bn' ? 'bn_name' : 'name'];
       return `${monthName}, ${selectedYear}`;
     }
     return language === 'bn' ? 'সম্পূর্ণ ইতিহাস' : 'Full History';
-  }, [selectedYear, selectedMonth, language, availableMonths]);
+  }, [selectedYear, selectedMonth, language, allMonths]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -191,7 +191,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                 <SelectValue placeholder={language === 'bn' ? 'মাস নির্বাচন করুন' : 'Select Month'} />
               </SelectTrigger>
               <SelectContent>
-                {availableMonths.map(month => (
+                {allMonths.map(month => (
                   <SelectItem key={month.value} value={month.value.toString()}>
                     {language === 'bn' ? month.bn_name : month.name}
                   </SelectItem>
