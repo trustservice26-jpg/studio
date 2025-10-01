@@ -63,7 +63,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            {language === 'bn' ? 'হাদিয়া –মানবতার উপহার' : 'HADIYA –মানবতার উপহার'}
+            HADIYA –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}
           </motion.h1>
            <motion.p
             className="mb-4 text-sm md:text-base text-muted-foreground font-bold"

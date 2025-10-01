@@ -81,7 +81,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     let loggedIn = false;
 
     if (password === 'admin123') {
-        authenticatedUser = members.find(m => m.role === 'admin') || {
+        authenticatedUser = {
             id: 'admin-user',
             name: 'Admin',
             role: 'admin',
@@ -122,6 +122,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         if (item.href === '/' || item.href === '/notice-board') return true; 
 
         if (user?.role === 'admin') {
+            if(item.href === '/transactions') return false;
             return true;
         }
 
@@ -133,6 +134,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         }
         
         if (item.roles.includes(user.role as UserRole)) {
+            if(item.href === '/dashboard') return false;
             return true;
         }
 
@@ -166,7 +168,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <HeartHandshake className="h-6 w-6 text-primary" />
-                <span className="whitespace-nowrap">{language === 'bn' ? 'হাদিয়া –মানবতার উপহার' : 'HADIYA –মানবতার উপহার'}</span>
+                <span className="whitespace-nowrap">HADIYA –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
               </Link>
             </div>
             <div className="flex-1">
@@ -192,7 +194,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                    <Link href="/" className="flex items-center gap-2 font-semibold">
                       <HeartHandshake className="h-6 w-6 text-primary" />
-                      <span className="whitespace-nowrap">{language === 'bn' ? 'হাদিয়া –মানবতার উপহার' : 'HADIYA –মানবতার উপহার'}</span>
+                      <span className="whitespace-nowrap">HADIYA –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
                   </Link>
                 </div>
                 {navLinks}

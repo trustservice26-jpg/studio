@@ -55,7 +55,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
         "যদি কোনো সদস্য সংগঠনের দলে সক্রিয় না থাকেন তবে তাকে নিষ্ক্রিয় হিসাবে দেখানো হবে।",
         "যদি কোনো সদস্য সংগঠনের জন্য টাকা না দেন বা ৩ বারের বেশি দেরি করেন তবে তাকে নিষ্ক্রিয় করা হবে এবং সংগঠন থেকে পদত্যাগ করানো হতে পারে।",
         "পুনরায় সদস্য হিসাবে যোগদানের জন্য তাকে সদস্য হিসাবে নিবন্ধিত হতে হবে এবং পুনরায় সদস্য হিসাবে যোগদানের জন্য ৫০ টাকা বিলম্ব জরিমানা দিতে হবে।",
-        "যদি কোনো সদস্য অশোভন আচরণ করেন তবে তাকে সংগঠন থেকে পদত্যাগ করতে হবে।",
+        "যদি কোনো সদস্য অশোভن আচরণ করেন তবে তাকে সংগঠন থেকে পদত্যাগ করতে হবে।",
         "বিলম্ব পরিশোধের জন্য তাকে ২০ টাকা অতিরিক্ত দিতে হবে, যা সংগঠনের তহবিলে যোগ হবে, অন্যথায় অ্যাডমিন তাকে নিষ্ক্রিয় করতে পারে।",
         "আপনি সদস্য হিসাবে অন্য কোনো সদস্যের কাছ থেকে টাকা সংগ্রহ করতে পারবেন না, যদি তা প্রমাণিত হয় তবে তাকে দল থেকে পদত্যাগ করতে হবে।",
         "যদি সদস্য বাইরের উৎস থেকে টাকা সংগ্রহ করেন তবে তার প্রমাণ দিতে হবে, অন্যথায় তা গ্রহণযোগ্য হবে না।",
@@ -71,7 +71,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
         <div style={{ width: '800px', padding: '10px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', borderBottom: '2px solid #87CEEB', paddingBottom: '8px' }}>
                 <div style={{ textAlign: 'left' }}>
-                    <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '4px' }}>{language === 'bn' ? 'হাদিয়া –মানবতার উপহার' : 'HADIYA –মানবতার উপহার'}</h1>
+                    <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1976D2', margin: 0, marginBottom: '4px' }}>HADIYA –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</h1>
                     <p style={{ fontSize: '13px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                 </div>
                 {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '60px', height: '60px' }} />}
