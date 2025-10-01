@@ -17,7 +17,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
     useEffect(() => {
         const generateQrCode = async () => {
             try {
-                const url = await QRCode.toDataURL('https://sevasangathan.vercel.app', {
+                const url = await QRCode.toDataURL('https://hadiya24.vercel.app', {
                     errorCorrectionLevel: 'H',
                     type: 'image/png',
                     quality: 0.9,
