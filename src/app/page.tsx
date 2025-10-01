@@ -11,7 +11,6 @@ import { DataTable } from '@/components/ui/data-table';
 import { publicMemberColumns } from '@/components/home/public-members-columns';
 import { TransactionHistory } from '@/components/home/transaction-history';
 import { HomeMemberStatus } from '@/components/home/home-member-status';
-import { PublicNoticeBoard } from '@/components/home/public-notice-board';
 import { Button } from '@/components/ui/button';
 import { DownloadPdfDialog } from '@/components/members/download-pdf-dialog';
 import { RegisterMemberDialog } from '@/components/home/register-member-dialog';
@@ -128,11 +127,6 @@ export default function HomePage() {
                 </motion.div>
               ))}
             </div>
-        </section>
-
-        <section className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}</h2>
-            <PublicNoticeBoard />
         </section>
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">

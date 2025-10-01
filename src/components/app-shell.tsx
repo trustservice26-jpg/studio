@@ -17,6 +17,7 @@ import {
   LogOut,
   UserCog,
   CreditCard,
+  Megaphone,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -43,9 +44,10 @@ import type { UserRole, Member } from '@/lib/types';
 
 const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
+    { href: '/notice-board', label: 'Notice Board', bn_label: 'নোটিশ বোর্ড', icon: Megaphone, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
     { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'], permissions: ['canManageMembers'] },
-    { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: CreditCard, roles: ['admin'], permissions: ['canManageTransactions'] },
+    { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: CreditCard, roles: ['admin', 'moderator'], permissions: ['canManageTransactions'] },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -79,23 +81,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     let loggedIn = false;
 
     if (password === 'admin123') {
-        const foundAdmin = members.find(m => m.role === 'admin');
-        if(foundAdmin) {
-            authenticatedUser = foundAdmin;
-        } else {
-            // If no explicit admin role, create a virtual one for access control.
-            authenticatedUser = {
-                id: 'admin-user',
-                name: 'Admin',
-                role: 'admin',
-                memberId: '0000',
-                phone: '',
-                avatar: '',
-                status: 'active',
-                joinDate: new Date().toISOString(),
-                contributions: '',
-            };
-        }
+        authenticatedUser = members.find(m => m.role === 'admin') || {
+            id: 'admin-user',
+            name: 'Admin',
+            role: 'admin',
+            memberId: '0000',
+            phone: '',
+            avatar: '',
+            status: 'active',
+            joinDate: new Date().toISOString(),
+            contributions: '',
+        };
         toastTitle = language === 'bn' ? 'এডমিন ভিউতে সুইচ করা হয়েছে' : 'Logged In as Admin';
         toastDescription = language === 'bn' ? 'আপনার এখন প্রশাসনিক বিশেষ অধিকার রয়েছে।' : 'You now have administrative privileges.';
         loggedIn = true;
@@ -122,16 +118,24 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   const getNavItems = (user: Member | null) => {
-    const role = user?.role || 'member';
     return navItems.filter(item => {
-        if (role === 'admin') {
+        if (item.href === '/' || item.href === '/notice-board') return true; // Always show Home and Notice Board
+
+        if (user?.role === 'admin') {
+            // Admin sees everything except what's specifically for other roles if we want
             return true;
         }
-        if (item.href === '/') return true;
+
+        if(!user) return false;
         
-        const hasPermission = user && item.permissions.length > 0 && item.permissions.some(p => user?.permissions?.[p as keyof Member['permissions']]);
+        // Check for specific permissions
+        const hasPermission = item.permissions.length > 0 && item.permissions.some(p => user.permissions?.[p as keyof Member['permissions']]);
+        if(hasPermission) {
+          return true;
+        }
         
-        if (hasPermission) {
+        // Fallback for roles if no specific permissions matched
+        if (item.roles.includes(user.role as UserRole)) {
             return true;
         }
 
@@ -266,5 +270,3 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
-
-    
