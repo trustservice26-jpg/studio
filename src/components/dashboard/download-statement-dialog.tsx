@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Label } from '../ui/label';
 
 type DownloadStatementDialogProps = {
   open: boolean;
@@ -33,8 +34,12 @@ type DownloadStatementDialogProps = {
 export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatementDialogProps) {
   const { transactions, language } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedYear, setSelectedYear] = useState<number | undefined>();
-  const [selectedMonth, setSelectedMonth] = useState<number | undefined>();
+
+  const now = new Date();
+  const [fromYear, setFromYear] = useState<number>(getYear(now));
+  const [fromMonth, setFromMonth] = useState<number>(getMonth(now));
+  const [toYear, setToYear] = useState<number>(getYear(now));
+  const [toMonth, setToMonth] = useState<number>(getMonth(now));
 
   const availableYears = useMemo(() => {
     if (transactions.length === 0) return [getYear(new Date())];
@@ -60,31 +65,29 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
   useEffect(() => {
     if (open) {
       const currentYear = getYear(new Date());
-      if (availableYears.includes(currentYear)) {
-          setSelectedYear(currentYear);
-      } else if (availableYears.length > 0) {
-          setSelectedYear(availableYears[0]);
-      }
-      setSelectedMonth(getMonth(new Date()));
-    } else {
-      setSelectedYear(undefined);
-      setSelectedMonth(undefined);
+      const currentMonth = getMonth(new Date());
+      
+      setFromYear(currentYear);
+      setFromMonth(currentMonth);
+      setToYear(currentYear);
+      setToMonth(currentMonth);
+
     }
   }, [open, availableYears]);
 
 
   const filteredTransactions = useMemo(() => {
-    if (selectedYear === undefined || selectedMonth === undefined) {
+    if (fromYear === undefined || fromMonth === undefined || toYear === undefined || toMonth === undefined) {
       return [];
     }
-    const from = startOfMonth(new Date(selectedYear, selectedMonth));
-    const to = endOfMonth(new Date(selectedYear, selectedMonth));
+    const from = startOfMonth(new Date(fromYear, fromMonth));
+    const to = endOfMonth(new Date(toYear, toMonth));
     
     return transactions.filter(tx => {
       const txDate = new Date(tx.date);
       return txDate >= from && txDate <= to;
     });
-  }, [transactions, selectedYear, selectedMonth]);
+  }, [transactions, fromYear, fromMonth, toYear, toMonth]);
 
   const { totalDonations, totalWithdrawals, currentFunds } = useMemo(() => {
     const donations = filteredTransactions.filter(t => t.type === 'donation').reduce((sum, d) => sum + d.amount, 0);
@@ -147,7 +150,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     }
     
     pdf.addImage(imgData, 'PNG', 10, y, finalWidth, finalHeight);
-    pdf.save(`HADIYA-Statement-${selectedYear}-${(selectedMonth ?? 0) + 1}.pdf`);
+    pdf.save(`HADIYA-Statement-${fromYear}-${fromMonth+1}_to_${toYear}-${toMonth+1}.pdf`);
 
     setIsLoading(false);
     onOpenChange(false);
@@ -157,12 +160,17 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
   const withdrawals = filteredTransactions.filter(t => t.type === 'withdrawal');
   
   const dateRangeString = useMemo(() => {
-    if (selectedYear !== undefined && selectedMonth !== undefined) {
-      const monthName = allMonths.find(m => m.value === selectedMonth)?.[language === 'bn' ? 'bn_name' : 'name'];
-      return `${monthName}, ${selectedYear}`;
+    if (fromYear !== undefined && fromMonth !== undefined && toYear !== undefined && toMonth !== undefined) {
+      const fromMonthName = allMonths.find(m => m.value === fromMonth)?.[language === 'bn' ? 'bn_name' : 'name'];
+      const toMonthName = allMonths.find(m => m.value === toMonth)?.[language === 'bn' ? 'bn_name' : 'name'];
+      
+      if(fromYear === toYear && fromMonth === toMonth) {
+        return `${fromMonthName}, ${fromYear}`;
+      }
+      return `${fromMonthName}, ${fromYear} ${language === 'bn' ? 'থেকে' : 'to'} ${toMonthName}, ${toYear}`;
     }
     return language === 'bn' ? 'সম্পূর্ণ ইতিহাস' : 'Full History';
-  }, [selectedYear, selectedMonth, language, allMonths]);
+  }, [fromYear, fromMonth, toYear, toMonth, language, allMonths]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -170,34 +178,70 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         <DialogHeader>
           <DialogTitle>{language === 'bn' ? 'অ্যাকাউন্ট স্টেটমেন্ট ডাউনলোড' : 'Download Account Statement'}</DialogTitle>
           <DialogDescription>
-            {language === 'bn' ? 'একটি মাস এবং বছর নির্বাচন করে একটি পিডিএফ ডাউনলোড করুন।' : 'Download a PDF by selecting a month and year.'}
+            {language === 'bn' ? 'একটি তারিখের পরিসীমা নির্বাচন করে একটি পিডিএফ ডাউনলোড করুন।' : 'Download a PDF by selecting a date range.'}
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid grid-cols-2 gap-4 py-4">
-            <Select onValueChange={(v) => setSelectedYear(Number(v))} value={selectedYear?.toString()}>
-              <SelectTrigger>
-                <SelectValue placeholder={language === 'bn' ? 'বছর নির্বাচন করুন' : 'Select Year'} />
-              </SelectTrigger>
-              <SelectContent>
-                {availableYears.map(year => (
-                  <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+        <div className="space-y-4 py-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+                <div className="space-y-2">
+                    <Label>{language === 'bn' ? 'শুরু' : 'From'}</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                        <Select onValueChange={(v) => setFromYear(Number(v))} value={fromYear?.toString()}>
+                        <SelectTrigger>
+                            <SelectValue placeholder={language === 'bn' ? 'বছর' : 'Year'} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {availableYears.map(year => (
+                            <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                            ))}
+                        </SelectContent>
+                        </Select>
 
-            <Select onValueChange={(v) => setSelectedMonth(Number(v))} value={selectedMonth?.toString()}>
-              <SelectTrigger>
-                <SelectValue placeholder={language === 'bn' ? 'মাস নির্বাচন করুন' : 'Select Month'} />
-              </SelectTrigger>
-              <SelectContent>
-                {allMonths.map(month => (
-                  <SelectItem key={month.value} value={month.value.toString()}>
-                    {language === 'bn' ? month.bn_name : month.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                        <Select onValueChange={(v) => setFromMonth(Number(v))} value={fromMonth?.toString()}>
+                        <SelectTrigger>
+                            <SelectValue placeholder={language === 'bn' ? 'মাস' : 'Month'} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {allMonths.map(month => (
+                            <SelectItem key={month.value} value={month.value.toString()}>
+                                {language === 'bn' ? month.bn_name : month.name}
+                            </SelectItem>
+                            ))}
+                        </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <Label>{language === 'bn' ? 'শেষ' : 'To'}</Label>
+                     <div className="grid grid-cols-2 gap-2">
+                        <Select onValueChange={(v) => setToYear(Number(v))} value={toYear?.toString()}>
+                        <SelectTrigger>
+                             <SelectValue placeholder={language === 'bn' ? 'বছর' : 'Year'} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {availableYears.map(year => (
+                            <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                            ))}
+                        </SelectContent>
+                        </Select>
+
+                        <Select onValueChange={(v) => setToMonth(Number(v))} value={toMonth?.toString()}>
+                        <SelectTrigger>
+                             <SelectValue placeholder={language === 'bn' ? 'মাস' : 'Month'} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {allMonths.map(month => (
+                            <SelectItem key={month.value} value={month.value.toString()}>
+                                {language === 'bn' ? month.bn_name : month.name}
+                            </SelectItem>
+                            ))}
+                        </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {/* Hidden element for PDF generation */}
@@ -216,9 +260,9 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
             <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>{language === 'bn' ? 'আর্থিক সারাংশ' : 'Financial Summary'}</h2>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', marginBottom: '15px' }}>
                 <tbody>
-                    <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই মাসের মোট অনুদান' : 'Total Donations for Month'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalDonations)}</td></tr>
-                    <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই মাসের মোট উত্তোলন' : 'Total Withdrawals for Month'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalWithdrawals)}</td></tr>
-                    <tr style={{ borderTop: '2px solid #000' }}><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই মাসের নেট তহবিল' : 'Net Funds for Month'}</td><td style={{ padding: '4px 0', textAlign: 'right', fontWeight: 'bold' }}>{formatCurrency(currentFunds)}</td></tr>
+                    <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই সময়ের মোট অনুদান' : 'Total Donations for Period'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalDonations)}</td></tr>
+                    <tr><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই সময়ের মোট উত্তোলন' : 'Total Withdrawals for Period'}</td><td style={{ padding: '4px 0', textAlign: 'right' }}>{formatCurrency(totalWithdrawals)}</td></tr>
+                    <tr style={{ borderTop: '2px solid #000' }}><td style={{ padding: '4px 0', fontWeight: 'bold' }}>{language === 'bn' ? 'এই সময়ের নেট তহবিল' : 'Net Funds for Period'}</td><td style={{ padding: '4px 0', textAlign: 'right', fontWeight: 'bold' }}>{formatCurrency(currentFunds)}</td></tr>
                 </tbody>
             </table>
 
@@ -242,7 +286,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         </div>
 
         <DialogFooter>
-          <Button onClick={handleDownload} disabled={isLoading || selectedYear === undefined || selectedMonth === undefined}>
+          <Button onClick={handleDownload} disabled={isLoading || fromYear === undefined || fromMonth === undefined || toYear === undefined || toMonth === undefined}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -260,7 +304,5 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     </Dialog>
   );
 }
-
-    
 
     
