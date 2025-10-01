@@ -64,7 +64,7 @@ export default {
           '5': 'hsl(var(--chart-5))',
         },
         'brand-gold': 'hsl(var(--brand-gold))',
-        'brand-purple': 'hsl(var(--brand-purple))',
+        'brand-green': 'hsl(var(--brand-green))',
       },
       borderRadius: {
         lg: 'var(--radius)',
