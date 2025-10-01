@@ -166,7 +166,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="hidden border-r bg-muted/40 md:block">
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-              <Link href="/" className="flex items-center gap-2 font-semibold">
+              <Link href="/" className="flex items-center gap-2 font-semibold font-headline">
                 <HeartHandshake className="h-6 w-6 text-brand-gold" />
                 <span className="whitespace-nowrap">
                   <span className="text-brand-gold">HADIYA</span>
@@ -195,7 +195,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
-                   <Link href="/" className="flex items-center gap-2 font-semibold">
+                   <Link href="/" className="flex items-center gap-2 font-semibold font-headline">
                       <HeartHandshake className="h-6 w-6 text-brand-gold" />
                       <span className="whitespace-nowrap">
                         <span className="text-brand-gold">HADIYA</span>
