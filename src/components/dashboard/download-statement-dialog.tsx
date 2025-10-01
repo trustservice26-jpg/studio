@@ -77,7 +77,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     }
     
     pdf.addImage(imgData, 'PNG', 10, y, finalWidth, finalHeight);
-    pdf.save(`Seva-Sangathan-Statement-${new Date().toISOString().split('T')[0]}.pdf`);
+    pdf.save(`HADIYA-Statement-${new Date().toISOString().split('T')[0]}.pdf`);
 
     setIsLoading(false);
     onOpenChange(false);
@@ -103,7 +103,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         {/* Hidden element for PDF generation */}
         <div id="pdf-statement-content" style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '10px', fontFamily: 'sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ textAlign: 'center', marginBottom: '15px', borderBottom: '2px solid #87CEEB', paddingBottom: '8px' }}>
-                <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1976D2', margin: '0 0 4px 0' }}>{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</h1>
+                <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1976D2', margin: '0 0 4px 0' }}>{language === 'bn' ? 'হাদিয়া –মানবতার উপহার' : 'HADIYA –মানবতার উপহার'}</h1>
                 <p style={{ fontSize: '13px', color: '#555', margin: '0' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                  <p style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>
                     {language === 'bn' ? 'স্টেটমেন্ট তৈরির তারিখ:' : 'Statement Date:'} {new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
@@ -157,9 +157,3 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     </Dialog>
   );
 }
-
-    
-
-    
-
-    

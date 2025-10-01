@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { AppProvider } from '@/context/app-context';
@@ -6,7 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'Seva Sangathan',
+  title: 'HADIYA –মানবতার উপহার',
   description: 'Non-profit organization management',
 };
 

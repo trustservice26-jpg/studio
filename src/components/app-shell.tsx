@@ -97,7 +97,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         loggedIn = true;
 
     } else if (password === 'mode123') {
-        authenticatedUser = members.find(m => (m.permissions?.canManageTransactions || m.permissions?.canManageMembers)) || null;
+        authenticatedUser = members.find(m => (m.permissions?.canManageTransactions || m.permissions?.canManageMembers) && m.role !== 'admin') || null;
         toastTitle = language === 'bn' ? 'মডারেটর হিসেবে লগইন করেছেন' : 'Logged In as Moderator';
         toastDescription = language === 'bn' ? 'আপনার এখন নির্ধারিত পরিচালনার অনুমতি রয়েছে।' : 'You now have designated management privileges.';
         if (authenticatedUser) loggedIn = true;
@@ -119,22 +119,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   const getNavItems = (user: Member | null) => {
     return navItems.filter(item => {
-        if (item.href === '/' || item.href === '/notice-board') return true; // Always show Home and Notice Board
+        if (item.href === '/' || item.href === '/notice-board') return true; 
 
         if (user?.role === 'admin') {
-            // Admin sees everything except what's specifically for other roles if we want
             return true;
         }
 
         if(!user) return false;
         
-        // Check for specific permissions
         const hasPermission = item.permissions.length > 0 && item.permissions.some(p => user.permissions?.[p as keyof Member['permissions']]);
         if(hasPermission) {
           return true;
         }
         
-        // Fallback for roles if no specific permissions matched
         if (item.roles.includes(user.role as UserRole)) {
             return true;
         }
@@ -169,7 +166,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <HeartHandshake className="h-6 w-6 text-primary" />
-                <span className="">{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</span>
+                <span className="">{language === 'bn' ? 'হাদিয়া –মানবতার উপহার' : 'HADIYA –মানবতার উপহার'}</span>
               </Link>
             </div>
             <div className="flex-1">
@@ -195,7 +192,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                    <Link href="/" className="flex items-center gap-2 font-semibold">
                       <HeartHandshake className="h-6 w-6 text-primary" />
-                      <span className="">{language === 'bn' ? 'সেবা সংগঠন' : 'Seva Sangathan'}</span>
+                      <span className="">{language === 'bn' ? 'হাদিয়া –মানবতার উপহার' : 'HADIYA –মানবতার উপহার'}</span>
                   </Link>
                 </div>
                 {navLinks}
