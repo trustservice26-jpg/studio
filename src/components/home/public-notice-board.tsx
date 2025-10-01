@@ -35,13 +35,13 @@ export function PublicNoticeBoard() {
 
   return (
     <motion.div variants={cardVariants} initial="hidden" animate="visible">
-      <Card className="h-[400px]">
+      <Card className="h-auto md:h-[400px]">
         <CardHeader>
           <CardTitle>{language === 'bn' ? 'সাম্প্রতিক ঘোষণা' : 'Recent Announcements'}</CardTitle>
           <CardDescription>{language === 'bn' ? 'সংগঠনের সর্বশেষ খবর এবং আপডেট।' : 'Latest news and updates from the organization.'}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-[280px] pr-4">
+          <ScrollArea className="h-[280px]">
              {notices.length > 0 ? (
                 <motion.div className="space-y-4" variants={cardVariants}>
                     {notices.map((notice) => (
