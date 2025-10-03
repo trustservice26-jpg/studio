@@ -71,7 +71,7 @@ export default function AboutUsPage() {
 
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
-            <Card className="h-full bg-accent/50">
+            <Card className="h-full">
                 <CardHeader className="flex flex-row items-center gap-4">
                     <div className="p-3 rounded-full bg-primary/10 text-primary">
                         <Target className="w-8 h-8" />
@@ -84,7 +84,7 @@ export default function AboutUsPage() {
             </Card>
         </motion.div>
         <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} transition={{delay: 0.2}}>
-            <Card className="h-full bg-accent/50">
+            <Card className="h-full">
                 <CardHeader className="flex flex-row items-center gap-4">
                     <div className="p-3 rounded-full bg-primary/10 text-primary">
                        <Eye className="w-8 h-8" />
@@ -99,11 +99,11 @@ export default function AboutUsPage() {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-center text-3xl font-bold mb-8">{language === 'bn' ? 'আমাদের পথপ্রদর্শক নীতি' : 'Our Guiding Principles'}</h2>
+        <h2 className="text-center text-3xl font-bold mb-8">{language === 'bn' ? 'পথপ্রদর্শক নীতি' : 'Our Guiding Principles'}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {principles.map((principle, index) => (
                  <motion.div key={principle.title} variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} transition={{delay: index * 0.2}}>
-                    <div className="text-center p-6 border rounded-lg bg-accent/50 h-full">
+                    <div className="text-center p-6 border rounded-lg h-full">
                         <div className="inline-block p-4 bg-primary/10 rounded-full mb-4">
                            {principle.icon}
                         </div>
