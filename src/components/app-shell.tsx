@@ -40,7 +40,6 @@ import { LanguageSwitcher } from './language-switcher';
 import { LiveClock } from './live-clock';
 import { RegisterMemberDialog } from './home/register-member-dialog';
 import { useIsClient } from '@/hooks/use-is-client';
-import { ThemeSwitcher } from './theme-switcher';
 import type { UserRole, Member } from '@/lib/types';
 
 const navItems = [
@@ -208,7 +207,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <Button variant="default" onClick={() => setRegisterOpen(true)}>
               <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
             </Button>
-            <ThemeSwitcher />
             <LanguageSwitcher />
             <Button variant="outline" onClick={handleLoginClick}>
                 {user ? (
