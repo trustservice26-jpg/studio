@@ -58,7 +58,7 @@ export default function HomePage() {
       >
         <div className="container mx-auto text-center">
           <motion.h1
-            className="text-4xl md:text-5xl font-headline font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent whitespace-nowrap"
+            className="text-4xl md:text-5xl font-headline font-bold mb-4 text-accent"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -66,7 +66,7 @@ export default function HomePage() {
             HADIYA –মানবতার উপহার
           </motion.h1>
           <motion.p
-            className="text-sm md:text-base text-black mb-4 whitespace-nowrap"
+            className="text-sm md:text-base text-black mb-4"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
