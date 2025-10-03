@@ -58,21 +58,13 @@ export default function HomePage() {
       >
         <div className="container mx-auto text-center">
           <motion.h1
-            className="text-5xl md:text-7xl font-headline font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"
+            className="text-4xl md:text-6xl font-headline font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            HADIYA
+            HADIYA –মানবতার উপহার
           </motion.h1>
-           <motion.p
-            className="mb-4 text-sm md:text-base text-muted-foreground font-bold"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            {language === 'bn' ? 'মানবতার উপহার' : 'THE GIFT OF HUMANITY'}
-          </motion.p>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-sm md:text-base text-muted-foreground"
             initial={{ y: 20, opacity: 0 }}
