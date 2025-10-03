@@ -247,8 +247,8 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         {/* Hidden element for PDF generation */}
         <div id="pdf-statement-content" style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '20px', color: '#000', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             <div style={{ textAlign: 'center', marginBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))', paddingBottom: '8px' }}>
-                <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: '0 0 8px 0', color: 'hsl(var(--primary))' }}>HADIYA –মানবতার উপহার</h1>
-                <p style={{ fontSize: '13px', color: '#555', margin: 0, fontWeight: 'bold' }}>শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ</p>
+                <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '22px', margin: '0 0 8px 0', color: 'hsl(var(--primary))' }}>HADIYA –মানবতার উপহার</h1>
+                <p style={{ fontSize: '12px', color: '#555', margin: 0, fontWeight: 'bold' }}>শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ</p>
                  <p style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>
                     {language === 'bn' ? 'স্টেটমেন্টের সময়কাল:' : 'Statement for:'} {dateRangeString}
                 </p>
@@ -301,5 +301,3 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
     </Dialog>
   );
 }
-
-    
