@@ -66,7 +66,7 @@ export default function HomePage() {
             HADIYA –মানবতার উপহার
           </motion.h1>
           <motion.p
-            className="text-sm md:text-base text-black mb-4 whitespace-nowrap"
+            className="text-sm md:text-base text-black mb-4 whitespace-nowrap font-semibold"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
