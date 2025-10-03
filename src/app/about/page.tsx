@@ -116,7 +116,7 @@ export default function AboutUsPage() {
       </div>
        <div className="text-center py-10">
             <h2 className="text-3xl font-bold mb-4">{language === 'bn' ? 'আমাদের দল' : 'Our Team'}</h2>
-            <p className="max-w-2xl mx-auto text-muted-foreground">{language === 'bn' ? 'আমাদের নিবেদিত স্বেচ্ছাসেবক এবং সদস্যদের সাথে দেখা করুন যারা এই উদ্যোগকে সম্ভব করে তুলেছেন। তাদের আবেগ এবং কঠোর পরিশ্রম আমাদের সম্প্রদায়ের চালিকাশক্তি।' : 'Meet our dedicated volunteers and members who make this initiative possible. Their passion and hard work are the driving force behind our community.'}</p>
+            <p className="max-w-2xl mx-auto text-muted-foreground">{language === 'bn' ? 'আমাদের নিবেদিত স্বেচ্ছাসেবক এবং সদস্যদের সাথে দেখা করুন যারা এই উদ্যোগকে সম্ভব করে তুলেছেন। তাদের আবেগ এবং কঠোর পরিশ্রম আমাদের সম্প্রদায়ের চালিকাশক্তি। আমাদের সম্প্রদায়ের শক্তি এবং অগ্রগতির একটি স্বচ্ছ দৃষ্টিভঙ্গি, যা আমাদের প্রতিটি সদস্যকে অনুপ্রাণিত করে, এবং সকলের জন্য একটি খোলামেলা ও বিশ্বাসযোগ্য পরিবেশ নিশ্চিত করে।' : 'Meet our dedicated volunteers and members who make this initiative possible. Their passion and hard work are the driving force behind our community. A transparent view of our community\'s strength and progress, which inspires each of our members and ensures an open and trustworthy environment for all.'}</p>
        </div>
 
     </motion.div>
