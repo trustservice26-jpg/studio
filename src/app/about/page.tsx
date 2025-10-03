@@ -99,7 +99,7 @@ export default function AboutUsPage() {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-center text-3xl font-bold mb-8">{language === 'bn' ? 'আমাদের मार्गदर्शक নীতি' : 'Our Guiding Principles'}</h2>
+        <h2 className="text-center text-3xl font-bold mb-8">{language === 'bn' ? 'আমাদের পথপ্রদর্শক নীতি' : 'Our Guiding Principles'}</h2>
         <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-8">
             {principles.map((principle, index) => (
                  <motion.div key={principle.title} variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} transition={{delay: index * 0.2}}>
