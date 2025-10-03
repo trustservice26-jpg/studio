@@ -58,7 +58,7 @@ export default function HomePage() {
       >
         <div className="container mx-auto text-center">
           <motion.h1
-            className="text-4xl md:text-5xl font-headline font-bold mb-4"
+            className="text-4xl md:text-5xl font-headline font-bold mb-4 whitespace-nowrap"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -66,7 +66,7 @@ export default function HomePage() {
             <span className="text-primary">HADIYA</span> <span className="text-accent">–মানবতার উপহার</span>
           </motion.h1>
           <motion.p
-            className="text-sm md:text-base text-black mb-4"
+            className="text-sm md:text-base text-black mb-4 whitespace-nowrap"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
