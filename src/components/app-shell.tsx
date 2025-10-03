@@ -3,7 +3,6 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -18,6 +17,7 @@ import {
   UserCog,
   CreditCard,
   Megaphone,
+  Gift,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -166,7 +166,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
-                <Image src="/logo.png" alt="HADIYA Logo" width={150} height={50} />
+                <Gift className="h-6 w-6 text-primary" />
+                <span className="font-headline text-lg">HADIYA</span>
               </Link>
             </div>
             <div className="flex-1">
@@ -191,7 +192,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <SheetContent side="left" className="flex flex-col">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                    <Link href="/" className="flex items-center gap-2 font-semibold">
-                      <Image src="/logo.png" alt="HADIYA Logo" width={150} height={50} />
+                      <Gift className="h-6 w-6 text-primary" />
+                      <span className="font-headline text-lg">HADIYA</span>
                   </Link>
                 </div>
                 {navLinks}

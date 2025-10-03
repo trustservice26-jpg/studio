@@ -3,7 +3,6 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { Quote, Landmark, TrendingUp, TrendingDown, Users, Download, UserPlus, Trash2 } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -58,21 +57,21 @@ export default function HomePage() {
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto text-center">
-          <motion.div
+          <motion.h1
+            className="text-5xl md:text-7xl font-headline font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="flex justify-center mb-4"
           >
-            <Image src="/logo.png" alt="HADIYA Logo" width={300} height={100} />
-          </motion.div>
+            HADIYA
+          </motion.h1>
            <motion.p
             className="mb-4 text-sm md:text-base text-muted-foreground font-bold"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ, চান্দগাঁও' : 'community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}
+            {language === 'bn' ? 'মানবতার উপহার' : 'THE GIFT OF HUMANITY'}
           </motion.p>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-sm md:text-base text-muted-foreground"
