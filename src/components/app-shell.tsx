@@ -18,6 +18,7 @@ import {
   CreditCard,
   Megaphone,
   HeartHandshake,
+  Info,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -45,6 +46,7 @@ import type { UserRole, Member } from '@/lib/types';
 const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/notice-board', label: 'Notice Board', bn_label: 'নোটিশ বোর্ড', icon: Megaphone, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
+    { href: '/about', label: 'About Us', bn_label: 'আমাদের সম্পর্কে', icon: Info, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
     { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'], permissions: ['canManageMembers'] },
     { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: CreditCard, roles: ['admin', 'moderator'], permissions: ['canManageTransactions'] },
@@ -119,7 +121,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   const getNavItems = (user: Member | null) => {
     return navItems.filter(item => {
-        if (item.href === '/' || item.href === '/notice-board') return true; 
+        if (item.href === '/' || item.href === '/notice-board' || item.href === '/about') return true; 
 
         if (user?.role === 'admin') {
             return true;
