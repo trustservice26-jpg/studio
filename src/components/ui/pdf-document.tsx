@@ -72,7 +72,11 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', borderBottom: '2px solid #D8BFD8', paddingBottom: '8px' }}>
                 <div style={{ textAlign: 'left' }}>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '22px', margin: '0 0 8px 0', fontWeight: 'bold', color: 'hsl(var(--primary))' }}>HADIYA –মানবতার উপহার</h1>
-                    <p style={{ fontSize: '12px', color: '#555', margin: 0 }}>শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ</p>
+                    <p style={{ fontSize: '12px', color: '#555', margin: 0 }}>
+                      {language === 'bn'
+                        ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
+                        : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
+                    </p>
                 </div>
                 {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '60px', height: '60px' }} />}
             </div>

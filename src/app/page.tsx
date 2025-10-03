@@ -66,12 +66,14 @@ export default function HomePage() {
             HADIYA –মানবতার উপহার
           </motion.h1>
           <motion.p
-            className="text-sm md:text-base text-black mb-4 whitespace-nowrap font-semibold"
+            className="text-sm md:text-base text-black mb-4 whitespace-nowrap"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ
+            {language === 'bn'
+              ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
+              : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
           </motion.p>
           <motion.p
             className="mb-8 max-w-3xl mx-auto text-sm md:text-base text-muted-foreground"
@@ -157,7 +159,7 @@ export default function HomePage() {
       <ClearDataDialog open={isClearDataOpen} onOpenChange={setClearDataOpen} />
        <footer className="py-6 px-4 md:px-6 border-t">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
-          <p>© 2025 HADIYA –মানবতার উপহার (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
+          <p>© 2025 HADIYA –মানবতার উপহার ({language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
           <p className="font-bold italic mt-2 text-xs text-foreground">Developed & Supported by AL-SADEEQ Team.</p>
         </div>
       </footer>
