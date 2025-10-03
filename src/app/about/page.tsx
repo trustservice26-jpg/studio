@@ -71,20 +71,20 @@ export default function AboutUsPage() {
 
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
-            <Card className="h-full">
+            <Card className="h-full bg-accent/50">
                 <CardHeader className="flex flex-row items-center gap-4">
-                    <div className="p-3 rounded-full bg-accent/20 text-accent">
+                    <div className="p-3 rounded-full bg-primary/10 text-primary">
                         <Target className="w-8 h-8" />
                     </div>
                     <CardTitle className="text-2xl">{language === 'bn' ? 'আমাদের লক্ষ্য' : 'Our Mission'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, এবং প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, dedicate every step to the well-being of people, and to establish brotherhood and justice in the light of the Sunnah.'}</p>
+                    <p className="text-muted-foreground">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, dedicate every step to the well-being of people, and to establish brotherhood and justice in the light of the Sunnah.'}</p>
                 </CardContent>
             </Card>
         </motion.div>
         <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} transition={{delay: 0.2}}>
-            <Card className="h-full">
+            <Card className="h-full bg-accent/50">
                 <CardHeader className="flex flex-row items-center gap-4">
                     <div className="p-3 rounded-full bg-primary/10 text-primary">
                        <Eye className="w-8 h-8" />
@@ -103,7 +103,7 @@ export default function AboutUsPage() {
         <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-8">
             {principles.map((principle, index) => (
                  <motion.div key={principle.title} variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} transition={{delay: index * 0.2}}>
-                    <div className="text-center p-6 border rounded-lg bg-card h-full">
+                    <div className="text-center p-6 border rounded-lg bg-accent/50 h-full">
                         <div className="inline-block p-4 bg-primary/10 rounded-full mb-4">
                            {principle.icon}
                         </div>
