@@ -121,7 +121,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         return;
     }
 
-    const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+    const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true, allowTaint: true });
     const imgData = canvas.toDataURL('image/png');
 
     const pdf = new jsPDF({
@@ -247,10 +247,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         {/* Hidden element for PDF generation */}
         <div id="pdf-statement-content" style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '20px', color: '#000', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             <div style={{ textAlign: 'center', marginBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))', paddingBottom: '8px' }}>
-                <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: '0 0 4px 0', fontFamily: '"Cinzel Decorative", serif' }}>
-                  <span style={{color: 'hsl(var(--brand-green))'}}>HADIYA</span>
-                  <span style={{color: 'hsl(var(--brand-gold))'}}> –মানবতার উপহার</span>
-                </h1>
+                <img src="/logo.png" alt="HADIYA Logo" style={{width: '200px', margin: '0 auto 8px'}} />
                 <p style={{ fontSize: '13px', color: '#555', margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ-চান্দগাঁও-এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon'}</p>
                  <p style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>
                     {language === 'bn' ? 'স্টেটমেন্টের সময়কাল:' : 'Statement for:'} {dateRangeString}

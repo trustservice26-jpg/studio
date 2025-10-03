@@ -3,9 +3,9 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
-  HeartHandshake,
   LayoutDashboard,
   Menu,
   Users,
@@ -165,12 +165,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="hidden border-r bg-muted/40 md:block">
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-              <Link href="/" className="flex items-center gap-2 font-semibold font-headline">
-                <HeartHandshake className="h-6 w-6 text-brand-green" />
-                <span className="whitespace-nowrap">
-                  <span className="text-brand-green">HADIYA</span>
-                  <span className="text-brand-gold"> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
-                </span>
+              <Link href="/" className="flex items-center gap-2 font-semibold">
+                <Image src="/logo.png" alt="HADIYA Logo" width={150} height={50} />
               </Link>
             </div>
             <div className="flex-1">
@@ -194,12 +190,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
-                   <Link href="/" className="flex items-center gap-2 font-semibold font-headline">
-                      <HeartHandshake className="h-6 w-6 text-brand-green" />
-                      <span className="whitespace-nowrap">
-                        <span className="text-brand-green">HADIYA</span>
-                        <span className="text-brand-gold"> –{language === 'bn' ? 'মানবতার উপহার' : 'মানবতার উপহার'}</span>
-                      </span>
+                   <Link href="/" className="flex items-center gap-2 font-semibold">
+                      <Image src="/logo.png" alt="HADIYA Logo" width={150} height={50} />
                   </Link>
                 </div>
                 {navLinks}
