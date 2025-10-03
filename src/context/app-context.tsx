@@ -48,28 +48,38 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 async function seedInitialData() {
-  const collections = {
-    members: initialMembers,
-    notices: initialNotices,
-    transactions: initialTransactions,
-  };
-
-  const batch = writeBatch(db);
-
-  for (const [colName, data] of Object.entries(collections)) {
-    const colRef = collection(db, colName);
-    const snapshot = await getDocs(colRef);
-    if (snapshot.empty) {
-      console.log(`Seeding ${colName}...`);
-      data.forEach((item) => {
-        const docRef = doc(colRef);
-        batch.set(docRef, item);
-      });
+    const hasSeeded = localStorage.getItem('hasSeeded');
+    if (hasSeeded) {
+      return;
     }
+  
+    const collections = {
+      members: initialMembers,
+      notices: initialNotices,
+      transactions: initialTransactions,
+    };
+  
+    const batch = writeBatch(db);
+    let shouldCommit = false;
+  
+    for (const [colName, data] of Object.entries(collections)) {
+      const colRef = collection(db, colName);
+      const snapshot = await getDocs(colRef);
+      if (snapshot.empty) {
+        console.log(`Seeding ${colName}...`);
+        shouldCommit = true;
+        data.forEach((item) => {
+          const docRef = doc(colRef);
+          batch.set(docRef, item);
+        });
+      }
+    }
+  
+    if (shouldCommit) {
+      await batch.commit();
+    }
+    localStorage.setItem('hasSeeded', 'true');
   }
-
-  await batch.commit();
-}
 
 function generateMemberId(existingMembers: Member[]): string {
     const existingIds = existingMembers.map(m => parseInt(m.memberId, 10)).filter(id => !isNaN(id));
@@ -397,5 +407,3 @@ export function useAppContext() {
   }
   return context;
 }
-
-    
