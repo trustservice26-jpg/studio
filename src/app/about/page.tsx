@@ -79,7 +79,7 @@ export default function AboutUsPage() {
                     <CardTitle className="text-2xl">{language === 'bn' ? 'আমাদের লক্ষ্য' : 'Our Mission'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, এবং প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, and dedicate every step to the well-being of people.'}</p>
+                    <p className="text-muted-foreground">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, এবং প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, and dedicate every step to the well-being of people.'}</p>
                 </CardContent>
             </Card>
         </motion.div>
