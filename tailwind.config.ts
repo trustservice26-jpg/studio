@@ -19,7 +19,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['PT Sans', 'sans-serif'],
-        headline: ['Cinzel Decorative', 'serif'],
+        headline: ['Cinzel Decorative', 'Noto Serif Bengali', 'serif'],
         code: ['monospace'],
       },
       colors: {
