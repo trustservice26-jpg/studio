@@ -71,7 +71,9 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
         <div style={{ width: '800px', padding: '10px', fontFamily: '"PT Sans", sans-serif', color: '#000', background: '#fff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', borderBottom: '2px solid #D8BFD8', paddingBottom: '8px' }}>
                 <div style={{ textAlign: 'left' }}>
-                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '22px', margin: '0 0 8px 0', fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>HADIYA –মানবতার উপহার</h1>
+                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '22px', margin: '0 0 8px 0', fontWeight: 'bold' }}>
+                        <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
+                    </h1>
                     <p style={{ fontSize: '12px', color: '#555', margin: 0 }}>
                       {language === 'bn'
                         ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
@@ -139,7 +141,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
                  </div>
             </div>
              <div style={{ marginTop: '8px', fontSize: '10px', color: '#000', textAlign: 'center', paddingTop: '6px', borderTop: '1px solid #eee' }}>
-                <p style={{ fontWeight: 'bold', margin: '0 0 4px 0' }}>© 2025 HADIYA –মানবতার উপহার (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
+                <p style={{ fontWeight: 'bold', margin: '0 0 4px 0' }}>© 2025 <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span> (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
                 <p style={{ fontWeight: 'bold', fontStyle: 'italic', margin: 0, fontSize: '9px', color: '#000' }}>Developed & Supported by AL-SADEEQ Team.</p>
              </div>
         </div>
