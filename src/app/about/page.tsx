@@ -86,7 +86,7 @@ export default function AboutUsPage() {
                         </span>
                     ) : (
                          <span>
-                            What and Why is <strong className="font-bold">HADIYA – A Gift to Humanity</strong>?
+                            What and Why is <strong className="font-bold">HADIYA – মানবতার উপহার</strong>?
                         </span>
                     )}
                 </CardTitle>
@@ -95,7 +95,7 @@ export default function AboutUsPage() {
                 <p>
                 {language === 'bn' ? 
                 'HADIYA – মানবতার উপহার একটি অনুপ্রেরণামূলক ধারণা, যার মূল উদ্দেশ্য হল মানবতার প্রতি ভালোবাসা, সহানুভূতি এবং সাহায্যের হাত বাড়িয়ে দেওয়া। “হাদিয়া” শব্দটি এসেছে আরবি শব্দ هدية (Hadiyah) থেকে, যার অর্থ উপহার। এই ধারণার মাধ্যমে আমরা বোঝাতে চাই – প্রত্যেক ভালো কাজ, প্রতিটি দান, প্রতিটি সাহায্য — সবই মানবতার প্রতি একটি উপহার।' :
-                'HADIYA – A Gift to Humanity is an inspirational concept, whose main purpose is to extend love, compassion, and a helping hand towards humanity. The word "Hadiya" comes from the Arabic word هدية (Hadiyah), which means gift. Through this concept, we want to convey that every good deed, every donation, every act of help—is a gift to humanity.'
+                'HADIYA – মানবতার উপহার is an inspirational concept, whose main purpose is to extend love, compassion, and a helping hand towards humanity. The word "Hadiya" comes from the Arabic word هدية (Hadiyah), which means gift. Through this concept, we want to convey that every good deed, every donation, every act of help—is a gift to humanity.'
                 }
                 </p>
                 <div>
