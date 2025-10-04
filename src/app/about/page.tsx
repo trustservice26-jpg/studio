@@ -5,7 +5,7 @@ import * as React from 'react';
 import { motion } from 'framer-motion';
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Target, Eye, Users, Scale, HeartHandshake, Quote } from 'lucide-react';
+import { Target, Eye, Users, Scale, HeartHandshake, Quote, Star } from 'lucide-react';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -53,21 +53,64 @@ export default function AboutUsPage() {
         </p>
       </div>
       
-      <motion.div 
-        className="max-w-3xl mx-auto"
-        variants={cardVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <Card className="h-full bg-accent/50">
-            <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
-                <Quote className="w-8 h-8 text-muted-foreground mb-4" />
-                <p className="prose dark:prose-invert">
-                  <strong className="font-bold">HADIYA – মানবতার উপহার</strong> {language === 'bn' ? ' হলো একটি সম্প্রদায়-চালিত উদ্যোগ, যা পরিচালিত হচ্ছে ' : 'is a community-driven initiative supervised by '} <strong className="font-bold">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ (চান্দগাঁও)' : 'Shahid Liyakot Shriti Songo (Chandgaon)'}</strong>. {language === 'bn' ? 'আমাদের লক্ষ্য হলো ইসলামের আলোকে মানবতার কল্যাণে কাজ করা এবং সমাজে ইতিবাচক পরিবর্তন আনা।' : 'Our goal is to work for the welfare of humanity in the light of Islam and to bring positive change to society.'}
+      <div className="space-y-8 max-w-3xl mx-auto">
+        <motion.div 
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <Card className="h-full bg-accent/50">
+              <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
+                  <Quote className="w-8 h-8 text-muted-foreground mb-4" />
+                  <p className="prose dark:prose-invert">
+                    <strong className="font-bold">HADIYA – মানবতার উপহার</strong> {language === 'bn' ? ' হলো একটি সম্প্রদায়-চালিত উদ্যোগ, যা পরিচালিত হচ্ছে ' : 'is a community-driven initiative supervised by '} <strong className="font-bold">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ (চান্দগাঁও)' : 'Shahid Liyakot Shriti Songo (Chandgaon)'}</strong>. {language === 'bn' ? 'আমাদের লক্ষ্য হলো ইসলামের আলোকে মানবতার কল্যাণে কাজ করা এবং সমাজে ইতিবাচক পরিবর্তন আনা।' : 'Our goal is to work for the welfare of humanity in the light of Islam and to bring positive change to society.'}
+                  </p>
+              </CardContent>
+          </Card>
+        </motion.div>
+
+        <motion.div 
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{delay: 0.2}}
+        >
+          <Card>
+            <CardHeader>
+                <CardTitle className="text-2xl text-center flex items-center justify-center gap-2">
+                    <Star className="w-6 h-6 text-accent" />
+                    {language === 'bn' ? (
+                        <span>
+                            <strong className="font-bold">HADIYA – মানবতার উপহার</strong> কী এবং কেন ?
+                        </span>
+                    ) : (
+                         <span>
+                            What and Why is <strong className="font-bold">HADIYA – A Gift to Humanity</strong>?
+                        </span>
+                    )}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-center">
+                <p>
+                {language === 'bn' ? 
+                'HADIYA – মানবতার উপহার একটি অনুপ্রেরণামূলক ধারণা, যার মূল উদ্দেশ্য হল মানবতার প্রতি ভালোবাসা, সহানুভূতি এবং সাহায্যের হাত বাড়িয়ে দেওয়া। “হাদিয়া” শব্দটি এসেছে আরবি শব্দ هدية (Hadiyah) থেকে, যার অর্থ উপহার। এই ধারণার মাধ্যমে আমরা বোঝাতে চাই – প্রত্যেক ভালো কাজ, প্রতিটি দান, প্রতিটি সাহায্য — সবই মানবতার প্রতি একটি উপহার।' :
+                'HADIYA – A Gift to Humanity is an inspirational concept, whose main purpose is to extend love, compassion, and a helping hand towards humanity. The word "Hadiya" comes from the Arabic word هدية (Hadiyah), which means gift. Through this concept, we want to convey that every good deed, every donation, every act of help—is a gift to humanity.'
+                }
                 </p>
+                <div>
+                    <h3 className="font-bold text-lg mb-2">🎯 {language === 'bn' ? 'আমাদের লক্ষ্য:' : 'Our Goal:'}</h3>
+                    <p>
+                        {language === 'bn' ?
+                        'আমরা বিশ্বাস করি, মানবতার সেবা শুধু দায়িত্ব নয়, এটি একটি সম্মান। যখন আমরা কারও মুখে হাসি ফোটাই, কারও প্রয়োজন মেটাই, কিংবা কারও জীবন বাঁচাতে এগিয়ে আসি – তখন সেটাই হয় একটি “হাদিয়া”, একটি নিঃস্বার্থ উপহার, যা কোনো প্রতিদান চায় না।' :
+                        'We believe that serving humanity is not just a duty, but an honor. When we bring a smile to someone\'s face, meet someone\'s need, or step forward to save someone\'s life – that itself becomes a "Hadiya," a selfless gift that seeks no return.'
+                        }
+                    </p>
+                </div>
             </CardContent>
-        </Card>
-      </motion.div>
+          </Card>
+        </motion.div>
+      </div>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
