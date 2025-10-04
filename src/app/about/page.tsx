@@ -81,11 +81,11 @@ export default function AboutUsPage() {
                 <CardTitle className="text-2xl text-center flex items-center justify-center gap-2">
                     <Star className="w-6 h-6 text-accent" />
                     {language === 'bn' ? (
-                        <span>
+                        <span className="whitespace-nowrap">
                             <strong className="font-bold">HADIYA – মানবতার উপহার</strong> কী এবং কেন ?
                         </span>
                     ) : (
-                         <span>
+                         <span className="whitespace-nowrap">
                             What and Why is <strong className="font-bold">HADIYA – মানবতার উপহার</strong>?
                         </span>
                     )}
