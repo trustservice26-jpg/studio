@@ -73,29 +73,25 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
 
             {/* Body */}
             <div style={{ padding: '8px', display: 'flex', flex: 1, gap: '8px' }}>
-                {/* Photo and QR */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', gap: '5px' }}>
-                    <div style={{ width: isPdf ? '65px' : '80px', height: isPdf ? '80px' : '100px', border: '1px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFF' }}>
-                        <p style={{ color: '#aaa', fontSize: isPdf ? '8px' : '0.7em', textAlign: 'center' }}>
-                            {language === 'bn' ? 'ছবি' : 'Photo'}
-                        </p>
-                    </div>
-                    {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '60px' : '70px', height: isPdf ? '60px' : '70px' }} />}
+                 {/* QR Code */}
+                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '70px' : '80px', height: isPdf ? '70px' : '80px' }} />}
                 </div>
 
+
                 {/* Details */}
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingLeft: '10px' }}>
                     <div>
-                        <p style={{ fontSize: isPdf ? '14px' : '1.3em', fontWeight: 'bold', margin: '0 0 2px 0' }}>{member.name}</p>
-                        <p style={{ fontFamily: 'monospace', fontSize: isPdf ? '10px' : '0.9em', color: '#2F6C60', margin: 0, backgroundColor: '#E0F2E9', padding: '2px 4px', borderRadius: '3px', display: 'inline-block' }}>
+                        <p style={{ fontSize: isPdf ? '16px' : '1.5em', fontWeight: 'bold', margin: '0 0 4px 0', lineHeight: '1.2' }}>{member.name}</p>
+                        <p style={{ fontFamily: 'monospace', fontSize: isPdf ? '10px' : '0.9em', color: '#2F6C60', margin: '0 0 10px 0', backgroundColor: '#E0F2E9', padding: '2px 4px', borderRadius: '3px', display: 'inline-block' }}>
                            ID: {member.memberId}
                         </p>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: isPdf ? '4px 8px' : '8px 12px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: isPdf ? '4px' : '8px' }}>
                         <InfoField label={language === 'bn' ? "পিতার নাম" : "Father's Name"} value={member.fatherName} />
                         <InfoField label={language === 'bn' ? "মাতার নাম" : "Mother's Name"} value={member.motherName} />
+                        <InfoField label={language === 'bn' ? "ঠিকানা" : "Address"} value={member.address} />
                     </div>
-                    <InfoField label={language === 'bn' ? "ঠিকানা" : "Address"} value={member.address} />
                 </div>
             </div>
 
