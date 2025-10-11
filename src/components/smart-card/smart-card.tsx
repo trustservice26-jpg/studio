@@ -71,29 +71,25 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
 
 
             {/* Body */}
-            <div style={{ padding: '8px', display: 'flex', flex: 1, gap: '8px' }}>
-                 {/* Barcode */}
-                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: '8px' }}>
-                    <BarcodeDisplay isPdf={isPdf} />
+            <div style={{ padding: '12px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ textAlign: 'left', marginBottom: '10px' }}>
+                    <p style={{ fontSize: isPdf ? '16px' : '1.5em', fontWeight: 'bold', margin: '0 0 4px 0', lineHeight: '1.2' }}>{member.name}</p>
+                    <p style={{ fontFamily: 'monospace', fontSize: isPdf ? '10px' : '0.9em', color: 'hsl(var(--brand-green))', margin: '0', backgroundColor: 'hsla(var(--primary), 0.1)', padding: '2px 4px', borderRadius: '3px', display: 'inline-block', fontWeight: 'bold' }}>
+                       ID: {member.memberId}
+                    </p>
                 </div>
-
-
-                {/* Details */}
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingLeft: '10px' }}>
-                    <div>
-                        <p style={{ fontSize: isPdf ? '16px' : '1.5em', fontWeight: 'bold', margin: '0 0 4px 0', lineHeight: '1.2' }}>{member.name}</p>
-                        <p style={{ fontFamily: 'monospace', fontSize: isPdf ? '10px' : '0.9em', color: 'hsl(var(--brand-green))', margin: '0 0 10px 0', backgroundColor: 'hsla(var(--primary), 0.1)', padding: '2px 4px', borderRadius: '3px', display: 'inline-block', fontWeight: 'bold' }}>
-                           ID: {member.memberId}
-                        </p>
-                    </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: isPdf ? '2px' : '4px' }}>
-                        <InfoField label={language === 'bn' ? "মোবাইল নম্বর" : "Mobile Number"} value={member.phone} />
-                        <InfoField label={language === 'bn' ? "জন্ম তারিখ" : "Date of Birth"} value={member.dob} />
-                        <InfoField label={language === 'bn' ? "যোগদানের তারিখ" : "Join Date"} value={formattedJoinDate} />
-                        <InfoField label={language === 'bn' ? 'পিতার নাম' : "Father's Name"} value={member.fatherName} />
-                        <InfoField label={language === 'bn' ? 'মাতার নাম' : "Mother's Name"} value={member.motherName} />
-                    </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: isPdf ? '4px' : '6px' }}>
+                    <InfoField label={language === 'bn' ? "মোবাইল নম্বর" : "Mobile Number"} value={member.phone} />
+                    <InfoField label={language === 'bn' ? "জন্ম তারিখ" : "Date of Birth"} value={member.dob} />
+                    <InfoField label={language === 'bn' ? "যোগদানের তারিখ" : "Join Date"} value={formattedJoinDate} />
+                    <InfoField label={language === 'bn' ? 'পিতার নাম' : "Father's Name"} value={member.fatherName} />
+                    <InfoField label={language === 'bn' ? 'মাতার নাম' : "Mother's Name"} value={member.motherName} />
                 </div>
+            </div>
+
+            {/* Footer / Barcode area */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0px 8px 4px 8px' }}>
+                <BarcodeDisplay isPdf={isPdf} />
             </div>
         </div>
     );
