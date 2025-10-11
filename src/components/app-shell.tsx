@@ -52,6 +52,22 @@ const navItems = [
     { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: CreditCard, roles: ['admin', 'moderator'], permissions: ['canManageTransactions'] },
 ];
 
+const Logo = () => (
+    <svg
+        width="32"
+        height="32"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+        className="text-accent"
+        style={{ fill: "currentColor" }}
+    >
+        <path d="M50 0 L65.45 22.36 L90.45 22.36 L72.5 36.18 L79.39 59.55 L50 45.73 L20.61 59.55 L27.5 36.18 L9.55 22.36 L34.55 22.36 Z M50 11.2 L40.45 33.4 L17.15 33.4 L34.55 47.22 L27.66 69.5 L50 55.68 L72.34 69.5 L65.45 47.22 L82.85 33.4 L59.55 33.4 Z" />
+        <path d="M50 5a45 45 0 1 0 0 90a45 45 0 1 0 0 -90zm0 8a37 37 0 1 1 0 74a37 37 0 1 1 0 -74z" />
+        <path d="M54 35c-6.627 0-12 5.373-12 12s5.373 12 12 12c1.73 0 3.37-.365 4.857-1.02A16.993 16.993 0 0 0 50 63c-9.389 0-17-7.611-17-17s7.611-17 17-17c1.768 0 3.456.273 5.03.77A11.94 11.94 0 0 1 54 35zm5.556 12.316l-4.708 2.362 1.776 4.752 3.12-1.565-0.188-5.55z" />
+    </svg>
+);
+
+
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, setUser, language, members } = useAppContext();
@@ -173,7 +189,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
-                 <HeartHandshake className="h-6 w-6 text-primary" />
+                 <Logo />
                 <span className="font-headline text-lg tracking-tight whitespace-nowrap"><span className="text-primary">HADIYA</span> <span className="text-accent">–মানবতার উপহার</span></span>
               </Link>
             </div>
@@ -199,7 +215,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <SheetContent side="left" className="flex flex-col">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 mb-4">
                    <Link href="/" className="flex items-center gap-2 font-semibold">
-                     <HeartHandshake className="h-6 w-6 text-primary" />
+                     <Logo />
                      <span className="font-headline text-lg tracking-tight whitespace-nowrap"><span className="text-primary">HADIYA</span> <span className="text-accent">–মানবতার উপহার</span></span>
                   </Link>
                 </div>
@@ -274,3 +290,5 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
+
+    
