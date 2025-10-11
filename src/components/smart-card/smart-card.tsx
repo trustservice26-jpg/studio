@@ -24,7 +24,7 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
                     width: 200,
                     margin: 1,
                     color: {
-                        dark: '#000000',
+                        dark: '#C9A959', // Gold
                         light: '#0000' // Transparent background
                     }
                 });
@@ -62,14 +62,15 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
     return (
         <div style={cardStyles}>
             {/* Header */}
-            <div style={{ padding: '8px', borderBottom: '1px solid hsl(var(--brand-gold))', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-                <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '14px' : '1.2em', margin: 0, fontWeight: 'bold' }}>
+            <div style={{ padding: '8px', borderBottom: '1px solid hsl(var(--brand-gold))', backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
+                <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '14px' : '1.2em', margin: 0, fontWeight: 'bold', textAlign: 'center' }}>
                     <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
                 </h1>
-                <p style={{ fontSize: isPdf ? '5px' : '0.4em', color: '#555', margin: 0, textAlign: 'right', lineHeight: '1.2' }}>
-                    Shahid Liyakot Shriti Songo<br/>(Chandgaon)
+                <p style={{ fontSize: isPdf ? '6px' : '0.5em', color: '#555', margin: '2px 0 0 0', textAlign: 'center', lineHeight: '1.2' }}>
+                    {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
                 </p>
             </div>
+
 
             {/* Body */}
             <div style={{ padding: '8px', display: 'flex', flex: 1, gap: '8px' }}>
