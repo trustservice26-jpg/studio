@@ -1,8 +1,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
-import QRCode from 'qrcode';
+import Barcode from 'react-barcode';
 import type { Member } from "@/lib/types";
 import { useAppContext } from '@/context/app-context';
 import { HeartHandshake } from 'lucide-react';
@@ -21,28 +20,6 @@ const Logo = ({ isPdf = false }: { isPdf?: boolean }) => (
 
 export function SmartCard({ member, isPdf = false }: SmartCardProps) {
     const { language } = useAppContext();
-    const [qrCodeUrl, setQrCodeUrl] = useState('');
-
-    useEffect(() => {
-        const generateQrCode = async () => {
-            try {
-                const url = await QRCode.toDataURL('https://hadiya24.vercel.app', {
-                    errorCorrectionLevel: 'H',
-                    type: 'image/png',
-                    width: 200,
-                    margin: 1,
-                    color: {
-                        dark: '#C9A959', // Gold
-                        light: '#0000' // Transparent background
-                    }
-                });
-                setQrCodeUrl(url);
-            } catch (err) {
-                console.error('Failed to generate QR code', err);
-            }
-        };
-        generateQrCode();
-    }, []);
     
     const cardStyles = {
         width: isPdf ? '323px' : '100%',
@@ -90,9 +67,16 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
 
             {/* Body */}
             <div style={{ padding: '8px', display: 'flex', flex: 1, gap: '8px' }}>
-                 {/* QR Code */}
-                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '70px' : '80px', height: isPdf ? '70px' : '80px' }} />}
+                 {/* Barcode */}
+                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: '8px' }}>
+                    <Barcode
+                        value="https://hadiya24.vercel.app"
+                        width={1}
+                        height={isPdf ? 40 : 50}
+                        displayValue={false}
+                        background="transparent"
+                        lineColor="hsl(var(--brand-gold))"
+                    />
                 </div>
 
 
