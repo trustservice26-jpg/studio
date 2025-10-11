@@ -14,6 +14,7 @@ const BarcodeDisplay = dynamic(() => import('./barcode-display'), {
 type SmartCardProps = {
     member: Partial<Member>;
     isPdf?: boolean;
+    language?: 'en' | 'bn';
 };
 
 const Logo = ({ isPdf = false }: { isPdf?: boolean }) => (
@@ -23,8 +24,9 @@ const Logo = ({ isPdf = false }: { isPdf?: boolean }) => (
     />
 );
 
-export function SmartCard({ member, isPdf = false }: SmartCardProps) {
-    const { language } = useAppContext();
+export function SmartCard({ member, isPdf = false, language: propLanguage }: SmartCardProps) {
+    const context = useAppContext();
+    const language = propLanguage || context.language;
     
     const cardStyles = {
         width: isPdf ? '323px' : '100%',

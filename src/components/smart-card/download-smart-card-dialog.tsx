@@ -47,7 +47,7 @@ export function DownloadSmartCardDialog({ open, onOpenChange, setSelectedMember:
   const handleDownloadClick = async () => {
     if (!selectedMember) return;
     setIsGeneratingPdf(true);
-    setPdfContent(<SmartCard member={selectedMember} isPdf={true} />);
+    setPdfContent(<SmartCard member={selectedMember} isPdf={true} language={language} />);
   };
 
   useEffect(() => {
