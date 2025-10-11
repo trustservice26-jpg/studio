@@ -47,9 +47,9 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-async function seedInitialData() {
+function seedInitialData() {
     const hasSeeded = localStorage.getItem('hasSeeded');
-    if (hasSeeded) {
+    if (hasSeeded === 'true') {
       return;
     }
   
@@ -60,31 +60,26 @@ async function seedInitialData() {
     };
   
     const batch = writeBatch(db);
-    let shouldCommit = false;
   
     for (const [colName, data] of Object.entries(collections)) {
       const colRef = collection(db, colName);
-      const snapshot = await getDocs(colRef);
-      if (snapshot.empty) {
-        console.log(`Seeding ${colName}...`);
-        shouldCommit = true;
-        data.forEach((item) => {
-          const docRef = doc(colRef);
-          batch.set(docRef, item);
-        });
-      }
+      console.log(`Seeding ${colName}...`);
+      data.forEach((item) => {
+        const docRef = doc(colRef);
+        batch.set(docRef, item);
+      });
     }
   
-    if (shouldCommit) {
-      await batch.commit();
-    }
-    localStorage.setItem('hasSeeded', 'true');
+    batch.commit().then(() => {
+        localStorage.setItem('hasSeeded', 'true');
+    }).catch(e => console.error("Error seeding data:", e));
   }
 
 function generateMemberId(existingMembers: Member[]): string {
     const existingIds = existingMembers.map(m => parseInt(m.memberId, 10)).filter(id => !isNaN(id));
     const maxId = existingIds.length > 0 ? Math.max(...existingIds) : 1000;
-    return (maxId + 1).toString();
+    const newId = maxId + 1;
+    return newId.toString().padStart(4, '0');
 }
 
 
@@ -109,38 +104,73 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    seedInitialData().catch(handleFirestoreError);
+    async function setup() {
+        const hasSeeded = localStorage.getItem('hasSeeded');
+        if (!hasSeeded) {
+            const collections = {
+                members: initialMembers,
+                notices: initialNotices,
+                transactions: initialTransactions,
+            };
+        
+            const batch = writeBatch(db);
+            let shouldCommit = false;
+        
+            for (const [colName, data] of Object.entries(collections)) {
+                const colRef = collection(db, colName);
+                const snapshot = await getDocs(colRef);
+                if (snapshot.empty) {
+                console.log(`Seeding ${colName}...`);
+                shouldCommit = true;
+                data.forEach((item) => {
+                    const docRef = doc(colRef);
+                    batch.set(docRef, item);
+                });
+                }
+            }
+        
+            if (shouldCommit) {
+                await batch.commit();
+                localStorage.setItem('hasSeeded', 'true');
+            } else if (!hasSeeded) {
+                // if db is not empty but seeding has not been marked, mark it.
+                 localStorage.setItem('hasSeeded', 'true');
+            }
+        }
 
-    const qMembers = query(collection(db, 'members'), orderBy('joinDate', 'desc'));
-    const unsubMembers = onSnapshot(qMembers, (snapshot) => {
-      const membersData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Member));
-      setMembers(membersData);
-    }, handleFirestoreError);
+        const qMembers = query(collection(db, 'members'), orderBy('joinDate', 'desc'));
+        const unsubMembers = onSnapshot(qMembers, (snapshot) => {
+          const membersData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Member));
+          setMembers(membersData);
+        }, handleFirestoreError);
 
-    const qNotices = query(collection(db, 'notices'), orderBy('date', 'desc'));
-    const unsubNotices = onSnapshot(qNotices, (snapshot) => {
-      const noticesData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Notice));
-      setNotices(noticesData);
-    }, handleFirestoreError);
+        const qNotices = query(collection(db, 'notices'), orderBy('date', 'desc'));
+        const unsubNotices = onSnapshot(qNotices, (snapshot) => {
+          const noticesData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Notice));
+          setNotices(noticesData);
+        }, handleFirestoreError);
 
-    const qTransactions = query(collection(db, 'transactions'), orderBy('date', 'desc'));
-    const unsubTransactions = onSnapshot(qTransactions, (snapshot) => {
-      const transactionsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Transaction));
-      setTransactions(transactionsData);
-    }, handleFirestoreError);
+        const qTransactions = query(collection(db, 'transactions'), orderBy('date', 'desc'));
+        const unsubTransactions = onSnapshot(qTransactions, (snapshot) => {
+          const transactionsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Transaction));
+          setTransactions(transactionsData);
+        }, handleFirestoreError);
 
-    if (typeof window !== 'undefined') {
-      const savedLang = localStorage.getItem('language') as 'en' | 'bn' | null;
-      if (savedLang) {
-        setLanguage(savedLang);
-      }
+        if (typeof window !== 'undefined') {
+          const savedLang = localStorage.getItem('language') as 'en' | 'bn' | null;
+          if (savedLang) {
+            setLanguage(savedLang);
+          }
+        }
+        
+        return () => {
+            unsubMembers();
+            unsubNotices();
+            unsubTransactions();
+        };
     }
 
-    return () => {
-      unsubMembers();
-      unsubNotices();
-      unsubTransactions();
-    };
+    setup();
   }, []);
   
   useEffect(() => {
