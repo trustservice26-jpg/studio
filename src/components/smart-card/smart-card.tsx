@@ -66,6 +66,8 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
             <p style={{ fontSize: isPdf ? '8px' : '0.75em', color: '#000', margin: 0, fontWeight: 'normal', minHeight: '1em' }}>{value || 'N/A'}</p>
         </div>
     );
+    
+    const formattedJoinDate = member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
 
     return (
         <div style={cardStyles}>
@@ -102,9 +104,10 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
                            ID: {member.memberId}
                         </p>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: isPdf ? '4px' : '8px' }}>
-                        <InfoField label={language === 'bn' ? "পিতার নাম" : "Father's Name"} value={member.fatherName} />
-                        <InfoField label={language === 'bn' ? "মাতার নাম" : "Mother's Name"} value={member.motherName} />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: isPdf ? '2px' : '4px' }}>
+                        <InfoField label={language === 'bn' ? "মোবাইল নম্বর" : "Mobile Number"} value={member.phone} />
+                        <InfoField label={language === 'bn' ? "জন্ম তারিখ" : "Date of Birth"} value={member.dob} />
+                        <InfoField label={language === 'bn' ? "যোগদানের তারিখ" : "Join Date"} value={formattedJoinDate} />
                         <InfoField label={language === 'bn' ? "ঠিকানা" : "Address"} value={member.address} />
                     </div>
                 </div>
