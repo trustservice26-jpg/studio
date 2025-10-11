@@ -47,39 +47,21 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-function seedInitialData() {
-    const hasSeeded = localStorage.getItem('hasSeeded');
-    if (hasSeeded === 'true') {
-      return;
-    }
-  
-    const collections = {
-      members: initialMembers,
-      notices: initialNotices,
-      transactions: initialTransactions,
-    };
-  
-    const batch = writeBatch(db);
-  
-    for (const [colName, data] of Object.entries(collections)) {
-      const colRef = collection(db, colName);
-      console.log(`Seeding ${colName}...`);
-      data.forEach((item) => {
-        const docRef = doc(colRef);
-        batch.set(docRef, item);
-      });
-    }
-  
-    batch.commit().then(() => {
-        localStorage.setItem('hasSeeded', 'true');
-    }).catch(e => console.error("Error seeding data:", e));
-  }
-
 function generateMemberId(existingMembers: Member[]): string {
-    const existingIds = existingMembers.map(m => parseInt(m.memberId, 10)).filter(id => !isNaN(id));
-    const maxId = existingIds.length > 0 ? Math.max(...existingIds) : 1000;
-    const newId = maxId + 1;
-    return newId.toString().padStart(4, '0');
+    const existingIds = new Set(existingMembers.map(m => m.memberId));
+    let newId: string;
+    let attempts = 0;
+    do {
+      newId = Math.floor(1000 + Math.random() * 9000).toString();
+      attempts++;
+      // Failsafe to prevent infinite loop, though highly unlikely with 9000 possibilities
+      if (attempts > 100) {
+        console.error("Could not generate a unique member ID after 100 attempts.");
+        // Fallback to a timestamp-based random string
+        return `E${Date.now().toString().slice(-4)}`;
+      }
+    } while (existingIds.has(newId));
+    return newId;
 }
 
 
@@ -106,7 +88,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function setup() {
         const hasSeeded = localStorage.getItem('hasSeeded');
-        if (!hasSeeded) {
+        if (hasSeeded !== 'true-v2') {
             const collections = {
                 members: initialMembers,
                 notices: initialNotices,
@@ -131,10 +113,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         
             if (shouldCommit) {
                 await batch.commit();
-                localStorage.setItem('hasSeeded', 'true');
+                localStorage.setItem('hasSeeded', 'true-v2');
             } else if (!hasSeeded) {
                 // if db is not empty but seeding has not been marked, mark it.
-                 localStorage.setItem('hasSeeded', 'true');
+                 localStorage.setItem('hasSeeded', 'true-v2');
             }
         }
 
@@ -437,3 +419,5 @@ export function useAppContext() {
   }
   return context;
 }
+
+    
