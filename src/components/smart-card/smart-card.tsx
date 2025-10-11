@@ -77,7 +77,7 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
                         <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
                     </h1>
                     <p style={{ fontSize: isPdf ? '6px' : '0.5em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
-                        {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
+                        {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
                     </p>
                 </div>
             </div>
