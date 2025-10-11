@@ -79,7 +79,7 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
                     <p style={{ fontSize: isPdf ? '6px' : '0.5em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
                         {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
                     </p>
-                    <p style={{ fontSize: isPdf ? '8px' : '0.7em', color: 'hsl(var(--brand-green))', margin: '4px 0 0 0', textAlign: 'left', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                    <p style={{ fontSize: isPdf ? '8px' : '0.7em', color: 'hsl(var(--brand-gold))', margin: '4px 0 0 0', textAlign: 'left', fontWeight: 'bold', textTransform: 'uppercase' }}>
                         MEMBERSHIP SMART CARD
                     </p>
                 </div>
