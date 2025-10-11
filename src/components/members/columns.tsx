@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal, ArrowUpDown, History, Mail, UserCog } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown, History, Mail, UserCog, Wand2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,12 +30,15 @@ import {
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
 import { MemberTransactionHistoryModal } from "./member-transaction-history-modal"
 import { SetPermissionsDialog } from "./set-permissions-dialog"
+import { RoleAdvisorModal } from "./role-advisor-modal"
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const { user, deleteMember, toggleMemberStatus, language } = useAppContext();
   const [isHistoryOpen, setIsHistoryOpen] = React.useState(false);
   const [isAlertOpen, setIsAlertOpen] = React.useState(false);
   const [isPermissionsOpen, setPermissionsOpen] = React.useState(false);
+  const [isRoleAdvisorOpen, setRoleAdvisorOpen] = React.useState(false);
+
 
   const canManageMembers = user?.role === 'admin' || user?.permissions?.canManageMembers;
 
@@ -62,6 +65,10 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
              )}
             {user?.role === 'admin' && (
               <>
+                <DropdownMenuItem onClick={() => setRoleAdvisorOpen(true)}>
+                    <Wand2 className="mr-2 h-4 w-4" />
+                    {language === 'bn' ? 'এআই ভূমিকা উপদেষ্টা' : 'AI Role Advisor'}
+                </DropdownMenuItem>
                  <DropdownMenuItem onClick={() => setPermissionsOpen(true)}>
                   <UserCog className="mr-2 h-4 w-4" />
                   {language === 'bn' ? 'অনুমতি সেট করুন' : 'Set Permissions'}
@@ -106,6 +113,11 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
         member={member}
         open={isPermissionsOpen}
         onOpenChange={setPermissionsOpen}
+      />
+       <RoleAdvisorModal
+        member={member}
+        open={isRoleAdvisorOpen}
+        onOpenChange={setRoleAdvisorOpen}
       />
     </>
   )
