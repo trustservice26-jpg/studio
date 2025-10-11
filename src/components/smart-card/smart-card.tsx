@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import type { Member } from "@/lib/types";
 import { useAppContext } from '@/context/app-context';
+import { HeartHandshake } from 'lucide-react';
 
 type SmartCardProps = {
     member: Partial<Member>;
@@ -12,17 +13,10 @@ type SmartCardProps = {
 };
 
 const Logo = ({ isPdf = false }: { isPdf?: boolean }) => (
-    <svg
-        width={isPdf ? "32" : "32"}
-        height={isPdf ? "32" : "32"}
-        viewBox="0 0 100 100"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ fill: "hsl(var(--brand-gold))" }}
-    >
-        <path d="M50 5a45 45 0 1 0 0 90a45 45 0 1 0 0 -90zm0 8a37 37 0 1 1 0 74a37 37 0 1 1 0 -74z" />
-        <path d="M50 25l5.59 11.33 12.51 1.82-9.05 8.82 2.14 12.47L50 53.67l-11.19 5.79 2.14-12.47-9.05-8.82 12.51-1.82z" />
-        <path d="M54 35c-6.627 0-12 5.373-12 12s5.373 12 12 12c1.73 0 3.37-.365 4.857-1.02A16.993 16.993 0 0 0 50 63c-9.389 0-17-7.611-17-17s7.611-17 17-17c1.768 0 3.456.273 5.03.77A11.94 11.94 0 0 1 54 35zm5.556 12.316l-4.708 2.362 1.776 4.752 3.12-1.565-0.188-5.55z" />
-    </svg>
+    <HeartHandshake 
+        color="hsl(var(--brand-green))" 
+        size={isPdf ? 32 : 32}
+    />
 );
 
 export function SmartCard({ member, isPdf = false }: SmartCardProps) {
