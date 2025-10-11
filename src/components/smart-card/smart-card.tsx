@@ -1,10 +1,15 @@
 
 'use client';
 
-import Barcode from 'react-barcode';
 import type { Member } from "@/lib/types";
 import { useAppContext } from '@/context/app-context';
 import { HeartHandshake } from 'lucide-react';
+import dynamic from "next/dynamic";
+
+const BarcodeDisplay = dynamic(() => import('./barcode-display'), {
+    ssr: false,
+});
+
 
 type SmartCardProps = {
     member: Partial<Member>;
@@ -52,7 +57,7 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
              <div style={{ padding: '8px', borderBottom: '1px solid hsl(var(--brand-gold))', backgroundColor: 'rgba(255, 255, 255, 0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                 <Logo isPdf={isPdf} />
                 <div>
-                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '14px' : '1.2em', margin: 0, fontWeight: 'bold', textAlign: 'left' }}>
+                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '14px' : '1.2em', margin: '0 0 8px 0', fontWeight: 'bold', textAlign: 'left' }}>
                         <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
                     </h1>
                     <p style={{ fontSize: isPdf ? '6px' : '0.5em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
@@ -69,14 +74,7 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
             <div style={{ padding: '8px', display: 'flex', flex: 1, gap: '8px' }}>
                  {/* Barcode */}
                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: '8px' }}>
-                    <Barcode
-                        value="https://hadiya24.vercel.app"
-                        width={1}
-                        height={isPdf ? 40 : 50}
-                        displayValue={false}
-                        background="transparent"
-                        lineColor="hsl(var(--brand-gold))"
-                    />
+                    <BarcodeDisplay isPdf={isPdf} />
                 </div>
 
 
