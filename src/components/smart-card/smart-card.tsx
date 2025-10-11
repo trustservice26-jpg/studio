@@ -108,11 +108,9 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
             </div>
 
             {/* Footer */}
-            <div style={{ marginTop: 'auto', fontSize: isPdf ? '5px' : '0.5em', color: '#fff', textAlign: 'center', padding: '3px', background: 'hsl(var(--brand-green))' }}>
-                <p style={{ margin: 0, fontWeight: 'bold' }}>{language === 'bn' ? "সদস্য কার্ড" : "MEMBERSHIP CARD"}</p>
+            <div style={{ marginTop: 'auto', fontSize: isPdf ? '7px' : '0.6em', color: '#fff', textAlign: 'center', padding: '4px', background: 'hsl(var(--brand-green))' }}>
+                <p style={{ margin: 0, fontWeight: 'bold', textTransform: 'uppercase' }}>MEMBERSHIP SMART CARD</p>
             </div>
         </div>
     );
 }
-
-    
