@@ -11,6 +11,20 @@ type SmartCardProps = {
     isPdf?: boolean;
 };
 
+const Logo = ({ isPdf = false }: { isPdf?: boolean }) => (
+    <svg
+        width={isPdf ? "32" : "32"}
+        height={isPdf ? "32" : "32"}
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ fill: "hsl(var(--brand-gold))" }}
+    >
+        <path d="M50 0 L65.45 22.36 L90.45 22.36 L72.5 36.18 L79.39 59.55 L50 45.73 L20.61 59.55 L27.5 36.18 L9.55 22.36 L34.55 22.36 Z M50 11.2 L40.45 33.4 L17.15 33.4 L34.55 47.22 L27.66 69.5 L50 55.68 L72.34 69.5 L65.45 47.22 L82.85 33.4 L59.55 33.4 Z" />
+        <path d="M50 5a45 45 0 1 0 0 90a45 45 0 1 0 0 -90zm0 8a37 37 0 1 1 0 74a37 37 0 1 1 0 -74z" />
+        <path d="M54 35c-6.627 0-12 5.373-12 12s5.373 12 12 12c1.73 0 3.37-.365 4.857-1.02A16.993 16.993 0 0 0 50 63c-9.389 0-17-7.611-17-17s7.611-17 17-17c1.768 0 3.456.273 5.03.77A11.94 11.94 0 0 1 54 35zm5.556 12.316l-4.708 2.362 1.776 4.752 3.12-1.565-0.188-5.55z" />
+    </svg>
+);
+
 export function SmartCard({ member, isPdf = false }: SmartCardProps) {
     const { language } = useAppContext();
     const [qrCodeUrl, setQrCodeUrl] = useState('');
@@ -62,13 +76,16 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
     return (
         <div style={cardStyles}>
             {/* Header */}
-            <div style={{ padding: '8px', borderBottom: '1px solid hsl(var(--brand-gold))', backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-                <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '14px' : '1.2em', margin: 0, fontWeight: 'bold', textAlign: 'center' }}>
-                    <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
-                </h1>
-                <p style={{ fontSize: isPdf ? '6px' : '0.5em', color: '#555', margin: '2px 0 0 0', textAlign: 'center', lineHeight: '1.2' }}>
-                    {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
-                </p>
+             <div style={{ padding: '8px', borderBottom: '1px solid hsl(var(--brand-gold))', backgroundColor: 'rgba(255, 255, 255, 0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <Logo isPdf={isPdf} />
+                <div>
+                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '14px' : '1.2em', margin: 0, fontWeight: 'bold', textAlign: 'left' }}>
+                        <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
+                    </h1>
+                    <p style={{ fontSize: isPdf ? '6px' : '0.5em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
+                        {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
+                    </p>
+                </div>
             </div>
 
 
