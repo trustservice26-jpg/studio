@@ -79,6 +79,9 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
                     <p style={{ fontSize: isPdf ? '6px' : '0.5em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
                         {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
                     </p>
+                    <p style={{ fontSize: isPdf ? '8px' : '0.7em', color: 'hsl(var(--brand-green))', margin: '4px 0 0 0', textAlign: 'left', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                        MEMBERSHIP SMART CARD
+                    </p>
                 </div>
             </div>
 
@@ -105,11 +108,6 @@ export function SmartCard({ member, isPdf = false }: SmartCardProps) {
                         <InfoField label={language === 'bn' ? "ঠিকানা" : "Address"} value={member.address} />
                     </div>
                 </div>
-            </div>
-
-            {/* Footer */}
-            <div style={{ marginTop: 'auto', fontSize: isPdf ? '7px' : '0.6em', color: '#fff', textAlign: 'center', padding: '4px', background: 'hsl(var(--brand-green))' }}>
-                <p style={{ margin: 0, fontWeight: 'bold', textTransform: 'uppercase' }}>MEMBERSHIP SMART CARD</p>
             </div>
         </div>
     );
