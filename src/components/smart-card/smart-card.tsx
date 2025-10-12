@@ -133,13 +133,18 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
           <div className="p-[10px_16px] flex-grow flex flex-col justify-between">
-            <div>
-                <h3 className="font-bold text-[0.6rem] border-b border-yellow-500 text-green-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
-                <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc">
-                    <li>This card is non-transferable.</li>
-                    <li>Please return if found.</li>
-                    <li>Property of HADIYA – মানবতার উপহার.</li>
-                </ul>
+            <div className="flex justify-between items-start">
+              <div className="flex-grow pr-2">
+                  <h3 className="font-bold text-[0.6rem] border-b border-yellow-500 text-green-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
+                  <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc">
+                      <li>This card is non-transferable.</li>
+                      <li>Please return if found.</li>
+                      <li>Property of HADIYA – মানবতার উপহার.</li>
+                  </ul>
+              </div>
+              <div className="w-[45px] h-[45px] flex items-center justify-center shrink-0">
+                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-full h-full" />}
+              </div>
             </div>
             
             <div>
