@@ -27,33 +27,36 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
 
   useEffect(() => {
-    if (!member) return;
-    
-    const generateFrontQrCode = async () => {
-      const memberId = member.memberId || 'N/A';
-      const memberName = member.name || 'N/A';
-      const joinDate = member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
-      const status = member.status || 'N/A';
+    if (!member && side === 'front') {
+        // Don't generate QR if no member and it's the front side
+    } else {
+        const generateFrontQrCode = async () => {
+          const memberId = member?.memberId || 'N/A';
+          const memberName = member?.name || 'N/A';
+          const joinDate = member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
+          const status = member?.status || 'N/A';
 
-      const qrData = `Member ID: ${memberId}\n\nName: ${memberName}\n\nJoin Date: ${joinDate}\n\nStatus: ${status}`;
+          const qrData = `Member ID: ${memberId}\n\nName: ${memberName}\n\nJoin Date: ${joinDate}\n\nStatus: ${status}`;
 
-      try {
-        const url = await QRCode.toDataURL(qrData, {
-          errorCorrectionLevel: 'H',
-          type: 'image/png',
-          quality: 0.9,
-          margin: 1,
-          width: 60,
-          color: {
-            dark: '#2d3748',
-            light: '#FFFFFF00' // Transparent background
+          try {
+            const url = await QRCode.toDataURL(qrData, {
+              errorCorrectionLevel: 'H',
+              type: 'image/png',
+              quality: 0.9,
+              margin: 1,
+              width: 60,
+              color: {
+                dark: '#2d3748',
+                light: '#FFFFFF00' // Transparent background
+              }
+            });
+            setFrontQrCodeUrl(url);
+          } catch (err) {
+            console.error('Failed to generate QR code', err);
           }
-        });
-        setFrontQrCodeUrl(url);
-      } catch (err) {
-        console.error('Failed to generate QR code', err);
-      }
-    };
+        };
+        generateFrontQrCode();
+    }
 
     const generateBackQrCode = async () => {
        try {
@@ -75,8 +78,6 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       }
     };
 
-
-    generateFrontQrCode();
     generateBackQrCode();
   }, [member, isPdf, side, language]);
 
@@ -149,18 +150,18 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
           <div className="p-[10px_16px] flex-grow flex flex-col justify-between">
-            <div className="flex justify-between items-start">
-              <div className="flex-grow pr-2">
-                  <h3 className="font-bold text-[0.6rem] border-b border-yellow-500 text-green-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
-                  <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc">
-                      <li>This card is non-transferable.</li>
-                      <li>Please return if found.</li>
-                      <li>Property of HADIYA – মানবতার উপহার.</li>
-                  </ul>
-              </div>
-              <div className="w-[45px] h-[45px] flex items-center justify-center shrink-0">
-                  {backQrCodeUrl && <img src={backQrCodeUrl} alt="QR Code" className="w-full h-full" />}
-              </div>
+            <div className="flex items-start justify-between">
+                <div className="flex-grow pr-2">
+                    <h3 className="font-bold text-[0.6rem] border-b border-yellow-500 text-green-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
+                    <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc">
+                        <li>This card is non-transferable.</li>
+                        <li>Please return if found.</li>
+                        <li>Property of HADIYA – মানবতার উপহার.</li>
+                    </ul>
+                </div>
+                <div className="w-[45px] h-[45px] flex items-center justify-center shrink-0">
+                    {backQrCodeUrl && <img src={backQrCodeUrl} alt="QR Code" className="w-full h-full" />}
+                </div>
             </div>
             
             <div>
