@@ -3,6 +3,7 @@
 
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
+import { BarcodeDisplay } from './barcode-display';
 import { Quote, Globe, Mail, Phone, MapPin } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
@@ -59,67 +60,64 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     overflow: 'hidden',
     position: 'relative',
     color: '#2d3748',
-    backgroundColor: '#fff',
+  };
+  
+  const frontBackgroundStyles: React.CSSProperties = {
+    background: 'linear-gradient(135deg, #ffffff 70%, rgba(229, 245, 238, 0.5) 100%)',
     border: '1px solid #e2e8f0',
   };
 
-  const backSideStyles: React.CSSProperties = {
-    ...cardStyles,
-    border: isPdf ? '1px solid #e2e8f0' : '1px solid #ddd',
-    backgroundColor: 'white',
+  const backBackgroundStyles: React.CSSProperties = {
+    backgroundColor: '#ffffff',
+    border: `1px solid #D4AF37`,
   };
 
   if (side === 'front') {
     return (
-      <div style={cardStyles}>
+      <div style={{ ...cardStyles, ...frontBackgroundStyles }}>
         {/* Header */}
-        <div style={{ position: 'relative', padding: isPdf ? '8px 12px' : '10px 16px', color: '#007A3D', textAlign: 'center' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '70%', backgroundColor: '#F0FFF4', zIndex: 0 }}>
-            <svg style={{ width: '100%', height: '100%', position: 'absolute', bottom: 0 }} viewBox="0 0 100 20" preserveAspectRatio="none">
-              <path d="M0 10 C 20 20, 40 0, 60 15 S 80 0, 100 10 L 100 20 L 0 20 Z" fill="white" />
-            </svg>
-          </div>
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <h1 style={{ fontFamily: '"Montserrat", "SolaimanLipi", sans-serif', fontSize: isPdf ? '13px' : '1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
-              HADIYA – মানবতার উপহার
+        <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative' }}>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ fontFamily: '"Montserrat", "SolaimanLipi", sans-serif', fontSize: isPdf ? '14px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
+              <span style={{ color: '#007A3D' }}>HADIYA</span> – <span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
-            <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '8px' : '0.6rem', color: '#007A3D', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
-              একটি মানবতার সেবা উদ্যোগ
+            <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
+              {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo (Chandgaon).'}
             </p>
           </div>
+          {qrCodeUrl ? (
+            <div style={{ position: 'absolute', top: isPdf ? '8px' : '10px', right: isPdf ? '8px' : '10px' }}>
+                <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '40px' : '45px', height: isPdf ? '40px' : '45px' }}/>
+            </div>
+          ) : (
+            <div style={{ position: 'absolute', top: isPdf ? '8px' : '10px', right: isPdf ? '8px' : '10px', width: isPdf ? '40px' : '45px', height: isPdf ? '40px' : '45px', backgroundColor: '#f0f0f0', borderRadius: '4px' }} />
+          )}
         </div>
 
         {/* Body */}
-        <div style={{ padding: isPdf ? '4px 12px' : '5px 16px', flexGrow: 1, display: 'flex', gap: isPdf ? '8px' : '12px' }}>
-          <div style={{ width: isPdf ? '60px' : '70px', height: isPdf ? '75px' : '85px', backgroundColor: '#e2e8f0', borderRadius: '8px', flexShrink: 0, alignSelf: 'center' }} />
-          <div style={{ flexGrow: 1 }}>
-            <h2 style={{ fontFamily: '"Montserrat", "AdorshoLipi", sans-serif', fontSize: isPdf ? '13px' : '1.1rem', fontWeight: 'bold', margin: '2px 0 0 0', color: '#2d3748' }}>{memberName}</h2>
-            <p style={{ fontSize: isPdf ? '10px' : '0.8rem', margin: '2px 0', fontFamily: 'monospace' }}>{memberId}</p>
-            <p style={{ fontSize: isPdf ? '8px' : '0.65rem', margin: '4px 0', color: '#4a5568' }}>{role}</p>
-          </div>
-        </div>
-
-        {/* Mid Section */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: isPdf ? '0px 12px' : '0px 16px' }}>
-           <div style={{ fontSize: isPdf ? '8px' : '0.7rem' }}>
-              <p style={{ margin: 0 }}><span style={{ fontWeight: 'bold' }}>Join Date</span> &nbsp;&nbsp;{joinDate}</p>
-              <p style={{ margin: '2px 0 0' }}><span style={{ fontWeight: 'bold' }}>Valid Till</span> &nbsp;&nbsp;&nbsp; {validTill}</p>
-           </div>
-           {qrCodeUrl ? <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '35px' : '45px', height: isPdf ? '35px' : '45px' }} /> : <div style={{ width: isPdf ? '35px' : '45px', height: isPdf ? '35px' : '45px', backgroundColor: '#f0f0f0' }} />}
-        </div>
-        
-        {/* Signature */}
-        <div style={{ padding: isPdf ? '4px 12px' : '5px 16px', marginTop: isPdf ? '4px' : '5px' }}>
-          <div style={{ borderTop: '1px solid #ccc', paddingTop: '2px' }}>
-            <p style={{ margin: 0, fontStyle: 'italic', fontSize: isPdf ? '9px' : '0.7rem', color: '#4a5568', position: 'relative', top: '-6px', left: '10px', background: 'white', padding: '0 5px', width: 'fit-content' }}>Signature</p>
-            <p style={{ margin: '-8px 0 0 0', textAlign: 'right', fontSize: isPdf ? '7px' : '0.6rem', color: '#4a5568' }}>Signature of Authority</p>
-          </div>
+        <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+           <div style={{ width: isPdf ? '60px' : '70px', height: isPdf ? '75px' : '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: isPdf ? '10px' : '12px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '10px' : '16px' }}>
+              {/* Photo placeholder, no frame */}
+            </div>
+            <div style={{ flexGrow: 1 }}>
+                <h2 style={{ fontFamily: '"Montserrat", "AdorshoLipi", sans-serif', fontSize: isPdf ? '16px' : '1.2rem', fontWeight: 'bold', margin: 0, color: '#007A3D' }}>{memberName}</h2>
+                <p style={{ fontSize: isPdf ? '10px' : '0.8rem', margin: '4px 0', fontFamily: 'monospace' }}>
+                  <span style={{fontWeight: 'bold'}}>ID:</span> {memberId}
+                </p>
+                <p style={{ fontSize: isPdf ? '10px' : '0.8rem', margin: '4px 0', color: '#4a5568' }}>
+                  <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> {role}
+                </p>
+                <p style={{ fontSize: isPdf ? '10px' : '0.75rem', margin: '4px 0', color: '#4a5568' }}>
+                  <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {joinDate}
+                </p>
+            </div>
         </div>
 
         {/* Footer */}
-        <div style={{ padding: isPdf ? '4px 12px' : '5px 16px', textAlign: 'center' }}>
-            <p style={{ fontStyle: 'italic', fontSize: isPdf ? '8px' : '0.65rem', color: '#4a5568', margin: 0 }}>
-              ‘মানবতার সেবাই আমাদের উদ্যোগ’
+        <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Quote style={{ width: isPdf ? '10px' : '12px', height: isPdf ? '10px' : '12px', color: '#D4AF37', marginRight: '8px' }} />
+            <p style={{ fontStyle: 'italic', fontSize: isPdf ? '8px' : '0.6rem', color: '#4a5568', margin: 0 }}>
+              {language === 'bn' ? 'দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী' : 'Do not be ashamed of giving a little, for refusing is a greater shame. — Sheikh Saadi'}
             </p>
         </div>
       </div>
@@ -128,49 +126,34 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
 
   // BACK SIDE
   return (
-      <div style={{ ...backSideStyles, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', backgroundColor: '#007A3D', color: 'white', textAlign: 'center', borderTopLeftRadius: isPdf ? '2.5mm' : '10px', borderTopRightRadius: isPdf ? '2.5mm' : '10px' }}>
-            <h1 style={{ fontFamily: '"Montserrat", "SolaimanLipi", sans-serif', fontSize: isPdf ? '13px' : '1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
-              HADIYA – মানবতার উপহার
-            </h1>
-            <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '8px' : '0.6rem', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
-              একটি মানবতার সেবা উদ্যোগ
-            </p>
-          </div>
-           <div style={{ height: '3px', backgroundColor: '#D4AF37' }}></div>
-
-          <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-around', fontSize: isPdf ? '8px' : '0.65rem' }}>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Globe size={isPdf ? 12 : 14} color="#007A3D" /> <span>www.hadiya.org</span>
-              </div>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Mail size={isPdf ? 12 : 14} color="#007A3D" /> <span>info@hadiya.org</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Phone size={isPdf ? 12 : 14} color="#007A3D" /> <span>+8801XXXXXXXXX</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <MapPin size={isPdf ? 12 : 14} color="#007A3D" /> <span>Chandgaon, Chattogram, Bangladesh</span>
-              </div>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: isPdf ? '8px' : '12px', marginTop: isPdf ? '8px' : '10px' }}>
-                 {qrCodeUrl ? <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '40px' : '50px', height: isPdf ? '40px' : '50px' }} /> : <div style={{ width: isPdf ? '40px' : '50px', height: isPdf ? '40px' : '50px', backgroundColor: '#f0f0f0' }} />}
-                 <div style={{ fontSize: isPdf ? '7px' : '0.6rem', color: '#4a5568' }}>
-                    <b>QR Code / NFC tag –</b><br /> scan or tap to verify membership
-                 </div>
-              </div>
-          </div>
+      <div style={{ ...cardStyles, ...backBackgroundStyles }}>
+          <div style={{ height: isPdf ? '20px' : '25px', backgroundColor: '#2d3748', marginTop: isPdf ? '12px' : '15px' }}></div>
           
-          <div style={{ padding: isPdf ? '4px 12px 8px' : '5px 16px 10px' }}>
-              <ul style={{ margin: 0, paddingLeft: '14px', fontSize: isPdf ? '6px' : '0.5rem', color: '#4a5568', listStyle: 'disc' }}>
+          <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px' }}>{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
+                <ul style={{ margin: 0, paddingLeft: '14px', fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', listStyle: 'disc' }}>
                     <li>This card is non-transferable.</li>
                     <li>Please return if found.</li>
-              </ul>
-              <p style={{ textAlign: 'center', fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', margin: '4px 0 0 0', fontWeight: 'bold' }}>
-                  Property of HADIYA – মানবতার উপহার
-              </p>
+                    <li>Property of HADIYA – মানবতার উপহার.</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px', marginTop: isPdf ? '8px' : '10px' }}>{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
+                <p style={{ fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', margin: 0, lineHeight: 1.4 }}>
+                    <strong>Website:</strong> www.hadiya.org<br/>
+                    <strong>Email:</strong> infohadiyateam@gmail.com<br/>
+                    <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
+                </p>
+            </div>
+          </div>
+          
+          <div style={{ padding: isPdf ? '4px 12px 8px' : '5px 16px 10px', textAlign: 'center' }}>
+              <BarcodeDisplay memberId={memberId} isPdf={isPdf} />
           </div>
       </div>
   )
 }
+
+    
