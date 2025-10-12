@@ -42,8 +42,8 @@ export function SmartCard({ member, isPdf = false, language: propLanguage }: Sma
 
     const InfoField = ({ label, value }: { label: string, value?: string }) => (
         <div>
-            <p style={{ fontSize: isPdf ? '6px' : '0.6em', color: '#666', margin: 0, fontWeight: 'bold' }}>{label}</p>
-            <p style={{ fontSize: isPdf ? '8px' : '0.75em', color: '#000', margin: 0, fontWeight: 'normal', minHeight: '1em' }}>{value || 'N/A'}</p>
+            <p style={{ fontSize: isPdf ? '5px' : '0.55em', color: '#666', margin: 0, fontWeight: 'bold' }}>{label}</p>
+            <p style={{ fontSize: isPdf ? '7px' : '0.7em', color: '#000', margin: 0, fontWeight: 'normal', minHeight: '1em' }}>{value || 'N/A'}</p>
         </div>
     );
     
@@ -55,13 +55,13 @@ export function SmartCard({ member, isPdf = false, language: propLanguage }: Sma
              <div style={{ padding: '8px', borderBottom: '1px solid hsl(var(--brand-gold))', backgroundColor: 'rgba(255, 255, 255, 0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                 <Logo isPdf={isPdf} />
                 <div>
-                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '14px' : '1.2em', margin: '0 0 8px 0', fontWeight: 'bold', textAlign: 'left' }}>
+                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '12px' : '1.1em', margin: '0 0 8px 0', fontWeight: 'bold', textAlign: 'left' }}>
                         <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
                     </h1>
-                    <p style={{ fontSize: isPdf ? '6px' : '0.5em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
+                    <p style={{ fontSize: isPdf ? '5px' : '0.45em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
                         {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
                     </p>
-                    <p style={{ fontFamily: '"PT Sans", sans-serif', fontSize: isPdf ? '10px' : '0.8em', color: 'hsl(var(--brand-gold))', margin: '0', textAlign: 'left', fontWeight: 'normal', textTransform: 'uppercase', marginTop: '6px' }}>
+                    <p style={{ fontFamily: '"PT Sans", sans-serif', fontSize: isPdf ? '8px' : '0.7em', color: 'hsl(var(--brand-gold))', margin: '0', textAlign: 'left', fontWeight: 'normal', textTransform: 'uppercase', marginTop: '6px' }}>
                         MEMBERSHIP SMART CARD
                     </p>
                 </div>
@@ -71,8 +71,8 @@ export function SmartCard({ member, isPdf = false, language: propLanguage }: Sma
             {/* Body */}
             <div style={{ padding: '12px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div style={{ textAlign: 'left', marginBottom: '10px' }}>
-                    <p style={{ fontSize: isPdf ? '16px' : '1.5em', fontWeight: 'bold', margin: '0 0 4px 0', lineHeight: '1.2' }}>{member.name}</p>
-                    <p style={{ fontFamily: 'monospace', fontSize: isPdf ? '10px' : '0.9em', color: 'hsl(var(--brand-green))', margin: '0', backgroundColor: 'hsla(var(--primary), 0.1)', padding: '2px 4px', borderRadius: '3px', display: 'inline-block', fontWeight: 'bold' }}>
+                    <p style={{ fontSize: isPdf ? '14px' : '1.3em', fontWeight: 'bold', margin: '0 0 4px 0', lineHeight: '1.2' }}>{member.name}</p>
+                    <p style={{ fontFamily: 'monospace', fontSize: isPdf ? '9px' : '0.8em', color: 'hsl(var(--brand-green))', margin: '0', backgroundColor: 'hsla(var(--primary), 0.1)', padding: '2px 4px', borderRadius: '3px', display: 'inline-block', fontWeight: 'bold' }}>
                        ID: {member.memberId}
                     </p>
                 </div>
