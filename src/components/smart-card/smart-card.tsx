@@ -56,14 +56,14 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     };
 
     const generateBackQrCode = async () => {
-       const memberId = member.memberId || 'N/A';
        try {
-        const url = await QRCode.toDataURL(memberId, {
+        const url = await QRCode.toDataURL('hadiya24.vercel.app', {
           errorCorrectionLevel: 'H',
           type: 'image/png',
           quality: 0.9,
           margin: 1,
           width: 45,
+          version: 1,
           color: {
             dark: '#2d3748',
             light: '#FFFFFF00' // Transparent background
