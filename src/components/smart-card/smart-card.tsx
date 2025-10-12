@@ -41,13 +41,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     return (
       <div className={cn(baseCardStyles, cardAppearance, "bg-gradient-to-br from-white from-70% to-green-50/50 border border-gray-200")}>
         {/* Header */}
-        <div className={cn("border-b border-gray-200 flex items-center", isPdf ? "p-[6px_12px] gap-[6px]" : "p-[8px_16px] gap-[8px]")}>
+        <div className={cn("border-b border-gray-200 flex items-center p-[8px_16px] gap-[8px]", isPdf ? "p-[6px_12px] gap-[6px]" : "p-[8px_16px] gap-[8px]")}>
           <HeartHandshake className={cn("text-green-700 flex-shrink-0", isPdf ? "h-[20px] w-[20px]" : "h-[24px] w-[24px]")} />
           <div className="leading-tight">
             <h1 className={cn("font-card_headline font-bold m-0 whitespace-nowrap", isPdf ? 'text-sm' : 'text-base' )}>
               <span className="text-green-700">HADIYA</span>{' – '}<span className="text-yellow-600">{`মানবতার উপহার`}</span>
             </h1>
-            <p className={cn("font-subheadline text-gray-600 m-0 font-normal whitespace-nowrap", isPdf ? "text-[5px]" : "text-[0.4rem]")}>
+            <p className={cn("font-subheadline text-gray-600 m-0 font-normal whitespace-nowrap", isPdf ? "text-[5px] mt-[1px]" : "text-[0.4rem] mt-[1px]")}>
               {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
             </p>
           </div>
@@ -59,7 +59,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               {/* Photo placeholder, no frame */}
             </div>
             <div className="flex-grow">
-                <h2 className={cn("font-bold m-0 text-black", isPdf ? "text-[10px]" : "text-[0.9rem]")}>{memberName}</h2>
+                <h2 className={cn("font-bold m-0 text-black font-body", isPdf ? "text-[10px]" : "text-[0.9rem]")}>{memberName}</h2>
                 <p className={cn("my-[3px] font-mono text-black", isPdf ? "text-[7px]" : "text-[0.55rem]")}>
                   <span className="font-bold">ID:</span> {memberId}
                 </p>
@@ -75,7 +75,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         {/* Footer */}
         <div className={cn("bg-green-700/5 border-t border-gray-200 text-center flex items-center justify-center gap-2", isPdf ? "p-[5px_12px]" : "p-[6px_16px]")}>
              <p className={cn("font-bold text-black m-0", isPdf ? "text-[6px]" : "text-[0.5rem]")}>
-              দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
+             দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
             </p>
         </div>
       </div>
