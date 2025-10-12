@@ -41,10 +41,10 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
             errorCorrectionLevel: 'H',
             type: 'image/png',
             margin: 2,
-            width: isPdf ? 80 : 80, // Increased size
+            width: isPdf ? 80 : 80,
             color: {
-              dark: '#000000',  // Use black for better contrast
-              light: '#FFFFFF' // Use solid white background
+              dark: '#000000',
+              light: '#FFFFFF'
             }
           });
           setFrontQrCodeUrl(url);
@@ -85,7 +85,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               MEMBERSHIP IDENTIFICATION CARD
             </p>
             <div className="flex items-center">
-                <div className={cn("flex items-center justify-center shrink-0 mr-[12px] p-1 bg-white", isPdf ? "w-[60px] h-[60px]" : "w-[70px] h-[70px]")}>
+                <div className={cn("flex items-center justify-center shrink-0 mr-[12px] p-1 bg-white border", isPdf ? "w-[60px] h-[60px]" : "w-[70px] h-[70px]")}>
                   {frontQrCodeUrl && <img src={frontQrCodeUrl} alt="QR Code" className="w-full h-full" />}
                 </div>
                 <div className="flex-grow">
@@ -121,33 +121,33 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
           <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
-          <div className="p-[10px_16px] flex-grow flex flex-col justify-center items-center text-center">
+          <div className="p-[10px_16px] flex-grow flex flex-col justify-center">
             <div>
-                <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
-                <ul className="m-0 pl-[14px] text-[0.5rem] text-gray-600 list-disc space-y-px text-left">
+                <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
+                <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc space-y-px text-left">
                     <li>This card is non-transferable.</li>
                     <li>Please return if found.</li>
                     <li>Property of HADIYA – মানবতার উপহার.</li>
                 </ul>
-                <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1 mt-[8px]">{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
-                <div className="text-[0.5rem] text-gray-600 m-0 leading-snug space-y-px text-left">
+                <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
+                <div className="text-[0.55rem] text-gray-700 m-0 leading-snug space-y-px text-left">
                     <p className="flex items-center gap-1.5">
-                        <Globe className="w-2.5 h-2.5" />
+                        <Globe className="w-3 h-3" />
                         <span>www.hadiya.org</span>
                     </p>
                     <p className="flex items-center gap-1.5">
-                        <Mail className="w-2.5 h-2.5" />
+                        <Mail className="w-3 h-3" />
                         <span>infohadiyateam@gmail.com</span>
                     </p>
                     <p className="flex items-center gap-1.5">
-                        <MapPin className="w-2.5 h-2.5" />
+                        <MapPin className="w-3 h-3" />
                         <span>Chandgaon, Chattogram, Bangladesh.</span>
                     </p>
                 </div>
             </div>
           </div>
           
-          <div className="p-[5px_16px_10px] text-center">
+          <div className="px-4 pb-2 text-center">
             <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
           </div>
       </div>
