@@ -114,6 +114,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     );
   }
 
+  const barcodeValue = `${member?.memberId || 'H-0000'}-${member?.status || 'inactive'}`;
+
   // BACK SIDE
   return (
       <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
@@ -146,7 +148,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           </div>
           
           <div className="p-[5px_16px_10px] text-center">
-            <BarcodeDisplay memberId={member?.memberId || 'H-0000'} isPdf={isPdf} />
+            <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
           </div>
       </div>
   );
