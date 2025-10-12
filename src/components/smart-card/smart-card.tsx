@@ -50,7 +50,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           type: 'image/png',
           quality: 0.9,
           margin: 1,
-          width: isPdf ? 70 : 70,
+          width: 70,
           color: {
             dark: '#2d3748',
             light: '#FFFFFF00' // Transparent background
@@ -84,9 +84,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <HeartHandshake className="text-green-800 h-7 w-7 shrink-0" />
           <div className="flex flex-col justify-center">
               <h1 className="font-card_headline text-[0.95rem] font-bold m-0 leading-tight whitespace-nowrap">
-                <span className="text-green-800">HADIYA</span>{' – '}<span className="text-yellow-600">{`মানবতার উপহার`}</span>
+                <span className="text-green-800">HADIYA</span>{' – '}<span className="text-yellow-600">{` মানবতার উপহার`}</span>
               </h1>
-              <p className="font-subheadline text-[0.4rem] text-gray-600 m-0 font-normal whitespace-nowrap">
+              <p className="font-subheadline text-[0.4rem] text-gray-600 m-0 font-normal whitespace-nowrap mt-1">
                 {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
               </p>
           </div>
