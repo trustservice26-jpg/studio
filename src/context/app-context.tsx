@@ -52,13 +52,13 @@ function generateMemberId(existingMembers: Member[]): string {
     let newId: string;
     let attempts = 0;
     do {
-      newId = Math.floor(1000 + Math.random() * 9000).toString();
+      const uniqueNumber = Math.floor(1000 + Math.random() * 9000).toString();
+      newId = `H - ${uniqueNumber}`;
       attempts++;
-      // Failsafe to prevent infinite loop, though highly unlikely with 9000 possibilities
+      // Failsafe to prevent infinite loop
       if (attempts > 100) {
         console.error("Could not generate a unique member ID after 100 attempts.");
-        // Fallback to a timestamp-based random string
-        return `E${Date.now().toString().slice(-4)}`;
+        return `H - ${Date.now().toString().slice(-4)}`;
       }
     } while (existingIds.has(newId));
     return newId;
@@ -419,5 +419,7 @@ export function useAppContext() {
   }
   return context;
 }
+
+    
 
     

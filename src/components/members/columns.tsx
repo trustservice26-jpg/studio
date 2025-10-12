@@ -142,7 +142,7 @@ export const columns: ColumnDef<Member>[] = [
     },
     cell: ({ row }) => {
         const memberId = row.original.memberId;
-        return <div className="font-mono uppercase">{memberId}</div>
+        return <div className="font-mono">{memberId}</div>
     }
   },
   {
@@ -264,3 +264,5 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => <MemberActions member={row.original} />,
   },
 ]
+
+    

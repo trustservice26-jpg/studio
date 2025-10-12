@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -89,7 +90,7 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
             <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '10px', justifyContent: 'space-between' }}>
                  <div style={{ flex: 1 }}>
                     <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0, color: '#333' }}>{member.name}</h3>
-                    {member.memberId && <p style={{ fontSize: '14px', color: '#555', margin: '4px 0 0 0', fontFamily: 'monospace' }}>ID: {member.memberId.toUpperCase()}</p>}
+                    {member.memberId && <p style={{ fontSize: '14px', color: '#555', margin: '4px 0 0 0', fontFamily: 'monospace' }}>ID: {member.memberId}</p>}
                  </div>
                  <div style={{ marginLeft: '15px' }}>
                     <div style={{ width: '90px', height: '115px', border: '2px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9f9f9' }}>
@@ -147,3 +148,6 @@ export function PdfDocument({ member, language, isRegistration }: PdfDocumentPro
         </div>
     );
 }
+
+
+    
