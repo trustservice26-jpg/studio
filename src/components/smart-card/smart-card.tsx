@@ -76,41 +76,41 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     return (
       <div style={{ ...cardStyles, ...frontBackgroundStyles }} className="font-body">
         {/* Header */}
-        <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <HeartHandshake style={{ height: isPdf ? '24px' : '28px', width: isPdf ? '24px' : '28px', color: '#007A3D', flexShrink: 0 }} />
+        <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: isPdf ? '6px' : '8px' }}>
+          <HeartHandshake style={{ height: isPdf ? '20px' : '24px', width: isPdf ? '20px' : '24px', color: '#007A3D', flexShrink: 0 }} />
           <div style={{ lineHeight: '1.2' }}>
-            <h1 className="font-headline" style={{ fontSize: isPdf ? '12px' : '0.9rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
+            <h1 className="font-headline" style={{ fontSize: isPdf ? '10px' : '0.8rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
               <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
-            <p className="font-subheadline" style={{ fontSize: isPdf ? '6px' : '0.45rem', color: '#4a5568', margin: '1px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
+            <p className="font-subheadline" style={{ fontSize: isPdf ? '5px' : '0.4rem', color: '#4a5568', margin: '1px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
               {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
             </p>
           </div>
         </div>
 
         {/* Body */}
-        <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-           <div style={{ width: isPdf ? '60px' : '70px', height: isPdf ? '75px' : '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: isPdf ? '10px' : '12px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '10px' : '16px' }}>
+        <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+           <div style={{ width: isPdf ? '50px' : '60px', height: isPdf ? '65px' : '75px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: isPdf ? '8px' : '10px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '8px' : '12px' }}>
               {/* Photo placeholder, no frame */}
             </div>
             <div style={{ flexGrow: 1 }}>
-                <h2 className="font-body" style={{ fontSize: isPdf ? '14px' : '1.1rem', fontWeight: 'bold', margin: 0, color: '#007A3D' }}>{memberName}</h2>
-                <p style={{ fontSize: isPdf ? '9px' : '0.7rem', margin: '4px 0', fontFamily: 'monospace' }}>
+                <h2 className="font-body" style={{ fontSize: isPdf ? '12px' : '1rem', fontWeight: 'bold', margin: 0, color: '#007A3D' }}>{memberName}</h2>
+                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', fontFamily: 'monospace' }}>
                   <span style={{fontWeight: 'bold'}}>ID:</span> {memberId}
                 </p>
-                <p style={{ fontSize: isPdf ? '9px' : '0.7rem', margin: '4px 0', color: '#4a5568' }}>
+                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', color: '#4a5568' }}>
                   <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> {role}
                 </p>
-                <p style={{ fontSize: isPdf ? '9px' : '0.7rem', margin: '4px 0', color: '#4a5568' }}>
+                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', color: '#4a5568' }}>
                   <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {joinDate}
                 </p>
             </div>
         </div>
 
         {/* Footer */}
-        <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-            <p style={{ fontStyle: 'italic', fontSize: isPdf ? '7px' : '0.55rem', color: '#4a5568', margin: 0 }}>
-              {language === 'bn' ? 'দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী' : 'Do not be ashamed of giving a little, for refusing is a greater shame. — Sheikh Saadi'}
+        <div style={{ padding: isPdf ? '5px 12px' : '6px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+             <p style={{ fontWeight: 'bold', fontSize: isPdf ? '6px' : '0.5rem', color: '#4a5568', margin: 0 }}>
+              দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
             </p>
         </div>
       </div>
