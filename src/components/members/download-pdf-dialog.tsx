@@ -67,7 +67,7 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
         }
 
         try {
-            const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+            const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true, backgroundColor: '#ffffff' });
             const imgData = canvas.toDataURL('image/png');
             
             const pdf = new jsPDF({
@@ -79,23 +79,21 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
             const pageHeight = pdf.internal.pageSize.getHeight();
             const pageWidth = pdf.internal.pageSize.getWidth();
 
-            const imgWidth = canvas.width;
-            const imgHeight = canvas.height;
-            const ratio = imgWidth / imgHeight;
+            const imgHeight = (canvas.height * (pageWidth - 20)) / canvas.width;
+            let finalHeight = imgHeight;
+            let finalWidth = pageWidth - 20;
 
-            let finalWidth = pageWidth - 20; // 10mm margin on each side
-            let finalHeight = finalWidth / ratio;
-            
             let y = 10;
-            if (finalHeight > pageHeight) {
-              finalHeight = pageHeight - 20; // ensure footer is visible
-              finalWidth = finalHeight * ratio;
-               y = 10;
+            if (finalHeight > pageHeight - 20) {
+              finalHeight = pageHeight - 20;
+              finalWidth = (canvas.width * finalHeight) / canvas.height;
+              y = 10;
             } else {
               y = (pageHeight - finalHeight) / 2;
             }
+            const x = (pageWidth - finalWidth) / 2;
             
-            pdf.addImage(imgData, 'PNG', 10, y, finalWidth, finalHeight);
+            pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
             pdf.save(`${selectedMember!.name}-details.pdf`);
         } catch (error) {
             console.error("Error generating PDF:", error);

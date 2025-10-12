@@ -9,14 +9,12 @@ interface BarcodeDisplayProps {
 }
 
 const BarcodeDisplay: React.FC<BarcodeDisplayProps> = ({ isPdf }) => {
-  // Conditionally render Barcode only on the client-side
   const [isClient, setIsClient] = React.useState(false);
   React.useEffect(() => {
     setIsClient(true);
   }, []);
 
   if (!isClient) {
-    // Render a placeholder or nothing on the server
     return <div style={{ height: isPdf ? '30px' : '40px', width: '100%' }} />;
   }
 
@@ -27,7 +25,7 @@ const BarcodeDisplay: React.FC<BarcodeDisplayProps> = ({ isPdf }) => {
       height={isPdf ? 30 : 40}
       displayValue={false}
       background="transparent"
-      lineColor="hsl(var(--brand-gold))"
+      lineColor="#D4AF37"
     />
   );
 };
