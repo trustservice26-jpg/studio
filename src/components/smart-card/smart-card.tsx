@@ -56,11 +56,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     };
 
     const generateBackQrCode = async () => {
-      // Create a URL to the moderator page.
-      // This could be enhanced to include member-specific info if needed.
-      const moderatorUrl = `${window.location.origin}/moderator`;
+       const memberId = member.memberId || 'N/A';
        try {
-        const url = await QRCode.toDataURL(moderatorUrl, {
+        const url = await QRCode.toDataURL(memberId, {
           errorCorrectionLevel: 'H',
           type: 'image/png',
           quality: 0.9,
