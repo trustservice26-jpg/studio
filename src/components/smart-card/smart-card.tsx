@@ -79,8 +79,10 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     generateBackQrCode();
   }, [member, isPdf, side, language, isClient]);
 
-  if (!isClient && side === 'front') {
-    return <div className={`aspect-[85.6/53.98] w-full rounded-xl bg-muted`} />;
+  if (!isClient) {
+    // Render a placeholder on the server to prevent hydration mismatch
+    const cardBaseClasses = "aspect-[85.6/53.98] w-full rounded-xl bg-muted";
+    return <div className={cn(cardBaseClasses)} />;
   }
 
   const cardBaseClasses = "aspect-[85.6/53.98] w-full flex flex-col overflow-hidden relative text-gray-800 font-body";
@@ -146,28 +148,23 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
           <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
-          <div className="p-[10px_16px] flex-grow flex flex-col justify-between">
-            <div className="flex items-start justify-between">
-                <div className="flex-1">
-                    <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
-                    <ul className="m-0 pl-[14px] text-[0.5rem] text-gray-600 list-disc">
-                        <li>This card is non-transferable.</li>
-                        <li>Please return if found.</li>
-                        <li>Property of HADIYA – মানবতার উপহার.</li>
-                    </ul>
-                </div>
-                <div className="w-[45px] h-[45px] flex-shrink-0 ml-2">
-                    {backQrCodeUrl && <img src={backQrCodeUrl} alt="QR Code" className="w-full h-full" />}
-                </div>
-            </div>
-            
-            <div>
-                <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1 mt-[10px]">{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
+          <div className="p-[10px_16px] flex-grow flex items-center">
+            <div className="flex-1">
+                <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
+                <ul className="m-0 pl-[14px] text-[0.5rem] text-gray-600 list-disc space-y-px">
+                    <li>This card is non-transferable.</li>
+                    <li>Please return if found.</li>
+                    <li>Property of HADIYA – মানবতার উপহার.</li>
+                </ul>
+                <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1 mt-[8px]">{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
                 <p className="text-[0.5rem] text-gray-600 m-0 leading-snug">
                     <strong>Website:</strong> www.hadiya.org<br/>
                     <strong>Email:</strong> infohadiyateam@gmail.com<br/>
                     <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
                 </p>
+            </div>
+            <div className="w-[45px] h-[45px] flex-shrink-0 ml-2">
+                {backQrCodeUrl && <img src={backQrCodeUrl} alt="QR Code" className="w-full h-full" />}
             </div>
           </div>
           
