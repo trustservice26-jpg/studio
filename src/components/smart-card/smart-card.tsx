@@ -31,7 +31,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           margin: 1,
           width: isPdf ? 60 : 70,
           color: {
-            dark: '#333',
+            dark: '#2d3748',
             light: '#FFFFFF00' // Transparent background
           }
         });
@@ -53,17 +53,17 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     flexDirection: 'column',
     overflow: 'hidden',
     position: 'relative',
-    color: '#2d3748', // Dark Green/Gray
+    color: '#2d3748',
   };
 
   const frontBackgroundStyles: React.CSSProperties = {
-    background: 'linear-gradient(135deg, #ffffff 70%, rgba(0, 122, 61, 0.1) 100%)',
+    background: 'linear-gradient(135deg, #ffffff 70%, rgba(229, 245, 238, 0.5) 100%)',
     border: '1px solid #e2e8f0',
   };
 
   const backBackgroundStyles: React.CSSProperties = {
-    backgroundColor: '#f7fafc',
-    border: `1px solid #e2e8f0`,
+    backgroundColor: '#ffffff',
+    border: `1px solid #D4AF37`,
   };
   
   if (side === 'front') {
@@ -148,3 +148,5 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   )
 
 }
+
+    
