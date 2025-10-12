@@ -29,14 +29,18 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     if (!member) return;
     const generateQrCode = async () => {
       const memberId = member.memberId || 'N/A';
+      const memberName = member.name || 'N/A';
+      const joinDate = member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
+      const status = member.status || 'N/A';
+
+      const qrData = `Member ID: ${memberId}\n\nName: ${memberName}\n\nJoin Date: ${joinDate}\n\nStatus: ${status}`;
 
       try {
-        const url = await QRCode.toDataURL(memberId, {
+        const url = await QRCode.toDataURL(qrData, {
           errorCorrectionLevel: 'H',
           type: 'image/png',
           quality: 0.9,
           margin: 1,
-          version: 1, // Using version 1 for Model 1 QR Code
           width: side === 'front' ? 60 : 45,
           color: {
             dark: '#2d3748',
@@ -49,7 +53,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       }
     };
     generateQrCode();
-  }, [member, isPdf, side]);
+  }, [member, isPdf, side, language]);
 
   if (!isClient && side === 'back') {
     // Prevent hydration mismatch for Barcode component
@@ -151,5 +155,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   );
 
 }
-
-    
