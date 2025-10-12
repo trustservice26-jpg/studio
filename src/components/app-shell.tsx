@@ -46,9 +46,10 @@ const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/notice-board', label: 'Notice Board', bn_label: 'নোটিশ বোর্ড', icon: Megaphone, roles: ['admin', 'member'], permissions: [] },
     { href: '/about', label: 'About Us', bn_label: 'আমাদের সম্পর্কে', icon: Info, roles: ['admin', 'member'], permissions: [] },
+    { href: '/smart-card', label: 'Smart Card', bn_label: 'স্মার্ট কার্ড', icon: CreditCard, roles: ['admin', 'member'], permissions: [] },
     { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
     { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'], permissions: ['canManageMembers'] },
-    { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: CreditCard, roles: ['admin', 'moderator'], permissions: ['canManageTransactions'] },
+    { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin', 'moderator'], permissions: ['canManageTransactions'] },
 ];
 
 const Logo = () => (
@@ -126,7 +127,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const getNavItems = (user: Member | null) => {
     return navItems.filter(item => {
         if (!user) { // Guest user
-            return ['/', '/notice-board', '/about'].includes(item.href);
+            return ['/', '/notice-board', '/about', '/smart-card'].includes(item.href);
         }
 
         if (user.role === 'admin') {
@@ -134,7 +135,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         }
 
         if(user.role === 'moderator' || user.role === 'member-moderator') {
-            if (['/notice-board', '/about'].includes(item.href)) {
+            if (['/notice-board', '/about', '/smart-card'].includes(item.href)) {
                 return false;
             }
         }
