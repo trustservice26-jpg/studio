@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'HADIYA –মানবতার উপহার',
+  title: 'HADIYA – মানবতার উপহার',
   description: 'Non-profit organization management',
 };
 
@@ -22,7 +22,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Cinzel+Decorative:wght@400;700;900&family=Noto+Serif+Bengali:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Cinzel+Decorative:wght@400;700;900&family=Noto+Serif+Bengali:wght@400;700&family=Poppins:wght@400;600;700&family=Montserrat:wght@700&family=SolaimanLipi&family=AdorshoLipi&display=swap"
           rel="stylesheet"
         />
       </head>
