@@ -20,14 +20,16 @@ type SmartCardProps = {
 export function SmartCard({ member, side, isPdf = false, language: propLanguage }: SmartCardProps) {
   const appContext = useAppContext();
   const language = propLanguage || appContext.language;
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [frontQrCodeUrl, setFrontQrCodeUrl] = useState('');
+  const [backQrCodeUrl, setBackQrCodeUrl] = useState('');
   const isClient = useIsClient();
 
   const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
 
   useEffect(() => {
     if (!member) return;
-    const generateQrCode = async () => {
+    
+    const generateFrontQrCode = async () => {
       const memberId = member.memberId || 'N/A';
       const memberName = member.name || 'N/A';
       const joinDate = member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
@@ -41,18 +43,43 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           type: 'image/png',
           quality: 0.9,
           margin: 1,
-          width: side === 'front' ? 60 : 45,
+          width: 60,
           color: {
             dark: '#2d3748',
             light: '#FFFFFF00' // Transparent background
           }
         });
-        setQrCodeUrl(url);
+        setFrontQrCodeUrl(url);
       } catch (err) {
         console.error('Failed to generate QR code', err);
       }
     };
-    generateQrCode();
+
+    const generateBackQrCode = async () => {
+      // Create a URL to the moderator page.
+      // This could be enhanced to include member-specific info if needed.
+      const moderatorUrl = `${window.location.origin}/moderator`;
+       try {
+        const url = await QRCode.toDataURL(moderatorUrl, {
+          errorCorrectionLevel: 'H',
+          type: 'image/png',
+          quality: 0.9,
+          margin: 1,
+          width: 45,
+          color: {
+            dark: '#2d3748',
+            light: '#FFFFFF00' // Transparent background
+          }
+        });
+        setBackQrCodeUrl(url);
+      } catch (err) {
+        console.error('Failed to generate QR code', err);
+      }
+    };
+
+
+    generateFrontQrCode();
+    generateBackQrCode();
   }, [member, isPdf, side, language]);
 
   if (!isClient && side === 'back') {
@@ -90,7 +117,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
             </p>
             <div className="flex items-center">
                 <div className="w-[60px] h-[60px] flex items-center justify-center shrink-0 mr-[12px]">
-                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-full h-full" />}
+                  {frontQrCodeUrl && <img src={frontQrCodeUrl} alt="QR Code" className="w-full h-full" />}
                 </div>
                 <div className="flex-grow">
                     <h2 className="font-body text-[0.9rem] font-bold m-0 text-black">{memberName}</h2>
@@ -134,7 +161,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                   </ul>
               </div>
               <div className="w-[45px] h-[45px] flex items-center justify-center shrink-0">
-                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-full h-full" />}
+                  {backQrCodeUrl && <img src={backQrCodeUrl} alt="QR Code" className="w-full h-full" />}
               </div>
             </div>
             
