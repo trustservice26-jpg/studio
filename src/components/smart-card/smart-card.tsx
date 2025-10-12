@@ -62,8 +62,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   };
 
   const backBackgroundStyles: React.CSSProperties = {
-    backgroundColor: '#f0fff4',
-    border: `2px solid #D4AF37`,
+    backgroundColor: '#f7fafc',
+    border: `1px solid #e2e8f0`,
   };
   
   if (side === 'front') {
@@ -119,29 +119,34 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   // BACK SIDE
   return (
       <div style={{ ...cardStyles, ...backBackgroundStyles }}>
-          <div style={{ height: isPdf ? '35px' : '40px', backgroundColor: '#2d3748', marginTop: isPdf ? '15px' : '20px' }}></div>
-          <div style={{ padding: isPdf ? '8px' : '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <p style={{ fontFamily: 'monospace', fontSize: isPdf ? '10px' : '12px', color: '#2d3748', backgroundColor: '#fff', padding: '2px 4px', borderRadius: '3px' }}>{member?.memberId || 'H-0000'}</p>
-              <div style={{ flexGrow: 1, height: isPdf ? '25px' : '30px', backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '4px', textAlign: 'right', padding: '0 8px', fontStyle: 'italic', fontSize: isPdf ? '12px' : '14px', lineHeight: isPdf ? '25px' : '30px' }}>
-                  {language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature'}
-              </div>
+          <div style={{ height: isPdf ? '20px' : '25px', backgroundColor: '#2d3748', marginTop: isPdf ? '12px' : '15px' }}></div>
+          
+          <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div style={{ flexGrow: 1 }}>
+                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px' }}>{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
+                <ul style={{ margin: 0, paddingLeft: '14px', fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', listStyle: 'disc' }}>
+                    <li>This card is non-transferable.</li>
+                    <li>Please return if found.</li>
+                    <li>Property of HADIYA – মানবতার উপহার.</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px', marginTop: isPdf ? '8px' : '10px' }}>{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
+                <p style={{ fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', margin: 0, lineHeight: 1.4 }}>
+                    <strong>Website:</strong> www.hadiya.org<br/>
+                    <strong>Email:</strong> infohadiyateam@gmail.com<br/>
+                    <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
+                </p>
+            </div>
           </div>
-          <div style={{ flexGrow: 1, padding: isPdf ? '0 12px' : '0 16px', fontSize: isPdf ? '6.5px' : '0.5rem', color: '#4a5568' }}>
-              <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', paddingBottom: '2px', marginBottom: '4px' }}>{language === 'bn' ? 'শর্তাবলী' : 'Terms & Conditions'}</h3>
-              <ol style={{ margin: 0, paddingLeft: '14px', listStyle: 'decimal' }}>
-                  <li>This card is non-transferable.</li>
-                  <li>Card must be presented upon request by an official.</li>
-                  <li>Loss or theft of this card must be reported immediately.</li>
-                  <li>This card remains the property of HADIYA.</li>
-              </ol>
-          </div>
-          <div style={{ padding: isPdf ? '8px' : '10px', textAlign: 'center' }}>
+          
+          <div style={{ padding: isPdf ? '4px 12px 8px' : '5px 16px 10px', textAlign: 'center' }}>
               {member?.memberId && <BarcodeDisplay memberId={member.memberId} isPdf={isPdf} />}
           </div>
-          <p style={{ fontSize: isPdf ? '8px' : '10px', textAlign: 'center', color: '#007A3D', padding: '4px', margin: 0 }}>
-            www.hadiyabd.com
-          </p>
       </div>
   )
 
 }
+
+    
