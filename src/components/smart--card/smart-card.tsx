@@ -76,16 +76,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
             <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
-              {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo (Chandgaon).'}
+              {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
             </p>
           </div>
-          {qrCodeUrl ? (
-            <div style={{ position: 'absolute', top: isPdf ? '8px' : '10px', right: isPdf ? '8px' : '10px' }}>
-                <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '40px' : '45px', height: isPdf ? '40px' : '45px' }}/>
-            </div>
-          ) : (
-            <div style={{ position: 'absolute', top: isPdf ? '8px' : '10px', right: isPdf ? '8px' : '10px', width: isPdf ? '40px' : '45px', height: isPdf ? '40px' : '45px', backgroundColor: '#f0f0f0', borderRadius: '4px' }} />
-          )}
         </div>
 
         {/* Body */}
@@ -150,5 +143,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   )
 
 }
-
-    
