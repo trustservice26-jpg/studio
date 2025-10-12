@@ -4,9 +4,10 @@
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
-import { HeartHandshake } from 'lucide-react';
+import { Quote } from 'lucide-react';
+import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { useIsClient } from '@/hooks/use-is-client';
 
 type SmartCardProps = {
   member: Partial<Member> | null;
@@ -18,64 +19,95 @@ type SmartCardProps = {
 export function SmartCard({ member, side, isPdf = false, language: propLanguage }: SmartCardProps) {
   const appContext = useAppContext();
   const language = propLanguage || appContext.language;
-  const [isClient, setIsClient] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const isClient = useIsClient();
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    if (!isClient) return;
+    const generateQrCode = async () => {
+      const memberId = member?.memberId || 'H-0000';
+      try {
+        const url = await QRCode.toDataURL(memberId, {
+          errorCorrectionLevel: 'H',
+          type: 'image/png',
+          quality: 0.9,
+          margin: 1,
+          width: isPdf ? 60 : 70,
+          color: {
+            dark: '#2d3748',
+            light: '#FFFFFF00' // Transparent background
+          }
+        });
+        setQrCodeUrl(url);
+      } catch (err) {
+        console.error('Failed to generate QR code', err);
+      }
+    };
+    generateQrCode();
+  }, [member?.memberId, isPdf, isClient]);
 
-  if (!isClient) {
-    // Render a placeholder on the server
-    return <div className="aspect-[85.6/53.98] w-full rounded-xl bg-muted" />;
-  }
+  const cardStyles: React.CSSProperties = {
+    fontFamily: '"Poppins", "AdorshoLipi", sans-serif',
+    width: '100%',
+    aspectRatio: '85.6 / 53.98',
+    borderRadius: isPdf ? '3mm' : '12px',
+    boxShadow: isPdf ? 'none' : '0 10px 20px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.1)',
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden',
+    position: 'relative',
+    color: '#2d3748',
+  };
 
-  const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
-  const memberId = member?.memberId || 'HADIYA-24021';
-  const joinDate = member?.joinDate ? new Date(member.joinDate).toLocaleDateString('en-GB') : '01/01/2025';
-  const role = language === 'bn' ? 'স্বেচ্ছাসেবক / দাতা / নির্বাহী সদস্য' : 'Volunteer / Donor / Executive Member';
+  const frontBackgroundStyles: React.CSSProperties = {
+    background: 'linear-gradient(135deg, #ffffff 70%, rgba(229, 245, 238, 0.5) 100%)',
+    border: '1px solid #e2e8f0',
+  };
+
+  const backBackgroundStyles: React.CSSProperties = {
+    backgroundColor: '#ffffff',
+    border: `1px solid #D4AF37`,
+  };
   
-  const baseCardStyles = "w-full aspect-[85.6/53.98] flex flex-col overflow-hidden relative text-gray-800 font-body";
-  const cardAppearance = isPdf ? "pdf-card" : "shadow-lg rounded-xl";
-
   if (side === 'front') {
     return (
-      <div className={cn(baseCardStyles, cardAppearance, "bg-gradient-to-br from-white from-70% to-green-50/50 border border-gray-200")}>
+      <div style={{ ...cardStyles, ...frontBackgroundStyles }}>
         {/* Header */}
-        <div className={cn("border-b border-gray-200 flex items-center p-[8px_16px] gap-[8px]", isPdf ? "p-[6px_12px] gap-[6px]" : "p-[8px_16px] gap-[8px]")}>
-          <HeartHandshake className={cn("text-green-700 flex-shrink-0", isPdf ? "h-[20px] w-[20px]" : "h-[24px] w-[24px]")} />
-          <div className="leading-tight">
-            <h1 className={cn("font-card_headline font-bold m-0 whitespace-nowrap", isPdf ? 'text-sm' : 'text-base' )}>
-              <span className="text-green-700">HADIYA</span>{' – '}<span className="text-yellow-600">{`মানবতার উপহার`}</span>
+        <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative' }}>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ fontFamily: '"Montserrat", "SolaimanLipi", sans-serif', fontSize: isPdf ? '14px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
+              <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
-            <p className={cn("font-subheadline text-gray-600 m-0 font-normal whitespace-nowrap", isPdf ? "text-[5px] mt-[1px]" : "text-[0.4rem] mt-[1px]")}>
+            <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
               {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
             </p>
           </div>
         </div>
 
         {/* Body */}
-        <div className={cn("flex-grow flex items-center", isPdf ? "p-[6px_12px]" : "p-[8px_16px]")}>
-           <div className={cn("flex items-center justify-center text-gray-400 text-center flex-shrink-0", isPdf ? "w-[50px] h-[65px] text-[8px] mr-[8px]" : "w-[60px] h-[75px] text-[10px] mr-[12px]")}>
+        <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+           <div style={{ width: isPdf ? '60px' : '70px', height: isPdf ? '75px' : '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: isPdf ? '10px' : '12px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '10px' : '16px' }}>
               {/* Photo placeholder, no frame */}
             </div>
-            <div className="flex-grow">
-                <h2 className={cn("font-bold m-0 text-black font-body", isPdf ? "text-[10px]" : "text-[0.9rem]")}>{memberName}</h2>
-                <p className={cn("my-[3px] font-mono text-black", isPdf ? "text-[7px]" : "text-[0.55rem]")}>
-                  <span className="font-bold">ID:</span> {memberId}
+            <div style={{ flexGrow: 1 }}>
+                <h2 style={{ fontFamily: '"Montserrat", "AdorshoLipi", sans-serif', fontSize: isPdf ? '16px' : '1.2rem', fontWeight: 'bold', margin: 0, color: '#007A3D' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
+                <p style={{ fontSize: isPdf ? '10px' : '0.8rem', margin: '4px 0', fontFamily: 'monospace' }}>
+                  <span style={{fontWeight: 'bold'}}>ID:</span> {member?.memberId || 'H-0000'}
                 </p>
-                <p className={cn("my-[3px] text-gray-600", isPdf ? "text-[7px]" : "text-[0.55rem]")}>
-                  <span className="font-bold">{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> {role}
+                <p style={{ fontSize: isPdf ? '10px' : '0.8rem', margin: '4px 0', color: '#4a5568' }}>
+                  <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> Volunteer / Donor / Executive Member
                 </p>
-                <p className={cn("my-[3px] text-gray-600", isPdf ? "text-[7px]" : "text-[0.55rem]")}>
-                  <span className="font-bold">{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {joinDate}
+                <p style={{ fontSize: isPdf ? '10px' : '0.75rem', margin: '4px 0', color: '#4a5568' }}>
+                  <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'dd/mm/yyyy'}
                 </p>
             </div>
         </div>
 
         {/* Footer */}
-        <div className={cn("bg-green-700/5 border-t border-gray-200 text-center flex items-center justify-center gap-2", isPdf ? "p-[5px_12px]" : "p-[6px_16px]")}>
-             <p className={cn("font-bold text-black m-0", isPdf ? "text-[6px]" : "text-[0.5rem]")}>
-             দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
+        <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Quote style={{ width: isPdf ? '10px' : '12px', height: isPdf ? '10px' : '12px', color: '#D4AF37', marginRight: '8px' }} />
+            <p style={{ fontStyle: 'italic', fontSize: isPdf ? '8px' : '0.6rem', color: '#4a5568', margin: 0, fontWeight: 'bold' }}>
+              দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
             </p>
         </div>
       </div>
@@ -84,13 +116,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
 
   // BACK SIDE
   return (
-      <div className={cn(baseCardStyles, cardAppearance, "bg-white border border-yellow-500")}>
-          <div className={cn("bg-gray-800", isPdf ? "h-[20px] mt-[12px]" : "h-[25px] mt-[15px]")}></div>
+      <div style={{ ...cardStyles, ...backBackgroundStyles }}>
+          <div style={{ height: isPdf ? '20px' : '25px', backgroundColor: '#2d3748', marginTop: isPdf ? '12px' : '15px' }}></div>
           
-          <div className={cn("flex-grow flex flex-col justify-between", isPdf ? "p-[8px_12px]" : "p-[10px_16px]")}>
+          <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
-                <h3 className={cn("font-bold border-b border-yellow-500 text-green-700 pb-[2px] mb-1", isPdf ? "text-[8px]" : "text-[0.6rem]")}>{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
-                <ul className={cn("m-0 pl-3.5 text-gray-600 list-disc", isPdf ? "text-[6.5px]" : "text-[0.55rem]")}>
+                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px' }}>{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
+                <ul style={{ margin: 0, paddingLeft: '14px', fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', listStyle: 'disc' }}>
                     <li>This card is non-transferable.</li>
                     <li>Please return if found.</li>
                     <li>Property of HADIYA – মানবতার উপহার.</li>
@@ -98,8 +130,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
             </div>
             
             <div>
-                <h3 className={cn("font-bold border-b border-yellow-500 text-green-700 pb-[2px] mb-1", isPdf ? "text-[8px] mt-[8px]" : "text-[0.6rem] mt-[10px]")}>{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
-                <p className={cn("text-gray-600 m-0 leading-snug", isPdf ? "text-[6.5px]" : "text-[0.55rem]")}>
+                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px', marginTop: isPdf ? '8px' : '10px' }}>{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
+                <p style={{ fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', margin: 0, lineHeight: 1.4 }}>
                     <strong>Website:</strong> www.hadiya.org<br/>
                     <strong>Email:</strong> infohadiyateam@gmail.com<br/>
                     <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
@@ -107,9 +139,10 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
             </div>
           </div>
           
-          <div className={cn("text-center", isPdf ? "p-[4px_12px_8px]" : "p-[5px_16px_10px]")}>
-              <BarcodeDisplay memberId={memberId} isPdf={isPdf} />
+          <div style={{ padding: isPdf ? '4px 12px 8px' : '5px 16px 10px', textAlign: 'center' }}>
+              <BarcodeDisplay memberId={member?.memberId || 'H-0000'} isPdf={isPdf} />
           </div>
       </div>
-  )
+  );
+
 }

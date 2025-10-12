@@ -92,7 +92,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                   <span style={{fontWeight: 'bold'}}>ID:</span> {member?.memberId || 'H-0000'}
                 </p>
                 <p style={{ fontSize: isPdf ? '10px' : '0.8rem', margin: '4px 0', color: '#4a5568' }}>
-                  <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> Executive Member/DONOR/Volunteer
+                  <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> Volunteer / Donor / Executive Member
                 </p>
                 <p style={{ fontSize: isPdf ? '10px' : '0.75rem', margin: '4px 0', color: '#4a5568' }}>
                   <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'dd/mm/yyyy'}
@@ -103,8 +103,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         {/* Footer */}
         <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Quote style={{ width: isPdf ? '10px' : '12px', height: isPdf ? '10px' : '12px', color: '#D4AF37', marginRight: '8px' }} />
-            <p style={{ fontStyle: 'italic', fontSize: isPdf ? '8px' : '0.6rem', color: '#4a5568', margin: 0 }}>
-              {language === 'bn' ? 'দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী' : 'Do not be ashamed of giving a little, for refusing is a greater shame. — Sheikh Saadi'}
+            <p style={{ fontStyle: 'italic', fontSize: isPdf ? '8px' : '0.6rem', color: '#4a5568', margin: 0, fontWeight: 'bold' }}>
+              দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
             </p>
         </div>
       </div>
