@@ -4,7 +4,7 @@
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
-import { Quote, HeartHandshake } from 'lucide-react';
+import { Quote, HeartHandshake, Globe, Mail, MapPin } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 import { useIsClient } from '@/hooks/use-is-client';
@@ -129,11 +129,20 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                     <li>Property of HADIYA – মানবতার উপহার.</li>
                 </ul>
                 <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1 mt-[8px]">{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
-                <p className="text-[0.5rem] text-gray-600 m-0 leading-snug">
-                    <strong>Website:</strong> www.hadiya.org<br/>
-                    <strong>Email:</strong> infohadiyateam@gmail.com<br/>
-                    <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
-                </p>
+                <div className="text-[0.5rem] text-gray-600 m-0 leading-snug space-y-px text-left">
+                    <p className="flex items-center gap-1.5">
+                        <Globe className="w-2.5 h-2.5" />
+                        <span>www.hadiya.org</span>
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                        <Mail className="w-2.5 h-2.5" />
+                        <span>infohadiyateam@gmail.com</span>
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                        <MapPin className="w-2.5 h-2.5" />
+                        <span>Chandgaon, Chattogram, Bangladesh.</span>
+                    </p>
+                </div>
             </div>
           </div>
           
