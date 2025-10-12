@@ -50,7 +50,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           type: 'image/png',
           quality: 0.9,
           margin: 1,
-          width: 70,
+          width: 60,
           color: {
             dark: '#2d3748',
             light: '#FFFFFF00' // Transparent background
@@ -80,13 +80,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     return (
       <div className={cn(cardBaseClasses, cardAppearanceClasses, frontClasses)}>
         {/* Header */}
-        <div className="p-[8px_16px] border-b border-gray-200 flex items-center gap-3">
+        <div className={cn("p-[8px_16px] border-b border-gray-200 flex items-center gap-3", isPdf && "flex-col")}>
           <HeartHandshake className="text-green-800 h-7 w-7 shrink-0" />
           <div className="flex flex-col justify-center">
               <h1 className="font-card_headline text-[0.95rem] font-bold m-0 leading-tight whitespace-nowrap">
                 <span className="text-green-800">HADIYA</span>{' – '}<span className="text-yellow-600">{` মানবতার উপহার`}</span>
               </h1>
-              <p className="font-subheadline text-[0.4rem] text-gray-600 m-0 font-normal whitespace-nowrap mt-1">
+              <p className={cn("font-subheadline text-[0.4rem] text-gray-600 m-0 font-normal whitespace-nowrap", isPdf ? "mt-1" : "mt-1")}>
                 {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
               </p>
           </div>
@@ -98,7 +98,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               MEMBERSHIP IDENTIFICATION CARD
             </p>
             <div className="flex items-center">
-                <div className="w-[70px] h-[70px] flex items-center justify-center shrink-0 mr-[12px]">
+                <div className="w-[60px] h-[60px] flex items-center justify-center shrink-0 mr-[12px]">
                   {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-full h-full" />}
                 </div>
                 <div className="flex-grow">
