@@ -5,7 +5,6 @@ import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
 import { Quote } from 'lucide-react';
-import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 
 type SmartCardProps = {
@@ -18,34 +17,7 @@ type SmartCardProps = {
 export function SmartCard({ member, side, isPdf = false, language: propLanguage }: SmartCardProps) {
   const appContext = useAppContext();
   const language = propLanguage || appContext.language;
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
-
-  useEffect(() => {
-    const generateQrCode = async () => {
-      if (!member?.memberId) {
-        setQrCodeUrl('');
-        return;
-      };
-      try {
-        const url = await QRCode.toDataURL(member.memberId, {
-          errorCorrectionLevel: 'H',
-          type: 'image/png',
-          quality: 0.9,
-          margin: 1,
-          width: isPdf ? 60 : 70,
-          color: {
-            dark: '#2d3748',
-            light: '#FFFFFF00' // Transparent background
-          }
-        });
-        setQrCodeUrl(url);
-      } catch (err) {
-        console.error('Failed to generate QR code', err);
-      }
-    };
-    generateQrCode();
-  }, [member?.memberId, isPdf]);
-
+  
   const cardStyles: React.CSSProperties = {
     fontFamily: '"Poppins", "AdorshoLipi", sans-serif',
     width: '100%',
@@ -76,19 +48,12 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative' }}>
           <div style={{ textAlign: 'center' }}>
             <h1 style={{ fontFamily: '"Montserrat", "SolaimanLipi", sans-serif', fontSize: isPdf ? '14px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
-              <span style={{ color: '#007A3D' }}>HADIYA</span> – <span style={{ color: '#D4AF37' }}>{'মানবতার উপহার'}</span>
+              <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{'মানবতার উপহার'}</span>
             </h1>
             <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
               {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo (Chandgaon).'}
             </p>
           </div>
-          {qrCodeUrl ? (
-            <div style={{ position: 'absolute', top: isPdf ? '8px' : '10px', right: isPdf ? '8px' : '10px' }}>
-                <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '40px' : '45px', height: isPdf ? '40px' : '45px' }}/>
-            </div>
-          ) : (
-            <div style={{ position: 'absolute', top: isPdf ? '8px' : '10px', right: isPdf ? '8px' : '10px', width: isPdf ? '40px' : '45px', height: isPdf ? '40px' : '45px', backgroundColor: '#f0f0f0', borderRadius: '4px' }} />
-          )}
         </div>
 
         {/* Body */}
