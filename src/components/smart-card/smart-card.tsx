@@ -56,7 +56,7 @@ export function SmartCard({ member, isPdf = false, language: propLanguage }: Sma
                 <Logo isPdf={isPdf} />
                 <div>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '12px' : '1.1em', margin: '0 0 8px 0', fontWeight: 'bold', textAlign: 'left' }}>
-                        <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
+                        <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))', fontFamily: '"Noto Serif Bengali", serif' }}>–মানবতার উপহার</span>
                     </h1>
                     <p style={{ fontSize: isPdf ? '5px' : '0.45em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
                         {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
