@@ -22,8 +22,10 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const [qrCodeUrl, setQrCodeUrl] = useState('');
   const isClient = useIsClient();
 
+  const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
+
   useEffect(() => {
-    if (!isClient || !member) return;
+    if (!member) return;
     const generateQrCode = async () => {
       const memberDetails = {
         id: member.memberId,
@@ -59,7 +61,12 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       }
     };
     generateQrCode();
-  }, [member, isPdf, isClient]);
+  }, [member, isPdf]);
+
+  if (!isClient && side === 'back') {
+    // Prevent hydration mismatch for Barcode component
+    return <div style={{ aspectRatio: '85.6 / 53.98', width: '100%', borderRadius: isPdf ? '3mm' : '12px' }} className="bg-muted" />;
+  }
 
   const cardStyles: React.CSSProperties = {
     fontFamily: '"Poppins", "AdorshoLipi", sans-serif',
@@ -110,7 +117,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                   {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '100%', height: '100%'}} />}
                 </div>
                 <div style={{ flexGrow: 1 }}>
-                    <h2 className="font-body" style={{ fontSize: isPdf ? '14px' : '0.9rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
+                    <h2 className="font-body" style={{ fontSize: isPdf ? '14px' : '0.9rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{memberName}</h2>
                     <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', fontFamily: 'monospace', color: '#000' }}>
                       <span style={{fontWeight: 'bold'}}>ID:</span> {member?.memberId || 'H-0000'}
                     </p>
@@ -161,11 +168,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           </div>
           
           <div style={{ padding: isPdf ? '5px 16px 10px' : '5px 16px 10px', textAlign: 'center' }}>
-            {isClient && <BarcodeDisplay memberId={member?.memberId || 'H-0000'} isPdf={isPdf} />}
+            <BarcodeDisplay memberId={member?.memberId || 'H-0000'} isPdf={isPdf} />
           </div>
       </div>
   );
 
 }
-
-    
