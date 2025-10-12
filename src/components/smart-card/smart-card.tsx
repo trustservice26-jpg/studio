@@ -76,7 +76,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               <span style={{ color: '#007A3D' }}>HADIYA</span> – <span style={{ color: '#D4AF37' }}> মানবতার উপহার</span>
             </h1>
             <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal' }}>
-              শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ
+              {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo (Chandgaon).'}
             </p>
           </div>
           {qrCodeUrl && (
@@ -92,7 +92,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               {language === 'bn' ? 'ছবি' : 'Photo'}
             </div>
             <div style={{ flexGrow: 1 }}>
-                <h2 style={{ fontSize: isPdf ? '16px' : '1.2rem', fontWeight: 'bold', margin: 0, color: '#007A3D' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
+                <h2 style={{ fontFamily: '"Montserrat", "AdorshoLipi", sans-serif', fontSize: isPdf ? '16px' : '1.2rem', fontWeight: 'bold', margin: 0, color: '#007A3D' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
                 <p style={{ fontSize: isPdf ? '10px' : '0.8rem', margin: '4px 0', fontFamily: 'monospace' }}>
                   <span style={{fontWeight: 'bold'}}>ID:</span> {member?.memberId || 'H-0000'}
                 </p>
@@ -122,7 +122,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <div style={{ height: isPdf ? '20px' : '25px', backgroundColor: '#2d3748', marginTop: isPdf ? '12px' : '15px' }}></div>
           
           <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <div style={{ flexGrow: 1 }}>
+            <div>
                 <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px' }}>{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
                 <ul style={{ margin: 0, paddingLeft: '14px', fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', listStyle: 'disc' }}>
                     <li>This card is non-transferable.</li>
@@ -148,5 +148,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   )
 
 }
-
-    

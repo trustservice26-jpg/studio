@@ -54,17 +54,18 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
             const pdf = new jsPDF({
                 orientation: 'landscape',
                 unit: 'mm',
-                format: [85.6, 53.98 * 2 + 10] // width, height (two cards + space)
+                format: [85.6, 53.98] 
             });
 
-            const renderAndAdd = async (element: HTMLElement, y: number) => {
+            const renderAndAdd = async (element: HTMLElement) => {
                 const canvas = await html2canvas(element, { scale: 3, useCORS: true, backgroundColor: null });
                 const imgData = canvas.toDataURL('image/png');
-                pdf.addImage(imgData, 'PNG', 0, y, 85.6, 53.98);
+                pdf.addImage(imgData, 'PNG', 0, 0, 85.6, 53.98);
             };
 
-            await renderAndAdd(frontElement, 0);
-            await renderAndAdd(backElement, 53.98 + 5);
+            await renderAndAdd(frontElement);
+            pdf.addPage();
+            await renderAndAdd(backElement);
             
             pdf.save(`${member!.name}-SmartCard.pdf`);
 
