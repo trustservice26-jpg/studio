@@ -8,6 +8,7 @@ import { Quote, HeartHandshake } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 import { useIsClient } from '@/hooks/use-is-client';
+import { cn } from '@/lib/utils';
 
 type SmartCardProps = {
   member: Partial<Member> | null;
