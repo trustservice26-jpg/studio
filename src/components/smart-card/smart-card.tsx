@@ -27,6 +27,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
 
   useEffect(() => {
+    if (!isClient) return;
+    
     if (!member && side === 'front') {
         // Don't generate QR if no member and it's the front side
     } else {
@@ -79,10 +81,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     };
 
     generateBackQrCode();
-  }, [member, isPdf, side, language]);
+  }, [member, isPdf, side, language, isClient]);
 
-  if (!isClient && side === 'back') {
-    // Prevent hydration mismatch for Barcode component
+  if (!isClient) {
     return <div className={`aspect-[85.6/53.98] w-full rounded-xl bg-muted`} />;
   }
 
@@ -181,3 +182,5 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   );
 
 }
+
+    

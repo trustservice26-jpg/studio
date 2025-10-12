@@ -16,11 +16,13 @@ import { useAppContext } from '@/context/app-context';
 import type { Member } from '@/lib/types';
 import { SmartCard } from '@/components/smart-card/smart-card';
 import { DownloadSmartCardDialog } from '@/components/smart-card/download-smart-card-dialog';
+import { useIsClient } from '@/hooks/use-is-client';
 
 export default function SmartCardPage() {
   const { language, members } = useAppContext();
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
   const [isDownloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
+  const isClient = useIsClient();
   
   const handleMemberSelect = (memberId: string) => {
     const member = members.find(m => m.id === memberId) || null;
@@ -65,17 +67,19 @@ export default function SmartCardPage() {
                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'স্মার্ট কার্ড ডাউনলোড' : 'Download Smart Card'}
             </Button>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <div className="flex flex-col items-center">
-                <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের সামনের অংশ' : 'Card Front'}</h2>
-                <SmartCard member={selectedMember} side="front" />
-            </div>
-            <div className="flex flex-col items-center">
-                 <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের পিছনের অংশ' : 'Card Back'}</h2>
-                 <SmartCard member={selectedMember} side="back" />
-            </div>
-        </div>
+        
+        {isClient && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              <div className="flex flex-col items-center">
+                  <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের সামনের অংশ' : 'Card Front'}</h2>
+                  <SmartCard member={selectedMember} side="front" />
+              </div>
+              <div className="flex flex-col items-center">
+                  <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের পিছনের অংশ' : 'Card Back'}</h2>
+                  <SmartCard member={selectedMember} side="back" />
+              </div>
+          </div>
+        )}
 
       </motion.div>
       <DownloadSmartCardDialog
@@ -86,3 +90,5 @@ export default function SmartCardPage() {
     </>
   );
 }
+
+    
