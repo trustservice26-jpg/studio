@@ -4,7 +4,7 @@
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
-import { Quote, Globe, Mail, Phone, MapPin } from 'lucide-react';
+import { Quote, Globe, Mail, Phone, MapPin, HeartHandshake } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 
@@ -18,37 +18,13 @@ type SmartCardProps = {
 export function SmartCard({ member, side, isPdf = false, language: propLanguage }: SmartCardProps) {
   const appContext = useAppContext();
   const language = propLanguage || appContext.language;
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
   const memberId = member?.memberId || 'HADIYA-24021';
   const joinDate = member?.joinDate ? new Date(member.joinDate).toLocaleDateString('en-GB') : '01/01/2025';
   const validTill = '31/12/2025';
   const role = language === 'bn' ? 'স্বেচ্ছাসেবক / দাতা / নির্বাহী সদস্য' : 'Volunteer / Donor / Executive Member';
-
-  useEffect(() => {
-    const generateQrCode = async () => {
-      if (!memberId) return;
-      try {
-        const url = await QRCode.toDataURL(memberId, {
-          errorCorrectionLevel: 'H',
-          type: 'image/png',
-          quality: 0.9,
-          margin: 1,
-          width: isPdf ? 50 : 60,
-          color: {
-            dark: '#000000',
-            light: '#FFFFFF00' // Transparent background
-          }
-        });
-        setQrCodeUrl(url);
-      } catch (err) {
-        console.error('Failed to generate QR code', err);
-      }
-    };
-    generateQrCode();
-  }, [memberId, isPdf]);
-
+  
   const cardStyles: React.CSSProperties = {
     fontFamily: '"Poppins", "AdorshoLipi", sans-serif',
     width: '100%',
@@ -76,12 +52,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     return (
       <div style={{ ...cardStyles, ...frontBackgroundStyles }}>
         {/* Header */}
-        <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative' }}>
+        <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          <HeartHandshake style={{ height: isPdf ? '20px' : '24px', width: isPdf ? '20px' : '24px', color: '#007A3D' }} />
           <div style={{ textAlign: 'center' }}>
             <h1 style={{ fontFamily: '"Montserrat", "SolaimanLipi", sans-serif', fontSize: isPdf ? '14px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
-              <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{'মানবতার উপহার'}</span>
+              <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
-             <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
+            <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
               {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
             </p>
           </div>
