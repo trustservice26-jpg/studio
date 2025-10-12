@@ -18,7 +18,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['PT Sans', 'sans-serif'],
+        body: ['Poppins', 'AdorshoLipi', 'sans-serif'],
         headline: ['Cinzel Decorative', 'Noto Serif Bengali', 'serif'],
         code: ['monospace'],
       },
@@ -84,7 +84,7 @@ export default {
           from: {
             height: 'var(--radix-accordion-content-height)',
           },
-          to: {
+to: {
             height: '0',
           },
         },
