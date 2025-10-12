@@ -23,16 +23,31 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const isClient = useIsClient();
 
   useEffect(() => {
-    if (!isClient) return;
+    if (!isClient || !member) return;
     const generateQrCode = async () => {
-      const memberId = member?.memberId || 'H-0000';
+      const memberDetails = {
+        id: member.memberId,
+        name: member.name,
+        phone: member.phone,
+        email: member.email,
+        joinDate: member.joinDate,
+        status: member.status,
+        fatherName: member.fatherName,
+        motherName: member.motherName,
+        address: member.address,
+        dob: member.dob,
+        nid: member.nid,
+      };
+      
+      const detailsString = JSON.stringify(memberDetails);
+
       try {
-        const url = await QRCode.toDataURL(memberId, {
+        const url = await QRCode.toDataURL(detailsString, {
           errorCorrectionLevel: 'H',
           type: 'image/png',
           quality: 0.9,
           margin: 1,
-          width: isPdf ? 60 : 70,
+          width: isPdf ? 80 : 80,
           color: {
             dark: '#2d3748',
             light: '#FFFFFF00' // Transparent background
@@ -44,7 +59,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       }
     };
     generateQrCode();
-  }, [member?.memberId, isPdf, isClient]);
+  }, [member, isPdf, isClient]);
 
   const cardStyles: React.CSSProperties = {
     fontFamily: '"Poppins", "AdorshoLipi", sans-serif',
@@ -76,7 +91,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div style={{ padding: isPdf ? '8px 16px' : '8px 16px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <HeartHandshake style={{ color: '#007A3D', height: '24px', width: '24px', flexShrink: 0 }} />
           <div>
-              <h1 className="font-card_headline" style={{ fontSize: isPdf ? '10px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
+              <h1 className="font-card_headline" style={{ fontSize: isPdf ? '10px' : '0.9rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
                 <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
               </h1>
               <p className="font-subheadline" style={{ fontSize: isPdf ? '6px' : '0.4rem', color: '#4a5568', margin: '1px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
@@ -91,8 +106,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               MEMBERSHIP IDENTIFICATION CARD
             </p>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ width: isPdf ? '60px' : '60px', height: isPdf ? '75px' : '75px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: isPdf ? '10px' : '10px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '12px' : '12px' }}>
-                {/* Photo placeholder, no frame */}
+                <div style={{ width: isPdf ? '80px' : '80px', height: isPdf ? '80px' : '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginRight: isPdf ? '12px' : '12px' }}>
+                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '100%', height: '100%'}} />}
                 </div>
                 <div style={{ flexGrow: 1 }}>
                     <h2 className="font-body" style={{ fontSize: isPdf ? '14px' : '0.9rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
@@ -152,3 +167,5 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   );
 
 }
+
+    
