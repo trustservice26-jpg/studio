@@ -68,7 +68,7 @@ export function DownloadSmartCardDialog({ open, onOpenChange, setSelectedMember:
           const imgData = canvas.toDataURL('image/png');
 
           const cardWidth = 85.6; // mm (CR80 standard)
-          const cardHeight = 54.0; // mm (CR80 standard)
+          const cardHeight = 53.98; // mm (CR80 standard)
 
           const pdf = new jsPDF({
             orientation: 'landscape',

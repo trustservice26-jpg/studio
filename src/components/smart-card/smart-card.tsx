@@ -30,7 +30,7 @@ export function SmartCard({ member, isPdf = false, language: propLanguage }: Sma
         aspectRatio: '85.6 / 53.98',
         fontFamily: '"PT Sans", sans-serif',
         color: '#000',
-        background: 'linear-gradient(135deg, #F8F8F8 0%, #E8F5E9 100%)', // subtle gradient background
+        background: 'linear-gradient(135deg, #F8F8F8 0%, #E8F5E9 100%)',
         borderRadius: '15px',
         display: 'flex',
         flexDirection: 'column' as 'column',
@@ -55,7 +55,7 @@ export function SmartCard({ member, isPdf = false, language: propLanguage }: Sma
              <div style={{ padding: '8px', borderBottom: '1px solid hsl(var(--brand-gold))', backgroundColor: 'rgba(255, 255, 255, 0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                 <Logo isPdf={isPdf} />
                 <div>
-                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '12px' : '1.1em', margin: '0 0 8px 0', fontWeight: 'bold', textAlign: 'left' }}>
+                    <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isPdf ? '12px' : '1.1em', margin: '0', fontWeight: 'bold', textAlign: 'left', lineHeight: 1 }}>
                         <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))', fontFamily: '"Noto Serif Bengali", serif' }}>–মানবতার উপহার</span>
                     </h1>
                     <p style={{ fontSize: isPdf ? '5px' : '0.45em', color: '#555', margin: '2px 0 0 0', textAlign: 'left', lineHeight: '1.2' }}>
