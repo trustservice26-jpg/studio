@@ -50,7 +50,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           type: 'image/png',
           quality: 0.9,
           margin: 1,
-          width: 60,
+          width: side === 'front' ? 60 : 45,
           color: {
             dark: '#2d3748',
             light: '#FFFFFF00' // Transparent background
@@ -62,7 +62,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       }
     };
     generateQrCode();
-  }, [member, isPdf]);
+  }, [member, isPdf, side]);
 
   if (!isClient && side === 'back') {
     // Prevent hydration mismatch for Barcode component
@@ -164,3 +164,5 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   );
 
 }
+
+    
