@@ -5,7 +5,6 @@ import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
 import { Quote } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 type SmartCardProps = {
   member: Partial<Member> | null;
@@ -48,7 +47,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative' }}>
           <div style={{ textAlign: 'center' }}>
             <h1 style={{ fontFamily: '"Montserrat", "SolaimanLipi", sans-serif', fontSize: isPdf ? '14px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
-              <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{'মানবতার উপহার'}</span>
+              <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
             <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
               {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo (Chandgaon).'}
@@ -93,6 +92,15 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           
           <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
+                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px', marginTop: isPdf ? '8px' : '10px' }}>{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
+                <p style={{ fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', margin: 0, lineHeight: 1.4 }}>
+                    <strong>Website:</strong> www.hadiya.org<br/>
+                    <strong>Email:</strong> infohadiyateam@gmail.com<br/>
+                    <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
+                </p>
+            </div>
+
+            <div>
                 <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px' }}>{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
                 <ul style={{ margin: 0, paddingLeft: '14px', fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', listStyle: 'disc' }}>
                     <li>This card is non-transferable.</li>
@@ -101,14 +109,6 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                 </ul>
             </div>
             
-            <div>
-                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px', marginTop: isPdf ? '8px' : '10px' }}>{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
-                <p style={{ fontSize: isPdf ? '6.5px' : '0.55rem', color: '#4a5568', margin: 0, lineHeight: 1.4 }}>
-                    <strong>Website:</strong> www.hadiya.org<br/>
-                    <strong>Email:</strong> infohadiyateam@gmail.com<br/>
-                    <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
-                </p>
-            </div>
           </div>
           
           <div style={{ padding: isPdf ? '4px 12px 8px' : '5px 16px 10px', textAlign: 'center' }}>
