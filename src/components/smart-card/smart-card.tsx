@@ -80,13 +80,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     return (
       <div className={cn(cardBaseClasses, cardAppearanceClasses, frontClasses)}>
         {/* Header */}
-        <div className="p-[8px_16px] border-b border-gray-200 flex items-center gap-[8px]">
-          <HeartHandshake className="text-green-800 h-[24px] w-[24px] shrink-0" />
-          <div>
-              <h1 className="font-card_headline text-[1.1rem] font-bold m-0 whitespace-nowrap">
+        <div className="p-[8px_16px] border-b border-gray-200 flex items-center gap-3">
+          <HeartHandshake className="text-green-800 h-7 w-7 shrink-0" />
+          <div className="flex flex-col justify-center">
+              <h1 className="font-card_headline text-[0.95rem] font-bold m-0 leading-tight whitespace-nowrap">
                 <span className="text-green-800">HADIYA</span>{' – '}<span className="text-yellow-600">{`মানবতার উপহার`}</span>
               </h1>
-              <p className="font-subheadline text-[0.4rem] text-gray-600 m-[1px_0_0] font-normal whitespace-nowrap">
+              <p className="font-subheadline text-[0.4rem] text-gray-600 m-0 font-normal whitespace-nowrap">
                 {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
               </p>
           </div>
