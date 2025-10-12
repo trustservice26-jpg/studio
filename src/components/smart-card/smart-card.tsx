@@ -42,7 +42,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         `Status: ${member.status || 'N/A'}`,
       ];
       
-      const detailsString = memberDetails.join('\n');
+      const detailsString = memberDetails.join('\n\n');
 
       try {
         const url = await QRCode.toDataURL(detailsString, {
@@ -94,7 +94,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
 
         {/* Body */}
         <div className="p-[8px_16px] flex-grow flex flex-col justify-center">
-            <p className="text-[0.6rem] m-0 mb-1 text-gray-600 font-bold text-center">
+             <p className="text-[0.6rem] m-0 mb-1 text-gray-600 font-bold text-center">
               MEMBERSHIP IDENTIFICATION CARD
             </p>
             <div className="flex items-center">
