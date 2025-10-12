@@ -21,13 +21,12 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const appContext = useAppContext();
   const language = propLanguage || appContext.language;
   const [frontQrCodeUrl, setFrontQrCodeUrl] = useState('');
-  const [backQrCodeUrl, setBackQrCodeUrl] = useState('');
   const isClient = useIsClient();
 
   const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
 
   useEffect(() => {
-    if (!isClient) return;
+    if (!isClient || side === 'back') return;
     
     const generateFrontQrCode = async () => {
         const memberId = member?.memberId || 'N/A';
@@ -56,27 +55,6 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       };
       generateFrontQrCode();
 
-    const generateBackQrCode = async () => {
-       try {
-        const url = await QRCode.toDataURL('hadiya24.vercel.app', {
-          errorCorrectionLevel: 'H',
-          type: 'image/png',
-          quality: 0.9,
-          margin: 1,
-          width: 45,
-          version: 1,
-          color: {
-            dark: '#2d3748',
-            light: '#FFFFFF00' // Transparent background
-          }
-        });
-        setBackQrCodeUrl(url);
-      } catch (err) {
-        console.error('Failed to generate QR code', err);
-      }
-    };
-
-    generateBackQrCode();
   }, [member, isPdf, side, language, isClient]);
 
   const cardBaseClasses = "aspect-[85.6/53.98] w-full flex flex-col overflow-hidden relative text-gray-800 font-body";
@@ -142,10 +120,10 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
           <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
-          <div className="p-[10px_16px] flex-grow flex items-center">
-            <div className="flex-1">
+          <div className="p-[10px_16px] flex-grow flex flex-col justify-center items-center text-center">
+            <div>
                 <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
-                <ul className="m-0 pl-[14px] text-[0.5rem] text-gray-600 list-disc space-y-px">
+                <ul className="m-0 pl-[14px] text-[0.5rem] text-gray-600 list-disc space-y-px text-left">
                     <li>This card is non-transferable.</li>
                     <li>Please return if found.</li>
                     <li>Property of HADIYA – মানবতার উপহার.</li>
@@ -156,9 +134,6 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                     <strong>Email:</strong> infohadiyateam@gmail.com<br/>
                     <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
                 </p>
-            </div>
-            <div className="w-[45px] h-[45px] flex-shrink-0 ml-2">
-                {backQrCodeUrl && <img src={backQrCodeUrl} alt="QR Code" className="w-full h-full" />}
             </div>
           </div>
           
