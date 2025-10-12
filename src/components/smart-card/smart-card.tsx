@@ -27,21 +27,21 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   useEffect(() => {
     if (!member) return;
     const generateQrCode = async () => {
-      const memberDetails = {
-        id: member.memberId,
-        name: member.name,
-        phone: member.phone,
-        email: member.email,
-        joinDate: member.joinDate,
-        status: member.status,
-        fatherName: member.fatherName,
-        motherName: member.motherName,
-        address: member.address,
-        dob: member.dob,
-        nid: member.nid,
-      };
+      const memberDetails = [
+        `Member ID: ${member.memberId || 'N/A'}`,
+        `Name: ${member.name || 'N/A'}`,
+        `Phone: ${member.phone || 'N/A'}`,
+        `Email: ${member.email || 'N/A'}`,
+        `Date of Birth: ${member.dob || 'N/A'}`,
+        `Father's Name: ${member.fatherName || 'N/A'}`,
+        `Mother's Name: ${member.motherName || 'N/A'}`,
+        `NID/Birth Certificate: ${member.nid || 'N/A'}`,
+        `Address: ${member.address || 'N/A'}`,
+        `Join Date: ${member.joinDate ? new Date(member.joinDate).toLocaleDateString() : 'N/A'}`,
+        `Status: ${member.status || 'N/A'}`,
+      ];
       
-      const detailsString = JSON.stringify(memberDetails);
+      const detailsString = memberDetails.join('\n');
 
       try {
         const url = await QRCode.toDataURL(detailsString, {
@@ -65,76 +65,60 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
 
   if (!isClient && side === 'back') {
     // Prevent hydration mismatch for Barcode component
-    return <div style={{ aspectRatio: '85.6 / 53.98', width: '100%', borderRadius: isPdf ? '3mm' : '12px' }} className="bg-muted" />;
+    return <div className={`aspect-[85.6/53.98] w-full rounded-xl bg-muted`} />;
   }
 
-  const cardStyles: React.CSSProperties = {
-    fontFamily: '"Poppins", "AdorshoLipi", sans-serif',
-    width: '100%',
-    aspectRatio: '85.6 / 53.98',
-    borderRadius: isPdf ? '3mm' : '12px',
-    boxShadow: isPdf ? 'none' : '0 10px 20px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.1)',
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-    position: 'relative',
-    color: '#2d3748',
-  };
+  const cardBaseClasses = "aspect-[85.6/53.98] w-full flex flex-col overflow-hidden relative text-gray-800 font-body";
+  const cardAppearanceClasses = isPdf ? "rounded-[3mm]" : "shadow-lg rounded-xl";
 
-  const frontBackgroundStyles: React.CSSProperties = {
-    background: 'linear-gradient(135deg, #ffffff 70%, rgba(229, 245, 238, 0.5) 100%)',
-    border: '1px solid #e2e8f0',
-  };
+  const frontClasses = "bg-gradient-to-br from-white to-green-50/50 border border-gray-200";
+  const backClasses = "bg-white border border-yellow-500";
 
-  const backBackgroundStyles: React.CSSProperties = {
-    backgroundColor: '#ffffff',
-    border: `1px solid #D4AF37`,
-  };
 
   if (side === 'front') {
     return (
-      <div style={{ ...cardStyles, ...frontBackgroundStyles }}>
+      <div className={cn(cardBaseClasses, cardAppearanceClasses, frontClasses)}>
         {/* Header */}
-        <div style={{ padding: isPdf ? '8px 16px' : '8px 16px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <HeartHandshake style={{ color: '#007A3D', height: '24px', width: '24px', flexShrink: 0 }} />
+        <div className="p-[8px_16px] border-b border-gray-200 flex items-center gap-[8px]">
+          <HeartHandshake className="text-green-800 h-[24px] w-[24px] shrink-0" />
           <div>
-              <h1 className="font-card_headline" style={{ fontSize: isPdf ? '10px' : '0.9rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
-                <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
+              <h1 className="font-card_headline text-[1.1rem] font-bold m-0 whitespace-nowrap">
+                <span className="text-green-800">HADIYA</span>{' – '}<span className="text-yellow-600">{`মানবতার উপহার`}</span>
               </h1>
-              <p className="font-subheadline" style={{ fontSize: isPdf ? '6px' : '0.4rem', color: '#4a5568', margin: '1px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
+              <p className="font-subheadline text-[0.4rem] text-gray-600 m-[1px_0_0] font-normal whitespace-nowrap">
                 {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
               </p>
           </div>
         </div>
 
         {/* Body */}
-        <div style={{ padding: isPdf ? '8px 16px' : '8px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '0 0 4px 0', color: '#4a5568', fontWeight: 'bold', textAlign: 'center' }}>
+        <div className="p-[8px_16px] flex-grow flex flex-col justify-center">
+            <p className="text-[0.6rem] m-0 mb-1 text-gray-600 font-bold text-center">
               MEMBERSHIP IDENTIFICATION CARD
             </p>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ width: isPdf ? '80px' : '80px', height: isPdf ? '80px' : '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginRight: isPdf ? '12px' : '12px' }}>
-                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '100%', height: '100%'}} />}
+            <div className="flex items-center">
+                <div className="w-[80px] h-[80px] flex items-center justify-center shrink-0 mr-[12px]">
+                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-full h-full" />}
                 </div>
-                <div style={{ flexGrow: 1 }}>
-                    <h2 className="font-body" style={{ fontSize: isPdf ? '14px' : '0.9rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{memberName}</h2>
-                    <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', fontFamily: 'monospace', color: '#000' }}>
-                      <span style={{fontWeight: 'bold'}}>ID:</span> {member?.memberId || 'H-0000'}
+                <div className="flex-grow">
+                    <h2 className="font-body text-[0.9rem] font-bold m-0 text-black">{memberName}</h2>
+                    <p className="text-[0.55rem] m-[3px_0] font-mono text-black">
+                      <span className="font-bold">ID:</span> {member?.memberId || 'H-0000'}
                     </p>
-                    <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', color: '#4a5568', whiteSpace: 'nowrap' }}>
-                      <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> Volunteer / Donor / Executive Member
+                    <p className="text-[0.55rem] m-[3px_0] text-gray-600 whitespace-nowrap">
+                      <span className="font-bold">{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> Volunteer / Donor / Executive Member
                     </p>
-                    <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', color: '#4a5568' }}>
-                      <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'dd/mm/yyyy'}
+                    <p className="text-[0.55rem] m-[3px_0] text-gray-600">
+                      <span className="font-bold">{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'dd/mm/yyyy'}
                     </p>
                 </div>
             </div>
         </div>
 
         {/* Footer */}
-        <div style={{ padding: isPdf ? '6px 16px' : '6px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-            <Quote style={{ width: isPdf ? '8px' : '10px', height: isPdf ? '8px' : '10px', color: '#D4AF37' }} />
-            <p style={{ fontStyle: 'italic', fontSize: isPdf ? '7px' : '0.5rem', color: '#000', margin: 0, fontWeight: 'bold' }}>
+        <div className="p-[6px_16px] bg-green-900/5 border-t border-gray-200 text-center flex items-center justify-center gap-[8px]">
+            <Quote className="w-[10px] h-[10px] text-yellow-600" />
+            <p className="italic text-[0.5rem] text-black m-0 font-bold">
               দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
             </p>
         </div>
@@ -144,13 +128,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
 
   // BACK SIDE
   return (
-      <div style={{ ...cardStyles, ...backBackgroundStyles }}>
-          <div style={{ height: isPdf ? '20px' : '25px', backgroundColor: '#2d3748', marginTop: isPdf ? '15px' : '15px' }}></div>
+      <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
+          <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
-          <div style={{ padding: isPdf ? '10px 16px' : '10px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div className="p-[10px_16px] flex-grow flex flex-col justify-between">
             <div>
-                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px' }}>{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
-                <ul style={{ margin: 0, paddingLeft: '14px', fontSize: isPdf ? '7px' : '0.55rem', color: '#4a5568', listStyle: 'disc' }}>
+                <h3 className="font-bold text-[0.6rem] border-b border-yellow-500 text-green-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
+                <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc">
                     <li>This card is non-transferable.</li>
                     <li>Please return if found.</li>
                     <li>Property of HADIYA – মানবতার উপহার.</li>
@@ -158,8 +142,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
             </div>
             
             <div>
-                <h3 style={{fontWeight: 'bold', fontSize: isPdf ? '8px' : '0.6rem', borderBottom: '1px solid #D4AF37', color: '#007A3D', paddingBottom: '2px', marginBottom: '4px', marginTop: isPdf ? '8px' : '10px' }}>{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
-                <p style={{ fontSize: isPdf ? '7px' : '0.55rem', color: '#4a5568', margin: 0, lineHeight: 1.4 }}>
+                <h3 className="font-bold text-[0.6rem] border-b border-yellow-500 text-green-800 pb-[2px] mb-1 mt-[10px]">{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
+                <p className="text-[0.55rem] text-gray-600 m-0 leading-snug">
                     <strong>Website:</strong> www.hadiya.org<br/>
                     <strong>Email:</strong> infohadiyateam@gmail.com<br/>
                     <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
@@ -167,7 +151,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
             </div>
           </div>
           
-          <div style={{ padding: isPdf ? '5px 16px 10px' : '5px 16px 10px', textAlign: 'center' }}>
+          <div className="p-[5px_16px_10px] text-center">
             <BarcodeDisplay memberId={member?.memberId || 'H-0000'} isPdf={isPdf} />
           </div>
       </div>
