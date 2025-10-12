@@ -50,7 +50,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           type: 'image/png',
           quality: 0.9,
           margin: 1,
-          width: isPdf ? 80 : 80,
+          width: isPdf ? 70 : 70,
           color: {
             dark: '#2d3748',
             light: '#FFFFFF00' // Transparent background
@@ -98,7 +98,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               MEMBERSHIP IDENTIFICATION CARD
             </p>
             <div className="flex items-center">
-                <div className="w-[80px] h-[80px] flex items-center justify-center shrink-0 mr-[12px]">
+                <div className="w-[70px] h-[70px] flex items-center justify-center shrink-0 mr-[12px]">
                   {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="w-full h-full" />}
                 </div>
                 <div className="flex-grow">
