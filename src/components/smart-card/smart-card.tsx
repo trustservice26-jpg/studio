@@ -182,5 +182,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   );
 
 }
-
-    
