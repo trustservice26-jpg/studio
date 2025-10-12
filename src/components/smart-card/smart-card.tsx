@@ -28,28 +28,15 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   useEffect(() => {
     if (!member) return;
     const generateQrCode = async () => {
-      const memberDetails = [
-        `Member ID: ${member.memberId || 'N/A'}`,
-        `Name: ${member.name || 'N/A'}`,
-        `Phone: ${member.phone || 'N/A'}`,
-        `Email: ${member.email || 'N/A'}`,
-        `Date of Birth: ${member.dob || 'N/A'}`,
-        `Father's Name: ${member.fatherName || 'N/A'}`,
-        `Mother's Name: ${member.motherName || 'N/A'}`,
-        `NID/Birth Certificate: ${member.nid || 'N/A'}`,
-        `Address: ${member.address || 'N/A'}`,
-        `Join Date: ${member.joinDate ? new Date(member.joinDate).toLocaleDateString() : 'N/A'}`,
-        `Status: ${member.status || 'N/A'}`,
-      ];
-      
-      const detailsString = memberDetails.join('\n\n');
+      const memberId = member.memberId || 'N/A';
 
       try {
-        const url = await QRCode.toDataURL(detailsString, {
+        const url = await QRCode.toDataURL(memberId, {
           errorCorrectionLevel: 'H',
           type: 'image/png',
           quality: 0.9,
           margin: 1,
+          version: 1, // Using version 1 for Model 1 QR Code
           width: side === 'front' ? 60 : 45,
           color: {
             dark: '#2d3748',
