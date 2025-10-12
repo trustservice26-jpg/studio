@@ -40,12 +40,11 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           const url = await QRCode.toDataURL(qrData, {
             errorCorrectionLevel: 'H',
             type: 'image/png',
-            quality: 0.9,
-            margin: 1,
-            width: isPdf ? 60 : 70,
+            margin: 2,
+            width: isPdf ? 80 : 80, // Increased size
             color: {
-              dark: '#2d3748',
-              light: '#FFFFFF00' // Transparent background
+              dark: '#000000',  // Use black for better contrast
+              light: '#FFFFFF' // Use solid white background
             }
           });
           setFrontQrCodeUrl(url);
@@ -86,7 +85,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               MEMBERSHIP IDENTIFICATION CARD
             </p>
             <div className="flex items-center">
-                <div className={cn("flex items-center justify-center shrink-0 mr-[12px]", isPdf ? "w-[60px] h-[60px]" : "w-[70px] h-[70px]")}>
+                <div className={cn("flex items-center justify-center shrink-0 mr-[12px] p-1 bg-white", isPdf ? "w-[60px] h-[60px]" : "w-[70px] h-[70px]")}>
                   {frontQrCodeUrl && <img src={frontQrCodeUrl} alt="QR Code" className="w-full h-full" />}
                 </div>
                 <div className="flex-grow">
