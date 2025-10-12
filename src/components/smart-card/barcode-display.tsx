@@ -29,3 +29,5 @@ export function BarcodeDisplay({ memberId, isPdf = false }: BarcodeDisplayProps)
     />
   );
 }
+
+    
