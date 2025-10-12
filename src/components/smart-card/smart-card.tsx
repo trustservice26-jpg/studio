@@ -52,7 +52,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: isPdf ? '6px' : '8px' }}>
           <HeartHandshake style={{ height: isPdf ? '20px' : '24px', width: isPdf ? '20px' : '24px', color: '#007A3D', flexShrink: 0 }} />
           <div style={{ lineHeight: '1.2' }}>
-            <h1 className="font-card_headline" style={{ fontSize: isPdf ? '10px' : '0.7rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
+            <h1 className="font-card_headline" style={{ fontSize: isPdf ? '12px' : '0.9rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
               <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
             <p className="font-subheadline" style={{ fontSize: isPdf ? '5px' : '0.4rem', color: '#4a5568', margin: '1px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
@@ -67,14 +67,14 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               {/* Photo placeholder, no frame */}
             </div>
             <div style={{ flexGrow: 1 }}>
-                <h2 className="font-body" style={{ fontSize: isPdf ? '12px' : '1rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{memberName}</h2>
-                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', fontFamily: 'monospace', color: '#000' }}>
+                <h2 className="font-body" style={{ fontSize: isPdf ? '10px' : '0.9rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{memberName}</h2>
+                <p style={{ fontSize: isPdf ? '7px' : '0.55rem', margin: '3px 0', fontFamily: 'monospace', color: '#000' }}>
                   <span style={{fontWeight: 'bold'}}>ID:</span> {memberId}
                 </p>
-                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', color: '#4a5568' }}>
+                <p style={{ fontSize: isPdf ? '7px' : '0.55rem', margin: '3px 0', color: '#4a5568' }}>
                   <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> {role}
                 </p>
-                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', color: '#4a5568' }}>
+                <p style={{ fontSize: isPdf ? '7px' : '0.55rem', margin: '3px 0', color: '#4a5568' }}>
                   <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {joinDate}
                 </p>
             </div>
