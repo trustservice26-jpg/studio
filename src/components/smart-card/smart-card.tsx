@@ -86,24 +86,26 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         </div>
 
         {/* Body */}
-        <div style={{ padding: isPdf ? '8px 16px' : '8px 16px', flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-           <div style={{ width: isPdf ? '60px' : '60px', height: isPdf ? '75px' : '75px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: isPdf ? '10px' : '10px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '12px' : '12px' }}>
-              {/* Photo placeholder, no frame */}
-            </div>
-            <div style={{ flexGrow: 1 }}>
-                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '0 0 4px 0', color: '#4a5568', fontWeight: 'bold' }}>
-                  MEMBERSHIP IDENTIFICATION CARD
-                </p>
-                <h2 className="font-body" style={{ fontSize: isPdf ? '14px' : '0.9rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
-                <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', fontFamily: 'monospace', color: '#000' }}>
-                  <span style={{fontWeight: 'bold'}}>ID:</span> {member?.memberId || 'H-0000'}
-                </p>
-                <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', color: '#4a5568', whiteSpace: 'nowrap' }}>
-                  <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> Volunteer / Donor / Executive Member
-                </p>
-                <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', color: '#4a5568' }}>
-                  <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'dd/mm/yyyy'}
-                </p>
+        <div style={{ padding: isPdf ? '8px 16px' : '8px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '0 0 4px 0', color: '#4a5568', fontWeight: 'bold', textAlign: 'center' }}>
+              MEMBERSHIP IDENTIFICATION CARD
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ width: isPdf ? '60px' : '60px', height: isPdf ? '75px' : '75px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: isPdf ? '10px' : '10px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '12px' : '12px' }}>
+                {/* Photo placeholder, no frame */}
+                </div>
+                <div style={{ flexGrow: 1 }}>
+                    <h2 className="font-body" style={{ fontSize: isPdf ? '14px' : '0.9rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
+                    <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', fontFamily: 'monospace', color: '#000' }}>
+                      <span style={{fontWeight: 'bold'}}>ID:</span> {member?.memberId || 'H-0000'}
+                    </p>
+                    <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', color: '#4a5568', whiteSpace: 'nowrap' }}>
+                      <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'পদবি:' : 'Designation:'}</span> Volunteer / Donor / Executive Member
+                    </p>
+                    <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', color: '#4a5568' }}>
+                      <span style={{fontWeight: 'bold'}}>{language === 'bn' ? 'যোগদানের তারিখ:' : 'Join Date:'}</span> {member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'dd/mm/yyyy'}
+                    </p>
+                </div>
             </div>
         </div>
 
