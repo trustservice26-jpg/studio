@@ -5,7 +5,7 @@
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
-import { Quote, HeartHandshake } from 'lucide-react';
+import { HeartHandshake } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 
@@ -76,13 +76,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     return (
       <div style={{ ...cardStyles, ...frontBackgroundStyles }} className="font-body">
         {/* Header */}
-        <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-          <HeartHandshake style={{ height: isPdf ? '20px' : '24px', width: isPdf ? '20px' : '24px', color: '#007A3D' }} />
-          <div style={{ textAlign: 'center' }}>
-            <h1 className="font-headline" style={{ fontSize: isPdf ? '14px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
+        <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <HeartHandshake style={{ height: isPdf ? '24px' : '28px', width: isPdf ? '24px' : '28px', color: '#007A3D', flexShrink: 0 }} />
+          <div style={{ textAlign: 'left', lineHeight: '1.2' }}>
+            <h1 className="font-headline" style={{ fontSize: isPdf ? '13px' : '1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
               <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
-            <p className="font-subheadline" style={{ fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
+            <p className="font-subheadline" style={{ fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: 0, fontWeight: 'normal', whiteSpace: 'nowrap' }}>
               {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
             </p>
           </div>
@@ -108,8 +108,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         </div>
 
         {/* Footer */}
-        <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Quote style={{ width: isPdf ? '10px' : '12px', height: isPdf ? '10px' : '12px', color: '#D4AF37', marginRight: '8px' }} />
+        <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
             <p style={{ fontStyle: 'italic', fontSize: isPdf ? '8px' : '0.6rem', color: '#4a5568', margin: 0 }}>
               {language === 'bn' ? 'দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী' : 'Do not be ashamed of giving a little, for refusing is a greater shame. — Sheikh Saadi'}
             </p>

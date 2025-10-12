@@ -19,7 +19,8 @@ export default {
     extend: {
       fontFamily: {
         body: ['Poppins', 'AdorshoLipi', 'sans-serif'],
-        headline: ['Cinzel Decorative', 'Noto Serif Bengali', 'serif'],
+        headline: ['Montserrat', 'SolaimanLipi', 'serif'],
+        subheadline: ['AdorshoLipi', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
