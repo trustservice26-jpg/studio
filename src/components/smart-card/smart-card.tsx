@@ -1,12 +1,10 @@
 
-
 'use client';
 
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
 import { HeartHandshake } from 'lucide-react';
-import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 
 type SmartCardProps = {
@@ -19,31 +17,6 @@ type SmartCardProps = {
 export function SmartCard({ member, side, isPdf = false, language: propLanguage }: SmartCardProps) {
   const appContext = useAppContext();
   const language = propLanguage || appContext.language;
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
-
-  useEffect(() => {
-    const generateQrCode = async () => {
-      const memberId = member?.memberId || 'H-0000';
-      try {
-        const url = await QRCode.toDataURL(memberId, {
-          errorCorrectionLevel: 'H',
-          type: 'image/png',
-          quality: 0.9,
-          margin: 1,
-          width: isPdf ? 60 : 70,
-          color: {
-            dark: '#2d3748',
-            light: '#FFFFFF00' // Transparent background
-          }
-        });
-        setQrCodeUrl(url);
-      } catch (err) {
-        console.error('Failed to generate QR code', err);
-      }
-    };
-    generateQrCode();
-  }, [member?.memberId, isPdf]);
-
 
   const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
   const memberId = member?.memberId || 'HADIYA-24021';
@@ -79,7 +52,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div style={{ padding: isPdf ? '6px 12px' : '8px 16px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: isPdf ? '6px' : '8px' }}>
           <HeartHandshake style={{ height: isPdf ? '20px' : '24px', width: isPdf ? '20px' : '24px', color: '#007A3D', flexShrink: 0 }} />
           <div style={{ lineHeight: '1.2' }}>
-            <h1 className="font-headline" style={{ fontSize: isPdf ? '10px' : '0.8rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
+            <h1 className="font-card_headline" style={{ fontSize: isPdf ? '10px' : '0.7rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
               <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
             </h1>
             <p className="font-subheadline" style={{ fontSize: isPdf ? '5px' : '0.4rem', color: '#4a5568', margin: '1px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
@@ -94,8 +67,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               {/* Photo placeholder, no frame */}
             </div>
             <div style={{ flexGrow: 1 }}>
-                <h2 className="font-body" style={{ fontSize: isPdf ? '12px' : '1rem', fontWeight: 'bold', margin: 0, color: '#007A3D' }}>{memberName}</h2>
-                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', fontFamily: 'monospace' }}>
+                <h2 className="font-body" style={{ fontSize: isPdf ? '12px' : '1rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{memberName}</h2>
+                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', fontFamily: 'monospace', color: '#000' }}>
                   <span style={{fontWeight: 'bold'}}>ID:</span> {memberId}
                 </p>
                 <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '3px 0', color: '#4a5568' }}>
@@ -109,7 +82,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
 
         {/* Footer */}
         <div style={{ padding: isPdf ? '5px 12px' : '6px 16px', backgroundColor: 'rgba(0, 122, 61, 0.05)', borderTop: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-             <p style={{ fontWeight: 'bold', fontSize: isPdf ? '6px' : '0.5rem', color: '#4a5568', margin: 0 }}>
+             <p style={{ fontWeight: 'bold', fontSize: isPdf ? '6px' : '0.5rem', color: '#000', margin: 0 }}>
               দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
             </p>
         </div>

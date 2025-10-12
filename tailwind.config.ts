@@ -22,6 +22,7 @@ export default {
         headline: ['Montserrat', 'SolaimanLipi', 'serif'],
         subheadline: ['AdorshoLipi', 'sans-serif'],
         code: ['monospace'],
+        card_headline: ['"Cinzel Decorative"', '"Noto Serif Bengali"', 'serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
