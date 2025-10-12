@@ -57,15 +57,17 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
                 format: [85.6, 53.98] 
             });
 
-            const renderAndAdd = async (element: HTMLElement) => {
+            const renderAndAdd = async (element: HTMLElement, page: number) => {
+                if (page > 1) {
+                  pdf.addPage();
+                }
                 const canvas = await html2canvas(element, { scale: 3, useCORS: true, backgroundColor: null });
                 const imgData = canvas.toDataURL('image/png');
                 pdf.addImage(imgData, 'PNG', 0, 0, 85.6, 53.98);
             };
 
-            await renderAndAdd(frontElement);
-            pdf.addPage();
-            await renderAndAdd(backElement);
+            await renderAndAdd(frontElement, 1);
+            await renderAndAdd(backElement, 2);
             
             pdf.save(`${member!.name}-SmartCard.pdf`);
 
