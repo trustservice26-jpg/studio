@@ -76,7 +76,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div style={{ padding: isPdf ? '8px 16px' : '8px 16px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <HeartHandshake style={{ color: '#007A3D', height: '24px', width: '24px', flexShrink: 0 }} />
           <div>
-              <h1 className="font-card_headline" style={{ fontSize: isPdf ? '10px' : '0.9rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
+              <h1 className="font-card_headline" style={{ fontSize: isPdf ? '10px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
                 <span style={{ color: '#007A3D' }}>HADIYA</span>{' – '}<span style={{ color: '#D4AF37' }}>{`মানবতার উপহার`}</span>
               </h1>
               <p className="font-subheadline" style={{ fontSize: isPdf ? '6px' : '0.4rem', color: '#4a5568', margin: '1px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
@@ -91,6 +91,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               {/* Photo placeholder, no frame */}
             </div>
             <div style={{ flexGrow: 1 }}>
+                <p style={{ fontSize: isPdf ? '8px' : '0.6rem', margin: '0 0 4px 0', color: '#4a5568', fontWeight: 'bold' }}>
+                  MEMBERSHIP IDENTIFICATION CARD
+                </p>
                 <h2 className="font-body" style={{ fontSize: isPdf ? '14px' : '0.9rem', fontWeight: 'bold', margin: 0, color: '#000' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
                 <p style={{ fontSize: isPdf ? '8px' : '0.55rem', margin: '3px 0', fontFamily: 'monospace', color: '#000' }}>
                   <span style={{fontWeight: 'bold'}}>ID:</span> {member?.memberId || 'H-0000'}
@@ -147,5 +150,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   );
 
 }
-
-    
