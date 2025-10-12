@@ -1,6 +1,7 @@
 
 'use client';
 
+import React from 'react';
 import Barcode from 'react-barcode';
 
 interface BarcodeDisplayProps {
@@ -8,6 +9,17 @@ interface BarcodeDisplayProps {
 }
 
 const BarcodeDisplay: React.FC<BarcodeDisplayProps> = ({ isPdf }) => {
+  // Conditionally render Barcode only on the client-side
+  const [isClient, setIsClient] = React.useState(false);
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    // Render a placeholder or nothing on the server
+    return <div style={{ height: isPdf ? '40px' : '50px', width: '100%' }} />;
+  }
+
   return (
     <Barcode
       value="https://hadiya24.vercel.app"

@@ -82,6 +82,7 @@ export function SmartCard({ member, isPdf = false, language: propLanguage }: Sma
                     <InfoField label={language === 'bn' ? "যোগদানের তারিখ" : "Join Date"} value={formattedJoinDate} />
                     <InfoField label={language === 'bn' ? 'পিতার নাম' : "Father's Name"} value={member.fatherName} />
                     <InfoField label={language === 'bn' ? 'মাতার নাম' : "Mother's Name"} value={member.motherName} />
+                    <InfoField label={language === 'bn' ? 'ঠিকানা' : "Address"} value={member.address} />
                 </div>
             </div>
 
