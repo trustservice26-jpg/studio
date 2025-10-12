@@ -22,7 +22,10 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
 
   useEffect(() => {
     const generateQrCode = async () => {
-      if (!member?.memberId) return;
+      if (!member?.memberId) {
+        setQrCodeUrl('');
+        return;
+      };
       try {
         const url = await QRCode.toDataURL(member.memberId, {
           errorCorrectionLevel: 'H',
@@ -73,23 +76,25 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div style={{ padding: isPdf ? '10px 12px' : '12px 16px', borderBottom: '1px solid #e2e8f0', position: 'relative' }}>
           <div style={{ textAlign: 'center' }}>
             <h1 style={{ fontFamily: '"Montserrat", "SolaimanLipi", sans-serif', fontSize: isPdf ? '14px' : '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
-              <span style={{ color: '#007A3D' }}>HADIYA</span> – <span style={{ color: '#D4AF37' }}> মানবতার উপহার</span>
+              <span style={{ color: '#007A3D' }}>HADIYA</span> – <span style={{ color: '#D4AF37' }}>মানবতার উপহার</span>
             </h1>
             <p style={{ fontFamily: '"AdorshoLipi", sans-serif', fontSize: isPdf ? '7px' : '0.5rem', color: '#4a5568', margin: '2px 0 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
               {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo (Chandgaon).'}
             </p>
           </div>
-          {qrCodeUrl && (
+          {qrCodeUrl ? (
             <div style={{ position: 'absolute', top: isPdf ? '8px' : '10px', right: isPdf ? '8px' : '10px' }}>
                 <img src={qrCodeUrl} alt="QR Code" style={{ width: isPdf ? '40px' : '45px', height: isPdf ? '40px' : '45px' }}/>
             </div>
+          ) : (
+            <div style={{ position: 'absolute', top: isPdf ? '8px' : '10px', right: isPdf ? '8px' : '10px', width: isPdf ? '40px' : '45px', height: isPdf ? '40px' : '45px', backgroundColor: '#f0f0f0', borderRadius: '4px' }} />
           )}
         </div>
 
         {/* Body */}
         <div style={{ padding: isPdf ? '8px 12px' : '10px 16px', flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-           <div style={{ width: isPdf ? '60px' : '70px', height: isPdf ? '75px' : '85px', border: '2px dashed #D4AF37', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fafafa', fontSize: isPdf ? '10px' : '12px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '10px' : '16px' }}>
-              {language === 'bn' ? 'ছবি' : 'Photo'}
+           <div style={{ width: isPdf ? '60px' : '70px', height: isPdf ? '75px' : '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: isPdf ? '10px' : '12px', color: '#a0aec0', textAlign: 'center', flexShrink: 0, marginRight: isPdf ? '10px' : '16px' }}>
+              {/* Photo placeholder, no frame */}
             </div>
             <div style={{ flexGrow: 1 }}>
                 <h2 style={{ fontFamily: '"Montserrat", "AdorshoLipi", sans-serif', fontSize: isPdf ? '16px' : '1.2rem', fontWeight: 'bold', margin: 0, color: '#007A3D' }}>{member?.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</h2>
@@ -148,3 +153,5 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   )
 
 }
+
+    
