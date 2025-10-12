@@ -79,12 +79,6 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     generateBackQrCode();
   }, [member, isPdf, side, language, isClient]);
 
-  if (!isClient) {
-    // Render a placeholder on the server to prevent hydration mismatch
-    const cardBaseClasses = "aspect-[85.6/53.98] w-full rounded-xl bg-muted";
-    return <div className={cn(cardBaseClasses)} />;
-  }
-
   const cardBaseClasses = "aspect-[85.6/53.98] w-full flex flex-col overflow-hidden relative text-gray-800 font-body";
   const cardAppearanceClasses = isPdf ? "rounded-[3mm]" : "shadow-lg rounded-xl";
 
