@@ -35,7 +35,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         const joinDate = member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
         const status = member?.status || 'N/A';
 
-        const qrData = `Member ID: ${memberId}\n\nName: ${memberName}\n\nJoin Date: ${joinDate}\n\nStatus: ${status}`;
+        const qrData = `Member ID: ${memberId}\nName: ${memberName}\nJoin Date: ${joinDate}\nStatus: ${status}`;
 
         try {
           const url = await QRCode.toDataURL(qrData, {
@@ -43,7 +43,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
             type: 'image/png',
             quality: 0.9,
             margin: 1,
-            width: 60,
+            width: isPdf ? 60 : 70,
             color: {
               dark: '#2d3748',
               light: '#FFFFFF00' // Transparent background
@@ -79,7 +79,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     generateBackQrCode();
   }, [member, isPdf, side, language, isClient]);
 
-  if (!isClient) {
+  if (!isClient && side === 'front') {
     return <div className={`aspect-[85.6/53.98] w-full rounded-xl bg-muted`} />;
   }
 
@@ -87,7 +87,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const cardAppearanceClasses = isPdf ? "rounded-[3mm]" : "shadow-lg rounded-xl";
 
   const frontClasses = "bg-gradient-to-br from-white to-green-50/50 border border-gray-200";
-  const backClasses = "bg-white border border-yellow-500";
+  const backClasses = "bg-white border border-gray-200";
 
 
   if (side === 'front') {
@@ -97,10 +97,10 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div className="p-[8px_16px] border-b border-gray-200 flex items-center gap-3">
           <HeartHandshake className="text-green-800 h-7 w-7 shrink-0" />
           <div className="flex flex-col justify-center">
-              <h1 className="font-card_headline text-[1rem] font-bold m-0 leading-tight whitespace-nowrap">
+              <h1 className="font-card_headline text-[0.95rem] font-bold m-0 leading-tight whitespace-nowrap">
                 <span className="text-green-800">HADIYA</span>{' – '}<span className="text-yellow-600">{` মানবতার উপহার`}</span>
               </h1>
-              <p className="font-subheadline text-[0.45rem] text-gray-600 m-0 font-normal whitespace-nowrap pt-1">
+              <p className="font-subheadline text-[0.4rem] text-gray-600 m-0 font-normal whitespace-nowrap pt-1">
                 {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
               </p>
           </div>
@@ -112,7 +112,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               MEMBERSHIP IDENTIFICATION CARD
             </p>
             <div className="flex items-center">
-                <div className="w-[60px] h-[60px] flex items-center justify-center shrink-0 mr-[12px]">
+                <div className={cn("flex items-center justify-center shrink-0 mr-[12px]", isPdf ? "w-[60px] h-[60px]" : "w-[70px] h-[70px]")}>
                   {frontQrCodeUrl && <img src={frontQrCodeUrl} alt="QR Code" className="w-full h-full" />}
                 </div>
                 <div className="flex-grow">
@@ -147,23 +147,23 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
           <div className="p-[10px_16px] flex-grow flex flex-col justify-between">
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <h3 className="font-bold text-[0.6rem] border-b border-yellow-500 text-green-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
-                <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc">
-                    <li>This card is non-transferable.</li>
-                    <li>Please return if found.</li>
-                    <li>Property of HADIYA – মানবতার উপহার.</li>
-                </ul>
-              </div>
-              <div className="w-[45px] h-[45px] flex-shrink-0 ml-2">
-                {backQrCodeUrl && <img src={backQrCodeUrl} alt="QR Code" className="w-full h-full" />}
-              </div>
+            <div className="flex items-start justify-between">
+                <div className="flex-1">
+                    <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'Terms & Notes'}</h3>
+                    <ul className="m-0 pl-[14px] text-[0.5rem] text-gray-600 list-disc">
+                        <li>This card is non-transferable.</li>
+                        <li>Please return if found.</li>
+                        <li>Property of HADIYA – মানবতার উপহার.</li>
+                    </ul>
+                </div>
+                <div className="w-[45px] h-[45px] flex-shrink-0 ml-2">
+                    {backQrCodeUrl && <img src={backQrCodeUrl} alt="QR Code" className="w-full h-full" />}
+                </div>
             </div>
             
             <div>
-                <h3 className="font-bold text-[0.6rem] border-b border-yellow-500 text-green-800 pb-[2px] mb-1 mt-[10px]">{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
-                <p className="text-[0.55rem] text-gray-600 m-0 leading-snug">
+                <h3 className="font-bold text-[0.6rem] border-b border-gray-300 text-gray-800 pb-[2px] mb-1 mt-[10px]">{language === 'bn' ? 'যোগাযোগ' : 'Contact Info'}</h3>
+                <p className="text-[0.5rem] text-gray-600 m-0 leading-snug">
                     <strong>Website:</strong> www.hadiya.org<br/>
                     <strong>Email:</strong> infohadiyateam@gmail.com<br/>
                     <strong>Address:</strong> Chandgaon, Chattogram, Bangladesh.
@@ -176,5 +176,4 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           </div>
       </div>
   );
-
 }
