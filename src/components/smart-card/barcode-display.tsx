@@ -17,14 +17,14 @@ const BarcodeDisplay: React.FC<BarcodeDisplayProps> = ({ isPdf }) => {
 
   if (!isClient) {
     // Render a placeholder or nothing on the server
-    return <div style={{ height: isPdf ? '40px' : '50px', width: '100%' }} />;
+    return <div style={{ height: isPdf ? '30px' : '40px', width: '100%' }} />;
   }
 
   return (
     <Barcode
       value="https://hadiya24.vercel.app"
       width={1}
-      height={isPdf ? 40 : 50}
+      height={isPdf ? 30 : 40}
       displayValue={false}
       background="transparent"
       lineColor="hsl(var(--brand-gold))"
