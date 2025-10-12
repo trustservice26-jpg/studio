@@ -4,11 +4,7 @@
 import type { Member } from "@/lib/types";
 import { useAppContext } from '@/context/app-context';
 import { HeartHandshake } from 'lucide-react';
-import dynamic from "next/dynamic";
-
-const BarcodeDisplay = dynamic(() => import('./barcode-display'), {
-    ssr: false,
-});
+import BarcodeDisplay from './barcode-display';
 
 
 type SmartCardProps = {
