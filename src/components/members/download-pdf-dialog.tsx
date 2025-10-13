@@ -51,7 +51,15 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
     setIsGeneratingPdf(true);
 
     const qrData = 'hadiya24.vercel.app';
-    const qrUrl = await QRCode.toDataURL(qrData, { errorCorrectionLevel: 'H', type: 'image/png', margin: 1 });
+    const qrUrl = await QRCode.toDataURL(qrData, {
+      errorCorrectionLevel: 'H',
+      type: 'image/png',
+      margin: 1,
+      color: {
+        dark: '#299653', // HSL(145 60% 40%)
+        light: '#FFFFFF',
+      },
+    });
     setQrCodeUrl(qrUrl);
     
     setPdfContent(<PdfDocument member={selectedMember} language={language} isRegistration={false} qrCodeUrl={qrUrl} />);
