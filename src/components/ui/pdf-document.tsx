@@ -15,13 +15,21 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Membership Registration Form') 
         : (language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details');
 
-    const renderField = (label: string, value: string | undefined | null) => (
-        <div style={{ display: 'flex', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee' }}>
-            <p style={{ margin: 0, fontSize: '12px', width: '150px', fontWeight: 'bold' }}>{label}</p>
-            <p style={{ margin: 0, fontSize: '12px', textAlign: 'left', flex: 1 }}>{value || ''}</p>
-        </div>
-    );
-    
+    const labels = {
+        memberDetails: language === 'bn' ? 'সদস্য বিবরণ' : 'Member Details',
+        joiningDate: language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date',
+        dateOfBirth: language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth',
+        fatherName: language === 'bn' ? 'পিতার নাম' : "Father's Name",
+        motherName: language === 'bn' ? 'মাতার নাম' : "Mother's Name",
+        nid: language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.',
+        phone: language === 'bn' ? 'ফোন' : 'Phone',
+        address: language === 'bn' ? 'ঠিকানা' : 'Address',
+        conditions: language === 'bn' ? 'শর্তাবলী' : 'Conditions',
+        memberSignature: language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature',
+        authoritySignature: language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature',
+        passportPhoto: language === 'bn' ? 'পাসপোর্ট সাইজ ছবি' : 'Passport Size Photo'
+    };
+
     const conditionsEn = [
         "All members will have to be active at any time.",
         "If any member is not active in the organization team, they will be shown as inactive.",
@@ -52,27 +60,19 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         "• আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।"
     ];
 
-    const conditions = language === 'bn' ? conditionsBn : conditionsEn;
-
-    const labels = {
-        memberDetails: language === 'bn' ? 'সদস্য বিবরণ' : 'Member Details',
-        joiningDate: language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date',
-        dateOfBirth: language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth',
-        fatherName: language === 'bn' ? 'পিতার নাম' : "Father's Name",
-        motherName: language === 'bn' ? 'মাতার নাম' : "Mother's Name",
-        nid: language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.',
-        phone: language === 'bn' ? 'ফোন' : 'Phone',
-        address: language === 'bn' ? 'ঠিকানা' : 'Address',
-        conditions: language === 'bn' ? 'শর্তাবলী' : 'Conditions',
-        memberSignature: language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature',
-        authoritySignature: language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature',
-        passportPhoto: language === 'bn' ? 'পাসপোর্ট সাইজ ছবি' : 'Passport Size Photo'
-    };
+    const conditions = language === 'bn' ? conditionsBn : conditionsEn.map(c => `• ${c}`);
+    
+    const renderField = (label: string, value: string | undefined | null) => (
+        <div style={{ display: 'flex', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee', width: '100%' }}>
+            <p style={{ margin: 0, fontSize: '12px', width: '150px', fontWeight: 'bold', textAlign: 'left', flexShrink: 0 }}>{label}:</p>
+            <p style={{ margin: 0, fontSize: '12px', textAlign: 'left', flex: 1 }}>{value || ''}</p>
+        </div>
+    );
 
     return (
-        <div style={{ width: '800px', padding: '0 40px 40px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
+        <div style={{ width: '800px', padding: '20px 40px 40px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingTop: '40px', paddingBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px', borderBottom: '1px solid hsl(var(--brand-gold))' }}>
                 <div>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
                       <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
@@ -90,18 +90,18 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
              {/* Title */}
             <div style={{ textAlign: 'center', margin: '20px 0' }}>
-                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold', margin: 0 }}>{labels.memberDetails}</h2>
+                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold', margin: 0 }}>{title}</h2>
             </div>
             
             {/* Member Info & Photo */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-                <div>
-                    <h3 style={{fontSize: '14px', fontWeight: 'bold', margin: 0}}>{member.name}</h3>
+                <div style={{width: '70%'}}>
+                    <h3 style={{fontSize: '16px', fontWeight: 'bold', margin: 0}}>{member.name}</h3>
                     <p style={{fontSize: '12px', margin: '4px 0 0 0'}}>ID: {member.memberId}</p>
                 </div>
                 <div style={{
-                    width: '90px',
-                    height: '110px',
+                    width: '80px',
+                    height: '100px',
                     border: '2px dashed #ccc',
                     display: 'flex',
                     alignItems: 'center',
@@ -116,19 +116,24 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                 </div>
             </div>
 
-             <div style={{width: '100%'}}>
+             <div style={{width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+                <div style={{width: '48%'}}>
                     {renderField(labels.joiningDate, member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : '')}
-                    {renderField(labels.dateOfBirth, member.dob)}
                     {renderField(labels.fatherName, member.fatherName)}
-                    {renderField(labels.motherName, member.motherName)}
                     {renderField(labels.nid, member.nid)}
-                    {renderField(labels.phone, member.phone)}
                     {renderField(labels.address, member.address)}
                 </div>
+                <div style={{width: '48%'}}>
+                    {renderField(labels.dateOfBirth, member.dob)}
+                    {renderField(labels.motherName, member.motherName)}
+                    {renderField(labels.phone, member.phone)}
+                </div>
+            </div>
+
 
             {/* Conditions */}
             <div style={{ margin: '30px 0' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px' }}>{labels.conditions}</h3>
+                <h3 style={{ fontSize: '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px', borderBottom: '1px solid #ccc' }}>{labels.conditions}</h3>
                 <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
                     {conditions.map((condition, index) => (
                       <li key={index} style={{paddingLeft: '5px', marginBottom: '4px'}}>
