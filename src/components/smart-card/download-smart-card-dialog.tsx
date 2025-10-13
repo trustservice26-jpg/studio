@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { useAppContext } from '@/context/app-context';
 import { Download, Loader2 } from 'lucide-react';
 import type { Member } from '@/lib/types';
-import { PdfDocument } from '../ui/pdf-document';
+import { SmartCard } from './smart-card';
 
 type DownloadSmartCardDialogProps = {
   open: boolean;
@@ -32,7 +32,17 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
   const handleDownloadClick = async () => {
     if (!member) return;
     setIsGeneratingPdf(true);
-    setPdfContent(<PdfDocument member={member} language={language} />);
+    // Set content for PDF generation with both front and back
+    setPdfContent(
+        <div style={{ display: 'flex', gap: '20px', padding: '20px', background: 'white' }}>
+            <div style={{width: '400px'}}>
+                <SmartCard member={member} side="front" isPdf={true} language={language} />
+            </div>
+            <div style={{width: '400px'}}>
+                 <SmartCard member={member} side="back" isPdf={true} language={language} />
+            </div>
+        </div>
+    );
   };
   
   useEffect(() => {
@@ -40,7 +50,7 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
       const generatePdf = async () => {
         await new Promise(resolve => setTimeout(resolve, 100));
 
-        const pdfElement = document.getElementById('pdf-document-wrapper');
+        const pdfElement = document.getElementById('pdf-smart-card-wrapper');
         
         if (!pdfElement) {
             console.error("PDF content elements not found");
@@ -50,27 +60,28 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
         }
 
         try {
+            const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true });
+            const imgData = canvas.toDataURL('image/png');
+            
             const pdf = new jsPDF({
                 orientation: 'landscape',
                 unit: 'mm',
-                format: 'a4' 
+                format: [148, 105] // A6 size landscape
             });
-
-            const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true, backgroundColor: null });
-            const imgData = canvas.toDataURL('image/png');
             
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
 
             const canvasWidth = canvas.width;
             const canvasHeight = canvas.height;
+
             const ratio = canvasWidth / canvasHeight;
             
-            let finalWidth = pageWidth - 20; // 10mm margin
+            let finalWidth = pageWidth - 10;
             let finalHeight = finalWidth / ratio;
             
-            if (finalHeight > pageHeight - 20) {
-              finalHeight = pageHeight - 20;
+            if (finalHeight > pageHeight - 10) {
+              finalHeight = pageHeight - 10;
               finalWidth = finalHeight * ratio;
             }
 
@@ -131,7 +142,7 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
       </Dialog>
       
       <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
-        {isGeneratingPdf && <div id="pdf-document-wrapper">{pdfContent}</div>}
+        {isGeneratingPdf && <div id="pdf-smart-card-wrapper">{pdfContent}</div>}
       </div>
     </>
   );
