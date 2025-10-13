@@ -29,36 +29,17 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     if (!isClient || side === 'back') return;
     
     const generateFrontQrCode = async () => {
-        const memberId = member?.memberId || 'N/A';
-        const memberName = member?.name || 'N/A';
-        const joinDate = member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
-        const status = member?.status || 'N/A';
-        const fatherName = member?.fatherName || 'N/A';
-        const phone = member?.phone || 'N/A';
-        const dob = member?.dob || 'N/A';
-        const nid = member?.nid || 'N/A';
-        const address = member?.address || 'N/A';
-
-        const qrData = [
-          `Member ID: ${memberId}`,
-          `Name: ${memberName}`,
-          `Joining Date: ${joinDate}`,
-          `Status: ${status}`,
-          `Father's Name: ${fatherName}`,
-          `Phone: ${phone}`,
-          `Date of Birth: ${dob}`,
-          `NID/Birth Cert.: ${nid}`,
-          `Address: ${address}`
-        ].join('\n\n');
+        // This makes the QR code much simpler and easier to scan.
+        const qrData = 'hadiya24.vercel.app';
 
         try {
           const url = await QRCode.toDataURL(qrData, {
             errorCorrectionLevel: 'H',
             type: 'image/png',
             margin: 1,
-            width: isPdf ? 80 : 80,
+            width: isPdf ? 90 : 90, // Increased size for better scanning
             color: {
-              dark: '#000000',
+              dark: '#000000', // High contrast black for reliability
               light: '#FFFFFF'
             }
           });
