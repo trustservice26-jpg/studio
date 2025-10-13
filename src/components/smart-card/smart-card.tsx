@@ -36,8 +36,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         const phone = member?.phone || 'N/A';
         const dob = member?.dob || 'N/A';
         const fatherName = member?.fatherName || 'N/A';
+        const nid = member?.nid || 'N/A';
 
-        const qrData = `Member ID: ${memberId}\nName: ${memberName}\nPhone: ${phone}\nJoin Date: ${joinDate}\nStatus: ${status}\nDOB: ${dob}\nFather's Name: ${fatherName}`;
+        const qrData = `Member ID: ${memberId}\nName: ${memberName}\nPhone: ${phone}\nJoin Date: ${joinDate}\nStatus: ${status}\nDOB: ${dob}\nFather's Name: ${fatherName}\nNID/Birth No: ${nid}`;
 
         try {
           const url = await QRCode.toDataURL(qrData, {
@@ -121,32 +122,36 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const barcodeValue = `${member?.memberId || 'H-0000'}-${member?.status || 'inactive'}`;
 
   return (
-    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses, 'flex flex-col p-0')}>
-        <div className="h-[20px] bg-gray-800 mt-[15px] shrink-0"></div>
-        
-        <div className="px-3 py-2 flex-grow flex flex-col justify-between">
-             <div className="flex-grow">
-                <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
-                <ul className="m-0 pl-[12px] text-[0.55rem] text-gray-600 list-disc space-y-px text-left">
-                    <li>This card is non-transferable.</li>
-                    <li>Please return if found.</li>
-                    <li>Property of HADIYA – মানবতার উপহার.</li>
-                </ul>
+    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses, 'p-0')}>
+        <div className="flex flex-col justify-between flex-grow p-3">
+            <div className="flex-grow">
+                <div className="h-[20px] bg-gray-800 shrink-0 -mx-3 mt-1"></div>
                 
-                <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
-                <div className="text-[0.5rem] text-gray-700 m-0 leading-snug text-left space-y-px">
-                  <div className="flex items-center gap-1.5">
-                    <Globe className="w-2.5 h-2.5 shrink-0" />
-                    <span>www.hadiya.org</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Mail className="w-2.5 h-2.5 shrink-0" />
-                    <span>infohadiyateam@gmail.com</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="w-2.5 h-2.5 shrink-0" />
-                    <span>Chandgaon, Chattogram, Bangladesh.</span>
-                  </div>
+                <div className="mt-2">
+                    <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
+                    <ul className="m-0 pl-[12px] text-[0.55rem] text-gray-600 list-disc space-y-px text-left">
+                        <li>This card is non-transferable.</li>
+                        <li>Please return if found.</li>
+                        <li>Property of HADIYA – মানবতার উপহার.</li>
+                    </ul>
+                </div>
+                
+                <div className="mt-2">
+                    <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
+                    <div className="text-[0.5rem] text-gray-700 m-0 leading-snug text-left space-y-px">
+                       <div className="flex items-center gap-1.5">
+                            <Globe className="w-2.5 h-2.5 shrink-0" />
+                            <span>www.hadiya.org</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <Mail className="w-2.5 h-2.5 shrink-0" />
+                            <span>infohadiyateam@gmail.com</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <MapPin className="w-2.5 h-2.5 shrink-0" />
+                            <span>Chandgaon, Chattogram, Bangladesh.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
