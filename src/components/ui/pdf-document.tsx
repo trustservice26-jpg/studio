@@ -65,19 +65,19 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
     const renderField = (label: string, value: string | undefined | null) => (
         <div style={{ display: 'flex', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee', width: '100%' }}>
             <p style={{ margin: 0, fontSize: '12px', width: '150px', fontWeight: 'bold', textAlign: 'left', flexShrink: 0 }}>{label}:</p>
-            <p style={{ margin: 0, fontSize: '12px', textAlign: 'left', flex: 1 }}>{value || ''}</p>
+            <p style={{ margin: 0, fontSize: '12px', textAlign: 'left', flex: 1, fontWeight: 500 }}>{value || ''}</p>
         </div>
     );
 
     return (
-        <div style={{ width: '800px', padding: '20px 40px 40px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
+        <div style={{ width: '800px', padding: '10px 40px 40px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))' }}>
                 <div>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
                       <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
                     </h1>
-                    <p style={{ fontSize: '12px', color: '#555', margin: '5px 0 0 0' }}>
+                    <p style={{ fontSize: '12px', color: '#555', margin: '5px 0 0 0', fontWeight: 500 }}>
                       {'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
                     </p>
                 </div>
@@ -90,18 +90,18 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
              {/* Title */}
             <div style={{ textAlign: 'center', margin: '20px 0' }}>
-                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold', margin: 0 }}>{title}</h2>
+                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold', margin: 0, textDecoration: 'underline' }}>{title}</h2>
             </div>
             
             {/* Member Info & Photo */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                 <div style={{width: '70%'}}>
                     <h3 style={{fontSize: '16px', fontWeight: 'bold', margin: 0}}>{member.name}</h3>
-                    <p style={{fontSize: '12px', margin: '4px 0 0 0'}}>ID: {member.memberId}</p>
+                    <p style={{fontSize: '12px', margin: '4px 0 0 0', fontWeight: 500}}>ID: {member.memberId}</p>
                 </div>
                 <div style={{
-                    width: '80px',
-                    height: '100px',
+                    width: '70px',
+                    height: '90px',
                     border: '2px dashed #ccc',
                     display: 'flex',
                     alignItems: 'center',
@@ -134,7 +134,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             {/* Conditions */}
             <div style={{ margin: '30px 0' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px', borderBottom: '1px solid #ccc' }}>{labels.conditions}</h3>
-                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
+                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6', fontWeight: 500 }}>
                     {conditions.map((condition, index) => (
                       <li key={index} style={{paddingLeft: '5px', marginBottom: '4px'}}>
                         {condition}
@@ -145,18 +145,18 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             
             {/* Signature */}
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '40px' }}>
-                <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
+                <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px', fontWeight: 500 }}>
                    {labels.memberSignature}
                 </div>
-                <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
+                <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px', fontWeight: 500 }}>
                     {labels.authoritySignature}
                 </div>
             </div>
 
             {/* Footer */}
-            <div style={{ textAlign: 'center', marginTop: '80px', paddingTop: '15px', borderTop: '1px solid #eee', fontSize: '10px', color: '#777' }}>
-                 <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
-                 <p style={{ fontStyle: 'italic', marginTop: '5px', margin: 0 }}>Developed & Supported by AL-SADEEQ Team.</p>
+            <div style={{ textAlign: 'center', marginTop: '100px', paddingTop: '15px', borderTop: '1px solid #eee', fontSize: '10px', color: '#777' }}>
+                 <p style={{ margin: 0, fontWeight: 500 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
+                 <p style={{ fontStyle: 'italic', marginTop: '5px', margin: 0, fontWeight: 500 }}>Developed & Supported by AL-SADEEQ Team.</p>
             </div>
         </div>
     );
