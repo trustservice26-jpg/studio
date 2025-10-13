@@ -15,7 +15,7 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
 
     const renderField = (label: string, value: string | undefined) => (
         <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'flex-end' }}>
-            <p style={{ margin: 0, fontWeight: 'bold', width: '150px', flexShrink: 0, fontSize: '12px' }}>{label}:</p>
+            <p style={{ margin: 0, fontWeight: 'bold', width: '150px', flexShrink: 0, fontSize: '12px', textAlign: 'left' }}>{label}:</p>
             <p style={{ margin: 0, borderBottom: '1px dotted #888', flexGrow: 1, fontSize: '12px', paddingBottom: '2px', lineHeight: '1.4' }}>{value || ''}</p>
         </div>
     );
@@ -34,8 +34,8 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
             </div>
             
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px' }}>
-                <div style={{ flexGrow: 1 }}>
-                     <h2 style={{ fontSize: '20px', color: '#333', textAlign: 'center', marginTop: '10px' }}>{title}</h2>
+                <div style={{ flexGrow: 1, textAlign: 'center' }}>
+                     <h2 style={{ fontSize: '20px', color: '#333', marginTop: '10px' }}>{title}</h2>
                 </div>
                 <div style={{
                     width: '120px',
