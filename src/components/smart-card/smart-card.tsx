@@ -114,33 +114,35 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     );
   }
 
+  // BACK SIDE
   const barcodeValue = `${member?.memberId || 'H-0000'}-${member?.status || 'inactive'}`;
 
-  // BACK SIDE
   return (
-      <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
-          <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
+    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
+      <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
+      
+      <div className="px-4 py-2 flex-grow flex flex-col justify-between">
+        <div>
+          <h3 className="font-bold text-[0.7rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
+          <ul className="m-0 pl-[14px] text-[0.6rem] text-gray-600 list-disc space-y-px text-left">
+            <li>This card is non-transferable.</li>
+            <li>Please return if found.</li>
+            <li>Property of HADIYA – মানবতার উপহার.</li>
+          </ul>
           
-          <div className="p-[10px_16px] flex-grow">
-              <div>
-                  <h3 className="font-bold text-[0.7rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
-                  <ul className="m-0 pl-[14px] text-[0.6rem] text-gray-600 list-disc space-y-px text-left">
-                      <li>This card is non-transferable.</li>
-                      <li>Please return if found.</li>
-                      <li>Property of HADIYA – মানবতার উপহার.</li>
-                  </ul>
-                  <h3 className="font-bold text-[0.7rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
-                  <div className="text-[0.5rem] text-gray-700 m-0 leading-snug text-left">
-                      <p>www.hadiya.org</p>
-                      <p>infohadiyateam@gmail.com</p>
-                      <p>Chandgaon, Chattogram, Bangladesh.</p>
-                  </div>
-              </div>
+          <h3 className="font-bold text-[0.7rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
+          <div className="text-[0.5rem] text-gray-700 m-0 leading-snug text-left space-y-px">
+            <p>www.hadiya.org</p>
+            <p>infohadiyateam@gmail.com</p>
+            <p>Chandgaon, Chattogram, Bangladesh.</p>
           </div>
-          
-          <div className="px-4 pb-2 text-center">
-            <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
-          </div>
+        </div>
+        
+        <div className="text-center pt-2">
+          <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
+        </div>
       </div>
+    </div>
   );
 }
+
