@@ -23,33 +23,33 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
     );
     
     const conditionsEn = [
-        "All members will have to active at any time.",
-        "If any member will not active in organization team then he will shown as inactive.",
-        "If any members does not give money for orgnisation or making late more then 3 times then he will be inactive also can make resigned from the organization team.",
-        "For adding again as a member he will have to registered for member and also have to give late fine 50 taka for adding again as a member.",
-        "If any member make improper behavior then he will have to resigned from organization team.",
-        "For late paying he will have to pay 20 taka extra,which will add in the organization fund otherwise admin can make inactive.",
-        "You as a member cannot collect money from other member team if it is proof then he will have to make resigned from the team.",
-        "If member collect from outsource then it will have to give proof otherwise it will not exceptable.",
-        "If the member give money to other member for the organization team then this risk will taken by that member who collected the money.",
-        "Remember,Never tell a lie, because this organization will growup if all member are as a friend.",
-        "Every member will have a chance to talk with organistion team about his idea,so we can growup.",
-        "We all are friend and we will support the society and family members also."
+        "All members will have to be active at any time.",
+        "If any member is not active in the organization team, they will be shown as inactive.",
+        "If any member does not give money for the organization or is late more than 3 times, they will be made inactive and can also be resigned from the organization team.",
+        "To be added again as a member, they will have to register for membership and also have to pay a late fine of 50 taka.",
+        "If any member exhibits improper behavior, they will have to resign from the organization team.",
+        "For late payment, they will have to pay 20 taka extra, which will be added to the organization fund, otherwise the admin can make them inactive.",
+        "As a member, you cannot collect money from other member teams. If this is proven, they will have to be resigned from the team.",
+        "If a member collects from an outsource, they will have to provide proof, otherwise it will not be acceptable.",
+        "If a member gives money to another member for the organization team, then this risk will be taken by the member who collected the money.",
+        "Remember, never tell a lie, because this organization will grow if all members are like friends.",
+        "Every member will have a chance to talk with the organization team about their ideas, so we can grow.",
+        "We are all friends and we will support the society and family members also."
     ];
     
     const conditionsBn = [
-        "সকল সদস্যকে সর্বদা সক্রিয় থাকতে হবে।",
-        "যদি কোনো সদস্য সাংগঠনিক দলে সক্রিয় না থাকেন, তবে তাকে নিষ্ক্রিয় হিসেবে দেখানো হবে।",
-        "যদি কোনো সদস্য সংগঠনের জন্য অর্থ প্রদান না করেন বা ৩ বারের বেশি দেরি করেন, তবে তাকে নিষ্ক্রিয় করা হবে এবং সংগঠন থেকে পদত্যাগ করানো হতে পারে।",
-        "পুনরায় সদস্য হিসেবে যোগদানের জন্য তাকে সদস্য হিসেবে নিবন্ধন করতে হবে এবং পুনরায় যোগদানের জন্য ৫০ টাকা বিলম্ব ফি দিতে হবে।",
-        "যদি কোনো সদস্য অশোভন আচরণ করেন, তবে তাকে সংগঠন থেকে পদত্যাগ করতে হবে।",
-        "বিলম্বিত অর্থ প্রদানের জন্য তাকে ২০ টাকা অতিরিক্ত প্রদান করতে হবে, যা সংগঠনের তহবিলে যোগ হবে, অন্যথায় অ্যাডমিন তাকে নিষ্ক্রিয় করতে পারেন।",
-        "সদস্য হিসেবে আপনি অন্য কোনো সদস্য দল থেকে অর্থ সংগ্রহ করতে পারবেন না, যদি এর প্রমাণ পাওয়া যায়, তবে তাকে দল থেকে পদত্যাগ করতে হবে।",
-        "যদি সদস্য বাইরের উৎস থেকে অর্থ সংগ্রহ করেন, তবে তার প্রমাণ দিতে হবে, অন্যথায় তা গ্রহণযোগ্য হবে না।",
-        "যদি কোনো সদস্য সংগঠনের জন্য অন্য সদস্যকে টাকা দেন, তবে সেই ঝুঁকি টাকা সংগ্রহকারী সদস্যকে বহন করতে হবে।",
-        "মনে রাখবেন, কখনো মিথ্যা বলবেন না, কারণ এই সংগঠনটি তখনই বড় হবে যখন সব সদস্য বন্ধুর মতো থাকবে।",
-        "প্রত্যেক সদস্যের তার ধারণা সম্পর্কে সংগঠন দলের সাথে কথা বলার সুযোগ থাকবে, যাতে আমরা উন্নতি করতে পারি।",
-        "আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।"
+        "• সকল সদস্যকে সর্বদা সক্রিয় থাকতে হবে।",
+        "• যদি কোনো সদস্য সাংগঠনিক দলে সক্রিয় না থাকেন, তবে তাকে নিষ্ক্রিয় হিসেবে দেখানো হবে।",
+        "• যদি কোনো সদস্য সংগঠনের জন্য অর্থ প্রদান না করেন বা ৩ বারের বেশি দেরি করেন, তবে তাকে নিষ্ক্রিয় করা হবে এবং সংগঠন থেকে পদত্যাগ করানো হতে পারে।",
+        "• পুনরায় সদস্য হিসেবে যোগদানের জন্য তাকে সদস্য হিসেবে নিবন্ধন করতে হবে এবং পুনরায় যোগদানের জন্য ৫০ টাকা বিলম্ব ফি দিতে হবে।",
+        "• যদি কোনো সদস্য অশোভন আচরণ করেন, তবে তাকে সংগঠন থেকে পদত্যাগ করতে হবে।",
+        "• বিলম্বিত অর্থ প্রদানের জন্য তাকে ২০ টাকা অতিরিক্ত প্রদান করতে হবে, যা সংগঠনের তহবিলে যোগ হবে, অন্যথায় অ্যাডমিন তাকে নিষ্ক্রিয় করতে পারেন।",
+        "• সদস্য হিসেবে আপনি অন্য কোনো সদস্য দল থেকে অর্থ সংগ্রহ করতে পারবেন না, যদি এর প্রমাণ পাওয়া যায়, তবে তাকে দল থেকে পদত্যাগ করতে হবে।",
+        "• যদি সদস্য বাইরের উৎস থেকে অর্থ সংগ্রহ করেন, তবে তার প্রমাণ দিতে হবে, অন্যথায় তা গ্রহণযোগ্য হবে না।",
+        "• যদি কোনো সদস্য সংগঠনের জন্য অন্য সদস্যকে টাকা দেন, তবে সেই ঝুঁকি টাকা সংগ্রহকারী সদস্যকে বহন করতে হবে।",
+        "• মনে রাখবেন, কখনো মিথ্যা বলবেন না, কারণ এই সংগঠনটি তখনই বড় হবে যখন সব সদস্য বন্ধুর মতো থাকবে।",
+        "• প্রত্যেক সদস্যের তার ধারণা সম্পর্কে সংগঠন দলের সাথে কথা বলার সুযোগ থাকবে, যাতে আমরা উন্নতি করতে পারি।",
+        "• আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।"
     ];
 
     const conditions = language === 'bn' ? conditionsBn : conditionsEn;
@@ -70,9 +70,9 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
     };
 
     return (
-        <div style={{ width: '800px', padding: '20px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
+        <div style={{ width: '800px', padding: '0 40px 40px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px', borderBottom: '1px solid #ddd' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingTop: '40px', paddingBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))' }}>
                 <div>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
                       <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
@@ -100,8 +100,8 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     <p style={{fontSize: '12px', margin: '4px 0 0 0'}}>ID: {member.memberId}</p>
                 </div>
                 <div style={{
-                    width: '100px',
-                    height: '120px',
+                    width: '90px',
+                    height: '110px',
                     border: '2px dashed #ccc',
                     display: 'flex',
                     alignItems: 'center',
@@ -129,10 +129,10 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             {/* Conditions */}
             <div style={{ margin: '30px 0' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px' }}>{labels.conditions}</h3>
-                <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: language === 'bn' ? "'• '": 'disc', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
+                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
                     {conditions.map((condition, index) => (
                       <li key={index} style={{paddingLeft: '5px', marginBottom: '4px'}}>
-                        {condition.replace(/•/g, '').trim()}
+                        {condition}
                       </li>
                     ))}
                 </ul>
