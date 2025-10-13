@@ -72,7 +72,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
     return (
         <div style={{ width: '800px', padding: '20px 40px 40px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px', borderBottom: '1px solid hsl(var(--brand-gold))' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))' }}>
                 <div>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
                       <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
@@ -154,7 +154,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             </div>
 
             {/* Footer */}
-            <div style={{ textAlign: 'center', marginTop: '40px', paddingTop: '15px', fontSize: '10px', color: '#777' }}>
+            <div style={{ textAlign: 'center', marginTop: '80px', paddingTop: '15px', borderTop: '1px solid #eee', fontSize: '10px', color: '#777' }}>
                  <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
                  <p style={{ fontStyle: 'italic', marginTop: '5px', margin: 0 }}>Developed & Supported by AL-SADEEQ Team.</p>
             </div>
