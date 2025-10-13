@@ -122,27 +122,29 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
           <div className="p-[10px_16px] flex-grow flex flex-col justify-center">
-            <div>
-                <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
-                <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc space-y-px text-left">
-                    <li>This card is non-transferable.</li>
-                    <li>Please return if found.</li>
-                    <li>Property of HADIYA – মানবতার উপহার.</li>
-                </ul>
-                <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
-                <div className="text-[0.55rem] text-gray-700 m-0 leading-snug space-y-px text-left">
-                    <p className="flex items-center gap-1.5">
-                        <Globe className="w-3 h-3" />
-                        <span>www.hadiya.org</span>
-                    </p>
-                    <p className="flex items-center gap-1.5">
-                        <Mail className="w-3 h-3" />
-                        <span>infohadiyateam@gmail.com</span>
-                    </p>
-                    <p className="flex items-center gap-1.5">
-                        <MapPin className="w-3 h-3" />
-                        <span>Chandgaon, Chattogram, Bangladesh.</span>
-                    </p>
+            <div className="flex justify-between gap-4">
+                <div className="flex-grow">
+                    <h3 className="font-bold text-[0.6rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
+                    <ul className="m-0 pl-[14px] text-[0.55rem] text-gray-600 list-disc space-y-px text-left">
+                        <li>This card is non-transferable.</li>
+                        <li>Please return if found.</li>
+                        <li>Property of HADIYA – মানবতার উপহার.</li>
+                    </ul>
+                    <h3 className="font-bold text-[0.6rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
+                    <div className="text-[0.5rem] text-gray-700 m-0 leading-snug space-y-px text-left">
+                        <p className="flex items-center gap-1.5">
+                            <Globe className="w-3 h-3" />
+                            <span>www.hadiya.org</span>
+                        </p>
+                        <p className="flex items-center gap-1.5">
+                            <Mail className="w-3 h-3" />
+                            <span>infohadiyateam@gmail.com</span>
+                        </p>
+                        <p className="flex items-center gap-1.5">
+                            <MapPin className="w-3 h-3" />
+                            <span>Chandgaon, Chattogram, Bangladesh.</span>
+                        </p>
+                    </div>
                 </div>
             </div>
           </div>
