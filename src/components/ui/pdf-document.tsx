@@ -2,7 +2,6 @@
 "use client";
 
 import type { Member } from "@/lib/types";
-import { useEffect, useState } from "react";
 
 type PdfDocumentProps = {
     member: Partial<Member>;
