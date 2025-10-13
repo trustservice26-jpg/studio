@@ -86,7 +86,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     );
 
     if (newMember) {
-      const qrData = `Member ID: ${newMember.memberId}\nName: ${newMember.name}\nJoin Date: ${new Date(newMember.joinDate!).toLocaleDateString()}\nStatus: ${newMember.status}`;
+      const qrData = 'hadiya24.vercel.app';
       const qrUrl = await QRCode.toDataURL(qrData, { errorCorrectionLevel: 'H', type: 'image/png', margin: 1 });
 
       setQrCodeUrl(qrUrl);

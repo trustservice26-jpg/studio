@@ -50,7 +50,7 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
     if (!selectedMember) return;
     setIsGeneratingPdf(true);
 
-    const qrData = `Member ID: ${selectedMember.memberId}\nName: ${selectedMember.name}\nJoin Date: ${new Date(selectedMember.joinDate).toLocaleDateString()}\nStatus: ${selectedMember.status}`;
+    const qrData = 'hadiya24.vercel.app';
     const qrUrl = await QRCode.toDataURL(qrData, { errorCorrectionLevel: 'H', type: 'image/png', margin: 1 });
     setQrCodeUrl(qrUrl);
     
@@ -173,5 +173,3 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
     </>
   );
 }
-
-    
