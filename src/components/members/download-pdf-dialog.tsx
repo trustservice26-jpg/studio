@@ -86,17 +86,12 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
             const canvasWidth = canvas.width;
             const canvasHeight = canvas.height;
             const ratio = canvasWidth / canvasHeight;
-            const imgWidth = pdfWidth - 20;
+            const imgWidth = pdfWidth;
             const imgHeight = imgWidth / ratio;
             
-            let y = 10;
-            if (imgHeight > pdfHeight) {
-                y = 0;
-            } else {
-                y = (pdfHeight - imgHeight) / 2;
-            }
+            let y = 0;
             
-            pdf.addImage(imgData, 'PNG', 10, y, imgWidth, imgHeight);
+            pdf.addImage(imgData, 'PNG', 0, y, imgWidth, imgHeight);
             pdf.save(`${selectedMember!.name}-details.pdf`);
         } catch (error) {
             console.error("Error generating PDF:", error);
@@ -178,3 +173,5 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
     </>
   );
 }
+
+    

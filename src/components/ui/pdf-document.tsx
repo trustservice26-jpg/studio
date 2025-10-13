@@ -17,13 +17,13 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
     const renderField = (label: string, value: string | undefined | null) => (
         <div style={{ display: 'flex', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee' }}>
-            <p style={{ margin: 0, fontWeight: 'bold', fontSize: '12px', width: '150px' }}>{label}</p>
-            <p style={{ margin: 0, fontSize: '12px', textAlign: 'left', flex: 1 }}>: {value || ''}</p>
+            <p style={{ margin: 0, fontSize: '12px', width: '150px' }}>{label}</p>
+            <p style={{ margin: 0, fontSize: '12px', textAlign: 'right', flex: 1 }}>{value || ''}</p>
         </div>
     );
     
     const conditionsEn = [
-        "All members will have to be active at any time.",
+        "All members will have to active at any time.",
         "If any member will not active in organization team then he will shown as inactive.",
         "If any members does not give money for orgnisation or making late more then 3 times then he will be inactive also can make resigned from the organization team.",
         "For adding again as a member he will have to registered for member and also have to give late fine 50 taka for adding again as a member.",
@@ -52,14 +52,27 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         "আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।"
     ];
 
-
     const conditions = language === 'bn' ? conditionsBn : conditionsEn;
 
+    const labels = {
+        memberDetails: language === 'bn' ? 'সদস্য বিবরণ' : 'Member Details',
+        joiningDate: language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date',
+        dateOfBirth: language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth',
+        fatherName: language === 'bn' ? 'পিতার নাম' : 'Father\'s Name',
+        motherName: language === 'bn' ? 'মাতার নাম' : 'Mother\'s Name',
+        nid: language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.',
+        phone: language === 'bn' ? 'ফোন' : 'Phone',
+        address: language === 'bn' ? 'ঠিকানা' : 'Address',
+        conditions: language === 'bn' ? 'শর্তাবলী' : 'Conditions',
+        memberSignature: language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature',
+        authoritySignature: language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature',
+        passportPhoto: language === 'bn' ? 'পাসপোর্ট সাইজ ছবি' : 'Passport Size Photo'
+    };
 
     return (
-        <div style={{ width: '800px', padding: '20px 40px 47.25px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
+        <div style={{ width: '800px', padding: '20px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '15px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px' }}>
                 <div>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
                       <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
@@ -68,30 +81,28 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                       {'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
                     </p>
                 </div>
+                 {qrCodeUrl && (
+                    <div style={{ flexShrink: 0 }}>
+                        <img src={qrCodeUrl} alt="QR Code" style={{ width: '60px', height: '60px' }} />
+                    </div>
+                )}
             </div>
 
              {/* Title */}
-            <div style={{ textAlign: 'center', margin: '20px 0', borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd', padding: '10px 0' }}>
-                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold', margin: 0 }}>{title}</h2>
+            <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold', margin: 0 }}>{labels.memberDetails}</h2>
             </div>
             
             {/* Member Info & Photo */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px' }}>
-                <div style={{width: 'calc(100% - 140px)'}}>
-                    {renderField(language === 'bn' ? 'সদস্য আইডি' : 'Member ID', member.memberId)}
-                    {renderField(language === 'bn' ? 'পূর্ণ নাম' : 'Full Name', member.name)}
-                    {renderField(language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date', member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : '')}
-                    {renderField(language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth', member.dob)}
-                    {renderField(language === 'bn' ? 'পিতার নাম' : "Father's Name", member.fatherName)}
-                    {renderField(language === 'bn' ? 'মাতার নাম' : "Mother's Name", member.motherName)}
-                    {renderField(language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.', member.nid)}
-                    {renderField(language === 'bn' ? 'ফোন' : 'Phone', member.phone)}
-                    {renderField(language === 'bn' ? 'ঠিকানা' : 'Address', member.address)}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+                <div>
+                    <h3 style={{fontSize: '14px', fontWeight: 'bold', margin: 0}}>{member.name}</h3>
+                    <p style={{fontSize: '12px', margin: '4px 0 0 0'}}>ID: {member.memberId}</p>
                 </div>
                 <div style={{
                     width: '100px',
                     height: '120px',
-                    border: '2px solid #ccc',
+                    border: '2px dashed #ccc',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -99,21 +110,29 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     textAlign: 'center',
                     fontSize: '12px',
                     color: '#888',
-                    padding: '10px',
-                    marginLeft: '20px'
+                    padding: '10px'
                 }}>
-                    {language === 'bn' ? 'পাসপোর্ট সাইজের ছবি' : 'Passport Size Photo'}
+                    {labels.passportPhoto}
                 </div>
             </div>
 
+             <div style={{width: '100%'}}>
+                    {renderField(labels.joiningDate, member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : '')}
+                    {renderField(labels.dateOfBirth, member.dob)}
+                    {renderField(labels.fatherName, member.fatherName)}
+                    {renderField(labels.motherName, member.motherName)}
+                    {renderField(labels.nid, member.nid)}
+                    {renderField(labels.phone, member.phone)}
+                    {renderField(labels.address, member.address)}
+                </div>
+
             {/* Conditions */}
-            <div style={{ marginBottom: '30px' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '10px' }}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
-                <ul style={{ paddingLeft: '0', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
+            <div style={{ margin: '30px 0' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px' }}>{labels.conditions}</h3>
+                <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'disc', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
                     {conditions.map((condition, index) => (
-                      <li key={index} style={{paddingLeft: '15px', position: 'relative'}}>
-                        <span style={{ position: 'absolute', left: '0' }}>•</span>
-                        {condition}
+                      <li key={index} style={{paddingLeft: '5px', marginBottom: '4px'}}>
+                        {condition.replace(/•/g, '').trim()}
                       </li>
                     ))}
                 </ul>
@@ -122,18 +141,20 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             {/* Signature */}
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '40px' }}>
                 <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
-                   {language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature'}
+                   {labels.memberSignature}
                 </div>
                 <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
-                    {language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature'}
+                    {labels.authoritySignature}
                 </div>
             </div>
 
             {/* Footer */}
-            <div style={{ textAlign: 'center', marginTop: '40px', paddingTop: '15px', borderTop: '1px solid #eee', fontSize: '10px', color: '#777' }}>
-                 <p>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
-                 <p style={{ fontStyle: 'italic', marginTop: '5px' }}>Developed & Supported by AL-SADEEQ Team.</p>
+            <div style={{ textAlign: 'center', marginTop: '40px', paddingTop: '15px', fontSize: '10px', color: '#777' }}>
+                 <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> (community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.) All rights reserved.</p>
+                 <p style={{ fontStyle: 'italic', marginTop: '5px', margin: 0 }}>Developed & Supported by AL-SADEEQ Team.</p>
             </div>
         </div>
     );
 }
+
+    

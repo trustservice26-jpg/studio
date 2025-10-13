@@ -126,17 +126,12 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
           const canvasWidth = canvas.width;
           const canvasHeight = canvas.height;
           const ratio = canvasWidth / canvasHeight;
-          const imgWidth = pdfWidth - 20;
+          const imgWidth = pdfWidth; // Use full width
           const imgHeight = imgWidth / ratio;
           
-          let y = 10;
-          if (imgHeight > pdfHeight) {
-             y = 0;
-          } else {
-             y = (pdfHeight - imgHeight) / 2;
-          }
+          let y = 0; // Start from top
           
-          pdf.addImage(imgData, 'PNG', 10, y, imgWidth, imgHeight);
+          pdf.addImage(imgData, 'PNG', 0, y, imgWidth, imgHeight);
 
           pdf.save(`${formDataForPdf.name}-registration-form.pdf`);
 
@@ -300,3 +295,5 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     </>
   );
 }
+
+    
