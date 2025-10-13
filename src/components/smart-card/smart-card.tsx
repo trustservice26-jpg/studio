@@ -121,8 +121,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
           <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
           
-          <div className="p-[10px_16px] flex-grow flex flex-col justify-center">
-              <div className="flex-grow">
+          <div className="p-[10px_16px] flex-grow">
+              <div>
                   <h3 className="font-bold text-[0.7rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
                   <ul className="m-0 pl-[14px] text-[0.6rem] text-gray-600 list-disc space-y-px text-left">
                       <li>This card is non-transferable.</li>
