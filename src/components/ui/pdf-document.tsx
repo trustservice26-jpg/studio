@@ -28,11 +28,11 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
     }
 
     return (
-        <div>
-            <div id="pdf-card-front" style={{ width: cardWidth, height: cardHeight }}>
+        <div style={{ display: 'flex', gap: '10px', padding: '5px', background: 'white' }}>
+            <div id="pdf-card-front" style={{ width: cardWidth, height: cardHeight, flexShrink: 0 }}>
                 <SmartCard member={member} side="front" isPdf={true} language={language} />
             </div>
-             <div id="pdf-card-back" style={{ width: cardWidth, height: cardHeight }}>
+             <div id="pdf-card-back" style={{ width: cardWidth, height: cardHeight, flexShrink: 0 }}>
                 <SmartCard member={member} side="back" isPdf={true} language={language} />
             </div>
         </div>

@@ -40,10 +40,9 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
       const generatePdf = async () => {
         await new Promise(resolve => setTimeout(resolve, 100));
 
-        const frontElement = document.getElementById('pdf-card-front');
-        const backElement = document.getElementById('pdf-card-back');
-
-        if (!frontElement || !backElement) {
+        const pdfElement = document.getElementById('pdf-document-wrapper');
+        
+        if (!pdfElement) {
             console.error("PDF content elements not found");
             setIsGeneratingPdf(false);
             setPdfContent(null);
@@ -54,20 +53,31 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
             const pdf = new jsPDF({
                 orientation: 'landscape',
                 unit: 'mm',
-                format: [85.6, 53.98] 
+                format: 'a4' 
             });
 
-            const renderAndAdd = async (element: HTMLElement, page: number) => {
-                if (page > 1) {
-                  pdf.addPage();
-                }
-                const canvas = await html2canvas(element, { scale: 3, useCORS: true, backgroundColor: null });
-                const imgData = canvas.toDataURL('image/png');
-                pdf.addImage(imgData, 'PNG', 0, 0, 85.6, 53.98);
-            };
+            const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true, backgroundColor: null });
+            const imgData = canvas.toDataURL('image/png');
+            
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
 
-            await renderAndAdd(frontElement, 1);
-            await renderAndAdd(backElement, 2);
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const ratio = canvasWidth / canvasHeight;
+            
+            let finalWidth = pageWidth - 20; // 10mm margin
+            let finalHeight = finalWidth / ratio;
+            
+            if (finalHeight > pageHeight - 20) {
+              finalHeight = pageHeight - 20;
+              finalWidth = finalHeight * ratio;
+            }
+
+            const x = (pageWidth - finalWidth) / 2;
+            const y = (pageHeight - finalHeight) / 2;
+            
+            pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
             
             pdf.save(`${member!.name}-SmartCard.pdf`);
 
@@ -121,7 +131,7 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
       </Dialog>
       
       <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
-        {isGeneratingPdf && pdfContent}
+        {isGeneratingPdf && <div id="pdf-document-wrapper">{pdfContent}</div>}
       </div>
     </>
   );
