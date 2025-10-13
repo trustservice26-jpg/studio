@@ -15,24 +15,41 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
     const title = isRegistration ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Membership Registration Form') : (language === 'bn' ? 'সদস্য তথ্য ফর্ম' : 'Member Information Form');
 
     const renderField = (label: string, value: string | undefined) => (
-        <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'flex-start' }}>
+        <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'flex-end' }}>
             <p style={{ margin: 0, fontWeight: 'bold', width: '150px', flexShrink: 0, fontSize: '12px' }}>{label}:</p>
-            <p style={{ margin: 0, borderBottom: '1px dotted #888', flexGrow: 1, fontSize: '12px', paddingBottom: '2px' }}>{value || ''}</p>
+            <p style={{ margin: 0, borderBottom: '1px dotted #888', flexGrow: 1, fontSize: '12px', paddingBottom: '2px', lineHeight: '1.4' }}>{value || ''}</p>
         </div>
     );
 
     return (
         <div style={{ width: '800px', padding: '40px', color: '#000', background: '#fff', fontFamily: 'sans-serif' }}>
-            <div style={{ textAlign: 'center', marginBottom: '30px', borderBottom: '2px solid #ccc', paddingBottom: '15px' }}>
-                <h1 style={{ fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
-                  <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
-                </h1>
-                <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 0 0' }}>
-                  {language === 'bn'
-                    ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
-                    : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
-                </p>
-                <h2 style={{ fontSize: '20px', marginTop: '20px', color: '#333' }}>{title}</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid #ccc', paddingBottom: '15px', marginBottom: '30px' }}>
+                <div style={{ textAlign: 'left', flexGrow: 1 }}>
+                    <h1 style={{ fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
+                      <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
+                    </h1>
+                    <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 0 0' }}>
+                      {language === 'bn'
+                        ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
+                        : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
+                    </p>
+                     <h2 style={{ fontSize: '20px', marginTop: '20px', color: '#333', textAlign: 'center' }}>{title}</h2>
+                </div>
+                <div style={{
+                    width: '120px',
+                    height: '150px',
+                    border: '1px solid #999',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    marginLeft: '30px',
+                    textAlign: 'center',
+                    fontSize: '10px',
+                    color: '#888'
+                }}>
+                    {language === 'bn' ? 'পাসপোর্ট সাইজের ছবি এখানে লাগান' : 'Affix Passport Size Photo Here'}
+                </div>
             </div>
             
             <div>
