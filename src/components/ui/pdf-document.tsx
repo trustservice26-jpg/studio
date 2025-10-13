@@ -21,6 +21,39 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             <p style={{ margin: 0, fontSize: '12px', textAlign: 'right' }}>{value || ''}</p>
         </div>
     );
+    
+    const conditionsEn = [
+        "All members will have to to be active at any time.",
+        "If any member will not active in organization team then he will shown as inactive.",
+        "If any members does not give money for orgnisation or making late more then 3 times then he will be inactive also can make resigned from the organization team.",
+        "For adding again as a member he will have to registered for member and also have to give late fine 50 taka for adding again as a member.",
+        "If any member make improper behavior then he will have to resigned from organization team.",
+        "For late paying he will have to pay 20 taka extra,which will add in the organization fund otherwise admin can make inactive.",
+        "You as a member cannot collect money from other member team if it is proof then he will have to make resigned from the team.",
+        "If member collect from outsource then it will have to give proof otherwise it will not exceptable.",
+        "If the member give money to other member for the organization team then this risk will taken by that member who collected the money.",
+        "Remember,Never tell a lie, because this organization will growup if all member are as a friend.",
+        "Every member will have a chance to talk with organistion team about his idea,so we can growup.",
+        "We all are friend and we will support the society and family members also."
+    ];
+    
+    const conditionsBn = [
+        "সকল সদস্যকে সর্বদা সক্রিয় থাকতে হবে।",
+        "যদি কোনো সদস্য সাংগঠনিক দলে সক্রিয় না থাকেন, তবে তাকে নিষ্ক্রিয় হিসেবে দেখানো হবে।",
+        "যদি কোনো সদস্য সংগঠনের জন্য অর্থ প্রদান না করেন বা ৩ বারের বেশি দেরি করেন, তবে তাকে নিষ্ক্রিয় করা হবে এবং সংগঠন থেকে পদত্যাগ করানো হতে পারে।",
+        "পুনরায় সদস্য হিসেবে যোগদানের জন্য তাকে সদস্য হিসেবে নিবন্ধন করতে হবে এবং পুনরায় যোগদানের জন্য ৫০ টাকা বিলম্ব ফি দিতে হবে।",
+        "যদি কোনো সদস্য অশোভন আচরণ করেন, তবে তাকে সংগঠন থেকে পদত্যাগ করতে হবে।",
+        "বিলম্বিত অর্থ প্রদানের জন্য তাকে ২০ টাকা অতিরিক্ত প্রদান করতে হবে, যা সংগঠনের তহবিলে যোগ হবে, অন্যথায় অ্যাডমিন তাকে নিষ্ক্রিয় করতে পারেন।",
+        "সদস্য হিসেবে আপনি অন্য কোনো সদস্য দল থেকে অর্থ সংগ্রহ করতে পারবেন না, যদি এর প্রমাণ পাওয়া যায়, তবে তাকে দল থেকে পদত্যাগ করতে হবে।",
+        "যদি সদস্য বাইরের উৎস থেকে অর্থ সংগ্রহ করেন, তবে তার প্রমাণ দিতে হবে, অন্যথায় তা গ্রহণযোগ্য হবে না।",
+        "যদি কোনো সদস্য সংগঠনের জন্য অন্য সদস্যকে টাকা দেন, তবে সেই ঝুঁকি টাকা সংগ্রহকারী সদস্যকে বহন করতে হবে।",
+        "মনে রাখবেন, कभी झूठ न बोलें, কারণ এই সংগঠনটি তখনই বড় হবে যখন সব সদস্য বন্ধুর মতো থাকবে।",
+        "প্রত্যেক সদস্যের তার ধারণা সম্পর্কে সংগঠন দলের সাথে কথা বলার সুযোগ থাকবে, যাতে আমরা উন্নতি করতে পারি।",
+        "আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।"
+    ];
+
+    const conditions = language === 'bn' ? conditionsBn : conditionsEn;
+
 
     return (
         <div style={{ width: '800px', padding: '40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
@@ -45,10 +78,17 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             </div>
             
             {/* Member Info & Photo */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px' }}>
+                <div style={{width: '65%'}}>
                     <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>{member.name || 'Member Name'}</p>
-                    <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 0 0' }}>ID: {member.memberId || 'N/A'}</p>
+                    <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 15px 0' }}>ID: {member.memberId || 'N/A'}</p>
+                    {renderField(language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date', member.joinDate ? new Date(member.joinDate).toLocaleDateString('en-US') : '')}
+                    {renderField(language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth', member.dob)}
+                    {renderField(language === 'bn' ? 'পিতার নাম' : "Father's Name", member.fatherName)}
+                    {renderField(language === 'bn' ? 'মাতার নাম' : "Mother's Name", member.motherName)}
+                    {renderField(language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.', member.nid)}
+                    {renderField(language === 'bn' ? 'ফোন' : 'Phone', member.phone)}
+                    {renderField(language === 'bn' ? 'ঠিকানা' : 'Address', member.address)}
                 </div>
                 <div style={{
                     width: '120px',
@@ -61,44 +101,25 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     textAlign: 'center',
                     fontSize: '12px',
                     color: '#888',
-                    padding: '10px'
+                    padding: '10px',
+                    marginTop: '10px'
                 }}>
                     Passport Size Photo
                 </div>
             </div>
 
-            {/* Details Table */}
-            <div style={{ marginBottom: '30px' }}>
-                {renderField(language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date', member.joinDate ? new Date(member.joinDate).toLocaleDateString('en-US') : '')}
-                {renderField(language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth', member.dob)}
-                {renderField(language === 'bn' ? 'পিতার নাম' : "Father's Name", member.fatherName)}
-                {renderField(language === 'bn' ? 'মাতার নাম' : "Mother's Name", member.motherName)}
-                {renderField(language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.', member.nid)}
-                {renderField(language === 'bn' ? 'ফোন' : 'Phone', member.phone)}
-                {renderField(language === 'bn' ? 'ঠিকানা' : 'Address', member.address)}
-            </div>
-
             {/* Conditions */}
-            <div style={{ marginBottom: '50px' }}>
+            <div style={{ marginBottom: '30px' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '10px' }}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
                 <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: "'• '", fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
-                    <li>ALL members will have to to be active at any time.</li>
-                    <li>If any member will not active in organization team then he will shown as inactive.</li>
-                    <li>IF any members does not give money for orgnisation or making late more then 3 times then he will be inactive also can make resigned from the organization team.</li>
-                    <li>For adding again as a member he will have to registered for member and also have to give late fine 50 taka for adding again as a member.</li>
-                    <li>If any member make improper behavior then he will have to resigned from organization team.</li>
-                    <li>For late paying he will have to pay 20 taka extra,which will add in the organization fund otherwise admin can make inactive.</li>
-                    <li>You as a member cannot collect money from other member team if it is proof then he will have to make resigned from the team.</li>
-                    <li>If member collect from outsource then it will have to give proof otherwise it will not exceptable.</li>
-                    <li>If the member give money to other member for the organization team then this risk will taken by that member who collected the money.</li>
-                    <li>Remember,Never tell a lie, because this organization will growup if all member are as a friend.</li>
-                    <li>Every member will have a chance to talk with organistion team about his idea,so we can growup.</li>
-                    <li>We all are friend and we will support the society and family members also.</li>
+                    {conditions.map((condition, index) => (
+                      <li key={index} style={{paddingLeft: '5px'}}>{condition}</li>
+                    ))}
                 </ul>
             </div>
             
             {/* Signature */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '20px', borderTop: '1px solid #eee' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '40px' }}>
                 <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
                    {language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature'}
                 </div>
