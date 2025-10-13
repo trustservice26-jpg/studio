@@ -4,7 +4,7 @@
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
-import { Quote, HeartHandshake, Globe, Mail, MapPin } from 'lucide-react';
+import { Quote, HeartHandshake } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 import { useIsClient } from '@/hooks/use-is-client';
@@ -132,18 +132,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                     </ul>
                     <h3 className="font-bold text-[0.6rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
                     <div className="text-[0.5rem] text-gray-700 m-0 leading-snug space-y-px text-left">
-                        <p className="flex items-center gap-1.5">
-                            <Globe className="w-3 h-3" />
-                            <span>www.hadiya.org</span>
-                        </p>
-                        <p className="flex items-center gap-1.5">
-                            <Mail className="w-3 h-3" />
-                            <span>infohadiyateam@gmail.com</span>
-                        </p>
-                        <p className="flex items-center gap-1.5">
-                            <MapPin className="w-3 h-3" />
-                            <span>Chandgaon, Chattogram, Bangladesh.</span>
-                        </p>
+                        <p>www.hadiya.org</p>
+                        <p>infohadiyateam@gmail.com</p>
+                        <p>Chandgaon, Chattogram, Bangladesh.</p>
                     </div>
                 </div>
             </div>
