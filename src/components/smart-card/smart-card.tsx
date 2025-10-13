@@ -118,11 +118,12 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const barcodeValue = `${member?.memberId || 'H-0000'}-${member?.status || 'inactive'}`;
 
   return (
-    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
-      <div className="h-[25px] bg-gray-800 mt-[15px]"></div>
+    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses, 'flex flex-col')}>
+      <div className="h-[25px] bg-gray-800 mt-[15px] shrink-0"></div>
       
-      <div className="px-4 py-2 flex-grow flex flex-col justify-between">
-        <div>
+      <div className="px-4 py-2 flex-grow flex flex-col">
+        {/* Main Content Area */}
+        <div className="flex-grow">
           <h3 className="font-bold text-[0.7rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
           <ul className="m-0 pl-[14px] text-[0.6rem] text-gray-600 list-disc space-y-px text-left">
             <li>This card is non-transferable.</li>
@@ -138,11 +139,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           </div>
         </div>
         
-        <div className="text-center pt-2">
-          <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
+        {/* Footer with Barcode */}
+        <div className="pt-2 flex-shrink-0">
+          <div className="text-center">
+            <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
