@@ -33,20 +33,14 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         const memberName = member?.name || 'N/A';
         const joinDate = member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
         const status = member?.status || 'N/A';
-        const phone = member?.phone || 'N/A';
-        const dob = member?.dob || 'N/A';
-        const fatherName = member?.fatherName || 'N/A';
-        const nid = member?.nid || 'N/A';
-        const address = member?.address || 'N/A';
 
-        const qrData = `Member ID: ${memberId}\nName: ${memberName}\nPhone: ${phone}\nJoin Date: ${joinDate}\nStatus: ${status}\nDOB: ${dob}\nFather's Name: ${fatherName}\nNID/Birth No: ${nid}\nAddress: ${address}`;
-
+        const qrData = `Member ID: ${memberId}\nName: ${memberName}\nJoin Date: ${joinDate}\nStatus: ${status}`;
         try {
           const url = await QRCode.toDataURL(qrData, {
             errorCorrectionLevel: 'H',
             type: 'image/png',
             margin: 1,
-            width: isPdf ? 128 : 80,
+            width: isPdf ? 80 : 80,
             color: {
               dark: '#000000',
               light: '#FFFFFF'
@@ -120,8 +114,6 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   }
 
   // BACK SIDE
-  const barcodeValue = `${member?.memberId || 'H-0000'}-${member?.status || 'inactive'}`;
-
   const GlobeIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
   );
@@ -133,45 +125,35 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   );
 
   return (
-    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses, 'p-0 flex flex-col')}>
-      {/* Magnetic Stripe */}
-      <div className="h-[20px] bg-gray-800 shrink-0 w-full mt-3"></div>
-
-      <div className="flex-grow flex flex-col px-4 py-2">
-        {/* Content Area */}
-        <div className="flex-grow">
-          <div className="mb-2">
-            <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
-            <ul className="m-0 pl-[12px] text-[0.5rem] text-gray-600 list-disc space-y-px text-left">
-              <li>This card is non-transferable.</li>
-              <li>Please return if found.</li>
-              <li>Property of HADIYA – মানবতার উপহার.</li>
-            </ul>
+    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
+      <div className="h-[20px] bg-gray-800 shrink-0 mt-3 w-full"></div>
+      <div className="p-4 flex-grow">
+        <div className="mb-3">
+          <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
+          <ul className="m-0 pl-[12px] text-[0.5rem] text-gray-600 list-disc space-y-px text-left">
+            <li>This card is non-transferable.</li>
+            <li>Please return if found.</li>
+            <li>Property of HADIYA – মানবতার উপহার.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
+          <div className="flex items-center text-[0.45rem] text-gray-700 leading-tight">
+            <GlobeIcon />
+            <span className="ml-1">www.hadiya.org</span>
           </div>
-          
-          <div>
-            <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
-            <div style={{ fontSize: '0.45rem', color: '#374151', lineHeight: '1.2' }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <GlobeIcon />
-                <span style={{ marginLeft: '4px' }}>www.hadiya.org</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', marginTop: '2px' }}>
-                <MailIcon />
-                <span style={{ marginLeft: '4px' }}>infohadiyateam@gmail.com</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', marginTop: '2px' }}>
-                <MapPinIcon />
-                <span style={{ marginLeft: '4px' }}>Chandgaon, Chattogram, Bangladesh.</span>
-              </div>
-            </div>
+          <div className="flex items-center text-[0.45rem] text-gray-700 leading-tight mt-0.5">
+            <MailIcon />
+            <span className="ml-1">infohadiyateam@gmail.com</span>
+          </div>
+           <div className="flex items-center text-[0.45rem] text-gray-700 leading-tight mt-0.5">
+            <MapPinIcon />
+            <span className="ml-1">Chandgaon, Chattogram, Bangladesh.</span>
           </div>
         </div>
-
-        {/* Footer with Barcode */}
-        <div className="flex-shrink-0 pt-2 text-center">
-          <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
-        </div>
+      </div>
+      <div className="px-4 pb-2 pt-1 text-center">
+        <BarcodeDisplay memberId={member?.memberId || 'H-0000'} isPdf={isPdf} />
       </div>
     </div>
   );

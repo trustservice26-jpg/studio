@@ -101,7 +101,7 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                             <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'disc', lineHeight: '1.4' }}>
                                 <li>All members will have to be active at any time. If any member will not be active in the organization team then he will be shown as inactive.</li>
                                 <li>If any member does not give money for the organization or is late more than 3 times then he will be inactive and can also be made to resign from the organization team. For adding again as a member he will have to register for member and also have to give a late fine of 50 taka for adding again as a member.</li>
-                                <li>If any member makes improper behavior then he will have to resign from the organization team.</li>
+                                <li>If any member make improper behavior then he will have to resign from the organization team.</li>
                                 <li>For late paying he will have to pay 20 taka extra, which will be added to the organization fund, otherwise admin can make him inactive.</li>
                                 <li>You as a member cannot collect money from other member team if it is proven then he will have to be made to resign from the team.</li>
                                 <li>If a member collects from an outsource then it will have to be given proof otherwise it will not be acceptable.</li>
