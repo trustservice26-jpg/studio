@@ -33,8 +33,11 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         const memberName = member?.name || 'N/A';
         const joinDate = member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
         const status = member?.status || 'N/A';
+        const phone = member?.phone || 'N/A';
+        const dob = member?.dob || 'N/A';
+        const fatherName = member?.fatherName || 'N/A';
 
-        const qrData = `Member ID: ${memberId}\nName: ${memberName}\nJoin Date: ${joinDate}\nStatus: ${status}`;
+        const qrData = `Member ID: ${memberId}\nName: ${memberName}\nPhone: ${phone}\nJoin Date: ${joinDate}\nStatus: ${status}\nDOB: ${dob}\nFather's Name: ${fatherName}`;
 
         try {
           const url = await QRCode.toDataURL(qrData, {
@@ -122,7 +125,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div className="h-[20px] bg-gray-800 mt-[15px] shrink-0"></div>
         
         <div className="px-3 py-2 flex-grow flex flex-col justify-between">
-            <div className="flex-grow">
+             <div className="flex-grow">
                 <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
                 <ul className="m-0 pl-[12px] text-[0.55rem] text-gray-600 list-disc space-y-px text-left">
                     <li>This card is non-transferable.</li>
@@ -156,5 +159,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     </div>
 );
 }
-
-    
