@@ -16,9 +16,9 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         : (language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details');
 
     const renderField = (label: string, value: string | undefined | null) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee' }}>
-            <p style={{ margin: 0, fontWeight: 'bold', fontSize: '12px' }}>{label}</p>
-            <p style={{ margin: 0, fontSize: '12px', textAlign: 'right' }}>{value || ''}</p>
+        <div style={{ display: 'flex', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee' }}>
+            <p style={{ margin: 0, fontWeight: 'bold', fontSize: '12px', width: '150px' }}>{label}</p>
+            <p style={{ margin: 0, fontSize: '12px', textAlign: 'left', flex: 1 }}>: {value || ''}</p>
         </div>
     );
     
@@ -52,13 +52,14 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         "আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।"
     ];
 
+
     const conditions = language === 'bn' ? conditionsBn : conditionsEn;
 
 
     return (
-        <div style={{ width: '800px', padding: '40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
+        <div style={{ width: '800px', padding: '47.25px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #ddd', paddingBottom: '15px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '15px' }}>
                 <div>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
                       <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
@@ -67,18 +68,19 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                       {'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
                     </p>
                 </div>
+                {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '60px', height: '60px' }} />}
             </div>
 
-            {/* Title */}
-            <div style={{ textAlign: 'center', margin: '25px 0' }}>
-                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold' }}>{title}</h2>
+             {/* Title */}
+            <div style={{ textAlign: 'center', margin: '20px 0', borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd', padding: '10px 0' }}>
+                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold', margin: 0 }}>{title}</h2>
             </div>
             
             {/* Member Info & Photo */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px' }}>
-                <div style={{width: '65%'}}>
-                    <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>{member.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</p>
-                    <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 15px 0' }}>ID: {member.memberId || 'N/A'}</p>
+                <div style={{width: 'calc(100% - 140px)'}}>
+                    {renderField(language === 'bn' ? 'সদস্য আইডি' : 'Member ID', member.memberId)}
+                    {renderField(language === 'bn' ? 'পূর্ণ নাম' : 'Full Name', member.name)}
                     {renderField(language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date', member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : '')}
                     {renderField(language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth', member.dob)}
                     {renderField(language === 'bn' ? 'পিতার নাম' : "Father's Name", member.fatherName)}
@@ -90,7 +92,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                 <div style={{
                     width: '100px',
                     height: '120px',
-                    border: '2px dashed #ccc',
+                    border: '2px solid #ccc',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -99,7 +101,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     fontSize: '12px',
                     color: '#888',
                     padding: '10px',
-                    marginTop: '10px'
+                    marginLeft: '20px'
                 }}>
                     {language === 'bn' ? 'পাসপোর্ট সাইজের ছবি' : 'Passport Size Photo'}
                 </div>
