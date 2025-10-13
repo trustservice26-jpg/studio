@@ -22,9 +22,9 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
     );
 
     return (
-        <div style={{ width: '800px', padding: '40px', color: '#000', background: '#fff', fontFamily: 'sans-serif' }}>
+        <div style={{ width: '800px', padding: '40px', color: '#000', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             <div style={{ textAlign: 'center', borderBottom: '2px solid #ccc', paddingBottom: '15px', marginBottom: '20px' }}>
-                <h1 style={{ fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
+                <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
                   <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
                 </h1>
                 <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 0 0' }}>
@@ -34,9 +34,9 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                 </p>
             </div>
             
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px' }}>
                 <div style={{ flexGrow: 1 }}>
-                     <h2 style={{ fontSize: '20px', color: '#333', textAlign: 'center' }}>{title}</h2>
+                     <h2 style={{ fontSize: '20px', color: '#333', textAlign: 'center', marginTop: '10px' }}>{title}</h2>
                 </div>
                 <div style={{
                     width: '120px',
@@ -70,7 +70,7 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                 {renderField(language === 'bn' ? 'নিবন্ধনের তারিখ' : 'Registration Date', registrationDate)}
             </div>
 
-            <div style={{ marginTop: '20px' }}>
+            <div style={{ marginTop: '30px' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '10px' }}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
                 <div style={{ fontSize: '10px', color: '#555' }}>
                     {language === 'bn' ? (
@@ -103,14 +103,14 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                 </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '20px', borderTop: '1px solid #eee' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '80px', paddingTop: '20px' }}>
                 <div style={{ width: '45%' }}>
-                    <div style={{ borderTop: '1px solid #000', paddingTop: '5px', textAlign: 'center', fontSize: '12px' }}>
+                    <div style={{ borderTop: '1px solid #000', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
                        {language === 'bn' ? 'আবেদনকারীর স্বাক্ষর' : "Applicant's Signature"}
                     </div>
                 </div>
                 <div style={{ width: '45%' }}>
-                    <div style={{ borderTop: '1px solid #000', paddingTop: '5px', textAlign: 'center', fontSize: '12px' }}>
+                    <div style={{ borderTop: '1px solid #000', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
                         {language === 'bn' ? 'অনুমোদনকারী কর্তৃপক্ষের স্বাক্ষর' : "Authorized Signature"}
                     </div>
                 </div>
