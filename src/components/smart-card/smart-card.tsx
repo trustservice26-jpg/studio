@@ -4,7 +4,7 @@
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
-import { Quote, HeartHandshake, Globe, Mail, MapPin } from 'lucide-react';
+import { Quote, HeartHandshake } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 import { useIsClient } from '@/hooks/use-is-client';
@@ -46,7 +46,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
             errorCorrectionLevel: 'H',
             type: 'image/png',
             margin: 1,
-            width: isPdf ? 80 : 80,
+            width: isPdf ? 128 : 80,
             color: {
               dark: '#000000',
               light: '#FFFFFF'
@@ -141,19 +141,10 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           
           <div>
             <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
-            <div className="text-[0.45rem] text-gray-700 m-0 leading-snug text-left space-y-px">
-              <div className="flex items-center gap-1.5">
-                  <Globe className="w-2.5 h-2.5 shrink-0" />
-                  <span>www.hadiya.org</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                  <Mail className="w-2.5 h-2.5 shrink-0" />
-                  <span>infohadiyateam@gmail.com</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                  <MapPin className="w-2.5 h-2.5 shrink-0" />
-                  <span>Chandgaon, Chattogram, Bangladesh.</span>
-              </div>
+            <div className="text-[0.45rem] text-gray-700 m-0 leading-snug space-y-px">
+                <p>www.hadiya.org</p>
+                <p>infohadiyateam@gmail.com</p>
+                <p>Chandgaon, Chattogram, Bangladesh.</p>
             </div>
           </div>
         </div>
