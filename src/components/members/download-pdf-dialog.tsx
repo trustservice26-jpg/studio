@@ -48,8 +48,8 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
     if (!selectedMember) return;
     setIsGeneratingPdf(true);
 
-    // Prepare the content first
-    setPdfContent(<PdfDocument member={selectedMember} language={language} isRegistration={false} />);
+    // Prepare the content first. Always generate the registration form.
+    setPdfContent(<PdfDocument member={selectedMember} language={language} isRegistration={true} />);
   };
   
   useEffect(() => {
