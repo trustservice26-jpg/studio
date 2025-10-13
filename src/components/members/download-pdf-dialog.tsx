@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import QRCode from 'qrcode';
 import {
   Dialog,
   DialogContent,
@@ -36,6 +37,7 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfContent, setPdfContent] = useState<React.ReactNode | null>(null);
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   useEffect(() => {
     if (preselectedMemberName) {
@@ -48,8 +50,11 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
     if (!selectedMember) return;
     setIsGeneratingPdf(true);
 
-    // Prepare the content first. Always generate the registration form.
-    setPdfContent(<PdfDocument member={selectedMember} language={language} isRegistration={true} />);
+    const qrData = `Member ID: ${selectedMember.memberId}\nName: ${selectedMember.name}\nJoin Date: ${new Date(selectedMember.joinDate).toLocaleDateString()}\nStatus: ${selectedMember.status}`;
+    const qrUrl = await QRCode.toDataURL(qrData, { errorCorrectionLevel: 'H', type: 'image/png', margin: 1 });
+    setQrCodeUrl(qrUrl);
+    
+    setPdfContent(<PdfDocument member={selectedMember} language={language} isRegistration={false} qrCodeUrl={qrUrl} />);
   };
   
   useEffect(() => {
@@ -67,7 +72,7 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
         }
 
         try {
-            const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true, backgroundColor: '#ffffff' });
+            const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true, windowWidth: 800 });
             const imgData = canvas.toDataURL('image/png');
             
             const pdf = new jsPDF({
@@ -76,24 +81,22 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
                 format: 'a4'
             });
             
-            const pageHeight = pdf.internal.pageSize.getHeight();
-            const pageWidth = pdf.internal.pageSize.getWidth();
-
-            const imgHeight = (canvas.height * (pageWidth - 20)) / canvas.width;
-            let finalHeight = imgHeight;
-            let finalWidth = pageWidth - 20;
-
-            let y = 10;
-            if (finalHeight > pageHeight - 20) {
-              finalHeight = pageHeight - 20;
-              finalWidth = (canvas.width * finalHeight) / canvas.height;
-              y = 10;
-            } else {
-              y = (pageHeight - finalHeight) / 2;
-            }
-            const x = (pageWidth - finalWidth) / 2;
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const ratio = canvasWidth / canvasHeight;
+            const imgWidth = pdfWidth - 20;
+            const imgHeight = imgWidth / ratio;
             
-            pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+            let y = 10;
+            if (imgHeight > pdfHeight) {
+                y = 0;
+            } else {
+                y = (pdfHeight - imgHeight) / 2;
+            }
+            
+            pdf.addImage(imgData, 'PNG', 10, y, imgWidth, imgHeight);
             pdf.save(`${selectedMember!.name}-details.pdf`);
         } catch (error) {
             console.error("Error generating PDF:", error);

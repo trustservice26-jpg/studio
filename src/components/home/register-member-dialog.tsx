@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import QRCode from 'qrcode';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -55,6 +56,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfContent, setPdfContent] = useState<React.ReactNode | null>(null);
   const [formDataForPdf, setFormDataForPdf] = useState<Partial<Member> | null>(null);
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
@@ -84,8 +86,12 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     );
 
     if (newMember) {
+      const qrData = `Member ID: ${newMember.memberId}\nName: ${newMember.name}\nJoin Date: ${new Date(newMember.joinDate!).toLocaleDateString()}\nStatus: ${newMember.status}`;
+      const qrUrl = await QRCode.toDataURL(qrData, { errorCorrectionLevel: 'H', type: 'image/png', margin: 1 });
+
+      setQrCodeUrl(qrUrl);
       setFormDataForPdf(newMember);
-      setPdfContent(<PdfDocument member={newMember} language={language} isRegistration={true} />);
+      setPdfContent(<PdfDocument member={newMember} language={language} isRegistration={true} qrCodeUrl={qrUrl} />);
     } else {
         // Handle error case where member creation failed
         setIsGeneratingPdf(false);
@@ -106,7 +112,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
         }
 
         try {
-          const canvas = await html2canvas(pdfElement, { scale: 2, useCORS: true });
+          const canvas = await html2canvas(pdfElement, { scale: 3, useCORS: true, windowWidth: 800 });
           const imgData = canvas.toDataURL('image/png');
           
           const pdf = new jsPDF({
@@ -115,24 +121,22 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
             format: 'a4',
           });
           
-          const pageHeight = pdf.internal.pageSize.getHeight();
-          const pageWidth = pdf.internal.pageSize.getWidth();
-
-          const imgWidth = canvas.width;
-          const imgHeight = canvas.height;
-          const ratio = imgWidth / imgHeight;
-
-          const finalWidth = pageWidth - 20; // 10mm margin on each side
-          const finalHeight = finalWidth / ratio;
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const canvasWidth = canvas.width;
+          const canvasHeight = canvas.height;
+          const ratio = canvasWidth / canvasHeight;
+          const imgWidth = pdfWidth - 20;
+          const imgHeight = imgWidth / ratio;
           
           let y = 10;
-          if (finalHeight > pageHeight) {
-            y = 0;
+          if (imgHeight > pdfHeight) {
+             y = 0;
           } else {
-            y = (pageHeight - finalHeight) / 2;
+             y = (pdfHeight - imgHeight) / 2;
           }
           
-          pdf.addImage(imgData, 'PNG', 10, y, finalWidth, finalHeight);
+          pdf.addImage(imgData, 'PNG', 10, y, imgWidth, imgHeight);
 
           pdf.save(`${formDataForPdf.name}-registration-form.pdf`);
 
@@ -296,5 +300,3 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
     </>
   );
 }
-
-    
