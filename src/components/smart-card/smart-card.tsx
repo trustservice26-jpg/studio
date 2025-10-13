@@ -40,7 +40,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           const url = await QRCode.toDataURL(qrData, {
             errorCorrectionLevel: 'H',
             type: 'image/png',
-            margin: 2,
+            margin: 1,
             width: isPdf ? 80 : 80,
             color: {
               dark: '#000000',
@@ -131,7 +131,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                         <li>Property of HADIYA – মানবতার উপহার.</li>
                     </ul>
                     <h3 className="font-bold text-[0.6rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
-                    <div className="text-[0.5rem] text-gray-700 m-0 leading-snug space-y-px text-left">
+                    <div className="text-[0.5rem] text-gray-700 m-0 leading-snug space-y-0.5 text-left">
                         <p className="flex items-center gap-1.5">
                             <Globe className="w-3 h-3" />
                             <span>www.hadiya.org</span>

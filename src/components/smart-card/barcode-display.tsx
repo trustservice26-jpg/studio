@@ -20,8 +20,8 @@ export function BarcodeDisplay({ memberId, isPdf = false }: BarcodeDisplayProps)
     <Barcode
       value={memberId}
       format="CODE128"
-      width={isPdf ? 1.2 : 1.5}
-      height={isPdf ? 25 : 40}
+      width={isPdf ? 1.2 : 1.2}
+      height={isPdf ? 25 : 30}
       displayValue={false}
       background="transparent"
       lineColor="#2d3748"
@@ -29,3 +29,4 @@ export function BarcodeDisplay({ memberId, isPdf = false }: BarcodeDisplayProps)
     />
   );
 }
+
