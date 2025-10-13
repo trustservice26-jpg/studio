@@ -122,6 +122,16 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   // BACK SIDE
   const barcodeValue = `${member?.memberId || 'H-0000'}-${member?.status || 'inactive'}`;
 
+  const GlobeIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+  );
+  const MailIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="00 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+  );
+  const MapPinIcon = () => (
+     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+  );
+
   return (
     <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses, 'p-0 flex flex-col')}>
       {/* Magnetic Stripe */}
@@ -141,10 +151,19 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           
           <div>
             <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
-            <div className="text-[0.45rem] text-gray-700 m-0 leading-snug space-y-px">
-                <p>www.hadiya.org</p>
-                <p>infohadiyateam@gmail.com</p>
-                <p>Chandgaon, Chattogram, Bangladesh.</p>
+            <div style={{ fontSize: '0.45rem', color: '#374151', lineHeight: '1.2' }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <GlobeIcon />
+                <span style={{ marginLeft: '4px' }}>www.hadiya.org</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', marginTop: '2px' }}>
+                <MailIcon />
+                <span style={{ marginLeft: '4px' }}>infohadiyateam@gmail.com</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', marginTop: '2px' }}>
+                <MapPinIcon />
+                <span style={{ marginLeft: '4px' }}>Chandgaon, Chattogram, Bangladesh.</span>
+              </div>
             </div>
           </div>
         </div>
