@@ -13,7 +13,7 @@ export function BarcodeDisplay({ memberId, isPdf = false }: BarcodeDisplayProps)
   const isClient = useIsClient();
 
   if (!isClient) {
-    return <div style={{ height: isPdf ? '25px' : '40px' }} />;
+    return <div style={{ height: isPdf ? '25px' : '30px' }} />;
   }
 
   return (
@@ -29,4 +29,3 @@ export function BarcodeDisplay({ memberId, isPdf = false }: BarcodeDisplayProps)
     />
   );
 }
-
