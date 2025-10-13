@@ -81,13 +81,39 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                 </div>
 
                 <div style={{ marginTop: '20px' }}>
-                    <h3 style={{ fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '10px' }}>{language === 'bn' ? 'শর্তাবলী' : 'Terms & Conditions'}</h3>
-                    <p style={{ fontSize: '10px', color: '#555' }}>
-                        {language === 'bn'
-                            ? 'আমি ঘোষণা করছি যে উপরে প্রদত্ত তথ্য আমার জ্ঞান অনুসারে সঠিক। আমি এই সংস্থার নিয়ম ও প্রবিধান মেনে চলব।'
-                            : 'I hereby declare that the information provided above is correct to the best of my knowledge. I agree to abide by the rules and regulations of the organization.'}
-                    </p>
+                    <h3 style={{ fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '10px' }}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
+                    <div style={{ fontSize: '10px', color: '#555' }}>
+                        {language === 'bn' ? (
+                            <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'disc' }}>
+                                <li>সকল সদস্যকে সর্বদা সক্রিয় থাকতে হবে।</li>
+                                <li>যদি কোনো সদস্য সংগঠনে সক্রিয় না থাকেন, তবে তাকে নিষ্ক্রিয় হিসেবে দেখানো হবে।</li>
+                                <li>যদি কোনো সদস্য সংগঠনের জন্য অর্থ প্রদান না করেন বা ৩ বারের বেশি দেরি করেন, তবে তাকে নিষ্ক্রিয় করা হবে এবং সংগঠন থেকে পদত্যাগ করানো হতে পারে। পুনরায় সদস্য হওয়ার জন্য তাকে আবার নিবন্ধন করতে হবে এবং পুনরায় যোগদানের জন্য ৫০ টাকা বিলম্ব জরিমানা দিতে হবে।</li>
+                                <li>যদি কোনো সদস্য অশোভন আচরণ করেন, তবে তাকে সংগঠন থেকে পদত্যাগ করতে হবে।</li>
+                                <li>বিলম্বিত অর্থ প্রদানের জন্য তাকে ২০ টাকা অতিরিক্ত প্রদান করতে হবে, যা সংগঠনের তহবিলে যোগ হবে, অন্যথায় অ্যাডমিন তাকে নিষ্ক্রিয় করতে পারেন।</li>
+                                <li>সদস্য হিসেবে আপনি অন্য সদস্য দল থেকে অর্থ সংগ্রহ করতে পারবেন না, যদি তা প্রমাণিত হয় তবে তাকে দল থেকে পদত্যাগ করতে হবে।</li>
+                                <li>যদি সদস্য বাইরের উৎস থেকে অর্থ সংগ্রহ করেন, তবে তার প্রমাণ দিতে হবে, অন্যথায় তা গ্রহণযোগ্য হবে না।</li>
+                                <li>যদি সদস্য সংগঠনের জন্য অন্য সদস্যকে অর্থ প্রদান করেন, তবে সেই ঝুঁকি অর্থ সংগ্রহকারী সদস্যকে বহন করতে হবে।</li>
+                                <li>মনে রাখবেন, কখনো মিথ্যা বলবেন না, কারণ সকল সদস্য বন্ধু হিসেবে থাকলে এই সংগঠনটি বড় হবে।</li>
+                                <li>প্রত্যেক সদস্যের তার ধারণা সম্পর্কে সংগঠন দলের সাথে কথা বলার সুযোগ থাকবে, যাতে আমরা উন্নতি করতে পারি।</li>
+                                <li>আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।</li>
+                            </ul>
+                        ) : (
+                            <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'disc', lineHeight: '1.4' }}>
+                                <li>All members will have to be active at any time. If any member will not be active in the organization team then he will be shown as inactive.</li>
+                                <li>If any member does not give money for the organization or is late more than 3 times then he will be inactive and can also be made to resign from the organization team. For adding again as a member he will have to register for member and also have to give a late fine of 50 taka for adding again as a member.</li>
+                                <li>If any member makes improper behavior then he will have to resign from the organization team.</li>
+                                <li>For late paying he will have to pay 20 taka extra, which will be added to the organization fund, otherwise admin can make him inactive.</li>
+                                <li>You as a member cannot collect money from other member team if it is proven then he will have to be made to resign from the team.</li>
+                                <li>If a member collects from an outsource then it will have to be given proof otherwise it will not be acceptable.</li>
+                                <li>If the member gives money to another member for the organization team then this risk will be taken by that member who collected the money.</li>
+                                <li>Remember, Never tell a lie, because this organization will grow up if all members are as friends.</li>
+                                <li>Every member will have a chance to talk with the organization team about his idea, so we can grow up.</li>
+                                <li>We all are friends and we will support the society and family members also.</li>
+                            </ul>
+                        )}
+                    </div>
                 </div>
+
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '20px', borderTop: '1px solid #eee' }}>
                     <div style={{ width: '45%' }}>
