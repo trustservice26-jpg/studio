@@ -76,15 +76,15 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
     );
 
     return (
-        <div style={{ width: '800px', padding: '47.25px 40px', color: '#333', background: '#fff', fontFamily: isBangla ? '"AdorshoLipi", "SolaimanLipi", sans-serif' : '"PT Sans", sans-serif', fontWeight: 600, display: 'flex', flexDirection: 'column', minHeight: '1058px' }}>
+        <div style={{ width: '800px', padding: '30px 40px', color: '#333', background: '#fff', fontFamily: isBangla ? '"AdorshoLipi", "SolaimanLipi", sans-serif' : '"PT Sans", sans-serif', fontWeight: 600, display: 'flex', flexDirection: 'column', minHeight: '1058px' }}>
             {/* Header */}
             <div style={{ paddingBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>
-                        <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isBangla ? '32px' : '36px', margin: 0, fontWeight: 'bold' }}>
+                        <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isBangla ? '24px' : '28px', margin: 0, fontWeight: 'bold' }}>
                           <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
                         </h1>
-                        <p style={{ fontSize: isBangla ? '16px' : '18px', color: '#555', margin: '5px 0 0 0', fontWeight: 500 }}>
+                        <p style={{ fontSize: isBangla ? '14px' : '16px', color: '#555', margin: '5px 0 0 0', fontWeight: 500 }}>
                           {isBangla
                             ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
                             : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
@@ -104,14 +104,14 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             </div>
             
             {/* Member Info & Photo */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px', marginTop: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '40px', marginTop: '30px' }}>
                 <div style={{width: '70%'}}>
-                    <h3 style={{fontSize: isBangla ? '24px' : '28px', fontWeight: 'bold', margin: 0 }}>{member.name}</h3>
-                    <p style={{fontSize: isBangla ? '18px' : '22px', margin: '4px 0 0 0' }}>{labels.memberId}: {member.memberId}</p>
+                    <h3 style={{fontSize: isBangla ? '26px' : '30px', fontWeight: 'bold', margin: 0 }}>{member.name}</h3>
+                    <p style={{fontSize: isBangla ? '20px' : '24px', margin: '4px 0 0 0' }}>{labels.memberId}: {member.memberId}</p>
                 </div>
                 <div style={{
-                    width: '120px',
-                    height: '140px',
+                    width: '140px',
+                    height: '160px',
                     border: '2px dashed #ccc',
                     display: 'flex',
                     alignItems: 'center',
@@ -148,9 +148,9 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             {/* Conditions */}
             <div style={{ margin: '40px 0 30px' }}>
                 <h3 style={{ fontSize: isBangla ? '13px' : '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px', borderBottom: '1px solid #ccc' }}>{labels.conditions}</h3>
-                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: isBangla ? '10px' : '11px', color: '#555', lineHeight: '1.6', fontWeight: 600, columnCount: 2, columnGap: '40px' }}>
+                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: isBangla ? '10px' : '11px', color: '#555', lineHeight: '1.6', fontWeight: 600 }}>
                     {conditions.map((condition, index) => (
-                      <li key={index} style={{paddingLeft: '5px', marginBottom: '4px', breakInside: 'avoid-column'}}>
+                      <li key={index} style={{paddingLeft: '5px', marginBottom: '4px'}}>
                         {condition}
                       </li>
                     ))}
@@ -168,9 +168,10 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             </div>
 
             {/* Footer */}
-            <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '15px', borderTop: '1px solid #eee', fontSize: isBangla ? '9px' : '10px', color: '#777' }}>
+            <div style={{ textAlign: 'center', marginTop: '70px', paddingTop: '15px', borderTop: '1px solid #eee', fontSize: isBangla ? '9px' : '10px', color: '#777' }}>
                  <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> ({isBangla ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
                  <p style={{ fontStyle: 'italic', marginTop: '5px', margin: 0 }}>Developed & Supported by AL-SADEEQ Team.</p>
             </div>
         </div>
     );
+}
