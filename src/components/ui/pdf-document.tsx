@@ -1,9 +1,7 @@
 
 "use client";
 
-import { SmartCard } from "../smart-card/smart-card";
 import type { Member } from "@/lib/types";
-import QRCode from 'qrcode';
 import { useEffect, useState } from "react";
 
 type PdfDocumentProps = {
@@ -13,34 +11,12 @@ type PdfDocumentProps = {
 };
 
 export function PdfDocument({ member, language, isRegistration = false }: PdfDocumentProps) {
-    const [qrCodeUrl, setQrCodeUrl] = useState('');
-    
-    useEffect(() => {
-        if (!member) return;
-
-        const generateQrCode = async () => {
-            const qrData = `Member ID: ${member.memberId}\nName: ${member.name}\nPhone: ${member.phone}\nJoin Date: ${member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : ''}\nStatus: ${member.status}\nDOB: ${member.dob}\nFather's Name: ${member.fatherName}\nNID/Birth No: ${member.nid}\nAddress: ${member.address}`;
-            try {
-                const url = await QRCode.toDataURL(qrData, {
-                    errorCorrectionLevel: 'H',
-                    type: 'image/png',
-                    margin: 1,
-                    width: 150,
-                });
-                setQrCodeUrl(url);
-            } catch (err) {
-                console.error('Failed to generate QR code for registration PDF', err);
-            }
-        };
-        generateQrCode();
-    }, [member, language]);
-
     const registrationDate = member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : '';
     const title = isRegistration ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Membership Registration Form') : (language === 'bn' ? 'সদস্য তথ্য ফর্ম' : 'Member Information Form');
 
     const renderField = (label: string, value: string | undefined) => (
-        <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'flex-start' }}>
-            <p style={{ margin: 0, fontWeight: 'bold', width: '180px', flexShrink: 0, fontSize: '12px' }}>{label}:</p>
+        <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'flex-start' }}>
+            <p style={{ margin: 0, fontWeight: 'bold', width: '150px', flexShrink: 0, fontSize: '12px' }}>{label}:</p>
             <p style={{ margin: 0, borderBottom: '1px dotted #888', flexGrow: 1, fontSize: '12px', paddingBottom: '2px' }}>{value || ''}</p>
         </div>
     );
@@ -59,30 +35,26 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                 <h2 style={{ fontSize: '20px', marginTop: '20px', color: '#333' }}>{title}</h2>
             </div>
             
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ width: '65%' }}>
-                    {renderField(language === 'bn' ? 'সদস্য আইডি' : 'Member ID', member.memberId)}
+            <div>
+                {renderField(language === 'bn' ? 'সদস্য আইডি' : 'Member ID', member.memberId)}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 40px' }}>
                     {renderField(language === 'bn' ? 'পূর্ণ নাম' : 'Full Name', member.name)}
                     {renderField(language === 'bn' ? 'পিতার নাম' : "Father's Name", member.fatherName)}
                     {renderField(language === 'bn' ? 'মাতার নাম' : "Mother's Name", member.motherName)}
                     {renderField(language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth', member.dob)}
                     {renderField(language === 'bn' ? 'ফোন' : 'Phone', member.phone)}
                     {renderField(language === 'bn' ? 'ইমেইল' : 'Email', member.email)}
-                    {renderField(language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.', member.nid)}
-                    {renderField(language === 'bn' ? 'ঠিকানা' : 'Address', member.address)}
-                    {renderField(language === 'bn' ? 'নিবন্ধনের তারিখ' : 'Registration Date', registrationDate)}
                 </div>
-                <div style={{ width: '30%', textAlign: 'center' }}>
-                    {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '150px', height: '150px', margin: '0 auto 10px' }} />}
-                    <p style={{ fontSize: '10px', color: '#555', margin: 0 }}>Scan for member details</p>
-                </div>
+                {renderField(language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.', member.nid)}
+                {renderField(language === 'bn' ? 'ঠিকানা' : 'Address', member.address)}
+                {renderField(language === 'bn' ? 'নিবন্ধনের তারিখ' : 'Registration Date', registrationDate)}
             </div>
 
             <div style={{ marginTop: '20px' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '10px' }}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
                 <div style={{ fontSize: '10px', color: '#555' }}>
                     {language === 'bn' ? (
-                        <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'disc', lineHeight: '1.4' }}>
+                        <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'decimal', lineHeight: '1.6' }}>
                             <li>সকল সদস্যকে সর্বদা সক্রিয় থাকতে হবে। যদি কোনো সদস্য সংগঠনে সক্রিয় না থাকেন, তবে তাকে নিষ্ক্রিয় হিসেবে দেখানো হবে।</li>
                             <li>যদি কোনো সদস্য সংগঠনের জন্য অর্থ প্রদান না করেন বা ৩ বারের বেশি দেরি করেন, তবে তাকে নিষ্ক্রিয় করা হবে এবং সংগঠন থেকে পদত্যাগ করানো হতে পারে। পুনরায় সদস্য হওয়ার জন্য তাকে আবার নিবন্ধন করতে হবে এবং পুনরায় যোগদানের জন্য ৫০ টাকা বিলম্ব জরিমানা দিতে হবে।</li>
                             <li>যদি কোনো সদস্য অশোভন আচরণ করেন, তবে তাকে সংগঠন থেকে পদত্যাগ করতে হবে।</li>
@@ -95,7 +67,7 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                             <li>আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।</li>
                         </ul>
                     ) : (
-                        <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'disc', lineHeight: '1.4' }}>
+                        <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'decimal', lineHeight: '1.6' }}>
                             <li>All members will have to be active at any time. If any member will not be active in the organization team then he will be shown as inactive.</li>
                             <li>If any member does not give money for the organization or is late more than 3 times then he will be inactive and can also be made to resign from the organization team. For adding again as a member he will have to register for member and also have to give a late fine of 50 taka for adding again as a member.</li>
                             <li>If any member make improper behavior then he will have to resign from the organization team.</li>
@@ -110,7 +82,6 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                     )}
                 </div>
             </div>
-
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '20px', borderTop: '1px solid #eee' }}>
                 <div style={{ width: '45%' }}>
