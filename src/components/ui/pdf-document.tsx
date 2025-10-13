@@ -12,32 +12,34 @@ type PdfDocumentProps = {
 };
 
 export function PdfDocument({ member, language, isRegistration = false, qrCodeUrl }: PdfDocumentProps) {
-    const title = isRegistration 
-        ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Membership Registration Form') 
-        : (language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details');
+    const isBangla = language === 'bn';
+
+    const title = isRegistration
+        ? (isBangla ? 'সদস্য নিবন্ধন ফর্ম' : 'Membership Registration Form')
+        : (isBangla ? 'সদস্যের বিবরণ' : 'Member Details');
 
     const labels = {
-        memberDetails: language === 'bn' ? 'সদস্য বিবরণ' : 'Member Details',
-        joiningDate: language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date',
-        dateOfBirth: language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth',
-        fatherName: language === 'bn' ? 'পিতার নাম' : "Father's Name",
-        motherName: language === 'bn' ? 'মাতার নাম' : "Mother's Name",
-        nid: language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.',
-        phone: language === 'bn' ? 'ফোন' : 'Phone',
-        address: language === 'bn' ? 'ঠিকানা' : 'Address',
-        conditions: language === 'bn' ? 'শর্তাবলী' : 'Conditions',
-        memberSignature: language === 'bn' ? 'সদস্যের স্বাক্ষর' : 'Member Signature',
-        authoritySignature: language === 'bn' ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature',
-        passportPhoto: language === 'bn' ? 'পাসপোর্ট সাইজ ছবি' : 'Passport Size Photo',
-        memberId: language === 'bn' ? 'সদস্য আইডি' : 'Member ID',
-        name: language === 'bn' ? 'নাম' : 'Name',
-        email: language === 'bn' ? 'ইমেইল' : 'Email'
+        memberDetails: isBangla ? 'সদস্য বিবরণ' : 'Member Details',
+        joiningDate: isBangla ? 'যোগদানের তারিখ' : 'Joining Date',
+        dateOfBirth: isBangla ? 'জন্ম তারিখ' : 'Date of Birth',
+        fatherName: isBangla ? 'পিতার নাম' : "Father's Name",
+        motherName: isBangla ? 'মাতার নাম' : "Mother's Name",
+        nid: isBangla ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.',
+        phone: isBangla ? 'ফোন' : 'Phone',
+        address: isBangla ? 'ঠিকানা' : 'Address',
+        conditions: isBangla ? 'শর্তাবলী' : 'Conditions',
+        memberSignature: isBangla ? 'সদস্যের স্বাক্ষর' : 'Member Signature',
+        authoritySignature: isBangla ? 'কর্তৃপক্ষের স্বাক্ষর' : 'Authority Signature',
+        passportPhoto: isBangla ? 'পাসপোর্ট সাইজ ছবি' : 'Passport Size Photo',
+        memberId: isBangla ? 'সদস্য আইডি' : 'Member ID',
+        name: isBangla ? 'নাম' : 'Name',
+        email: isBangla ? 'ইমেইল' : 'Email'
     };
 
     const conditionsEn = [
         "All members will have to be active at any time.",
         "If any member is not active in the organization team, they will be shown as inactive.",
-        "If any member does not give money for the organization or is late more than 3 times, they will be made inactive and can also be resigned from the organization team.",
+        "If any member does not give money for the organization or is late more than 3 times, they will be shown as inactive and can also be resigned from the organization team.",
         "To be added again as a member, they will have to register for membership and also have to pay a late fine of 50 taka.",
         "If any member exhibits improper behavior, they will have to resign from the organization team.",
         "For late payment, they will have to pay 20 taka extra, which will be added to the organization fund, otherwise the admin can make them inactive.",
@@ -64,26 +66,26 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         "• আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।"
     ];
 
-    const conditions = language === 'bn' ? conditionsBn : conditionsEn.map(c => `• ${c}`);
+    const conditions = isBangla ? conditionsBn : conditionsEn.map(c => `• ${c}`);
     
     const renderField = (label: string, value: string | undefined | null) => (
-        <div style={{ display: 'flex', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee', width: '100%' }}>
-            <p style={{ margin: 0, fontSize: '12px', width: '150px', fontWeight: 600, textAlign: 'left', flexShrink: 0 }}>{label}:</p>
-            <p style={{ margin: 0, fontSize: '12px', textAlign: 'left', flex: 1, fontWeight: 600 }}>{value || ''}</p>
+        <div style={{ display: 'flex', alignItems: 'center', padding: isBangla ? '6px 0' : '8px 0', borderBottom: '1px solid #eee', width: '100%' }}>
+            <p style={{ margin: 0, fontSize: isBangla ? '11px' : '12px', width: isBangla ? '130px' : '150px', fontWeight: 600, textAlign: 'left', flexShrink: 0 }}>{label}:</p>
+            <p style={{ margin: 0, fontSize: isBangla ? '11px' : '12px', textAlign: 'left', flex: 1, fontWeight: 600 }}>{value || ''}</p>
         </div>
     );
 
     return (
-        <div style={{ width: '800px', padding: '15px 40px 47.25px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif', fontWeight: 600, display: 'flex', flexDirection: 'column', minHeight: '1058px' }}>
+        <div style={{ width: '800px', padding: '47.25px 40px', color: '#333', background: '#fff', fontFamily: isBangla ? '"AdorshoLipi", "SolaimanLipi", sans-serif' : '"PT Sans", sans-serif', fontWeight: 600, display: 'flex', flexDirection: 'column', minHeight: '1058px' }}>
             {/* Header */}
             <div style={{ paddingBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>
-                        <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '36px', margin: 0, fontWeight: 'bold' }}>
+                        <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isBangla ? '32px' : '36px', margin: 0, fontWeight: 'bold' }}>
                           <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
                         </h1>
-                        <p style={{ fontSize: '18px', color: '#555', margin: '5px 0 0 0', fontWeight: 500 }}>
-                          {language === 'bn'
+                        <p style={{ fontSize: isBangla ? '16px' : '18px', color: '#555', margin: '5px 0 0 0', fontWeight: 500 }}>
+                          {isBangla
                             ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
                             : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
                         </p>
@@ -98,14 +100,14 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
              {/* Title */}
             <div style={{ textAlign: 'center', margin: '20px 0' }}>
-                 <h2 style={{ fontSize: '20px', color: '#333', fontWeight: 'bold', margin: 0, textDecoration: 'underline' }}>{title}</h2>
+                 <h2 style={{ fontSize: isBangla ? '18px' : '20px', color: '#333', fontWeight: 'bold', margin: 0, textDecoration: 'underline' }}>{title}</h2>
             </div>
             
             {/* Member Info & Photo */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '40px', marginTop: '30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px', marginTop: '20px' }}>
                 <div style={{width: '70%'}}>
-                    <h3 style={{fontSize: '28px', fontWeight: 'bold', margin: 0 }}>{member.name}</h3>
-                    <p style={{fontSize: '22px', margin: '4px 0 0 0' }}>{labels.memberId}: {member.memberId}</p>
+                    <h3 style={{fontSize: isBangla ? '24px' : '28px', fontWeight: 'bold', margin: 0 }}>{member.name}</h3>
+                    <p style={{fontSize: isBangla ? '18px' : '22px', margin: '4px 0 0 0' }}>{labels.memberId}: {member.memberId}</p>
                 </div>
                 <div style={{
                     width: '120px',
@@ -116,7 +118,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     justifyContent: 'center',
                     flexShrink: 0,
                     textAlign: 'center',
-                    fontSize: '10px',
+                    fontSize: isBangla ? '9px' : '10px',
                     color: '#888',
                     padding: '10px'
                 }}>
@@ -129,7 +131,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     {renderField(labels.name, member.name)}
                     {renderField(labels.fatherName, member.fatherName)}
                     {renderField(labels.motherName, member.motherName)}
-                    {renderField(labels.joiningDate, member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : '')}
+                    {renderField(labels.joiningDate, member.joinDate ? new Date(member.joinDate).toLocaleDateString(isBangla ? 'bn-BD' : 'en-US') : '')}
                 </div>
                 <div style={{ width: '48%' }}>
                     {renderField(labels.phone, member.phone)}
@@ -137,16 +139,16 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     {renderField(labels.dateOfBirth, member.dob)}
                     {renderField(labels.nid, member.nid)}
                 </div>
-                 <div style={{ width: '100%', marginTop: '8px' }}>
+                 <div style={{ width: '100%', marginTop: isBangla ? '6px' : '8px' }}>
                     {renderField(labels.address, member.address)}
                  </div>
             </div>
 
 
             {/* Conditions */}
-            <div style={{ margin: '50px 0 30px' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px', borderBottom: '1px solid #ccc' }}>{labels.conditions}</h3>
-                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6', fontWeight: 600, columnCount: 2, columnGap: '40px' }}>
+            <div style={{ margin: '40px 0 30px' }}>
+                <h3 style={{ fontSize: isBangla ? '13px' : '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px', borderBottom: '1px solid #ccc' }}>{labels.conditions}</h3>
+                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: isBangla ? '10px' : '11px', color: '#555', lineHeight: '1.6', fontWeight: 600, columnCount: 2, columnGap: '40px' }}>
                     {conditions.map((condition, index) => (
                       <li key={index} style={{paddingLeft: '5px', marginBottom: '4px', breakInside: 'avoid-column'}}>
                         {condition}
@@ -156,20 +158,19 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             </div>
             
             {/* Signature */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '100px', marginTop: 'auto' }}>
-                <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '80px', marginTop: 'auto' }}>
+                <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: isBangla ? '11px' : '12px' }}>
                    {labels.memberSignature}
                 </div>
-                <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
+                <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: isBangla ? '11px' : '12px' }}>
                     {labels.authoritySignature}
                 </div>
             </div>
 
             {/* Footer */}
-            <div style={{ textAlign: 'center', marginTop: '60px', paddingTop: '15px', borderTop: '1px solid #eee', fontSize: '10px', color: '#777' }}>
-                 <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> ({language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
+            <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '15px', borderTop: '1px solid #eee', fontSize: isBangla ? '9px' : '10px', color: '#777' }}>
+                 <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> ({isBangla ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
                  <p style={{ fontStyle: 'italic', marginTop: '5px', margin: 0 }}>Developed & Supported by AL-SADEEQ Team.</p>
             </div>
         </div>
     );
-}
