@@ -116,17 +116,17 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                 </div>
             </div>
 
-             <div style={{width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+            <div style={{width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
                 <div style={{width: '48%'}}>
                     {renderField(labels.joiningDate, member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : '')}
                     {renderField(labels.fatherName, member.fatherName)}
                     {renderField(labels.nid, member.nid)}
-                    {renderField(labels.address, member.address)}
+                    {renderField(labels.phone, member.phone)}
                 </div>
                 <div style={{width: '48%'}}>
                     {renderField(labels.dateOfBirth, member.dob)}
                     {renderField(labels.motherName, member.motherName)}
-                    {renderField(labels.phone, member.phone)}
+                    {renderField(labels.address, member.address)}
                 </div>
             </div>
 
@@ -161,3 +161,5 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         </div>
     );
 }
+
+    
