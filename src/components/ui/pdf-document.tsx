@@ -17,8 +17,8 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
     const renderField = (label: string, value: string | undefined | null) => (
         <div style={{ display: 'flex', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee' }}>
-            <p style={{ margin: 0, fontSize: '12px', width: '150px' }}>{label}</p>
-            <p style={{ margin: 0, fontSize: '12px', textAlign: 'right', flex: 1 }}>{value || ''}</p>
+            <p style={{ margin: 0, fontSize: '12px', width: '150px', fontWeight: 'bold' }}>{label}</p>
+            <p style={{ margin: 0, fontSize: '12px', textAlign: 'left', flex: 1 }}>{value || ''}</p>
         </div>
     );
     
@@ -58,8 +58,8 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         memberDetails: language === 'bn' ? 'সদস্য বিবরণ' : 'Member Details',
         joiningDate: language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date',
         dateOfBirth: language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth',
-        fatherName: language === 'bn' ? 'পিতার নাম' : 'Father\'s Name',
-        motherName: language === 'bn' ? 'মাতার নাম' : 'Mother\'s Name',
+        fatherName: language === 'bn' ? 'পিতার নাম' : "Father's Name",
+        motherName: language === 'bn' ? 'মাতার নাম' : "Mother's Name",
         nid: language === 'bn' ? 'এনআইডি / জন্ম সনদ' : 'NID / Birth Cert.',
         phone: language === 'bn' ? 'ফোন' : 'Phone',
         address: language === 'bn' ? 'ঠিকানা' : 'Address',
@@ -72,7 +72,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
     return (
         <div style={{ width: '800px', padding: '20px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px', borderBottom: '1px solid #ddd' }}>
                 <div>
                     <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
                       <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
@@ -129,7 +129,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             {/* Conditions */}
             <div style={{ margin: '30px 0' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px' }}>{labels.conditions}</h3>
-                <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: 'disc', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
+                <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: language === 'bn' ? "'• '": 'disc', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
                     {conditions.map((condition, index) => (
                       <li key={index} style={{paddingLeft: '5px', marginBottom: '4px'}}>
                         {condition.replace(/•/g, '').trim()}
@@ -156,5 +156,3 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         </div>
     );
 }
-
-    
