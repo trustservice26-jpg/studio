@@ -13,17 +13,19 @@ type PdfDocumentProps = {
 };
 
 export function PdfDocument({ member, language, isRegistration = false, qrCodeUrl }: PdfDocumentProps) {
-    const title = isRegistration ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Membership Registration Form') : (language === 'bn' ? 'সদস্য তথ্য' : 'Member Details');
+    const title = isRegistration 
+        ? (language === 'bn' ? 'সদস্য নিবন্ধন ফর্ম' : 'Membership Registration Form') 
+        : (language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details');
 
     const renderField = (label: string, value: string | undefined | null) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', padding: '8px 0', borderBottom: '1px solid #eee' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee' }}>
             <p style={{ margin: 0, fontWeight: 'bold', fontSize: '12px' }}>{label}</p>
             <p style={{ margin: 0, fontSize: '12px', textAlign: 'right' }}>{value || ''}</p>
         </div>
     );
     
     const conditionsEn = [
-        "All members will have to to be active at any time.",
+        "All members will have to be active at any time.",
         "If any member will not active in organization team then he will shown as inactive.",
         "If any members does not give money for orgnisation or making late more then 3 times then he will be inactive also can make resigned from the organization team.",
         "For adding again as a member he will have to registered for member and also have to give late fine 50 taka for adding again as a member.",
@@ -47,7 +49,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         "সদস্য হিসেবে আপনি অন্য কোনো সদস্য দল থেকে অর্থ সংগ্রহ করতে পারবেন না, যদি এর প্রমাণ পাওয়া যায়, তবে তাকে দল থেকে পদত্যাগ করতে হবে।",
         "যদি সদস্য বাইরের উৎস থেকে অর্থ সংগ্রহ করেন, তবে তার প্রমাণ দিতে হবে, অন্যথায় তা গ্রহণযোগ্য হবে না।",
         "যদি কোনো সদস্য সংগঠনের জন্য অন্য সদস্যকে টাকা দেন, তবে সেই ঝুঁকি টাকা সংগ্রহকারী সদস্যকে বহন করতে হবে।",
-        "মনে রাখবেন, कभी झूठ न बोलें, কারণ এই সংগঠনটি তখনই বড় হবে যখন সব সদস্য বন্ধুর মতো থাকবে।",
+        "মনে রাখবেন, কখনো মিথ্যা বলবেন না, কারণ এই সংগঠনটি তখনই বড় হবে যখন সব সদস্য বন্ধুর মতো থাকবে।",
         "প্রত্যেক সদস্যের তার ধারণা সম্পর্কে সংগঠন দলের সাথে কথা বলার সুযোগ থাকবে, যাতে আমরা উন্নতি করতে পারি।",
         "আমরা সবাই বন্ধু এবং আমরা সমাজ এবং পরিবারের সদস্যদেরও সমর্থন করব।"
     ];
@@ -80,9 +82,9 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             {/* Member Info & Photo */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '30px' }}>
                 <div style={{width: '65%'}}>
-                    <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>{member.name || 'Member Name'}</p>
+                    <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>{member.name || (language === 'bn' ? 'সদস্যের নাম' : 'Member Name')}</p>
                     <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 15px 0' }}>ID: {member.memberId || 'N/A'}</p>
-                    {renderField(language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date', member.joinDate ? new Date(member.joinDate).toLocaleDateString('en-US') : '')}
+                    {renderField(language === 'bn' ? 'যোগদানের তারিখ' : 'Joining Date', member.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : '')}
                     {renderField(language === 'bn' ? 'জন্ম তারিখ' : 'Date of Birth', member.dob)}
                     {renderField(language === 'bn' ? 'পিতার নাম' : "Father's Name", member.fatherName)}
                     {renderField(language === 'bn' ? 'মাতার নাম' : "Mother's Name", member.motherName)}
@@ -104,16 +106,19 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     padding: '10px',
                     marginTop: '10px'
                 }}>
-                    Passport Size Photo
+                    {language === 'bn' ? 'পাসপোর্ট সাইজের ছবি' : 'Passport Size Photo'}
                 </div>
             </div>
 
             {/* Conditions */}
             <div style={{ marginBottom: '30px' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '10px' }}>{language === 'bn' ? 'শর্তাবলী' : 'Conditions'}</h3>
-                <ul style={{ paddingLeft: '20px', margin: 0, listStyleType: "'• '", fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
+                <ul style={{ paddingLeft: '0', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
                     {conditions.map((condition, index) => (
-                      <li key={index} style={{paddingLeft: '5px'}}>{condition}</li>
+                      <li key={index} style={{paddingLeft: '15px', position: 'relative'}}>
+                        <span style={{ position: 'absolute', left: '0' }}>•</span>
+                        {condition}
+                      </li>
                     ))}
                 </ul>
             </div>
@@ -136,3 +141,5 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         </div>
     );
 }
+
+    
