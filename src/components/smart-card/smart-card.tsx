@@ -33,8 +33,24 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         const memberName = member?.name || 'N/A';
         const joinDate = member?.joinDate ? new Date(member.joinDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US') : 'N/A';
         const status = member?.status || 'N/A';
+        const fatherName = member?.fatherName || 'N/A';
+        const phone = member?.phone || 'N/A';
+        const dob = member?.dob || 'N/A';
+        const nid = member?.nid || 'N/A';
+        const address = member?.address || 'N/A';
 
-        const qrData = `Member ID: ${memberId}\nName: ${memberName}\nJoin Date: ${joinDate}\nStatus: ${status}`;
+        const qrData = [
+          `Member ID: ${memberId}`,
+          `Name: ${memberName}`,
+          `Joining Date: ${joinDate}`,
+          `Status: ${status}`,
+          `Father's Name: ${fatherName}`,
+          `Phone: ${phone}`,
+          `Date of Birth: ${dob}`,
+          `NID/Birth Cert.: ${nid}`,
+          `Address: ${address}`
+        ].join('\n\n');
+
         try {
           const url = await QRCode.toDataURL(qrData, {
             errorCorrectionLevel: 'H',
@@ -158,3 +174,5 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     </div>
   );
 }
+
+    
