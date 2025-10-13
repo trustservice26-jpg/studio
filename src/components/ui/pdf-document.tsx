@@ -57,7 +57,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
 
     return (
-        <div style={{ width: '800px', padding: '47.25px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
+        <div style={{ width: '800px', padding: '20px 40px 47.25px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '15px' }}>
                 <div>
@@ -68,7 +68,6 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                       {'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
                     </p>
                 </div>
-                {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: '60px', height: '60px' }} />}
             </div>
 
              {/* Title */}
