@@ -4,7 +4,7 @@
 import type { Member } from '@/lib/types';
 import { useAppContext } from '@/context/app-context';
 import { BarcodeDisplay } from './barcode-display';
-import { Quote, HeartHandshake } from 'lucide-react';
+import { Quote, HeartHandshake, Globe, Mail, MapPin } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 import { useIsClient } from '@/hooks/use-is-client';
@@ -118,34 +118,43 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const barcodeValue = `${member?.memberId || 'H-0000'}-${member?.status || 'inactive'}`;
 
   return (
-    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses, 'flex flex-col')}>
-      <div className="h-[25px] bg-gray-800 mt-[15px] shrink-0"></div>
-      
-      <div className="px-4 py-2 flex-grow flex flex-col">
-        {/* Main Content Area */}
-        <div className="flex-grow">
-          <h3 className="font-bold text-[0.7rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
-          <ul className="m-0 pl-[14px] text-[0.6rem] text-gray-600 list-disc space-y-px text-left">
-            <li>This card is non-transferable.</li>
-            <li>Please return if found.</li>
-            <li>Property of HADIYA – মানবতার উপহার.</li>
-          </ul>
-          
-          <h3 className="font-bold text-[0.7rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
-          <div className="text-[0.5rem] text-gray-700 m-0 leading-snug text-left space-y-px">
-            <p>www.hadiya.org</p>
-            <p>infohadiyateam@gmail.com</p>
-            <p>Chandgaon, Chattogram, Bangladesh.</p>
-          </div>
-        </div>
+    <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses, 'flex flex-col p-0')}>
+        <div className="h-[20px] bg-gray-800 mt-[15px] shrink-0"></div>
         
-        {/* Footer with Barcode */}
-        <div className="pt-2 flex-shrink-0">
-          <div className="text-center">
-            <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
-          </div>
+        <div className="px-3 py-2 flex-grow flex flex-col justify-between">
+            <div className="flex-grow">
+                <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
+                <ul className="m-0 pl-[12px] text-[0.55rem] text-gray-600 list-disc space-y-px text-left">
+                    <li>This card is non-transferable.</li>
+                    <li>Please return if found.</li>
+                    <li>Property of HADIYA – মানবতার উপহার.</li>
+                </ul>
+                
+                <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5 mt-2">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
+                <div className="text-[0.5rem] text-gray-700 m-0 leading-snug text-left space-y-px">
+                  <div className="flex items-center gap-1.5">
+                    <Globe className="w-2.5 h-2.5 shrink-0" />
+                    <span>www.hadiya.org</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Mail className="w-2.5 h-2.5 shrink-0" />
+                    <span>infohadiyateam@gmail.com</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="w-2.5 h-2.5 shrink-0" />
+                    <span>Chandgaon, Chattogram, Bangladesh.</span>
+                  </div>
+                </div>
+            </div>
+            
+            <div className="pt-2 flex-shrink-0">
+                <div className="text-center">
+                    <BarcodeDisplay memberId={barcodeValue} isPdf={isPdf} />
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  );
+);
 }
+
+    
