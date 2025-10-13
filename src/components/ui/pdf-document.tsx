@@ -2,8 +2,6 @@
 "use client";
 
 import type { Member } from "@/lib/types";
-import QRCode from 'qrcode';
-import { useEffect, useState } from 'react';
 
 type PdfDocumentProps = {
     member: Partial<Member>;
@@ -69,9 +67,6 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                       {'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
                     </p>
                 </div>
-                {qrCodeUrl && (
-                    <img src={qrCodeUrl} alt="QR Code" style={{ width: '60px', height: '60px' }} />
-                )}
             </div>
 
             {/* Title */}
@@ -93,8 +88,8 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                     {renderField(language === 'bn' ? 'ঠিকানা' : 'Address', member.address)}
                 </div>
                 <div style={{
-                    width: '120px',
-                    height: '140px',
+                    width: '100px',
+                    height: '120px',
                     border: '2px dashed #ccc',
                     display: 'flex',
                     alignItems: 'center',
@@ -141,5 +136,3 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         </div>
     );
 }
-
-    
