@@ -13,15 +13,15 @@ export function BarcodeDisplay({ memberId, isPdf = false }: BarcodeDisplayProps)
   const isClient = useIsClient();
 
   if (!isClient) {
-    return <div style={{ height: isPdf ? '30px' : '40px' }} />;
+    return <div style={{ height: isPdf ? '25px' : '40px' }} />;
   }
 
   return (
     <Barcode
       value={memberId}
       format="CODE128"
-      width={1.5}
-      height={isPdf ? 30 : 40}
+      width={isPdf ? 1.2 : 1.5}
+      height={isPdf ? 25 : 40}
       displayValue={false}
       background="transparent"
       lineColor="#2d3748"
@@ -29,5 +29,3 @@ export function BarcodeDisplay({ memberId, isPdf = false }: BarcodeDisplayProps)
     />
   );
 }
-
-    
