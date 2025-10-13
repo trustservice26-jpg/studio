@@ -70,7 +70,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
     );
 
     return (
-        <div style={{ width: '800px', padding: '20px 40px 47.25px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif', fontWeight: 600 }}>
+        <div style={{ width: '800px', padding: '20px 40px', color: '#333', background: '#fff', fontFamily: '"PT Sans", sans-serif', fontWeight: 600 }}>
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))' }}>
                 <div>
@@ -94,14 +94,14 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             </div>
             
             {/* Member Info & Photo */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', marginTop: '30px' }}>
                 <div style={{width: '70%'}}>
-                    <h3 style={{fontSize: '20px', fontWeight: 'bold', margin: 0 }}>{member.name}</h3>
-                    <p style={{fontSize: '14px', margin: '4px 0 0 0' }}>ID: {member.memberId}</p>
+                    <h3 style={{fontSize: '24px', fontWeight: 'bold', margin: 0 }}>{member.name}</h3>
+                    <p style={{fontSize: '18px', margin: '4px 0 0 0' }}>ID: {member.memberId}</p>
                 </div>
                 <div style={{
-                    width: '45px',
-                    height: '60px',
+                    width: '100px',
+                    height: '120px',
                     border: '2px dashed #ccc',
                     display: 'flex',
                     alignItems: 'center',
@@ -132,9 +132,9 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
 
             {/* Conditions */}
-            <div style={{ margin: '30px 0' }}>
+            <div style={{ margin: '50px 0 30px' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 'bold', paddingBottom: '5px', marginBottom: '10px', borderBottom: '1px solid #ccc' }}>{labels.conditions}</h3>
-                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6' }}>
+                <ul style={{ paddingLeft: '0px', margin: 0, listStyleType: 'none', fontSize: '11px', color: '#555', lineHeight: '1.6', fontWeight: 600 }}>
                     {conditions.map((condition, index) => (
                       <li key={index} style={{paddingLeft: '5px', marginBottom: '4px'}}>
                         {condition}
@@ -144,7 +144,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
             </div>
             
             {/* Signature */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '80px', marginTop: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '100px', marginTop: 'auto' }}>
                 <div style={{ width: '45%', borderTop: '1px dotted #888', paddingTop: '8px', textAlign: 'center', fontSize: '12px' }}>
                    {labels.memberSignature}
                 </div>
