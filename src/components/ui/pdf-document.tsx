@@ -23,17 +23,20 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
 
     return (
         <div style={{ width: '800px', padding: '40px', color: '#000', background: '#fff', fontFamily: 'sans-serif' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid #ccc', paddingBottom: '15px', marginBottom: '30px' }}>
-                <div style={{ textAlign: 'left', flexGrow: 1 }}>
-                    <h1 style={{ fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
-                      <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
-                    </h1>
-                    <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 0 0' }}>
-                      {language === 'bn'
-                        ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
-                        : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
-                    </p>
-                     <h2 style={{ fontSize: '20px', marginTop: '20px', color: '#333', textAlign: 'center' }}>{title}</h2>
+            <div style={{ textAlign: 'center', borderBottom: '2px solid #ccc', paddingBottom: '15px', marginBottom: '20px' }}>
+                <h1 style={{ fontSize: '24px', margin: 0, fontWeight: 'bold' }}>
+                  <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
+                </h1>
+                <p style={{ fontSize: '14px', color: '#555', margin: '5px 0 0 0' }}>
+                  {language === 'bn'
+                    ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
+                    : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
+                </p>
+            </div>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+                <div style={{ flexGrow: 1 }}>
+                     <h2 style={{ fontSize: '20px', color: '#333', textAlign: 'center' }}>{title}</h2>
                 </div>
                 <div style={{
                     width: '120px',
@@ -51,7 +54,7 @@ export function PdfDocument({ member, language, isRegistration = false }: PdfDoc
                     {language === 'bn' ? 'পাসপোর্ট সাইজের ছবি এখানে লাগান' : 'Affix Passport Size Photo Here'}
                 </div>
             </div>
-            
+
             <div>
                 {renderField(language === 'bn' ? 'সদস্য আইডি' : 'Member ID', member.memberId)}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 40px' }}>
