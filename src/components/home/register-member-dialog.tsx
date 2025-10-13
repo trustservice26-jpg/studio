@@ -91,7 +91,7 @@ export function RegisterMemberDialog({ open, onOpenChange }: RegisterMemberDialo
 
       setQrCodeUrl(qrUrl);
       setFormDataForPdf(newMember);
-      setPdfContent(<PdfDocument member={newMember} language={language} isRegistration={true} qrCodeUrl={qrUrl} />);
+      setPdfContent(<PdfDocument member={newMember} language={'en'} isRegistration={true} qrCodeUrl={qrUrl} />);
     } else {
         // Handle error case where member creation failed
         setIsGeneratingPdf(false);
