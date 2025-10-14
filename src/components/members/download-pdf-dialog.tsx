@@ -14,17 +14,24 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { useAppContext } from '@/context/app-context';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, Check, ChevronsUpDown } from 'lucide-react';
 import type { Member } from '@/lib/types';
 import { PdfDocument } from '../ui/pdf-document';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { cn } from '@/lib/utils';
 
 type DownloadPdfDialogProps = {
   open: boolean;
@@ -38,6 +45,7 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfContent, setPdfContent] = useState<React.ReactNode | null>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
 
   useEffect(() => {
     if (preselectedMemberName) {
@@ -115,9 +123,9 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
   }, [pdfContent, isGeneratingPdf, selectedMember, onOpenChange]);
 
 
-  const handleMemberSelect = (memberId: string) => {
-    const member = members.find(m => m.id === memberId) || null;
+  const handleMemberSelect = (member: Member | null) => {
     setSelectedMember(member);
+    setPopoverOpen(false);
   }
   
   useEffect(() => {
@@ -127,6 +135,7 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
       }
       setIsGeneratingPdf(false);
       setPdfContent(null);
+      setPopoverOpen(false);
     }
   }, [open, preselectedMemberName]);
 
@@ -141,16 +150,46 @@ export function DownloadPdfDialog({ open, onOpenChange, preselectedMemberName = 
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 space-y-4">
-            <Select onValueChange={handleMemberSelect} value={selectedMember?.id || ''}>
-              <SelectTrigger>
-                <SelectValue placeholder={language === 'bn' ? 'একজন সদস্য নির্বাচন করুন' : 'Select a member'} />
-              </SelectTrigger>
-              <SelectContent>
-                {members.map(member => (
-                  <SelectItem key={member.id} value={member.id}>{member.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={isPopoverOpen}
+                  className="w-full justify-between"
+                >
+                  {selectedMember
+                    ? `${selectedMember.name} (${selectedMember.memberId})`
+                    : (language === 'bn' ? 'সদস্য নির্বাচন করুন...' : 'Select member...')}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height] p-0">
+                <Command>
+                  <CommandInput placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে খুঁজুন...' : 'Search by name or ID...'} />
+                  <CommandList>
+                    <CommandEmpty>{language === 'bn' ? 'কোনো সদস্য পাওয়া যায়নি।' : 'No member found.'}</CommandEmpty>
+                    <CommandGroup>
+                      {members.map((member) => (
+                        <CommandItem
+                          key={member.id}
+                          value={`${member.name} ${member.memberId}`}
+                          onSelect={() => handleMemberSelect(member)}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedMember?.id === member.id ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {member.name} ({member.memberId})
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
 
           </div>
           <DialogFooter>
