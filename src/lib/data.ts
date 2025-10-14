@@ -5,7 +5,7 @@ export const initialMembers: Member[] = [];
 
 export const initialNotices: Notice[] = [
   {
-    id: 'n1',
+    id: 'n1-unique',
     message: 'Monthly meeting on the first Friday of every month. Your participation is highly encouraged!',
     date: '2024-07-01T10:00:00.000Z'
   }
