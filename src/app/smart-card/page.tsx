@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Download, User, ArrowRight, Check, ChevronsUpDown } from 'lucide-react';
+import { Download, User, Check, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAppContext } from '@/context/app-context';
 import type { Member } from '@/lib/types';
@@ -24,6 +24,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const sampleMember: Partial<Member> = {
   name: 'Sample Member',
@@ -72,7 +73,7 @@ export default function SmartCardPage() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 mb-8">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-8">
             <div className="w-full max-w-sm">
                 <label className="text-sm font-medium mb-2 flex items-center">
                     <User className="w-4 h-4 mr-2" />
@@ -119,22 +120,41 @@ export default function SmartCardPage() {
                   </PopoverContent>
                 </Popover>
             </div>
-            <Button onClick={() => setDownloadDialogOpen(true)} disabled={!selectedMember}>
+            <Button onClick={() => setDownloadDialogOpen(true)} disabled={!selectedMember} className="w-full md:w-auto">
                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'স্মার্ট কার্ড ডাউনলোড' : 'Download Smart Card'}
             </Button>
         </div>
         
         {isClient && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <div className="flex flex-col items-center">
-                  <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের সামনের অংশ' : 'Card Front'}</h2>
+          <>
+            {/* Desktop View */}
+            <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div className="flex flex-col items-center">
+                    <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের সামনের অংশ' : 'Card Front'}</h2>
+                    <SmartCard member={memberForDisplay} side="front" />
+                </div>
+                <div className="flex flex-col items-center">
+                    <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের পিছনের অংশ' : 'Card Back'}</h2>
+                    <SmartCard member={memberForDisplay} side="back" />
+                </div>
+            </div>
+
+             {/* Mobile View */}
+            <div className="md:hidden max-w-md mx-auto">
+              <Tabs defaultValue="front" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="front">{language === 'bn' ? 'সামনের অংশ' : 'Front'}</TabsTrigger>
+                  <TabsTrigger value="back">{language === 'bn' ? 'পিছনের অংশ' : 'Back'}</TabsTrigger>
+                </TabsList>
+                <TabsContent value="front" className="mt-4">
                   <SmartCard member={memberForDisplay} side="front" />
-              </div>
-              <div className="flex flex-col items-center">
-                  <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের পিছনের অংশ' : 'Card Back'}</h2>
+                </TabsContent>
+                <TabsContent value="back" className="mt-4">
                   <SmartCard member={memberForDisplay} side="back" />
-              </div>
-          </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </>
         )}
 
       </motion.div>
@@ -146,3 +166,4 @@ export default function SmartCardPage() {
     </>
   );
 }
+
