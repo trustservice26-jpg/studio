@@ -81,7 +81,7 @@ function DeleteTransactionDialog({ transaction, language, onDelete }: { transact
           {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => handleOpenChange(false)}>{language === 'bn' ? 'বাতিল' : 'Cancel'}</AlertDialogCancel>
+          <AlertDialogCancel>{language === 'bn' ? 'বাতিল' : 'Cancel'}</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button onClick={handleDelete} variant="destructive">
               {language === 'bn' ? 'হ্যাঁ, মুছুন' : 'Yes, delete'}
