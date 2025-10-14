@@ -63,7 +63,7 @@ export default function AboutUsPage() {
               <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
                   <Quote className="w-8 h-8 text-muted-foreground mb-4" />
                   <p className="prose dark:prose-invert">
-                    <strong className="font-bold">HADIYA – মানবতার উপহার</strong> {language === 'bn' ? ' হলো একটি সম্প্রদায়-চালিত উদ্যোগ, যা পরিচালিত হচ্ছে ' : 'is a community-driven initiative supervised by '} <strong className="font-bold">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ (চান্দগাঁও)' : 'Shahid Liyakot Shriti Songo (Chandgaon)'}</strong>. {language === 'bn' ? 'আমাদের লক্ষ্য হলো ইসলামের আলোকে মানবতার কল্যাণে কাজ করা এবং সমাজে ইতিবাচক পরিবর্তন আনা।' : 'Our goal is to work for the welfare of humanity in the light of Islam and to bring positive change to society.'}
+                    <strong className="font-bold">HADIYA - মানবতার উপহার</strong> {language === 'bn' ? ' হলো একটি সম্প্রদায়-চালিত উদ্যোগ, যা পরিচালিত হচ্ছে ' : 'is a community-driven initiative supervised by '} <strong className="font-bold">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ (চান্দগাঁও)' : 'Shahid Liyakot Shriti Songo (Chandgaon)'}</strong>. {language === 'bn' ? 'আমাদের লক্ষ্য হলো ইসলামের আলোকে মানবতার কল্যাণে কাজ করা এবং সমাজে ইতিবাচক পরিবর্তন আনা।' : 'Our goal is to work for the welfare of humanity in the light of Islam and to bring positive change to society.'}
                   </p>
               </CardContent>
           </Card>
@@ -82,11 +82,11 @@ export default function AboutUsPage() {
                     <Star className="w-6 h-6 text-accent" />
                     {language === 'bn' ? (
                         <span className="whitespace-nowrap">
-                            <strong className="font-bold">HADIYA – মানবতার উপহার</strong> কী এবং কেন ?
+                            <strong className="font-bold">HADIYA - মানবতার উপহার</strong> কী এবং কেন ?
                         </span>
                     ) : (
                          <span className="whitespace-nowrap">
-                            What and Why is <strong className="font-bold">HADIYA – মানবতার উপহার</strong>?
+                            What and Why is <strong className="font-bold">HADIYA - মানবতার উপহার</strong>?
                         </span>
                     )}
                 </CardTitle>
@@ -94,8 +94,8 @@ export default function AboutUsPage() {
             <CardContent className="space-y-4 text-center">
                 <p>
                 {language === 'bn' ? 
-                <><strong>HADIYA – মানবতার উপহার</strong> একটি অনুপ্রেরণামূলক ধারণা, যার মূল উদ্দেশ্য হল মানবতার প্রতি ভালোবাসা, সহানুভূতি এবং সাহায্যের হাত বাড়িয়ে দেওয়া। “হাদিয়া” শব্দটি এসেছে আরবি শব্দ هدية (Hadiyah) থেকে, যার অর্থ উপহার। এই ধারণার মাধ্যমে আমরা বোঝাতে চাই – প্রত্যেক ভালো কাজ, প্রতিটি দান, প্রতিটি সাহায্য — সবই মানবতার প্রতি একটি উপহার।</> :
-                <><strong>HADIYA – মানবতার উপহার</strong> is an inspirational concept, whose main purpose is to extend love, compassion, and a helping hand towards humanity. The word "Hadiya" comes from the Arabic word هدية (Hadiyah), which means gift. Through this concept, we want to convey that every good deed, every donation, every act of help—is a gift to humanity.</>
+                <><strong>HADIYA - মানবতার উপহার</strong> একটি অনুপ্রেরণামূলক ধারণা, যার মূল উদ্দেশ্য হল মানবতার প্রতি ভালোবাসা, সহানুভূতি এবং সাহায্যের হাত বাড়িয়ে দেওয়া। “হাদিয়া” শব্দটি এসেছে আরবি শব্দ هدية (Hadiyah) থেকে, যার অর্থ উপহার। এই ধারণার মাধ্যমে আমরা বোঝাতে চাই – প্রত্যেক ভালো কাজ, প্রতিটি দান, প্রতিটি সাহায্য — সবই মানবতার প্রতি একটি উপহার।</> :
+                <><strong>HADIYA - মানবতার উপহার</strong> is an inspirational concept, whose main purpose is to extend love, compassion, and a helping hand towards humanity. The word "Hadiya" comes from the Arabic word هدية (Hadiyah), which means gift. Through this concept, we want to convey that every good deed, every donation, every act of help—is a gift to humanity.</>
                 }
                 </p>
                 <div>
