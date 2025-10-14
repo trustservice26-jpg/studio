@@ -35,15 +35,14 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           `Father's Name: ${member?.fatherName || 'N/A'}`,
           `NID/Birth Certificate No.: ${member?.nid || 'N/A'}`,
           `Address: ${member?.address || 'N/A'}`,
-        ];
-        const qrData = details.join('\n');
+        ].join('\n');
 
         try {
-          const url = await QRCode.toDataURL(qrData, {
-            errorCorrectionLevel: 'H',
+          const url = await QRCode.toDataURL(details, {
+            errorCorrectionLevel: 'H', // Use high error correction
             type: 'image/png',
             margin: 1,
-            width: isPdf ? 128 : 90,
+            scale: isPdf ? 6 : 4, // Higher scale for PDF
             color: {
               dark: '#000000',
               light: '#FFFFFF'
@@ -87,8 +86,8 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
               MEMBERSHIP IDENTIFICATION CARD
             </p>
             <div className="flex items-center">
-                <div className={cn("flex items-center justify-center shrink-0 mr-[12px] p-1 bg-white border", isPdf ? "w-[60px] h-[60px]" : "w-[70px] h-[70px]")}>
-                  {frontQrCodeUrl && <img src={frontQrCodeUrl} alt="QR Code" className="w-full h-full" />}
+                <div className={cn("flex items-center justify-center shrink-0 mr-[12px] p-1 bg-white border", isPdf ? "w-[70px] h-[70px]" : "w-[70px] h-[70px]")}>
+                  {frontQrCodeUrl && <img src={frontQrCodeUrl} alt="QR Code" style={{ width: '100%', height: '100%', imageRendering: 'pixelated' }} />}
                 </div>
                 <div className="flex-grow">
                     <h2 className="font-body text-[0.9rem] font-bold m-0 text-black">{memberName}</h2>
