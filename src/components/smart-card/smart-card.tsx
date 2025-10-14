@@ -35,7 +35,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           `Father's Name: ${member?.fatherName || 'N/A'}`,
           `NID/Birth Certificate No.: ${member?.nid || 'N/A'}`,
           `Address: ${member?.address || 'N/A'}`,
-        ].join('\n');
+        ].join('\n\n');
 
         try {
           const url = await QRCode.toDataURL(details, {
@@ -160,3 +160,5 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     </div>
   );
 }
+
+    
