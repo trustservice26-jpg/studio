@@ -72,7 +72,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <HeartHandshake className="text-green-800 h-7 w-7 shrink-0" />
           <div className="flex flex-col justify-center">
               <h1 className="font-card_headline text-[0.95rem] font-bold m-0 leading-tight whitespace-nowrap">
-                <span className="text-green-800">HADIYA</span>{' – '}<span className="text-yellow-600">{` মানবতার উপহার`}</span>
+                <span className="text-green-800">HADIYA</span>{' - '}<span className="text-yellow-600">{` মানবতার উপহার`}</span>
               </h1>
               <p className="font-subheadline text-[0.4rem] text-gray-600 m-0 font-normal whitespace-nowrap pt-1">
                 {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
@@ -135,7 +135,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <ul className="m-0 pl-[12px] text-[0.5rem] text-gray-600 list-disc space-y-px text-left">
             <li>This card is non-transferable.</li>
             <li>Please return if found.</li>
-            <li>Property of HADIYA – মানবতার উপহার.</li>
+            <li>Property of HADIYA - মানবতার উপহার.</li>
           </ul>
         </div>
         <div>
@@ -160,5 +160,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     </div>
   );
 }
-
-    

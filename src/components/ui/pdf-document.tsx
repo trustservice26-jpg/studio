@@ -82,7 +82,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>
                         <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: isBangla ? '22px' : '26px', margin: 0, fontWeight: 'bold' }}>
-                          <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span>
+                          <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>- মানবতার উপহার</span>
                         </h1>
                         <p style={{ fontSize: isBangla ? '12px' : '14px', color: '#555', margin: '5px 0 0 0', fontWeight: 500 }}>
                           {isBangla
@@ -169,7 +169,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
             {/* Footer */}
             <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '10px', borderTop: '1px solid #eee', fontSize: isBangla ? '8px' : '9px', color: '#777' }}>
-                 <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>– মানবতার উপহার</span> ({isBangla ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
+                 <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>- মানবতার উপহার</span> ({isBangla ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
                  <p style={{ fontStyle: 'italic', marginTop: '4px', margin: 0 }}>Developed & Supported by AL-SADEEQ Team.</p>
             </div>
         </div>

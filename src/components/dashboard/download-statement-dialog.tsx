@@ -248,7 +248,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
         <div id="pdf-statement-content" style={{ position: 'absolute', left: '-9999px', width: '800px', padding: '20px', color: '#000', background: '#fff', fontFamily: '"PT Sans", sans-serif' }}>
             <div style={{ textAlign: 'center', marginBottom: '15px', borderBottom: '2px solid hsl(var(--brand-gold))', paddingBottom: '8px' }}>
                 <h1 style={{ fontFamily: '"Cinzel Decorative", serif', fontSize: '22px', margin: '0 0 8px 0', fontWeight: 'bold' }}>
-                  <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>–মানবতার উপহার</span>
+                  <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>- মানবতার উপহার</span>
                 </h1>
                 <p style={{ fontSize: '12px', color: '#555', margin: 0 }}>
                   {language === 'bn'
