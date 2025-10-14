@@ -3,20 +3,27 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Download, User, ArrowRight } from 'lucide-react';
+import { Download, User, ArrowRight, Check, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { useAppContext } from '@/context/app-context';
 import type { Member } from '@/lib/types';
 import { SmartCard } from '@/components/smart-card/smart-card';
 import { DownloadSmartCardDialog } from '@/components/smart-card/download-smart-card-dialog';
 import { useIsClient } from '@/hooks/use-is-client';
+import { cn } from '@/lib/utils';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
 
 const sampleMember: Partial<Member> = {
   name: 'Sample Member',
@@ -35,11 +42,15 @@ export default function SmartCardPage() {
   const { language, members } = useAppContext();
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
   const [isDownloadDialogOpen, setDownloadDialogOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const isClient = useIsClient();
   
+  const activeMembers = React.useMemo(() => members.filter(m => m.status === 'active'), [members]);
+
   const handleMemberSelect = (memberId: string) => {
-    const member = members.find(m => m.id === memberId) || null;
+    const member = activeMembers.find(m => m.id === memberId) || null;
     setSelectedMember(member);
+    setOpen(false);
   };
   
   const memberForDisplay = selectedMember || sampleMember;
@@ -65,18 +76,48 @@ export default function SmartCardPage() {
             <div className="w-full max-w-sm">
                 <label className="text-sm font-medium mb-2 flex items-center">
                     <User className="w-4 h-4 mr-2" />
-                    {language === 'bn' ? 'আপনার নাম নির্বাচন করুন' : 'Select Your Name'}
+                    {language === 'bn' ? 'সদস্য খুঁজুন' : 'Search for a member'}
                 </label>
-                 <Select onValueChange={handleMemberSelect} value={selectedMember?.id || ''}>
-                    <SelectTrigger className="w-full">
-                        <SelectValue placeholder={language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select a member'} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {members.map(member => (
-                        <SelectItem key={member.id} value={member.id}>{member.name} ({member.memberId})</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full justify-between"
+                    >
+                      {selectedMember
+                        ? `${selectedMember.name} (${selectedMember.memberId})`
+                        : (language === 'bn' ? 'সদস্য নির্বাচন করুন...' : 'Select member...')}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full max-w-sm p-0">
+                    <Command>
+                      <CommandInput placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে খুঁজুন...' : 'Search by name or ID...'} />
+                      <CommandList>
+                        <CommandEmpty>{language === 'bn' ? 'কোনো সদস্য পাওয়া যায়নি।' : 'No member found.'}</CommandEmpty>
+                        <CommandGroup>
+                          {activeMembers.map((member) => (
+                            <CommandItem
+                              key={member.id}
+                              value={`${member.name} ${member.memberId}`}
+                              onSelect={() => handleMemberSelect(member.id)}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  selectedMember?.id === member.id ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {member.name} ({member.memberId})
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
             </div>
             <Button onClick={() => setDownloadDialogOpen(true)} disabled={!selectedMember}>
                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'স্মার্ট কার্ড ডাউনলোড' : 'Download Smart Card'}
