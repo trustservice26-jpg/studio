@@ -87,42 +87,53 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function setup() {
-        // We will use a flag to check if the user has ever cleared the data.
-        // If they have, we respect their choice and don't re-seed.
-        const hasUserClearedData = localStorage.getItem('hadiya-user-cleared-data') === 'true';
-        const hasSeeded = localStorage.getItem('hadiya-has-seeded') === 'true';
+        const hasSeededMembers = localStorage.getItem('hadiya-has-seeded-members') === 'true';
+        const hasSeededNotices = localStorage.getItem('hadiya-has-seeded-notices') === 'true';
+        const hasSeededTransactions = localStorage.getItem('hadiya-has-seeded-transactions') === 'true';
 
-        if (!hasSeeded && !hasUserClearedData) {
-            const collections = {
-                members: initialMembers,
-                notices: initialNotices,
-                transactions: initialTransactions,
-            };
-        
-            const batch = writeBatch(db);
-            let shouldCommit = false;
-        
-            for (const [colName, data] of Object.entries(collections)) {
-                const colRef = collection(db, colName);
-                const snapshot = await getDocs(colRef);
-                if (snapshot.empty) {
-                  console.log(`Seeding ${colName}...`);
-                  shouldCommit = true;
-                  data.forEach((item) => {
-                      const docRef = doc(colRef);
-                      batch.set(docRef, item);
-                  });
-                }
-            }
-        
-            if (shouldCommit) {
+        // Seed Members
+        if (!hasSeededMembers) {
+            const membersSnapshot = await getDocs(collection(db, 'members'));
+            if (membersSnapshot.empty) {
+                console.log('Seeding members...');
+                const batch = writeBatch(db);
+                initialMembers.forEach((item) => {
+                    const docRef = doc(collection(db, 'members'));
+                    batch.set(docRef, item);
+                });
                 await batch.commit();
-                localStorage.setItem('hadiya-has-seeded', 'true');
-            } else {
-                // If the DB isn't empty but we haven't marked it as seeded, do so now.
-                // This prevents re-seeding on subsequent loads.
-                localStorage.setItem('hadiya-has-seeded', 'true');
             }
+            localStorage.setItem('hadiya-has-seeded-members', 'true');
+        }
+
+        // Seed Notices
+        if (!hasSeededNotices) {
+            const noticesSnapshot = await getDocs(collection(db, 'notices'));
+            if (noticesSnapshot.empty) {
+                console.log('Seeding notices...');
+                const batch = writeBatch(db);
+                initialNotices.forEach((item) => {
+                    const docRef = doc(collection(db, 'notices'));
+                    batch.set(docRef, item);
+                });
+                await batch.commit();
+            }
+            localStorage.setItem('hadiya-has-seeded-notices', 'true');
+        }
+
+        // Seed Transactions
+        if (!hasSeededTransactions) {
+            const transactionsSnapshot = await getDocs(collection(db, 'transactions'));
+            if (transactionsSnapshot.empty) {
+                console.log('Seeding transactions...');
+                const batch = writeBatch(db);
+                initialTransactions.forEach((item) => {
+                    const docRef = doc(collection(db, 'transactions'));
+                    batch.set(docRef, item);
+                });
+                await batch.commit();
+            }
+            localStorage.setItem('hadiya-has-seeded-transactions', 'true');
         }
 
         const qMembers = query(collection(db, 'members'), orderBy('joinDate', 'desc'));
@@ -356,8 +367,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             batch.delete(doc.ref);
         });
         await batch.commit();
-        localStorage.setItem('hadiya-user-cleared-data', 'true');
-        localStorage.removeItem('hadiya-has-seeded'); // Allow re-seeding of other collections if needed
+        localStorage.setItem('hadiya-has-seeded-transactions', 'false');
         toast({
             variant: 'destructive',
             title: language === 'bn' ? 'সমস্ত লেনদেন মুছে ফেলা হয়েছে' : 'All Transactions Cleared',
@@ -377,12 +387,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         querySnapshot.forEach(doc => {
           batch.delete(doc.ref);
         });
+        localStorage.setItem(`hadiya-has-seeded-${colName}`, 'false');
       }
       await batch.commit();
-      // Set a flag that the user has intentionally cleared data, so we don't re-seed.
-      localStorage.setItem('hadiya-user-cleared-data', 'true');
-      // Also remove the seeded flag so if the app logic changes, it could seed new collections later.
-      localStorage.removeItem('hadiya-has-seeded');
+      
       toast({
         variant: 'destructive',
         title: language === 'bn' ? 'সমস্ত ডেটা মুছে ফেলা হয়েছে' : 'All Application Data Cleared',

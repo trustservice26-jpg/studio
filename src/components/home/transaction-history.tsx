@@ -26,14 +26,14 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import type { Transaction } from '@/lib/types';
 
-function DeleteTransactionDialog({ transactionId, language, onDelete }: { transactionId: string; language: 'en' | 'bn'; onDelete: (id: string) => void; }) {
+function DeleteTransactionDialog({ transaction, language, onDelete }: { transaction: Transaction; language: 'en' | 'bn'; onDelete: (id: string) => void; }) {
   const [open, setOpen] = React.useState(false);
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
 
   const handleDelete = () => {
     if (password === 'ADMIN') {
-      onDelete(transactionId);
+      onDelete(transaction.id);
       setOpen(false);
       setPassword('');
       setError('');
@@ -70,9 +70,9 @@ function DeleteTransactionDialog({ transactionId, language, onDelete }: { transa
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-2">
-          <Label htmlFor={`delete-password-${transactionId}`}>{language === 'bn' ? 'অ্যাডমিন পাসওয়ার্ড' : 'Admin Password'}</Label>
+          <Label htmlFor={`delete-password-${transaction.id}`}>{language === 'bn' ? 'অ্যাডমিন পাসওয়ার্ড' : 'Admin Password'}</Label>
           <Input
-            id={`delete-password-${transactionId}`}
+            id={`delete-password-${transaction.id}`}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -144,7 +144,7 @@ export function TransactionHistory() {
                     </div>
                      {user?.role === 'admin' && (
                         <DeleteTransactionDialog
-                          transactionId={tx.id}
+                          transaction={tx}
                           language={language}
                           onDelete={deleteTransaction}
                         />
