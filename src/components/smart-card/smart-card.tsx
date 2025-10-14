@@ -29,17 +29,23 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     if (!isClient || side === 'back') return;
     
     const generateFrontQrCode = async () => {
-        // Use only the member ID for a scannable QR code
-        const qrData = member?.memberId || 'H-0000';
+        const details = [
+          `Phone: ${member?.phone || 'N/A'}`,
+          `Date of Birth: ${member?.dob || 'N/A'}`,
+          `Father's Name: ${member?.fatherName || 'N/A'}`,
+          `NID/Birth Certificate No.: ${member?.nid || 'N/A'}`,
+          `Address: ${member?.address || 'N/A'}`,
+        ];
+        const qrData = details.join('\n');
 
         try {
           const url = await QRCode.toDataURL(qrData, {
-            errorCorrectionLevel: 'H', // High error correction for reliability
+            errorCorrectionLevel: 'H',
             type: 'image/png',
             margin: 1,
-            width: isPdf ? 128 : 90, // Increased size for better scanning
+            width: isPdf ? 128 : 90,
             color: {
-              dark: '#000000', // High contrast black for reliability
+              dark: '#000000',
               light: '#FFFFFF'
             }
           });
@@ -155,7 +161,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     </div>
   );
 }
-
-    
-
-    
