@@ -29,13 +29,19 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     if (!isClient || side === 'back') return;
     
     const generateFrontQrCode = async () => {
-        // Keep QR code simple for better scannability.
-        // Include only the most essential, unique identifiers.
-        const memberId = member?.memberId || 'H-0000';
-        const name = member?.name || (language === 'bn' ? 'নাম পাওয়া যায়নি' : 'Name Not Found');
-        const phone = member?.phone || (language === 'bn' ? 'ফোন পাওয়া যায়নি' : 'Phone Not Found');
+        const phone = member?.phone || 'Not Available';
+        const dob = member?.dob || 'Not Available';
+        const fatherName = member?.fatherName || 'Not Available';
+        const nid = member?.nid || 'Not Available';
+        const address = member?.address || 'Not Available';
 
-        const qrData = `Member ID: ${memberId}\nName: ${name}\nPhone: ${phone}`;
+        const qrData = [
+          `Phone: ${phone}`,
+          `Date of Birth: ${dob}`,
+          `Father's Name: ${fatherName}`,
+          `NID/Birth Cert.: ${nid}`,
+          `Address: ${address}`
+        ].join('\n\n');
 
         try {
           const url = await QRCode.toDataURL(qrData, {
@@ -160,3 +166,5 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     </div>
   );
 }
+
+    
