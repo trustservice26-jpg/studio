@@ -18,6 +18,19 @@ import { SmartCard } from '@/components/smart-card/smart-card';
 import { DownloadSmartCardDialog } from '@/components/smart-card/download-smart-card-dialog';
 import { useIsClient } from '@/hooks/use-is-client';
 
+const sampleMember: Partial<Member> = {
+  name: 'Sample Member',
+  memberId: 'H-0000',
+  joinDate: new Date().toISOString(),
+  status: 'active',
+  phone: '+8801234567890',
+  dob: '01-01-2000',
+  fatherName: "Sample Father",
+  nid: '1234567890',
+  address: 'Sample Address, Bangladesh'
+};
+
+
 export default function SmartCardPage() {
   const { language, members } = useAppContext();
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
@@ -28,6 +41,8 @@ export default function SmartCardPage() {
     const member = members.find(m => m.id === memberId) || null;
     setSelectedMember(member);
   };
+  
+  const memberForDisplay = selectedMember || sampleMember;
 
   return (
     <>
@@ -52,7 +67,7 @@ export default function SmartCardPage() {
                     <User className="w-4 h-4 mr-2" />
                     {language === 'bn' ? 'আপনার নাম নির্বাচন করুন' : 'Select Your Name'}
                 </label>
-                 <Select onValueChange={handleMemberSelect} value={selectedMember?.id}>
+                 <Select onValueChange={handleMemberSelect} value={selectedMember?.id || ''}>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder={language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select a member'} />
                     </SelectTrigger>
@@ -72,11 +87,11 @@ export default function SmartCardPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               <div className="flex flex-col items-center">
                   <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের সামনের অংশ' : 'Card Front'}</h2>
-                  <SmartCard member={selectedMember} side="front" />
+                  <SmartCard member={memberForDisplay} side="front" />
               </div>
               <div className="flex flex-col items-center">
                   <h2 className="text-xl font-semibold mb-4">{language === 'bn' ? 'কার্ডের পিছনের অংশ' : 'Card Back'}</h2>
-                  <SmartCard member={selectedMember} side="back" />
+                  <SmartCard member={memberForDisplay} side="back" />
               </div>
           </div>
         )}
