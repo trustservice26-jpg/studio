@@ -29,8 +29,13 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     if (!isClient || side === 'back') return;
     
     const generateFrontQrCode = async () => {
-        // This makes the QR code much simpler and easier to scan.
-        const qrData = 'hadiya24.vercel.app';
+        // Keep QR code simple for better scannability.
+        // Include only the most essential, unique identifiers.
+        const memberId = member?.memberId || 'H-0000';
+        const name = member?.name || (language === 'bn' ? 'নাম পাওয়া যায়নি' : 'Name Not Found');
+        const phone = member?.phone || (language === 'bn' ? 'ফোন পাওয়া যায়নি' : 'Phone Not Found');
+
+        const qrData = `Member ID: ${memberId}\nName: ${name}\nPhone: ${phone}`;
 
         try {
           const url = await QRCode.toDataURL(qrData, {
@@ -155,5 +160,3 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     </div>
   );
 }
-
-    
