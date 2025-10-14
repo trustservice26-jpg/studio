@@ -23,7 +23,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const [frontQrCodeUrl, setFrontQrCodeUrl] = useState('');
   const isClient = useIsClient();
 
-  const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Mohammad Rahim');
+  const memberName = member?.name || (language === 'bn' ? 'মোহাম্মদ রহিম' : 'Sample Member');
 
   useEffect(() => {
     if (!isClient || side === 'back') return;
@@ -142,7 +142,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'যোগাযোগ' : 'CONTACT INFO'}</h3>
           <div className="flex items-center text-[0.45rem] text-gray-700 leading-tight">
             <GlobeIcon />
-            <span className="ml-1">www.hadiya.org</span>
+            <span className="ml-1">https://hadiya24.vercel.app</span>
           </div>
           <div className="flex items-center text-[0.45rem] text-gray-700 leading-tight mt-0.5">
             <MailIcon />
