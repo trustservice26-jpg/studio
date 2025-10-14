@@ -87,8 +87,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function setup() {
-        const hasSeeded = localStorage.getItem('hasSeeded');
-        if (hasSeeded !== 'true-v2') {
+        const hasSeeded = localStorage.getItem('hadiya-has-seeded');
+        if (hasSeeded !== 'true') {
             const collections = {
                 members: initialMembers,
                 notices: initialNotices,
@@ -113,10 +113,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         
             if (shouldCommit) {
                 await batch.commit();
-                localStorage.setItem('hasSeeded', 'true-v2');
+                localStorage.setItem('hadiya-has-seeded', 'true');
             } else if (!hasSeeded) {
                 // if db is not empty but seeding has not been marked, mark it.
-                 localStorage.setItem('hasSeeded', 'true-v2');
+                 localStorage.setItem('hadiya-has-seeded', 'true');
             }
         }
 
@@ -372,6 +372,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         });
       }
       await batch.commit();
+      // Set the flag in local storage to indicate that the user has cleared the data
+      // and doesn't want it to be re-seeded.
+      localStorage.setItem('hadiya-has-seeded', 'true');
       toast({
         variant: 'destructive',
         title: language === 'bn' ? 'সমস্ত ডেটা মুছে ফেলা হয়েছে' : 'All Application Data Cleared',
@@ -419,9 +422,3 @@ export function useAppContext() {
   }
   return context;
 }
-
-    
-
-    
-
-    
