@@ -88,8 +88,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function setup() {
         // Seed Members
-        const hasSeededMembers = localStorage.getItem('hadiya-has-seeded-members') === 'true';
-        if (!hasSeededMembers) {
+        if (localStorage.getItem('hadiya-has-seeded-members') !== 'true') {
             const membersSnapshot = await getDocs(collection(db, 'members'));
             if (membersSnapshot.empty) {
                 console.log('Seeding members...');
@@ -104,8 +103,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
 
         // Seed Notices
-        const hasSeededNotices = localStorage.getItem('hadiya-has-seeded-notices') === 'true';
-        if (!hasSeededNotices) {
+        if (localStorage.getItem('hadiya-has-seeded-notices') !== 'true') {
             const noticesSnapshot = await getDocs(collection(db, 'notices'));
             if (noticesSnapshot.empty) {
                 console.log('Seeding notices...');
@@ -120,8 +118,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
 
         // Seed Transactions
-        const hasSeededTransactions = localStorage.getItem('hadiya-has-seeded-transactions') === 'true';
-        if (!hasSeededTransactions) {
+        if (localStorage.getItem('hadiya-has-seeded-transactions') !== 'true') {
             const transactionsSnapshot = await getDocs(collection(db, 'transactions'));
             if (transactionsSnapshot.empty) {
                 console.log('Seeding transactions...');
@@ -366,7 +363,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             batch.delete(doc.ref);
         });
         await batch.commit();
-        localStorage.setItem('hadiya-has-seeded-transactions', 'true');
+        localStorage.setItem('hadiya-has-seeded-transactions', 'false');
         toast({
             variant: 'destructive',
             title: language === 'bn' ? 'সমস্ত লেনদেন মুছে ফেলা হয়েছে' : 'All Transactions Cleared',
@@ -386,7 +383,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         querySnapshot.forEach(doc => {
           batch.delete(doc.ref);
         });
-        localStorage.setItem(`hadiya-has-seeded-${colName}`, 'true');
+        localStorage.setItem(`hadiya-has-seeded-${colName}`, 'false');
       }
       await batch.commit();
       
