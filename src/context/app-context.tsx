@@ -87,51 +87,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function setup() {
-        // Seed Members
-        if (localStorage.getItem('hadiya-has-seeded-members') !== 'true') {
-            const membersSnapshot = await getDocs(collection(db, 'members'));
-            if (membersSnapshot.empty) {
-                console.log('Seeding members...');
-                const batch = writeBatch(db);
-                initialMembers.forEach((item) => {
-                    const docRef = doc(collection(db, 'members'));
-                    batch.set(docRef, item);
-                });
-                await batch.commit();
-            }
-            localStorage.setItem('hadiya-has-seeded-members', 'true');
-        }
+        const collectionsToSeed: { name: string; initialData: any[] }[] = [
+          { name: 'members', initialData: initialMembers },
+          { name: 'notices', initialData: initialNotices },
+          { name: 'transactions', initialData: initialTransactions }
+        ];
 
-        // Seed Notices
-        if (localStorage.getItem('hadiya-has-seeded-notices') !== 'true') {
-            const noticesSnapshot = await getDocs(collection(db, 'notices'));
-            if (noticesSnapshot.empty) {
-                console.log('Seeding notices...');
-                const batch = writeBatch(db);
-                initialNotices.forEach((item) => {
-                    const docRef = doc(collection(db, 'notices'));
-                    batch.set(docRef, item);
-                });
-                await batch.commit();
+        for (const { name, initialData } of collectionsToSeed) {
+            const hasSeededKey = `hadiya-has-seeded-${name}`;
+            if (localStorage.getItem(hasSeededKey) !== 'true') {
+                const snapshot = await getDocs(collection(db, name));
+                if (snapshot.empty && initialData.length > 0) {
+                    console.log(`Seeding ${name}...`);
+                    const batch = writeBatch(db);
+                    initialData.forEach((item) => {
+                        const docRef = doc(collection(db, name));
+                        batch.set(docRef, item);
+                    });
+                    await batch.commit();
+                }
+                localStorage.setItem(hasSeededKey, 'true');
             }
-            localStorage.setItem('hadiya-has-seeded-notices', 'true');
         }
-
-        // Seed Transactions
-        if (localStorage.getItem('hadiya-has-seeded-transactions') !== 'true') {
-            const transactionsSnapshot = await getDocs(collection(db, 'transactions'));
-            if (transactionsSnapshot.empty) {
-                console.log('Seeding transactions...');
-                const batch = writeBatch(db);
-                initialTransactions.forEach((item) => {
-                    const docRef = doc(collection(db, 'transactions'));
-                    batch.set(docRef, item);
-                });
-                await batch.commit();
-            }
-            localStorage.setItem('hadiya-has-seeded-transactions', 'true');
-        }
-
+        
         const qMembers = query(collection(db, 'members'), orderBy('joinDate', 'desc'));
         const unsubMembers = onSnapshot(qMembers, (snapshot) => {
           const membersData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Member));
