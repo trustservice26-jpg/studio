@@ -29,26 +29,15 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     if (!isClient || side === 'back') return;
     
     const generateFrontQrCode = async () => {
-        const phone = member?.phone || 'Not Available';
-        const dob = member?.dob || 'Not Available';
-        const fatherName = member?.fatherName || 'Not Available';
-        const nid = member?.nid || 'Not Available';
-        const address = member?.address || 'Not Available';
-
-        const qrData = [
-          `Phone: ${phone}`,
-          `Date of Birth: ${dob}`,
-          `Father's Name: ${fatherName}`,
-          `NID/Birth Cert.: ${nid}`,
-          `Address: ${address}`
-        ].join('\n\n');
+        // Use only the member ID for a scannable QR code
+        const qrData = member?.memberId || 'H-0000';
 
         try {
           const url = await QRCode.toDataURL(qrData, {
-            errorCorrectionLevel: 'H',
+            errorCorrectionLevel: 'H', // High error correction for reliability
             type: 'image/png',
             margin: 1,
-            width: isPdf ? 90 : 90, // Increased size for better scanning
+            width: isPdf ? 128 : 90, // Increased size for better scanning
             color: {
               dark: '#000000', // High contrast black for reliability
               light: '#FFFFFF'
@@ -61,7 +50,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
       };
       generateFrontQrCode();
 
-  }, [member, isPdf, side, language, isClient]);
+  }, [member, isPdf, side, isClient]);
 
   const cardBaseClasses = "aspect-[85.6/53.98] w-full flex flex-col overflow-hidden relative text-gray-800 font-body";
   const cardAppearanceClasses = isPdf ? "rounded-[3mm]" : "shadow-lg rounded-xl";
@@ -166,5 +155,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
     </div>
   );
 }
+
+    
 
     
