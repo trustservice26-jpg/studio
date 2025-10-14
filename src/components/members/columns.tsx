@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal, ArrowUpDown, History, Mail, UserCog } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown, History, Mail, UserCog, Info } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,12 +30,14 @@ import {
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
 import { MemberTransactionHistoryModal } from "./member-transaction-history-modal"
 import { SetPermissionsDialog } from "./set-permissions-dialog"
+import { MemberDetailsModal } from "./member-details-modal"
 
 const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
   const { user, deleteMember, toggleMemberStatus, language } = useAppContext();
   const [isHistoryOpen, setIsHistoryOpen] = React.useState(false);
   const [isAlertOpen, setIsAlertOpen] = React.useState(false);
   const [isPermissionsOpen, setPermissionsOpen] = React.useState(false);
+  const [isDetailsOpen, setDetailsOpen] = React.useState(false);
 
 
   const canManageMembers = user?.role === 'admin' || user?.permissions?.canManageMembers;
@@ -52,6 +54,10 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{language === 'bn' ? 'ক্রিয়া' : 'Actions'}</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => setDetailsOpen(true)}>
+               <Info className="mr-2 h-4 w-4" />
+               {language === 'bn' ? 'সদস্যের বিবরণ' : 'Member Details'}
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsHistoryOpen(true)}>
                <History className="mr-2 h-4 w-4" />
                {language === 'bn' ? 'লেনদেনের ইতিহাস' : 'Transaction History'}
@@ -98,6 +104,11 @@ const MemberActions: React.FC<{ member: Member }> = ({ member }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <MemberDetailsModal
+        member={member}
+        open={isDetailsOpen}
+        onOpenChange={setDetailsOpen}
+      />
       <MemberTransactionHistoryModal
         member={member}
         open={isHistoryOpen}
