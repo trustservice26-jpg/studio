@@ -1,3 +1,4 @@
+
 import type { Member, Notice, Transaction } from './types';
 
 export const initialMembers: Member[] = [];
@@ -7,12 +8,7 @@ export const initialNotices: Notice[] = [
     id: 'n1',
     message: 'Monthly meeting on the first Friday of every month. Your participation is highly encouraged!',
     date: '2024-07-01T10:00:00.000Z'
-  },
-  {
-    id: 'n2',
-    message: 'The annual charity gala is scheduled for September 15th. Volunteers are needed!',
-    date: '2024-07-10T14:30:00.000Z'
-  },
+  }
 ];
 
 export const initialTransactions: Transaction[] = [
