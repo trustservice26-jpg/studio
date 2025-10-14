@@ -88,7 +88,7 @@ export function DownloadSmartCardDialog({ open, onOpenChange, member }: Download
             const x = (pageWidth - finalWidth) / 2;
             const y = (pageHeight - finalHeight) / 2;
             
-            pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+            pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight, undefined, 'NONE');
             
             pdf.save(`${member!.name}-SmartCard.pdf`);
 
