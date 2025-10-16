@@ -74,8 +74,20 @@ export default function SmartCardPage() {
               <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'স্মার্ট কার্ড ডাউনলোড' : 'Download Smart Card'}
            </Button>
         </div>
+        
+        <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-4">{language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select a Member'}</h2>
+            <DataTable columns={columns} data={filteredMembers} pageSize={3}>
+                <Input
+                placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে সদস্য খুঁজুন...' : 'Filter by name or ID...'}
+                value={filter}
+                onChange={(event) => setFilter(event.target.value)}
+                className="max-w-sm w-full"
+                />
+            </DataTable>
+        </div>
 
-        <Card className="mb-8">
+        <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard />
@@ -116,20 +128,6 @@ export default function SmartCardPage() {
                 )}
             </CardContent>
         </Card>
-
-        <div>
-            <h2 className="text-2xl font-bold mb-4">{language === 'bn' ? 'সক্রিয় সদস্য তালিকা' : 'Active Member List'}</h2>
-            <DataTable columns={columns} data={filteredMembers} pageSize={10}>
-                <Input
-                placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে সদস্য খুঁজুন...' : 'Filter by name or ID...'}
-                value={filter}
-                onChange={(event) => setFilter(event.target.value)}
-                className="max-w-sm w-full"
-                />
-            </DataTable>
-        </div>
-        
-
       </motion.div>
       <DownloadSmartCardDialog
         open={isDownloadDialogOpen}

@@ -37,7 +37,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   children,
-  pageSize = 5,
+  pageSize = 10,
 }: DataTableProps<TData, TValue>) {
   const { language } = useAppContext();
   const [sorting, setSorting] = React.useState<SortingState>([])
