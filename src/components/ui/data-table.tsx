@@ -115,7 +115,7 @@ export function DataTable<TData, TValue>({
                   className={cn(onRowClick && "cursor-pointer")}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="py-2 px-2 md:py-4 md:px-4 text-xs md:text-sm">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -160,3 +160,5 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+    

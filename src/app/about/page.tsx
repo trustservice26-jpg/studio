@@ -94,7 +94,7 @@ export default function AboutUsPage() {
             <CardContent className="space-y-4 text-center">
                 <p>
                 {language === 'bn' ? 
-                <><strong>HADIYA - মানবতার উপহার</strong> একটি অনুপ্রেরণামূলক ধারণা, যার মূল উদ্দেশ্য হল মানবতার প্রতি ভালোবাসা, সহানুভূতি এবং সাহায্যের হাত বাড়িয়ে দেওয়া। “হাদিয়া” শব্দটি এসেছে আরবি শব্দ هدية (Hadiyah) থেকে, যার অর্থ উপহার। এই ধারণার মাধ্যমে আমরা বোঝাতে চাই – প্রত্যেক ভালো কাজ, প্রতিটি দান, প্রতিটি সাহায্য — সবই মানবতার প্রতি একটি উপহার।</> :
+                <><strong>HADIYA - মানবতার উপহার</strong> একটি অনুপ্রেরণামূলক ধারণা, যার মূল উদ্দেশ্য হল মানবতার প্রতি ভালোবাসা, সহানুভূতি এবং সাহায্যের হাত বাড়িয়ে দেওয়া। “হাদিয়া” শব্দটি এসেছে আরবি শব্দ هدية (Hadiyah) থেকে, যার অর্থ উপহার। এই ধারণার মাধ্যমে আমরা বোঝাতে চাই – প্রত্যেক ভালো কাজ, প্রতিটি দান, প্রতিটি সাহায্য — সবই মানবতার প্রতি একটি উপহার।</> :
                 <><strong>HADIYA - মানবতার উপহার</strong> is an inspirational concept, whose main purpose is to extend love, compassion, and a helping hand towards humanity. The word "Hadiya" comes from the Arabic word هدية (Hadiyah), which means gift. Through this concept, we want to convey that every good deed, every donation, every act of help—is a gift to humanity.</>
                 }
                 </p>
@@ -102,7 +102,7 @@ export default function AboutUsPage() {
                     <h3 className="font-bold text-lg mb-2">🎯 {language === 'bn' ? 'আমাদের লক্ষ্য:' : 'Our Goal:'}</h3>
                     <p>
                         {language === 'bn' ?
-                        'আমরা বিশ্বাস করি, মানবতার সেবা শুধু দায়িত্ব নয়, এটি একটি সম্মান। যখন আমরা কারও মুখে হাসি ফোটাই, কারও প্রয়োজন মেটাই, কিংবা কারও জীবন বাঁচাতে এগিয়ে আসি – তখন সেটাই হয় একটি “হাদিয়া”, একটি নিঃস্বার্থ উপহার, যা কোনো প্রতিদান চায় না।' :
+                        'আমরা বিশ্বাস করি, মানবতার সেবা শুধু দায়িত্ব নয়, এটি একটি সম্মান। যখন আমরা কারও মুখে হাসি ফোটাই, কারও প্রয়োজন মেটাই, কিংবা কারও জীবন বাঁচাতে এগিয়ে আসি – তখন সেটাই হয় একটি “হাদিয়া”, একটি নিঃস্বার্থ উপহার, যা কোনো প্রতিদান চায় না।' :
                         'We believe that serving humanity is not just a duty, but an honor. When we bring a smile to someone\'s face, meet someone\'s need, or step forward to save someone\'s life – that itself becomes a "Hadiya," a selfless gift that seeks no return.'
                         }
                     </p>
@@ -115,27 +115,27 @@ export default function AboutUsPage() {
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
             <Card className="h-full">
-                <CardHeader className="flex flex-row items-center gap-4">
+                <CardHeader className="flex flex-col sm:flex-row items-center gap-4">
                     <div className="p-3 rounded-full bg-primary/10 text-primary">
                         <Target className="w-8 h-8" />
                     </div>
-                    <CardTitle className="text-2xl">{language === 'bn' ? 'আমাদের মিশন' : 'Our Mission'}</CardTitle>
+                    <CardTitle className="text-2xl text-center sm:text-left">{language === 'bn' ? 'আমাদের মিশন' : 'Our Mission'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, dedicate every step to the well-being of people, and to establish brotherhood and justice in the light of the Sunnah.'}</p>
+                    <p className="text-muted-foreground text-center sm:text-left">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, dedicate every step to the well-being of people, and to establish brotherhood and justice in the light of the Sunnah.'}</p>
                 </CardContent>
             </Card>
         </motion.div>
         <motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} transition={{delay: 0.2}}>
             <Card className="h-full">
-                <CardHeader className="flex flex-row items-center gap-4">
+                <CardHeader className="flex flex-col sm:flex-row items-center gap-4">
                     <div className="p-3 rounded-full bg-primary/10 text-primary">
                        <Eye className="w-8 h-8" />
                     </div>
-                    <CardTitle className="text-2xl">{language === 'bn' ? 'আমাদের দৃষ্টিভঙ্গি' : 'Our Vision'}</CardTitle>
+                    <CardTitle className="text-2xl text-center sm:text-left">{language === 'bn' ? 'আমাদের দৃষ্টিভঙ্গি' : 'Our Vision'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground">{language === 'bn' ? 'একটি সহানুভূতিশীল এবং সহায়ক সম্প্রদায় তৈরি করা যেখানে প্রত্যেকে মর্যাদা ও সম্মানের সাথে বাঁচে, যা সেবা এবং ঐক্যের ইসলামী মূল্যবোধ দ্বারা পরিচালিত হয়।' : 'To create a compassionate and supportive community where everyone lives with dignity and respect, guided by the Islamic values of service and unity.'}</p>
+                    <p className="text-muted-foreground text-center sm:text-left">{language === 'bn' ? 'একটি সহানুভূতিশীল এবং সহায়ক সম্প্রদায় তৈরি করা যেখানে প্রত্যেকে মর্যাদা ও সম্মানের সাথে বাঁচে, যা সেবা এবং ঐক্যের ইসলামী মূল্যবোধ দ্বারা পরিচালিত হয়।' : 'To create a compassionate and supportive community where everyone lives with dignity and respect, guided by the Islamic values of service and unity.'}</p>
                 </CardContent>
             </Card>
         </motion.div>
@@ -165,3 +165,5 @@ export default function AboutUsPage() {
     </motion.div>
   );
 }
+
+    

@@ -14,7 +14,6 @@ import {
   DollarSign,
   LogIn,
   LogOut,
-  UserCog,
   CreditCard,
   Megaphone,
   Info,
@@ -39,7 +38,7 @@ import { useToast } from '@/hooks/use-toast';
 import { LiveClock } from './live-clock';
 import { RegisterMemberDialog } from './home/register-member-dialog';
 import { useIsClient } from '@/hooks/use-is-client';
-import type { UserRole, Member } from '@/lib/types';
+import type { Member } from '@/lib/types';
 import { LanguageSwitcher } from './language-switcher';
 
 const navItems = [
@@ -223,23 +222,25 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="w-full flex-1">
               {/* Can add a search bar here if needed */}
             </div>
-            <Button variant="default" onClick={() => setRegisterOpen(true)}>
-              <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
-            </Button>
-            <LanguageSwitcher />
-            <Button variant="outline" onClick={handleLoginClick}>
-                {user ? (
-                    <>
-                        <LogOut className="mr-2 h-4 w-4" />
-                        {language === 'bn' ? 'প্রস্থান' : 'Log Out'}
-                    </>
-                ) : (
-                    <>
-                        <LogIn className="mr-2 h-4 w-4" />
-                        {language === 'bn' ? 'প্রবেশ' : 'Log In'}
-                    </>
-                )}
-            </Button>
+            <div className="flex items-center gap-2">
+                <Button variant="default" onClick={() => setRegisterOpen(true)} size="sm" className="text-xs">
+                  <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
+                </Button>
+                <LanguageSwitcher />
+                <Button variant="outline" onClick={handleLoginClick} size="sm" className="text-xs">
+                    {user ? (
+                        <>
+                            <LogOut className="mr-2 h-4 w-4" />
+                            {language === 'bn' ? 'প্রস্থান' : 'Log Out'}
+                        </>
+                    ) : (
+                        <>
+                            <LogIn className="mr-2 h-4 w-4" />
+                            {language === 'bn' ? 'প্রবেশ' : 'Log In'}
+                        </>
+                    )}
+                </Button>
+            </div>
           </header>
           <main className="flex flex-1 flex-col bg-background">
             {children}
@@ -287,3 +288,5 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
+
+    

@@ -61,3 +61,5 @@ export const smartCardMemberColumns: ColumnDef<Member>[] = [
     }
   },
 ]
+
+    

@@ -67,8 +67,8 @@ export default function SmartCardPage() {
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
           <div>
-            <h1 className="text-3xl font-bold">{language === 'bn' ? 'সদস্য স্মার্ট কার্ড' : 'Membership Smart Card'}</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold">{language === 'bn' ? 'সদস্য স্মার্ট কার্ড' : 'Membership Smart Card'}</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">
               {language === 'bn' ? 'আপনার সদস্য কার্ড দেখুন এবং ডাউনলোড করুন।' : 'View and download your membership card.'}
             </p>
           </div>
@@ -78,7 +78,7 @@ export default function SmartCardPage() {
         </div>
         
         <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">{language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select a Member'}</h2>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">{language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select a Member'}</h2>
             <DataTable columns={columns} data={filteredMembers} pageSize={3} onRowClick={handleRowClick}>
                 <Input
                 placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে সদস্য খুঁজুন...' : 'Filter by name or ID...'}
@@ -91,7 +91,7 @@ export default function SmartCardPage() {
 
         <Card id="smart-card-view">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
                     <CreditCard />
                     {selectedMember ? `${language === 'bn' ? 'স্মার্ট কার্ড ভিউ:' : 'Smart Card View:'} ${selectedMember.name}` : (language === 'bn' ? 'স্মার্ট কার্ড ভিউ' : 'Smart Card View')}
                 </CardTitle>
@@ -139,3 +139,5 @@ export default function SmartCardPage() {
     </>
   );
 }
+
+    
