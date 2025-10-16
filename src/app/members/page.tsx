@@ -54,7 +54,7 @@ export default function MembersPage() {
         </div>
       </div>
 
-      <DataTable columns={columns} data={filteredMembers} noPagination>
+      <DataTable columns={columns} data={filteredMembers}>
          <Input
           placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে সদস্য খুঁজুন...' : 'Filter by name or ID...'}
           value={filter}

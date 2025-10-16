@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -60,7 +61,7 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
     initialState: {
         pagination: {
-            pageSize: noPagination ? data.length : 5,
+            pageSize: noPagination ? data.length : 10,
         },
     },
     state: {
