@@ -3,14 +3,13 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Download, User, Check, ChevronsUpDown, CreditCard } from 'lucide-react';
+import { Download, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAppContext } from '@/context/app-context';
 import type { Member } from '@/lib/types';
 import { SmartCard } from '@/components/smart-card/smart-card';
 import { DownloadSmartCardDialog } from '@/components/smart-card/download-smart-card-dialog';
 import { useIsClient } from '@/hooks/use-is-client';
-import { cn } from '@/lib/utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DataTable } from '@/components/ui/data-table';
@@ -48,12 +47,15 @@ export default function SmartCardPage() {
 
   const memberForDisplay = selectedMember || sampleMember;
 
-  const handleViewCard = (member: Member) => {
+  const handleRowClick = (member: Member) => {
     setSelectedMember(member);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const cardElement = document.getElementById('smart-card-view');
+    if (cardElement) {
+        cardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
-  const columns = React.useMemo(() => smartCardMemberColumns(handleViewCard), [language]);
+  const columns = smartCardMemberColumns;
 
   return (
     <>
@@ -77,7 +79,7 @@ export default function SmartCardPage() {
         
         <div className="mb-8">
             <h2 className="text-2xl font-bold mb-4">{language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select a Member'}</h2>
-            <DataTable columns={columns} data={filteredMembers} pageSize={3}>
+            <DataTable columns={columns} data={filteredMembers} pageSize={3} onRowClick={handleRowClick}>
                 <Input
                 placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে সদস্য খুঁজুন...' : 'Filter by name or ID...'}
                 value={filter}
@@ -87,7 +89,7 @@ export default function SmartCardPage() {
             </DataTable>
         </div>
 
-        <Card>
+        <Card id="smart-card-view">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard />

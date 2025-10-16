@@ -2,13 +2,13 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, CreditCard } from "lucide-react"
+import { ArrowUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import type { Member } from "@/lib/types"
 import { useAppContext } from "@/context/app-context"
 
-export const smartCardMemberColumns = (onViewCard: (member: Member) => void): ColumnDef<Member>[] => [
+export const smartCardMemberColumns: ColumnDef<Member>[] = [
   {
     accessorKey: "memberId",
     header: ({ column }) => {
@@ -59,17 +59,5 @@ export const smartCardMemberColumns = (onViewCard: (member: Member) => void): Co
         const phone = row.getValue("phone") as string;
         return <div className="hidden sm:table-cell">{phone}</div>
     }
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const { language } = useAppContext();
-      return (
-        <Button onClick={() => onViewCard(row.original)} size="sm">
-            <CreditCard className="mr-2 h-4 w-4" />
-            {language === 'bn' ? 'কার্ড দেখুন' : 'View Card'}
-        </Button>
-      )
-    },
   },
 ]
