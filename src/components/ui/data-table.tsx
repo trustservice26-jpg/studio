@@ -30,14 +30,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   children?: React.ReactNode
-  noPagination?: boolean
+  pageSize?: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   children,
-  noPagination = false,
+  pageSize = 5,
 }: DataTableProps<TData, TValue>) {
   const { language } = useAppContext();
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -54,14 +54,14 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: !noPagination ? getPaginationRowModel() : undefined,
+    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     initialState: {
         pagination: {
-            pageSize: noPagination ? data.length : 10,
+            pageSize: pageSize,
         },
     },
     state: {
@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {!noPagination && (
+      {table.getPageCount() > 1 && (
         <div className="flex items-center justify-end space-x-2 py-4">
             <Button
             variant="outline"

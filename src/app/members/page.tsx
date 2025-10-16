@@ -42,7 +42,7 @@ export default function MembersPage() {
             {language === 'bn' ? 'সংগঠনের সকল সদস্যদের তালিকা।' : 'A list of all members in the organization.'}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
             <Button onClick={() => setPdfOpen(true)} variant="outline">
                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'পিডিএফ ডাউনলোড' : 'Download PDF'}
             </Button>
@@ -54,7 +54,7 @@ export default function MembersPage() {
         </div>
       </div>
 
-      <DataTable columns={columns} data={filteredMembers}>
+      <DataTable columns={columns} data={filteredMembers} pageSize={10}>
          <Input
           placeholder={language === 'bn' ? 'নাম বা আইডি দিয়ে সদস্য খুঁজুন...' : 'Filter by name or ID...'}
           value={filter}

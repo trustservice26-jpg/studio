@@ -183,7 +183,7 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: "role",
     header: () => {
         const { language } = useAppContext();
-        return <div className="table-cell">{language === 'bn' ? 'ভূমিকা' : 'Role'}</div>
+        return <div className="hidden md:table-cell">{language === 'bn' ? 'ভূমিকা' : 'Role'}</div>
     },
     cell: ({ row }) => {
       const { language } = useAppContext();
@@ -201,13 +201,13 @@ export const columns: ColumnDef<Member>[] = [
 
       if (roles.length > 0) {
         return (
-          <div className="flex flex-col gap-1">
+          <div className="hidden md:flex flex-col gap-1">
             {roles.map(r => <Badge key={r} variant={member.role === 'admin' ? "default" : "secondary"}>{r}</Badge>)}
           </div>
         )
       }
 
-      return <span className="text-muted-foreground table-cell">{language === 'bn' ? 'সদস্য' : 'Member'}</span>
+      return <span className="text-muted-foreground hidden md:table-cell">{language === 'bn' ? 'সদস্য' : 'Member'}</span>
     },
   },
   {
@@ -231,11 +231,11 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: "phone",
     header: () => {
         const { language } = useAppContext();
-        return <div className="table-cell">{language === 'bn' ? 'ফোন' : 'Phone'}</div>
+        return <div className="hidden sm:table-cell">{language === 'bn' ? 'ফোন' : 'Phone'}</div>
     },
      cell: ({ row }) => {
         const phone = row.getValue("phone") as string;
-        return <div className="table-cell">{phone}</div>
+        return <div className="hidden sm:table-cell">{phone}</div>
     }
   },
   {
@@ -257,7 +257,7 @@ export const columns: ColumnDef<Member>[] = [
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="table-cell"
+            className="hidden lg:table-cell"
           >
             {language === 'bn' ? 'যোগদানের তারিখ' : 'Join Date'}
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -267,7 +267,7 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => {
       const date = new Date(row.getValue("joinDate"))
       const { language } = useAppContext();
-      return <div className="table-cell">{date.toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</div>
+      return <div className="hidden lg:table-cell">{date.toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}</div>
     },
   },
   {
@@ -275,5 +275,3 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => <MemberActions member={row.original} />,
   },
 ]
-
-    

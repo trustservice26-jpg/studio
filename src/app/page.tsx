@@ -106,7 +106,7 @@ export default function HomePage() {
 
       <div className="container mx-auto py-12 px-4 md:px-6">
         {user?.role === 'admin' && (
-          <section className="mb-8 text-right">
+          <section className="mb-8 flex justify-end">
               <Button variant="destructive" onClick={() => setClearDataOpen(true)}>
                   <Trash2 className="mr-2 h-4 w-4" />
                   {language === 'bn' ? 'সমস্ত ডেটা মুছুন' : 'Clear All Data'}
@@ -138,10 +138,10 @@ export default function HomePage() {
                     <HomeMemberStatus />
                 </section>
                 <section>
-                    <div className="flex justify-between items-center mb-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                          <h2 className="text-2xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
-                         <div className="flex gap-2">
-                            <Button onClick={() => setPdfOpen(true)} variant="outline">
+                         <div className="flex gap-2 w-full sm:w-auto">
+                            <Button onClick={() => setPdfOpen(true)} variant="outline" className="w-full">
                                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য ফর্ম ডাউনলোড' : 'Download Member Form'}
                             </Button>
                         </div>
