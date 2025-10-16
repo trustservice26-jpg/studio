@@ -72,6 +72,10 @@ export function DataTable<TData, TValue>({
     },
   })
 
+  React.useEffect(() => {
+    table.setPageSize(pageSize);
+  }, [pageSize, table]);
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between py-4">
