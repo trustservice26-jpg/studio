@@ -34,7 +34,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         memberId: isBangla ? 'সদস্য আইডি' : 'Member ID',
         name: isBangla ? 'নাম' : 'Name',
         email: isBangla ? 'ইমেইল' : 'Email',
-        quote: "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী / Do not be ashamed of giving a little, for refusing is a greater shame. - Sheikh Saadi"
+        quote: "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী"
     };
 
     const conditionsEn = [
