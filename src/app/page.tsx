@@ -146,7 +146,7 @@ export default function HomePage() {
                             </Button>
                         </div>
                     </div>
-                    <DataTable columns={publicMemberColumns} data={members} />
+                    <DataTable columns={publicMemberColumns} data={members} pageSize={5} />
                 </section>
             </div>
           <section className="lg:col-span-1 space-y-6">

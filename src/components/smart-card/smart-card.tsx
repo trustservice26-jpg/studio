@@ -75,7 +75,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
                 <span className="text-green-800">HADIYA</span>{' - '}<span className="text-yellow-600">{` মানবতার উপহার`}</span>
               </h1>
               <p className="font-subheadline text-[0.4rem] text-gray-600 m-0 font-normal whitespace-nowrap pt-1">
-                {'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'}
+                {language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
               </p>
           </div>
         </div>
@@ -108,7 +108,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div className="p-[6px_16px] bg-green-900/5 border-t border-gray-200 text-center flex items-center justify-center gap-[8px]">
             <Quote className="w-[10px] h-[10px] text-yellow-600" />
             <p className="italic text-[0.5rem] text-black m-0 font-bold whitespace-nowrap">
-              দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী
+             {language === 'bn' ? 'দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী' : 'Do not be ashamed of giving a little, for refusing is a greater shame. - Sheikh Saadi'}
             </p>
         </div>
       </div>

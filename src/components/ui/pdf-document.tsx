@@ -33,7 +33,8 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
         passportPhoto: isBangla ? 'পাসপোর্ট সাইজ ছবি' : 'Passport Size Photo',
         memberId: isBangla ? 'সদস্য আইডি' : 'Member ID',
         name: isBangla ? 'নাম' : 'Name',
-        email: isBangla ? 'ইমেইল' : 'Email'
+        email: isBangla ? 'ইমেইল' : 'Email',
+        quote: isBangla ? 'দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়। — শেখ সাদী' : 'Do not be ashamed of giving a little, for refusing is a greater shame. - Sheikh Saadi'
     };
 
     const conditionsEn = [
@@ -169,6 +170,7 @@ export function PdfDocument({ member, language, isRegistration = false, qrCodeUr
 
             {/* Footer */}
             <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '10px', borderTop: '1px solid #eee', fontSize: isBangla ? '8px' : '9px', color: '#777' }}>
+                <p style={{ fontStyle: 'italic', margin: 0, marginBottom: '8px' }}>{labels.quote}</p>
                  <p style={{ margin: 0 }}>© 2025 <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ fontWeight: 'bold', color: 'hsl(var(--brand-gold))' }}>- মানবতার উপহার</span> (<span style={{whiteSpace: 'nowrap'}}>{isBangla ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}</span>) All rights reserved.</p>
                  <p style={{ fontStyle: 'italic', marginTop: '4px', margin: 0 }}>Developed & Supported by AL-SADEEQ Team.</p>
             </div>
