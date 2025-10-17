@@ -125,6 +125,16 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
   const MapPinIcon = () => (
      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
   );
+  
+  const terms = language === 'bn' ? [
+    'এই কার্ড হস্তান্তরযোগ্য নয়।',
+    'হারানো গেলে ফেরত দিন।',
+    'হাদিয়া - মানবতার উপহার এর সম্পত্তি।',
+  ] : [
+    'This card is non-transferable.',
+    'Please return if found.',
+    'Property of HADIYA - মানবতার উপহার.',
+  ];
 
   return (
     <div className={cn(cardBaseClasses, cardAppearanceClasses, backClasses)}>
@@ -133,9 +143,9 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
         <div className="mb-3">
           <h3 className="font-bold text-[0.65rem] tracking-wide border-b border-gray-300 text-gray-800 pb-1 mb-1.5">{language === 'bn' ? 'শর্তাবলী এবং নোট' : 'TERMS & NOTES'}</h3>
           <ul className="m-0 pl-[12px] text-[0.5rem] text-gray-600 list-disc space-y-px text-left">
-            <li>This card is non-transferable.</li>
-            <li>Please return if found.</li>
-            <li>Property of HADIYA - মানবতার উপহার.</li>
+             {terms.map((term, index) => (
+                <li key={index}>{term}</li>
+            ))}
           </ul>
         </div>
         <div>
@@ -150,7 +160,7 @@ export function SmartCard({ member, side, isPdf = false, language: propLanguage 
           </div>
            <div className="flex items-center text-[0.45rem] text-gray-700 leading-tight mt-0.5">
             <MapPinIcon />
-            <span className="ml-1">Chandgaon, Chattogram, Bangladesh.</span>
+            <span className="ml-1">{language === 'bn' ? 'চান্দগাঁও, চট্টগ্রাম, বাংলাদেশ।' : 'Chandgaon, Chattogram, Bangladesh.'}</span>
           </div>
         </div>
       </div>
