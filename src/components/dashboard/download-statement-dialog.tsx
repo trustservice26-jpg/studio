@@ -251,9 +251,11 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                   <span style={{ color: 'hsl(var(--brand-green))' }}>HADIYA</span> <span style={{ color: 'hsl(var(--brand-gold))' }}>- মানবতার উপহার</span>
                 </h1>
                 <p style={{ fontSize: '12px', color: '#555', margin: 0 }}>
+                  <span className="whitespace-nowrap">
                   {language === 'bn'
                     ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
                     : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
+                  </span>
                 </p>
                  <p style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>
                     {language === 'bn' ? 'স্টেটমেন্টের সময়কাল:' : 'Statement for:'} {dateRangeString}

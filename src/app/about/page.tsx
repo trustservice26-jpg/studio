@@ -63,7 +63,7 @@ export default function AboutUsPage() {
               <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
                   <Quote className="w-8 h-8 text-muted-foreground mb-4" />
                   <p className="prose dark:prose-invert">
-                    <strong className="font-bold whitespace-nowrap">HADIYA - মানবতার উপহার</strong> {language === 'bn' ? ' হলো একটি সম্প্রদায়-চালিত উদ্যোগ, যা পরিচালিত হচ্ছে ' : 'is a community-driven initiative supervised by '} <strong className="font-bold">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ (চান্দগাঁও)' : 'Shahid Liyakot Shriti Songo (Chandgaon)'}</strong>. {language === 'bn' ? 'আমাদের লক্ষ্য হলো ইসলামের আলোকে মানবতার কল্যাণে কাজ করা এবং সমাজে ইতিবাচক পরিবর্তন আনা।' : 'Our goal is to work for the welfare of humanity in the light of Islam and to bring positive change to society.'}
+                    <strong className="font-bold whitespace-nowrap">HADIYA - মানবতার উপহার</strong> {language === 'bn' ? ' হলো একটি সম্প্রদায়-চালিত উদ্যোগ, যা পরিচালিত হচ্ছে ' : 'is a community-driven initiative supervised by '} <strong className="font-bold whitespace-nowrap">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ (চান্দগাঁও)' : 'Shahid Liyakot Shriti Songo (Chandgaon)'}</strong>. {language === 'bn' ? 'আমাদের লক্ষ্য হলো ইসলামের আলোকে মানবতার কল্যাণে কাজ করা এবং সমাজে ইতিবাচক পরিবর্তন আনা।' : 'Our goal is to work for the welfare of humanity in the light of Islam and to bring positive change to society.'}
                   </p>
               </CardContent>
           </Card>
