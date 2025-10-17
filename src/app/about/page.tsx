@@ -63,7 +63,7 @@ export default function AboutUsPage() {
               <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
                   <Quote className="w-8 h-8 text-muted-foreground mb-4" />
                   <p className="prose dark:prose-invert">
-                    <strong className="font-bold">HADIYA - মানবতার উপহার</strong> {language === 'bn' ? ' হলো একটি সম্প্রদায়-চালিত উদ্যোগ, যা পরিচালিত হচ্ছে ' : 'is a community-driven initiative supervised by '} <strong className="font-bold">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ (চান্দগাঁও)' : 'Shahid Liyakot Shriti Songo (Chandgaon)'}</strong>. {language === 'bn' ? 'আমাদের লক্ষ্য হলো ইসলামের আলোকে মানবতার কল্যাণে কাজ করা এবং সমাজে ইতিবাচক পরিবর্তন আনা।' : 'Our goal is to work for the welfare of humanity in the light of Islam and to bring positive change to society.'}
+                    <strong className="font-bold whitespace-nowrap">HADIYA - মানবতার উপহার</strong> {language === 'bn' ? ' হলো একটি সম্প্রদায়-চালিত উদ্যোগ, যা পরিচালিত হচ্ছে ' : 'is a community-driven initiative supervised by '} <strong className="font-bold">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ (চান্দগাঁও)' : 'Shahid Liyakot Shriti Songo (Chandgaon)'}</strong>. {language === 'bn' ? 'আমাদের লক্ষ্য হলো ইসলামের আলোকে মানবতার কল্যাণে কাজ করা এবং সমাজে ইতিবাচক পরিবর্তন আনা।' : 'Our goal is to work for the welfare of humanity in the light of Islam and to bring positive change to society.'}
                   </p>
               </CardContent>
           </Card>
@@ -82,11 +82,11 @@ export default function AboutUsPage() {
                     <Star className="w-6 h-6 text-accent" />
                     {language === 'bn' ? (
                         <span className="whitespace-nowrap">
-                            <strong className="font-bold">HADIYA - মানবতার উপহার</strong> কী এবং কেন ?
+                            <strong className="font-bold whitespace-nowrap">HADIYA - মানবতার উপহার</strong> কী এবং কেন ?
                         </span>
                     ) : (
                          <span className="whitespace-nowrap">
-                            What and Why is <strong className="font-bold">HADIYA - মানবতার উপহার</strong>?
+                            What and Why is <strong className="font-bold whitespace-nowrap">HADIYA - মানবতার উপহার</strong>?
                         </span>
                     )}
                 </CardTitle>
@@ -94,8 +94,8 @@ export default function AboutUsPage() {
             <CardContent className="space-y-4 text-center">
                 <p>
                 {language === 'bn' ? 
-                <><strong>HADIYA - মানবতার উপহার</strong> একটি অনুপ্রেরণামূলক ধারণা, যার মূল উদ্দেশ্য হল মানবতার প্রতি ভালোবাসা, সহানুভূতি এবং সাহায্যের হাত বাড়িয়ে দেওয়া। “হাদিয়া” শব্দটি এসেছে আরবি শব্দ هدية (Hadiyah) থেকে, যার অর্থ উপহার। এই ধারণার মাধ্যমে আমরা বোঝাতে চাই – প্রত্যেক ভালো কাজ, প্রতিটি দান, প্রতিটি সাহায্য — সবই মানবতার প্রতি একটি উপহার।</> :
-                <><strong>HADIYA - মানবতার উপহার</strong> is an inspirational concept, whose main purpose is to extend love, compassion, and a helping hand towards humanity. The word "Hadiya" comes from the Arabic word هدية (Hadiyah), which means gift. Through this concept, we want to convey that every good deed, every donation, every act of help—is a gift to humanity.</>
+                <><strong className="font-bold whitespace-nowrap">HADIYA - মানবতার উপহার</strong> একটি অনুপ্রেরণামূলক ধারণা, যার মূল উদ্দেশ্য হল মানবতার প্রতি ভালোবাসা, সহানুভূতি এবং সাহায্যের হাত বাড়িয়ে দেওয়া। “হাদিয়া” শব্দটি এসেছে আরবি শব্দ هدية (Hadiyah) থেকে, যার অর্থ উপহার। এই ধারণার মাধ্যমে আমরা বোঝাতে চাই – প্রত্যেক ভালো কাজ, প্রতিটি দান, প্রতিটি সাহায্য — সবই মানবতার প্রতি একটি উপহার।</> :
+                <><strong className="font-bold whitespace-nowrap">HADIYA - মানবতার উপহার</strong> is an inspirational concept, whose main purpose is to extend love, compassion, and a helping hand towards humanity. The word "Hadiya" comes from the Arabic word هدية (Hadiyah), which means gift. Through this concept, we want to convey that every good deed, every donation, every act of help—is a gift to humanity.</>
                 }
                 </p>
                 <div>
@@ -119,10 +119,10 @@ export default function AboutUsPage() {
                     <div className="p-3 rounded-full bg-primary/10 text-primary">
                         <Target className="w-8 h-8" />
                     </div>
-                    <CardTitle className="text-2xl text-center sm:text-left">{language === 'bn' ? 'আমাদের মিশন' : 'Our Mission'}</CardTitle>
+                    <CardTitle className="text-xl sm:text-2xl text-center sm:text-left">{language === 'bn' ? 'আমাদের মিশন' : 'Our Mission'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground text-center sm:text-left">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, dedicate every step to the well-being of people, and to establish brotherhood and justice in the light of the Sunnah.'}</p>
+                    <p className="text-muted-foreground text-sm sm:text-base text-center sm:text-left">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, dedicate every step to the well-being of people, and to establish brotherhood and justice in the light of the Sunnah.'}</p>
                 </CardContent>
             </Card>
         </motion.div>
@@ -132,10 +132,10 @@ export default function AboutUsPage() {
                     <div className="p-3 rounded-full bg-primary/10 text-primary">
                        <Eye className="w-8 h-8" />
                     </div>
-                    <CardTitle className="text-2xl text-center sm:text-left">{language === 'bn' ? 'আমাদের দৃষ্টিভঙ্গি' : 'Our Vision'}</CardTitle>
+                    <CardTitle className="text-xl sm:text-2xl text-center sm:text-left">{language === 'bn' ? 'আমাদের দৃষ্টিভঙ্গি' : 'Our Vision'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground text-center sm:text-left">{language === 'bn' ? 'একটি সহানুভূতিশীল এবং সহায়ক সম্প্রদায় তৈরি করা যেখানে প্রত্যেকে মর্যাদা ও সম্মানের সাথে বাঁচে, যা সেবা এবং ঐক্যের ইসলামী মূল্যবোধ দ্বারা পরিচালিত হয়।' : 'To create a compassionate and supportive community where everyone lives with dignity and respect, guided by the Islamic values of service and unity.'}</p>
+                    <p className="text-muted-foreground text-sm sm:text-base text-center sm:text-left">{language === 'bn' ? 'একটি সহানুভূতিশীল এবং সহায়ক সম্প্রদায় তৈরি করা যেখানে প্রত্যেকে মর্যাদা ও সম্মানের সাথে বাঁচে, যা সেবা এবং ঐক্যের ইসলামী মূল্যবোধ দ্বারা পরিচালিত হয়।' : 'To create a compassionate and supportive community where everyone lives with dignity and respect, guided by the Islamic values of service and unity.'}</p>
                 </CardContent>
             </Card>
         </motion.div>
@@ -165,5 +165,3 @@ export default function AboutUsPage() {
     </motion.div>
   );
 }
-
-    

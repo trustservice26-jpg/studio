@@ -222,7 +222,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="w-full flex-1">
               {/* Can add a search bar here if needed */}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
                 <Button variant="default" onClick={() => setRegisterOpen(true)} size="sm" className="text-xs">
                   <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
                 </Button>
@@ -288,5 +288,3 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
-
-    

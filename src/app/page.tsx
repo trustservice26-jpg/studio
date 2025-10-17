@@ -63,7 +63,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <span className="text-primary">HADIYA</span> <span className="text-accent">- মানবতার উপহার</span>
+            <span className="whitespace-nowrap"><span className="text-primary">HADIYA</span> <span className="text-accent">- মানবতার উপহার</span></span>
           </motion.h1>
           <motion.p
             className="text-sm md:text-base text-black mb-4"
@@ -97,7 +97,7 @@ export default function HomePage() {
                         <blockquote className="text-base font-semibold italic">
                         {language === 'bn' ? "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।" : "Do not be ashamed of giving a little, for refusing is a greater shame."}
                         </blockquote>
-                        <p className="text-muted-foreground mt-2">{language === 'bn' ? '— শেখ সাদী' : '— Sheikh Saadi'}</p>
+                        <p className="text-muted-foreground mt-2">{language === 'bn' ? '- শেখ সাদী' : '- Sheikh Saadi'}</p>
                     </CardContent>
                 </Card>
            </motion.div>
@@ -134,12 +134,12 @@ export default function HomePage() {
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <section>
-                    <h2 className="text-2xl font-bold mb-6">{language === 'bn' ? 'সদস্য অবস্থা' : 'Member Status'}</h2>
+                    <h2 className="text-2xl font-bold mb-6 text-sm md:text-base">{language === 'bn' ? 'সদস্য অবস্থা' : 'Member Status'}</h2>
                     <HomeMemberStatus />
                 </section>
                 <section>
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                         <h2 className="text-2xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
+                         <h2 className="text-2xl font-bold text-sm md:text-base">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
                          <div className="flex gap-2 w-full sm:w-auto">
                             <Button onClick={() => setPdfOpen(true)} variant="outline" className="w-full">
                                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য ফর্ম ডাউনলোড' : 'Download Member Form'}
@@ -159,12 +159,10 @@ export default function HomePage() {
       <ClearDataDialog open={isClearDataOpen} onOpenChange={setClearDataOpen} />
        <footer className="py-6 px-4 md:px-6 border-t">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
-          <p>© 2025 <span className="font-bold text-primary">HADIYA</span> <span className="font-bold text-accent">- মানবতার উপহার</span> ({language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
+          <p>© 2025 <span className="font-bold text-primary whitespace-nowrap">HADIYA</span> <span className="font-bold text-accent whitespace-nowrap">- মানবতার উপহার</span> ({language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
           <p className="font-bold italic mt-2 text-xs text-foreground">Developed & Supported by AL-SADEEQ Team.</p>
         </div>
       </footer>
     </div>
   );
 }
-
-    
