@@ -94,7 +94,7 @@ export default function HomePage() {
                 <Card className="h-full bg-accent/50">
                     <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
                         <Quote className="w-8 h-8 text-muted-foreground mb-4" />
-                        <blockquote className="text-base font-semibold italic">
+                        <blockquote className="text-base font-semibold italic whitespace-nowrap">
                         {language === 'bn' ? "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।" : "Do not be ashamed of giving a little, for refusing is a greater shame."}
                         </blockquote>
                         <p className="text-muted-foreground mt-2">{language === 'bn' ? '- শেখ সাদী' : '- Sheikh Saadi'}</p>
