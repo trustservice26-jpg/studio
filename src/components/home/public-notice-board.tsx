@@ -50,7 +50,7 @@ export function PublicNoticeBoard() {
                             <Megaphone className="h-5 w-5" />
                         </div>
                         <div>
-                        <p className="text-sm font-medium">{notice.message}</p>
+                        <p className="text-sm font-medium whitespace-pre-wrap">{notice.message}</p>
                         <p className="text-xs text-muted-foreground mt-1">
                             {formatDistanceToNow(new Date(notice.date), { addSuffix: true, locale: language === 'bn' ? bn : undefined })}
                         </p>

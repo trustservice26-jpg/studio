@@ -60,7 +60,7 @@ export function NoticeBoard() {
                 {notices.map((notice) => (
                   <div key={notice.id} className="group flex items-start justify-between p-3 rounded-md bg-muted/50">
                     <div>
-                      <p className="text-sm">{notice.message}</p>
+                      <p className="text-sm whitespace-pre-wrap">{notice.message}</p>
                       <p className="text-xs text-muted-foreground mt-1">
                         {formatDistanceToNow(new Date(notice.date), { addSuffix: true, locale: language === 'bn' ? bn : undefined })}
                       </p>
