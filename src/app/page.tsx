@@ -66,7 +66,7 @@ export default function HomePage() {
             <span className="whitespace-nowrap"><span className="text-primary">HADIYA</span> <span className="text-accent">- মানবতার উপহার</span></span>
           </motion.h1>
           <motion.p
-            className="text-xs md:text-base text-black mb-4 whitespace-nowrap"
+            className="text-base md:text-lg text-black mb-4"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -76,7 +76,7 @@ export default function HomePage() {
               : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}
           </motion.p>
           <motion.p
-            className="mb-8 max-w-3xl mx-auto text-sm md:text-base text-muted-foreground"
+            className="mb-8 max-w-3xl mx-auto text-base md:text-lg text-muted-foreground"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -94,7 +94,7 @@ export default function HomePage() {
                 <Card className="h-full bg-accent/50">
                     <CardContent className="flex flex-col items-center justify-center text-center p-6 h-full">
                         <Quote className="w-8 h-8 text-muted-foreground mb-4" />
-                        <blockquote className="text-base font-semibold italic whitespace-nowrap">
+                        <blockquote className="text-base font-semibold italic">
                          "দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।"
                         </blockquote>
                         <p className="text-muted-foreground mt-2">- শেখ সাদী</p>

@@ -122,7 +122,7 @@ export default function AboutUsPage() {
                     <CardTitle className="text-xl sm:text-2xl text-center sm:text-left">{language === 'bn' ? 'আমাদের মিশন' : 'Our Mission'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground text-sm sm:text-base text-center sm:text-left whitespace-nowrap">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, dedicate every step to the well-being of people, and to establish brotherhood and justice in the light of the Sunnah.'}</p>
+                    <p className="text-muted-foreground text-sm sm:text-base text-center sm:text-left">{language === 'bn' ? 'ইসলামের আলোকে মানবতার কল্যাণে কাজ করা, সমাজে ইতিবাচক পরিবর্তন আনা, প্রতিটি পদক্ষেপ মানুষের কল্যাণে নিবেদন করা এবং সুন্নাহর আলোতে ভ্রাতৃত্ব ও ন্যায় প্রতিষ্ঠা করা।' : 'To work for the welfare of humanity in the light of Islam, bring positive change to society, dedicate every step to the well-being of people, and to establish brotherhood and justice in the light of the Sunnah.'}</p>
                 </CardContent>
             </Card>
         </motion.div>
@@ -159,7 +159,7 @@ export default function AboutUsPage() {
       </div>
        <div className="text-center py-10">
             <h2 className="text-3xl font-bold mb-4">{language === 'bn' ? 'আমাদের দল' : 'Our Team'}</h2>
-            <p className="max-w-2xl mx-auto text-muted-foreground whitespace-nowrap">{language === 'bn' ? 'আমাদের নিবেদিত স্বেচ্ছাসেবক এবং সদস্যদের সাথে দেখা করুন যারা এই উদ্যোগকে সম্ভব করে তুলেছেন। তাদের আবেগ এবং কঠোর পরিশ্রম আমাদের সম্প্রদায়ের চালিকাশক্তি। আমাদের সম্প্রদায়ের শক্তি এবং অগ্রগতির একটি স্বচ্ছ দৃষ্টিভঙ্গি, যা আমাদের প্রতিটি সদস্যকে অনুপ্রাণিত করে, এবং সকলের জন্য একটি খোলামেলা ও বিশ্বাসযোগ্য পরিবেশ নিশ্চিত করে।' : 'Meet our dedicated volunteers and members who make this initiative possible. Their passion and hard work are the driving force behind our community. A transparent view of our community\'s strength and progress, which inspires each of our members and ensures an open and trustworthy environment for all.'}</p>
+            <p className="max-w-2xl mx-auto text-muted-foreground">{language === 'bn' ? 'আমাদের নিবেদিত স্বেচ্ছাসেবক এবং সদস্যদের সাথে দেখা করুন যারা এই উদ্যোগকে সম্ভব করে তুলেছেন। তাদের আবেগ এবং কঠোর পরিশ্রম আমাদের সম্প্রদায়ের চালিকাশক্তি। আমাদের সম্প্রদায়ের শক্তি এবং অগ্রগতির একটি স্বচ্ছ দৃষ্টিভঙ্গি, যা আমাদের প্রতিটি সদস্যকে অনুপ্রাণিত করে, এবং সকলের জন্য একটি খোলামেলা ও বিশ্বাসযোগ্য পরিবেশ নিশ্চিত করে।' : 'Meet our dedicated volunteers and members who make this initiative possible. Their passion and hard work are the driving force behind our community. A transparent view of our community\'s strength and progress, which inspires each of our members and ensures an open and trustworthy environment for all.'}</p>
        </div>
 
     </motion.div>
