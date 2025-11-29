@@ -68,10 +68,10 @@ export default function DetailsPage() {
 
   return (
     <div className="flex-1 bg-background">
-      <div className="container mx-auto py-12 px-4 md:px-6">
-        <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold">{language === 'bn' ? 'সদস্য বিবরণ ড্যাশবোর্ড' : 'Member Details Dashboard'}</h1>
-            <p className="text-lg text-muted-foreground mt-2">
+      <div className="container mx-auto py-8 px-4 md:px-6">
+        <div className="text-center mb-8">
+            <h1 className="text-2xl md:text-4xl font-bold">{language === 'bn' ? 'সদস্য বিবরণ ড্যাশবোর্ড' : 'Member Details Dashboard'}</h1>
+            <p className="text-base md:text-lg text-muted-foreground mt-2">
                 {language === 'bn' ? 'আমাদের সম্প্রদায়ের শক্তি এবং অগ্রগতির একটি স্বচ্ছ দৃষ্টিভঙ্গি।' : 'A transparent view of our community\'s strength and progress.'}
             </p>
         </div>
@@ -84,7 +84,7 @@ export default function DetailsPage() {
               </Button>
           </section>
         )}
-        <section className="mb-12">
+        <section className="mb-8">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               {financialStats.map((stat, index) => (
                 <motion.div key={stat.title} variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} custom={index} transition={{delay: index * 0.1}}>
@@ -102,15 +102,15 @@ export default function DetailsPage() {
             </div>
         </section>
 
-         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
                 <section>
-                    <h2 className="text-2xl font-bold mb-6 text-sm md:text-base">{language === 'bn' ? 'সদস্য অবস্থা' : 'Member Status'}</h2>
+                    <h2 className="text-xl font-bold mb-4">{language === 'bn' ? 'সদস্য অবস্থা' : 'Member Status'}</h2>
                     <HomeMemberStatus />
                 </section>
                 <section>
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                         <h2 className="text-2xl font-bold text-sm md:text-base">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+                         <h2 className="text-xl font-bold">{language === 'bn' ? 'সদস্য তালিকা' : 'Member Directory'}</h2>
                          <div className="flex gap-2 w-full sm:w-auto">
                             <Button onClick={() => setPdfOpen(true)} variant="outline" className="w-full">
                                 <Download className="mr-2 h-4 w-4" /> {language === 'bn' ? 'সদস্য ফর্ম ডাউনলোড' : 'Download Member Form'}
