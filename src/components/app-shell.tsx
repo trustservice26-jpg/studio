@@ -251,7 +251,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     ) : (
                         <>
                             <LogIn className="mr-2 h-4 w-4" />
-                            {language === 'bn' ? 'প্রবেশ' : 'Admin/Mod Login'}
+                            {language === 'bn' ? 'প্রবেশ' : 'Login'}
                         </>
                     )}
                 </Button>
@@ -303,5 +303,3 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
-
-    
