@@ -52,7 +52,7 @@ export default function LoginPage() {
   return (
     <div className="flex-1 bg-background">
       <motion.section
-        className="relative w-full pt-20 pb-12 lg:pt-28"
+        className="relative w-full pt-16 pb-12 md:pt-20 lg:pt-28"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -67,7 +67,7 @@ export default function LoginPage() {
             <span className="whitespace-nowrap"><span className="text-primary">HADIYA</span> <span className="text-accent">- মানবতার উপহার</span></span>
           </motion.h1>
           <motion.p
-            className="text-sm md:text-base text-black mb-4"
+            className="text-sm md:text-base text-foreground/80 mb-4"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -77,7 +77,7 @@ export default function LoginPage() {
               : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}</span>
           </motion.p>
           <motion.p
-            className="mb-8 max-w-3xl mx-auto text-muted-foreground"
+            className="mb-8 max-w-3xl mx-auto text-muted-foreground text-sm"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
