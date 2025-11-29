@@ -77,7 +77,7 @@ export default function LoginPage() {
               : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}</span>
           </motion.p>
           <motion.p
-            className="mb-8 max-w-3xl mx-auto text-base md:text-lg text-muted-foreground"
+            className="mb-8 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -96,7 +96,7 @@ export default function LoginPage() {
             <Card className="bg-accent/10 border-accent/20">
                 <CardContent className="flex flex-col items-center justify-center text-center p-6">
                     <Quote className="w-8 h-8 text-accent mb-4" />
-                    <blockquote className="text-lg italic text-foreground/90">
+                    <blockquote className="text-lg font-bold text-foreground/90 whitespace-nowrap">
                         {`“দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।”`}
                     </blockquote>
                 </CardContent>
