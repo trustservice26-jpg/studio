@@ -49,6 +49,7 @@ const donationSchema = z.object({
   donorType: z.enum(['member', 'public']),
   memberId: z.string().optional(),
   publicDonorName: z.string().optional(),
+  contactInfo: z.string().optional(),
   transactionId: z.string().optional(),
 }).refine(data => {
     if (data.donorType === 'member') return !!data.memberId;
@@ -80,6 +81,7 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
       donorType: 'member',
       memberId: '',
       publicDonorName: '',
+      contactInfo: '',
       transactionId: '',
     },
   });
@@ -94,6 +96,7 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
         donorType: 'member',
         memberId: '',
         publicDonorName: '',
+        contactInfo: '',
         transactionId: ''
     });
   }, [open, form]);
@@ -105,17 +108,22 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
 
   function onSubmit(values: z.infer<typeof donationSchema>) {
     let memberName = '';
+    let description = language === 'bn' ? 'অনলাইন অনুদান' : 'Online Donation';
+
     if (values.donorType === 'member') {
         const member = members.find(m => m.id === values.memberId);
         memberName = member ? member.name : (language === 'bn' ? 'অজানা' : 'Anonymous');
     } else {
         memberName = values.publicDonorName || (language === 'bn' ? 'অজানা' : 'Anonymous');
+        if (values.contactInfo) {
+          description += ` (Contact: ${values.contactInfo})`;
+        }
     }
     
     addTransaction({ 
         amount: values.amount,
         type: 'donation',
-        description: language === 'bn' ? 'অনলাইন অনুদান' : 'Online Donation',
+        description: description,
         memberName: memberName,
         transactionId: values.transactionId
     });
@@ -257,6 +265,7 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
             )}
 
             {donorType === 'public' && (
+              <>
                  <FormField
                     control={form.control}
                     name="publicDonorName"
@@ -270,6 +279,20 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
                         </FormItem>
                     )}
                 />
+                <FormField
+                    control={form.control}
+                    name="contactInfo"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>{language === 'bn' ? 'মোবাইল / ইমেইল (ঐচ্ছিক)' : 'Mobile / Email (Optional)'}</FormLabel>
+                        <FormControl>
+                            <Input placeholder={language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact information'} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+              </>
             )}
 
             <DialogFooter>
