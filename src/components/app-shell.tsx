@@ -241,11 +241,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               {/* Can add a search bar here if needed */}
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-                {pathname === '/' && (
-                    <Button variant="default" onClick={() => setRegisterOpen(true)} size="sm" className="text-xs">
-                    <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
-                    </Button>
-                )}
                 <LanguageSwitcher />
                 <Button variant="outline" onClick={handleLoginClick} size="sm" className="text-xs">
                     {user || publicUser ? (
