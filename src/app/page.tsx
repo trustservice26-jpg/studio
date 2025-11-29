@@ -128,7 +128,7 @@ export default function LoginPage() {
         </motion.div>
         
         <div className="text-center mt-8">
-            <Button variant="outline" onClick={() => setRegisterOpen(true)} className="bg-accent/20 text-accent-foreground hover:bg-accent/30 border-accent/30">
+            <Button variant="default" onClick={() => setRegisterOpen(true)} className="bg-accent text-accent-foreground hover:bg-accent/90">
                 <UserPlus className="mr-2 h-4 w-4" />
                 {language === 'bn' ? 'নতুন সদস্য হিসেবে নিবন্ধন করুন' : 'Register as a New Member'}
             </Button>
@@ -141,7 +141,11 @@ export default function LoginPage() {
        <footer className="py-6 px-4 md:px-6 border-t mt-12">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
           <p>© 2025 <span className="font-bold text-primary whitespace-nowrap">HADIYA</span> <span className="font-bold text-accent whitespace-nowrap">- মানবতার উপহার</span> (<span className="whitespace-nowrap">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}</span>) All rights reserved.</p>
-          <p className="font-bold italic mt-2 text-xs text-foreground">"Do not be ashamed of giving a little, for refusing is a greater shame." - Sheikh Saadi</p>
+          <p className="font-bold italic mt-2 text-xs text-foreground">
+            {language === 'bn' 
+                ? "“দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।” - শেখ সাদী" 
+                : '"Do not be ashamed of giving a little, for refusing is a greater shame." - Sheikh Saadi'}
+          </p>
           <p className="font-bold italic mt-2 text-xs text-foreground">Developed & Supported by AL-SADEEQ Team.</p>
         </div>
       </footer>
