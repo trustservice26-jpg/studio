@@ -96,8 +96,9 @@ export default function LoginPage() {
             <Card className="bg-accent/10 border-accent/20">
                 <CardContent className="flex flex-col items-center justify-center text-center p-6">
                     <Quote className="w-8 h-8 text-accent mb-4" />
-                    <blockquote className="text-lg font-bold text-foreground/90 whitespace-nowrap">
+                    <blockquote className="text-lg font-bold text-foreground/90">
                         {`“দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।”`}
+                        <footer className="text-sm font-medium text-foreground/70 mt-2">— শেখ সাদী</footer>
                     </blockquote>
                 </CardContent>
             </Card>
