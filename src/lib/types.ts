@@ -34,6 +34,7 @@ export type Transaction = {
   type: 'donation' | 'withdrawal';
   description: string;
   memberName?: string;
+  transactionId?: string;
 };
 
 

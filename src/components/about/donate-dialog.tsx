@@ -49,6 +49,7 @@ const donationSchema = z.object({
   donorType: z.enum(['member', 'public']),
   memberId: z.string().optional(),
   publicDonorName: z.string().optional(),
+  transactionId: z.string().optional(),
 }).refine(data => {
     if (data.donorType === 'member') return !!data.memberId;
     return true;
@@ -79,6 +80,7 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
       donorType: 'member',
       memberId: '',
       publicDonorName: '',
+      transactionId: '',
     },
   });
   
@@ -92,6 +94,7 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
         donorType: 'member',
         memberId: '',
         publicDonorName: '',
+        transactionId: `TXN-${Date.now()}`
     });
   }, [open, form]);
 
@@ -113,7 +116,8 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
         amount: values.amount,
         type: 'donation',
         description: language === 'bn' ? 'অনলাইন অনুদান' : 'Online Donation',
-        memberName: memberName
+        memberName: memberName,
+        transactionId: values.transactionId
     });
     onOpenChange(false);
   }
@@ -127,6 +131,19 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+             <FormField
+              control={form.control}
+              name="transactionId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{language === 'bn' ? 'লেনদেন আইডি' : 'Transaction ID'}</FormLabel>
+                  <FormControl>
+                    <Input readOnly {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="amount"
