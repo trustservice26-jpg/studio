@@ -94,11 +94,11 @@ export default function LoginPage() {
             transition={{ delay: 0.5 }}
         >
             <Card className="bg-accent/10 border-accent/20">
-                <CardContent className="flex flex-col items-center justify-center text-center p-6">
-                    <Quote className="w-8 h-8 text-accent mb-4" />
-                    <blockquote className="font-bold text-foreground/90">
+                <CardContent className="flex flex-col items-center justify-center text-center p-4 sm:p-6">
+                    <Quote className="w-6 h-6 sm:w-8 sm:h-8 text-accent mb-2 sm:mb-4" />
+                    <blockquote className="font-bold text-foreground/90 text-sm sm:text-base">
                         {`“দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।”`}
-                        <footer className="text-sm font-medium text-foreground/70 mt-2">— শেখ সাদী</footer>
+                        <footer className="text-xs sm:text-sm font-medium text-foreground/70 mt-2">— শেখ সাদী</footer>
                     </blockquote>
                 </CardContent>
             </Card>
