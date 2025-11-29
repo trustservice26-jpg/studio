@@ -137,7 +137,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return navItems.filter(item => {
         // Guest user (not public, not admin/mod)
         if (!publicUser && !user) {
-             return item.href === '/';
+             const publicGuestPages = ['/', '/about', '/notice-board'];
+             return publicGuestPages.includes(item.href);
         }
         
         // Public user logged in
@@ -307,3 +308,5 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
+
+    
