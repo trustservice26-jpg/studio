@@ -59,7 +59,7 @@ export default function LoginPage() {
       >
         <div className="container mx-auto text-center px-4">
           <motion.h1
-            className="text-2xl md:text-4xl font-headline font-bold mb-4"
+            className="text-2xl md:text-3xl font-headline font-bold mb-4"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -67,7 +67,7 @@ export default function LoginPage() {
             <span className="whitespace-nowrap"><span className="text-primary">HADIYA</span> <span className="text-accent">- মানবতার উপহার</span></span>
           </motion.h1>
           <motion.p
-            className="text-sm md:text-base text-foreground/80 mb-4"
+            className="text-sm md:text-sm text-foreground/80 mb-4"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -94,11 +94,11 @@ export default function LoginPage() {
             transition={{ delay: 0.5 }}
         >
             <Card className="bg-accent/10 border-accent/20">
-                <CardContent className="flex flex-col items-center justify-center text-center p-4 sm:p-6">
-                    <Quote className="w-6 h-6 sm:w-8 sm:h-8 text-accent mb-2 sm:mb-4" />
-                    <blockquote className="font-bold text-foreground/90 text-sm sm:text-base">
+                <CardContent className="flex flex-col items-center justify-center text-center p-4">
+                    <Quote className="w-6 h-6 text-accent mb-2" />
+                    <blockquote className="font-bold text-foreground/90 text-xs sm:text-sm">
                         {`“দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।”`}
-                        <footer className="text-xs sm:text-sm font-medium text-foreground/70 mt-2">— শেখ সাদী</footer>
+                        <footer className="text-[10px] sm:text-xs font-medium text-foreground/70 mt-1">— শেখ সাদী</footer>
                     </blockquote>
                 </CardContent>
             </Card>
