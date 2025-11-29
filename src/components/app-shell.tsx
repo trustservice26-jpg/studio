@@ -45,9 +45,9 @@ import { LanguageSwitcher } from './language-switcher';
 const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/details', label: 'Member Details', bn_label: 'সদস্য বিবরণ', icon: BookUser, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [], isPublic: true },
-    { href: '/notice-board', label: 'Notice Board', bn_label: 'নোটিশ বোর্ড', icon: Megaphone, roles: ['admin', 'member'], permissions: [] },
-    { href: '/about', label: 'About Us', bn_label: 'আমাদের সম্পর্কে', icon: Info, roles: ['admin', 'member'], permissions: [] },
-    { href: '/smart-card', label: 'Smart Card', bn_label: 'স্মার্ট কার্ড', icon: CreditCard, roles: ['admin', 'member'], permissions: [] },
+    { href: '/notice-board', label: 'Notice Board', bn_label: 'নোটিশ বোর্ড', icon: Megaphone, roles: ['admin', 'member'], permissions: [], isPublic: true },
+    { href: '/about', label: 'About Us', bn_label: 'আমাদের সম্পর্কে', icon: Info, roles: ['admin', 'member'], permissions: [], isPublic: true },
+    { href: '/smart-card', label: 'Smart Card', bn_label: 'স্মার্ট কার্ড', icon: CreditCard, roles: ['admin', 'member'], permissions: [], isPublic: true },
     { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
     { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'], permissions: ['canManageMembers'] },
     { href: '/transactions', label: 'Transactions', bn_label: 'লেনদেন', icon: DollarSign, roles: ['admin', 'moderator'], permissions: ['canManageTransactions'] },
