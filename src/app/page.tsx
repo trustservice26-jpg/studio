@@ -86,12 +86,29 @@ export default function LoginPage() {
           </motion.p>
         </div>
 
+        <motion.div 
+            className="max-w-xl mx-auto px-4 mb-8"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.5 }}
+        >
+            <Card className="bg-accent/10 border-accent/20">
+                <CardContent className="flex flex-col items-center justify-center text-center p-6">
+                    <Quote className="w-8 h-8 text-accent mb-4" />
+                    <blockquote className="text-lg italic text-foreground/90">
+                        {`“দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।”`}
+                    </blockquote>
+                </CardContent>
+            </Card>
+        </motion.div>
+
         <motion.div
             className="max-w-md mx-auto px-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.6 }}
         >
             <Card>
                 <CardHeader>
@@ -141,11 +158,6 @@ export default function LoginPage() {
        <footer className="py-6 px-4 md:px-6 border-t mt-12">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
           <p>© 2025 <span className="font-bold text-primary whitespace-nowrap">HADIYA</span> <span className="font-bold text-accent whitespace-nowrap">- মানবতার উপহার</span> (<span className="whitespace-nowrap">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}</span>) All rights reserved.</p>
-          <p className="font-bold italic mt-2 text-xs text-foreground">
-            {language === 'bn' 
-                ? "“দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।” - শেখ সাদী" 
-                : '"Do not be ashamed of giving a little, for refusing is a greater shame." - Sheikh Saadi'}
-          </p>
           <p className="font-bold italic mt-2 text-xs text-foreground">Developed & Supported by AL-SADEEQ Team.</p>
         </div>
       </footer>
