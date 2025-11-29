@@ -27,6 +27,7 @@ interface AppContextType {
   notices: Notice[];
   transactions: Transaction[];
   user: Member | null;
+  publicUser: Member | null;
   language: 'en' | 'bn';
   currentFunds: number;
   totalDonations: number;
@@ -42,6 +43,7 @@ interface AppContextType {
   clearAllTransactions: () => void;
   clearAllData: () => void;
   setUser: (user: Member | null) => void;
+  setPublicUser: (user: Member | null) => void;
   setLanguage: (language: 'en' | 'bn') => void;
 }
 
@@ -70,6 +72,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [user, setUser] = useState<Member | null>(null);
+  const [publicUser, setPublicUser] = useState<Member | null>(null);
   const { toast } = useToast();
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
 
@@ -380,6 +383,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     notices,
     transactions,
     user,
+    publicUser,
     addMember,
     deleteMember,
     toggleMemberStatus,
@@ -391,6 +395,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     clearAllTransactions,
     clearAllData,
     setUser,
+    setPublicUser,
     language,
     setLanguage: handleSetLanguage,
     currentFunds,

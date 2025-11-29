@@ -18,6 +18,7 @@ import {
   Megaphone,
   Info,
   HeartHandshake,
+  BookUser,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -43,6 +44,7 @@ import { LanguageSwitcher } from './language-switcher';
 
 const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
+    { href: '/details', label: 'Member Details', bn_label: 'সদস্য বিবরণ', icon: BookUser, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [], isPublic: true },
     { href: '/notice-board', label: 'Notice Board', bn_label: 'নোটিশ বোর্ড', icon: Megaphone, roles: ['admin', 'member'], permissions: [] },
     { href: '/about', label: 'About Us', bn_label: 'আমাদের সম্পর্কে', icon: Info, roles: ['admin', 'member'], permissions: [] },
     { href: '/smart-card', label: 'Smart Card', bn_label: 'স্মার্ট কার্ড', icon: CreditCard, roles: ['admin', 'member'], permissions: [] },
@@ -58,7 +60,7 @@ const Logo = () => (
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user, setUser, language, members } = useAppContext();
+  const { user, setUser, language, members, publicUser, setPublicUser } = useAppContext();
   const { toast } = useToast();
   const [isPasswordDialogOpen, setPasswordDialogOpen] = React.useState(false);
   const [password, setPassword] = React.useState('');
@@ -66,16 +68,21 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
   const isClient = useIsClient();
   
-  const userRole = user?.role || 'member';
-
   const handleLoginClick = () => {
-    if (user) {
+    if (user) { // Admin/Moderator logout
       setUser(null);
       toast({
-        title: language === 'bn' ? 'সদস্য ভিউতে সুইচ করা হয়েছে' : 'Logged Out',
+        title: language === 'bn' ? 'সফলভাবে প্রস্থান হয়েছে' : 'Logged Out Successfully',
         description: language === 'bn' ? 'আপনি এখন সদস্য ভিউ মোডে আছেন।' : 'You are now in member view mode.',
       });
-    } else {
+    } else if (publicUser) { // Public user logout
+      setPublicUser(null);
+      toast({
+        title: language === 'bn' ? 'সফলভাবে প্রস্থান হয়েছে' : 'Exited Successfully',
+        description: language === 'bn' ? 'আপনি প্রবেশ পৃষ্ঠা-তে ফিরে এসেছেন।' : 'You have returned to the entry page.',
+      });
+    }
+    else {
       setPasswordDialogOpen(true);
     }
   };
@@ -111,6 +118,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
     if (loggedIn && authenticatedUser) {
         setUser(authenticatedUser);
+        setPublicUser(null); // Clear public user on admin login
         toast({ title: toastTitle, description: toastDescription });
         setPasswordDialogOpen(false);
         setPassword('');
@@ -123,46 +131,55 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const getNavItems = (user: Member | null) => {
-    const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card'];
+  const getNavItems = (user: Member | null, publicUser: Member | null) => {
+    const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card', '/details'];
 
     return navItems.filter(item => {
-        if (!user) { // Guest/Member user
-            return ['/', '/notice-board', '/about', '/smart-card'].includes(item.href);
-        }
-
-        const userRole = user.role;
-        const isAdmin = userRole === 'admin';
-        const isModerator = userRole === 'moderator' || userRole === 'member-moderator';
-
-        if (isAdmin && pagesToHideForAdmin.includes(item.href)) {
-            return false;
-        }
-
-        if (isModerator && pagesToHideForAdmin.includes(item.href)) {
-            return false;
+        // Guest user (not public, not admin/mod)
+        if (!publicUser && !user) {
+             return item.href === '/';
         }
         
-        if (isAdmin) {
-            return true;
+        // Public user logged in
+        if (publicUser && !user) {
+            return item.isPublic || item.href === '/';
         }
 
-        const hasPermission = item.permissions.length > 0 && item.permissions.some(p => user.permissions?.[p as keyof Member['permissions']]);
-        if (hasPermission) {
-          return true;
+        // Admin/Moderator logged in
+        if (user) {
+            const userRole = user.role;
+            const isAdmin = userRole === 'admin';
+            const isModerator = userRole === 'moderator' || userRole === 'member-moderator';
+
+            if (isAdmin && pagesToHideForAdmin.includes(item.href)) {
+                return false;
+            }
+
+            if (isModerator && pagesToHideForAdmin.includes(item.href)) {
+                return false;
+            }
+            
+            if (isAdmin) {
+                return true;
+            }
+
+            const hasPermission = item.permissions.length > 0 && item.permissions.some(p => user.permissions?.[p as keyof Member['permissions']]);
+            if (hasPermission) {
+              return true;
+            }
+            
+            if (user.role && item.roles.includes(user.role)) {
+                return true;
+            }
         }
         
-        if (user.role && item.roles.includes(user.role)) {
-            return true;
-        }
-
         return false;
     });
   }
 
   const navLinks = (
      <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
-      {getNavItems(user).map(({ href, label, bn_label, icon: Icon }) => (
+      {getNavItems(user, publicUser).map(({ href, label, bn_label, icon: Icon }) => (
         <Link
           key={label}
           href={href}
@@ -191,7 +208,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex-1">
              {navLinks}
-             {isClient && <LiveClock />}
+             {isClient && (user || publicUser) && <LiveClock />}
             </div>
           </div>
         </div>
@@ -216,27 +233,29 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   </Link>
                 </div>
                 {navLinks}
-                {isClient && <LiveClock />}
+                {isClient && (user || publicUser) && <LiveClock />}
               </SheetContent>
             </Sheet>
             <div className="w-full flex-1">
               {/* Can add a search bar here if needed */}
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-                <Button variant="default" onClick={() => setRegisterOpen(true)} size="sm" className="text-xs">
-                  <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
-                </Button>
+                {pathname === '/' && (
+                    <Button variant="default" onClick={() => setRegisterOpen(true)} size="sm" className="text-xs">
+                    <UserPlus className="mr-2 h-4 w-4" /> {language === 'bn' ? 'নিবন্ধন' : 'Register'}
+                    </Button>
+                )}
                 <LanguageSwitcher />
                 <Button variant="outline" onClick={handleLoginClick} size="sm" className="text-xs">
-                    {user ? (
+                    {user || publicUser ? (
                         <>
                             <LogOut className="mr-2 h-4 w-4" />
-                            {language === 'bn' ? 'প্রস্থান' : 'Log Out'}
+                            {language === 'bn' ? 'প্রস্থান' : 'Exit'}
                         </>
                     ) : (
                         <>
                             <LogIn className="mr-2 h-4 w-4" />
-                            {language === 'bn' ? 'প্রবেশ' : 'Log In'}
+                            {language === 'bn' ? 'প্রবেশ' : 'Admin/Mod Login'}
                         </>
                     )}
                 </Button>
@@ -252,7 +271,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <DialogHeader>
             <DialogTitle>
               <ShieldCheck className="inline-block mr-2" />
-              {language === 'bn' ? 'অ্যাক্সেস প্রয়োজন' : 'Access Required'}
+              {language === 'bn' ? 'অ্যাডমিন/মডারেটর অ্যাক্সেস' : 'Admin/Moderator Access'}
             </DialogTitle>
             <DialogDescription>
               {language === 'bn' ? 'প্রশাসনিক বা মডারেটর ভিউতে যেতে পাসওয়ার্ড লিখুন।' : 'Please enter the password for Admin or Moderator View.'}
