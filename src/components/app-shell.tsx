@@ -137,7 +137,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return navItems.filter(item => {
         // Guest user (not public, not admin/mod)
         if (!publicUser && !user) {
-             const publicGuestPages = ['/', '/about', '/notice-board'];
+             const publicGuestPages = ['/', '/about', '/notice-board', '/smart-card'];
              return publicGuestPages.includes(item.href);
         }
         
