@@ -40,6 +40,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import type { Member } from '@/lib/types';
 
@@ -139,162 +140,165 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-             <FormField
-              control={form.control}
-              name="transactionId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{language === 'bn' ? 'লেনদেন আইডি (ঐচ্ছিক)' : 'Transaction ID (Optional)'}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={language === 'bn' ? 'ম্যানুয়ালি আইডি লিখুন বা পেস্ট করুন' : 'Manually type or paste ID'} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{language === 'bn' ? 'পরিমাণ' : 'Amount'}</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="5000" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="donorType"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>{language === 'bn' ? 'আমি একজন...' : 'I am a...'}</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="grid grid-cols-2 gap-4"
-                    >
-                      <FormItem>
-                        <FormControl>
-                           <RadioGroupItem value="member" id="member" className="sr-only peer" />
-                        </FormControl>
-                         <Label htmlFor="member" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                            <Users className="mb-3 h-6 w-6" />
-                            {language === 'bn' ? 'সদস্য দাতা' : 'Member Donor'}
-                        </Label>
-                      </FormItem>
-                      <FormItem>
-                       <FormControl>
-                          <RadioGroupItem value="public" id="public" className="sr-only peer" />
-                        </FormControl>
-                         <Label htmlFor="public" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                            <User className="mb-3 h-6 w-6" />
-                            {language === 'bn' ? 'সাধারণ দাতা' : 'Public Donor'}
-                         </Label>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {donorType === 'member' && (
-                <FormField
-                    control={form.control}
-                    name="memberId"
-                    render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                        <FormLabel>{language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select Member'}</FormLabel>
-                         <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
-                            <PopoverTrigger asChild>
-                                <FormControl>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className={cn(
-                                    "w-full justify-between",
-                                    !field.value && "text-muted-foreground"
-                                    )}
-                                >
-                                    {field.value
-                                    ? activeMembers.find(
-                                        (member) => member.id === field.value
-                                    )?.name
-                                    : (language === 'bn' ? 'সদস্য নির্বাচন করুন' : "Select member")}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                                </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height] p-0">
-                                <Command>
-                                <CommandInput placeholder={language === 'bn' ? 'সদস্য খুঁজুন...' : 'Search member...'} />
-                                <CommandList>
-                                <CommandEmpty>{language === 'bn' ? 'কোন সদস্য পাওয়া যায়নি।' : 'No member found.'}</CommandEmpty>
-                                <CommandGroup>
-                                    {activeMembers.map((member) => (
-                                    <CommandItem
-                                        value={member.name}
-                                        key={member.id}
-                                        onSelect={() => handleMemberSelect(member)}
-                                    >
-                                        <Check
-                                        className={cn(
-                                            "mr-2 h-4 w-4",
-                                            member.id === field.value
-                                            ? "opacity-100"
-                                            : "opacity-0"
-                                        )}
-                                        />
-                                        {member.name}
-                                    </CommandItem>
-                                    ))}
-                                </CommandGroup>
-                                </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-            )}
-
-            {donorType === 'public' && (
-              <>
-                 <FormField
-                    control={form.control}
-                    name="publicDonorName"
-                    render={({ field }) => (
+            <ScrollArea className="h-[60vh] pr-4">
+             <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="transactionId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{language === 'bn' ? 'লেনদেন আইডি (ঐচ্ছিক)' : 'Transaction ID (Optional)'}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={language === 'bn' ? 'ম্যানুয়ালি আইডি লিখুন বা পেস্ট করুন' : 'Manually type or paste ID'} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{language === 'bn' ? 'পরিমাণ' : 'Amount'}</FormLabel>
+                    <FormControl>
+                      <Input type="number" placeholder="5000" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="donorType"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>{language === 'bn' ? 'আমি একজন...' : 'I am a...'}</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="grid grid-cols-2 gap-4"
+                      >
                         <FormItem>
-                        <FormLabel>{language === 'bn' ? 'আপনার নাম' : 'Your Name'}</FormLabel>
-                        <FormControl>
-                            <Input placeholder={language === 'bn' ? 'যেমন, মোঃ আব্দুল্লাহ' : 'e.g., John Doe'} {...field} />
-                        </FormControl>
-                        <FormMessage />
+                          <FormControl>
+                            <RadioGroupItem value="member" id="member" className="sr-only peer" />
+                          </FormControl>
+                          <Label htmlFor="member" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                              <Users className="mb-3 h-6 w-6" />
+                              {language === 'bn' ? 'সদস্য দাতা' : 'Member Donor'}
+                          </Label>
                         </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="contactInfo"
-                    render={({ field }) => (
                         <FormItem>
-                        <FormLabel>{language === 'bn' ? 'মোবাইল / ইমেইল (ঐচ্ছিক)' : 'Mobile / Email (Optional)'}</FormLabel>
                         <FormControl>
-                            <Input placeholder={language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact information'} {...field} />
-                        </FormControl>
-                        <FormMessage />
+                            <RadioGroupItem value="public" id="public" className="sr-only peer" />
+                          </FormControl>
+                          <Label htmlFor="public" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                              <User className="mb-3 h-6 w-6" />
+                              {language === 'bn' ? 'সাধারণ দাতা' : 'Public Donor'}
+                          </Label>
                         </FormItem>
-                    )}
-                />
-              </>
-            )}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
+              {donorType === 'member' && (
+                  <FormField
+                      control={form.control}
+                      name="memberId"
+                      render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                          <FormLabel>{language === 'bn' ? 'সদস্য নির্বাচন করুন' : 'Select Member'}</FormLabel>
+                          <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
+                              <PopoverTrigger asChild>
+                                  <FormControl>
+                                  <Button
+                                      variant="outline"
+                                      role="combobox"
+                                      className={cn(
+                                      "w-full justify-between",
+                                      !field.value && "text-muted-foreground"
+                                      )}
+                                  >
+                                      {field.value
+                                      ? activeMembers.find(
+                                          (member) => member.id === field.value
+                                      )?.name
+                                      : (language === 'bn' ? 'সদস্য নির্বাচন করুন' : "Select member")}
+                                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                  </Button>
+                                  </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height] p-0">
+                                  <Command>
+                                  <CommandInput placeholder={language === 'bn' ? 'সদস্য খুঁজুন...' : 'Search member...'} />
+                                  <CommandList>
+                                  <CommandEmpty>{language === 'bn' ? 'কোন সদস্য পাওয়া যায়নি।' : 'No member found.'}</CommandEmpty>
+                                  <CommandGroup>
+                                      {activeMembers.map((member) => (
+                                      <CommandItem
+                                          value={member.name}
+                                          key={member.id}
+                                          onSelect={() => handleMemberSelect(member)}
+                                      >
+                                          <Check
+                                          className={cn(
+                                              "mr-2 h-4 w-4",
+                                              member.id === field.value
+                                              ? "opacity-100"
+                                              : "opacity-0"
+                                          )}
+                                          />
+                                          {member.name}
+                                      </CommandItem>
+                                      ))}
+                                  </CommandGroup>
+                                  </CommandList>
+                                  </Command>
+                              </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                      </FormItem>
+                      )}
+                  />
+              )}
+
+              {donorType === 'public' && (
+                <>
+                  <FormField
+                      control={form.control}
+                      name="publicDonorName"
+                      render={({ field }) => (
+                          <FormItem>
+                          <FormLabel>{language === 'bn' ? 'আপনার নাম' : 'Your Name'}</FormLabel>
+                          <FormControl>
+                              <Input placeholder={language === 'bn' ? 'যেমন, মোঃ আব্দুল্লাহ' : 'e.g., John Doe'} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                          </FormItem>
+                      )}
+                  />
+                  <FormField
+                      control={form.control}
+                      name="contactInfo"
+                      render={({ field }) => (
+                          <FormItem>
+                          <FormLabel>{language === 'bn' ? 'মোবাইল / ইমেইল (ঐচ্ছিক)' : 'Mobile / Email (Optional)'}</FormLabel>
+                          <FormControl>
+                              <Input placeholder={language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact information'} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                          </FormItem>
+                      )}
+                  />
+                </>
+              )}
+             </div>
+            </ScrollArea>
             <DialogFooter>
               <Button type="submit">{language === 'bn' ? 'এখনই দান করুন' : 'Donate Now'}</Button>
             </DialogFooter>
