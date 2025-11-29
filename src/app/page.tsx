@@ -52,7 +52,7 @@ export default function LoginPage() {
   return (
     <div className="flex-1 bg-background">
       <motion.section
-        className="relative w-full pt-16 pb-12 md:pt-20 lg:pt-28"
+        className="relative w-full pt-12 pb-8 md:pt-20 lg:pt-28"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -67,12 +67,12 @@ export default function LoginPage() {
             <span className="whitespace-nowrap"><span className="text-primary">HADIYA</span> <span className="text-accent">- মানবতার উপহার</span></span>
           </motion.h1>
           <motion.p
-            className="text-sm md:text-sm text-foreground/80 mb-4"
+            className="text-xs md:text-sm text-foreground/80 mb-4"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <span className="whitespace-nowrap">{language === 'bn'
+            <span>{language === 'bn'
               ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ'
               : 'A community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}</span>
           </motion.p>
@@ -87,18 +87,18 @@ export default function LoginPage() {
         </div>
 
         <motion.div 
-            className="max-w-xl mx-auto px-4 mb-8"
+            className="max-w-md mx-auto px-4 mb-8"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.5 }}
         >
             <Card className="bg-accent/10 border-accent/20">
-                <CardContent className="flex flex-col items-center justify-center text-center p-4">
-                    <Quote className="w-6 h-6 text-accent mb-2" />
-                    <blockquote className="font-bold text-foreground/90 text-xs sm:text-sm">
+                <CardContent className="flex flex-col items-center justify-center text-center p-3">
+                    <Quote className="w-5 h-5 text-accent mb-1" />
+                    <blockquote className="font-bold text-foreground/90 text-xs">
                         {`“দান অল্প হলে লজ্জিত হবেন না, কারণ অভাবীকে ফিরিয়ে দেওয়াই বড় লজ্জার বিষয়।”`}
-                        <footer className="text-[10px] sm:text-xs font-medium text-foreground/70 mt-1">— শেখ সাদী</footer>
+                        <footer className="text-[10px] font-medium text-foreground/70 mt-1">— শেখ সাদী</footer>
                     </blockquote>
                 </CardContent>
             </Card>
@@ -158,7 +158,7 @@ export default function LoginPage() {
 
        <footer className="py-6 px-4 md:px-6 border-t mt-12">
         <div className="container mx-auto text-center text-muted-foreground text-sm">
-          <p>© 2025 <span className="font-bold text-primary whitespace-nowrap">HADIYA</span> <span className="font-bold text-accent whitespace-nowrap">- মানবতার উপহার</span> (<span className="whitespace-nowrap">{language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}</span>) All rights reserved.</p>
+          <p>© 2025 <span className="font-bold text-primary whitespace-nowrap">HADIYA</span> <span className="font-bold text-accent whitespace-nowrap">- মানবতার উপহার</span> ({language === 'bn' ? 'শহীদ লিয়াকত স্মৃতি সংঘ ( চান্দগাঁও ) -এর অধীনে একটি সম্প্রদায়-চালিত উদ্যোগ' : 'a community-driven initiative under Shahid Liyakot Shriti Songo, Chandgaon.'}) All rights reserved.</p>
           <p className="font-bold italic mt-2 text-xs text-foreground">Developed & Supported by AL-SADEEQ Team.</p>
         </div>
       </footer>
