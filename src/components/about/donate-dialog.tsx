@@ -94,7 +94,7 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
         donorType: 'member',
         memberId: '',
         publicDonorName: '',
-        transactionId: `TXN-${Date.now()}`
+        transactionId: ''
     });
   }, [open, form]);
 
@@ -136,9 +136,9 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
               name="transactionId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{language === 'bn' ? 'লেনদেন আইডি' : 'Transaction ID'}</FormLabel>
+                  <FormLabel>{language === 'bn' ? 'লেনদেন আইডি (ঐচ্ছিক)' : 'Transaction ID (Optional)'}</FormLabel>
                   <FormControl>
-                    <Input readOnly {...field} />
+                    <Input placeholder={language === 'bn' ? 'ম্যানুয়ালি আইডি লিখুন বা পেস্ট করুন' : 'Manually type or paste ID'} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
