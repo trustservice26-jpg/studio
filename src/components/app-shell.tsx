@@ -135,24 +135,23 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   const getNavItems = React.useCallback((user: Member | null, publicUser: Member | null, isClient: boolean) => {
     const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card', '/details', '/contact'];
-    
+    const guestPages = ['/', '/about', '/notice-board', '/contact'];
+
     // On the server, or before client has mounted, show a minimal set of links
     if (!isClient) {
-        const guestPages = ['/', '/about', '/notice-board', '/contact'];
         return navItems.filter(item => guestPages.includes(item.href));
     }
 
     return navItems.filter(item => {
         // Guest user (not public, not admin/mod)
         if (!publicUser && !user) {
-             const publicGuestPages = ['/', '/about', '/notice-board', '/contact'];
-             if(item.href === '/smart-card') return false;
-             return publicGuestPages.includes(item.href);
+             return guestPages.includes(item.href);
         }
         
         // Public user logged in
         if (publicUser && !user) {
             if(item.isPublicOnly && !publicUser) return false;
+            if (item.href === '/smart-card' && !publicUser) return false;
             return item.isPublic || item.href === '/';
         }
 
