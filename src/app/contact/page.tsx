@@ -9,7 +9,7 @@ import * as z from 'zod';
 
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Mail, Phone, MapPin, Send, MessageSquarePlus, Contact, UserPlus } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquarePlus, Contact, UserPlus, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RegisterMemberDialog } from '@/components/home/register-member-dialog';
+import { DonateDialog } from '@/components/about/donate-dialog';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -45,6 +46,7 @@ export default function ContactPage() {
   const { language } = useAppContext();
   const { toast } = useToast();
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
+  const [isDonateOpen, setDonateOpen] = React.useState(false);
 
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -110,7 +112,7 @@ export default function ContactPage() {
       
       <motion.div className="max-w-3xl mx-auto" variants={itemVariants}>
         <Tabs defaultValue="message" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
                 <TabsTrigger value="message">
                     <MessageSquarePlus className="mr-2 h-4 w-4" />
                     {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
@@ -122,6 +124,10 @@ export default function ContactPage() {
                 <TabsTrigger value="register">
                     <UserPlus className="mr-2 h-4 w-4" />
                     {language === 'bn' ? 'নিবন্ধন' : 'Register'}
+                </TabsTrigger>
+                <TabsTrigger value="donate">
+                    <Gift className="mr-2 h-4 w-4" />
+                    {language === 'bn' ? 'দান করুন' : 'Donate'}
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="message">
@@ -225,11 +231,28 @@ export default function ContactPage() {
                     </CardContent>
                 </Card>
             </TabsContent>
+            <TabsContent value="donate">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{language === 'bn' ? 'আমাদের সমর্থন করুন' : 'Support Our Cause'}</CardTitle>
+                        <CardDescription>{language === 'bn' ? 'আপনার উদারতা আমাদের সম্প্রদায়কে শক্তিশালী করে।' : 'Your generosity strengthens our community.'}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex justify-center items-center h-48">
+                       <Button onClick={() => setDonateOpen(true)} size="lg">
+                           <Gift className="mr-2 h-5 w-5" />
+                           {language === 'bn' ? 'এখনই দান করুন' : 'Donate Now'}
+                       </Button>
+                    </CardContent>
+                </Card>
+            </TabsContent>
         </Tabs>
       </motion.div>
 
     </motion.div>
     <RegisterMemberDialog open={isRegisterOpen} onOpenChange={setRegisterOpen} />
+    <DonateDialog open={isDonateOpen} onOpenChange={setDonateOpen} />
     </>
   );
 }
+
+    
