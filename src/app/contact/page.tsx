@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -104,102 +105,107 @@ export default function ContactPage() {
         </motion.p>
       </div>
       
-      <div className="flex flex-col gap-8 max-w-3xl mx-auto">
-        <motion.div variants={itemVariants}>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <MessageSquarePlus />
-                        {language === 'bn' ? 'আমাদের একটি বার্তা পাঠান' : 'Send us a message'}
-                    </CardTitle>
-                    <CardDescription>{language === 'bn' ? 'যেকোনো প্রশ্ন বা অনুসন্ধানের জন্য নিচের ফর্মটি পূরণ করুন।' : 'Fill out the form below for any questions or inquiries.'}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                    <FormLabel>{language === 'bn' ? 'আপনার নাম' : 'Your Name'}</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder={language === 'bn' ? 'নাম' : 'Name'} {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                    <FormLabel>{language === 'bn' ? 'আপনার ইমেইল' : 'Your Email'}</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder={language === 'bn' ? 'ইমেইল' : 'Email'} {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                             <FormField
-                                control={form.control}
-                                name="message"
-                                render={({ field }) => (
-                                    <FormItem>
-                                    <FormLabel>{language === 'bn' ? 'আপনার বার্তা' : 'Your Message'}</FormLabel>
-                                    <FormControl>
-                                        <Textarea placeholder={language === 'bn' ? 'এখানে আপনার বার্তা লিখুন...' : 'Type your message here...'} {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <Button type="submit" className="w-full">
-                                <Send className="mr-2 h-4 w-4" />
-                                {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
-                            </Button>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
-        </motion.div>
-        <motion.div 
-            variants={itemVariants}
-            >
-            <Card className="h-full">
-                <CardHeader>
-                    <CardTitle className="flex items-center justify-center gap-2">
-                        <Contact />
-                        {language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Information'}
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    {contactDetails.map((detail, index) => (
-                         <div 
-                            key={index}
-                            className="flex items-center gap-4 p-4 rounded-lg bg-muted/50"
-                        >
-                            <div className="p-3 bg-primary/10 rounded-full">
-                                {detail.icon}
+      <motion.div className="max-w-3xl mx-auto" variants={itemVariants}>
+        <Tabs defaultValue="message" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="message">
+                    <MessageSquarePlus className="mr-2 h-4 w-4" />
+                    {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
+                </TabsTrigger>
+                <TabsTrigger value="info">
+                    <Contact className="mr-2 h-4 w-4" />
+                    {language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Info'}
+                </TabsTrigger>
+            </TabsList>
+            <TabsContent value="message">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{language === 'bn' ? 'আমাদের একটি বার্তা পাঠান' : 'Send us a message'}</CardTitle>
+                        <CardDescription>{language === 'bn' ? 'যেকোনো প্রশ্ন বা অনুসন্ধানের জন্য নিচের ফর্মটি পূরণ করুন।' : 'Fill out the form below for any questions or inquiries.'}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                        <FormLabel>{language === 'bn' ? 'আপনার নাম' : 'Your Name'}</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder={language === 'bn' ? 'নাম' : 'Name'} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                        <FormLabel>{language === 'bn' ? 'আপনার ইমেইল' : 'Your Email'}</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder={language === 'bn' ? 'ইমেইল' : 'Email'} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="message"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                        <FormLabel>{language === 'bn' ? 'আপনার বার্তা' : 'Your Message'}</FormLabel>
+                                        <FormControl>
+                                            <Textarea placeholder={language === 'bn' ? 'এখানে আপনার বার্তা লিখুন...' : 'Type your message here...'} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button type="submit" className="w-full">
+                                    <Send className="mr-2 h-4 w-4" />
+                                    {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
+                                </Button>
+                            </form>
+                        </Form>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+            <TabsContent value="info">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Information'}</CardTitle>
+                         <CardDescription>{language === 'bn' ? 'এখানে আমাদের সাথে যোগাযোগ করার বিভিন্ন উপায় রয়েছে।' : 'Here are the ways you can get in touch with us.'}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        {contactDetails.map((detail, index) => (
+                            <div 
+                                key={index}
+                                className="flex items-center gap-4 p-4 rounded-lg bg-muted/50"
+                            >
+                                <div className="p-3 bg-primary/10 rounded-full">
+                                    {detail.icon}
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-semibold text-lg">{detail.title}</h3>
+                                    {detail.href ? (
+                                        <a href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
+                                            {detail.value}
+                                        </a>
+                                    ) : (
+                                        <p className="text-muted-foreground">{detail.value}</p>
+                                    )}
+                                </div>
                             </div>
-                            <div className="flex-1">
-                                <h3 className="font-semibold text-lg">{detail.title}</h3>
-                                {detail.href ? (
-                                    <a href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
-                                        {detail.value}
-                                    </a>
-                                ) : (
-                                    <p className="text-muted-foreground">{detail.value}</p>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </CardContent>
-            </Card>
-        </motion.div>
-      </div>
+                        ))}
+                    </CardContent>
+                </Card>
+            </TabsContent>
+        </Tabs>
+      </motion.div>
 
     </motion.div>
   );
