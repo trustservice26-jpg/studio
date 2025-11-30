@@ -214,7 +214,7 @@ export default function ContactPage() {
              <TabsContent value="register">
                 <Card>
                     <CardHeader>
-                        <CardTitle>{language === 'bn' ? 'নতুন সদস্য নিবন্ধন' : 'New Member Registration'}</CardTitle>
+                        <CardTitle>{language === 'bn' ? 'আমাদের সাথে যোগ দিতে চান?' : 'Want to join with us?'}</CardTitle>
                         <CardDescription>{language === 'bn' ? 'আমাদের সম্প্রদায়ে যোগ দিতে নিবন্ধন বোতামে ক্লিক করুন।' : 'Click the button below to register and join our community.'}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex justify-center items-center h-48">
