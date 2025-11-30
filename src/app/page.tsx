@@ -67,7 +67,7 @@ export default function LoginPage() {
             <span className="whitespace-nowrap"><span className="text-primary">HADIYA</span> <span className="text-accent">- মানবতার উপহার</span></span>
           </motion.h1>
           <motion.p
-            className="text-xs md:text-sm text-foreground/80 mb-4"
+            className="text-[11px] md:text-xs text-foreground/80 mb-4"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
