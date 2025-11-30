@@ -104,39 +104,7 @@ export default function ContactPage() {
         </motion.p>
       </div>
       
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <motion.div 
-            variants={itemVariants}
-            >
-            <Card className="h-full">
-                <CardHeader>
-                    <CardTitle className="text-center">{language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Information'}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    {contactDetails.map((detail, index) => (
-                         <div 
-                            key={index}
-                            className="flex items-center gap-4 p-4 rounded-lg bg-muted/50"
-                        >
-                            <div className="p-3 bg-primary/10 rounded-full">
-                                {detail.icon}
-                            </div>
-                            <div className="flex-1">
-                                <h3 className="font-semibold text-lg">{detail.title}</h3>
-                                {detail.href ? (
-                                    <a href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
-                                        {detail.value}
-                                    </a>
-                                ) : (
-                                    <p className="text-muted-foreground">{detail.value}</p>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </CardContent>
-            </Card>
-        </motion.div>
-        
+      <div className="flex flex-col gap-8 max-w-3xl mx-auto">
         <motion.div variants={itemVariants}>
             <Card>
                 <CardHeader>
@@ -191,6 +159,37 @@ export default function ContactPage() {
                             </Button>
                         </form>
                     </Form>
+                </CardContent>
+            </Card>
+        </motion.div>
+        <motion.div 
+            variants={itemVariants}
+            >
+            <Card className="h-full">
+                <CardHeader>
+                    <CardTitle className="text-center">{language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Information'}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    {contactDetails.map((detail, index) => (
+                         <div 
+                            key={index}
+                            className="flex items-center gap-4 p-4 rounded-lg bg-muted/50"
+                        >
+                            <div className="p-3 bg-primary/10 rounded-full">
+                                {detail.icon}
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="font-semibold text-lg">{detail.title}</h3>
+                                {detail.href ? (
+                                    <a href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
+                                        {detail.value}
+                                    </a>
+                                ) : (
+                                    <p className="text-muted-foreground">{detail.value}</p>
+                                )}
+                            </div>
+                        </div>
+                    ))}
                 </CardContent>
             </Card>
         </motion.div>
