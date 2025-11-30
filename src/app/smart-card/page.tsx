@@ -97,7 +97,11 @@ export default function SmartCardPage() {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                {isClient && (
+                {!isClient ? (
+                  <div className="flex justify-center items-center h-48">
+                    <p>{language === 'bn' ? 'লোড হচ্ছে...' : 'Loading Card...'}</p>
+                  </div>
+                ) : (
                 <>
                     {/* Desktop View */}
                     <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">

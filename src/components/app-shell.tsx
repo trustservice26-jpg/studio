@@ -137,54 +137,58 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card', '/details', '/contact'];
     const guestPages = ['/', '/about', '/notice-board', '/contact'];
 
-    // On the server, or before client has mounted, show a minimal set of links
+    // On the server, or before client has mounted, show a minimal set of links for guests.
     if (!isClient) {
         return navItems.filter(item => guestPages.includes(item.href));
     }
 
-    return navItems.filter(item => {
-        // Guest user (not public, not admin/mod)
-        if (!publicUser && !user) {
-             return guestPages.includes(item.href);
+    // Guest user (not public, not admin/mod)
+    if (!publicUser && !user) {
+        return navItems.filter(item => guestPages.includes(item.href));
+    }
+    
+    // Public user logged in
+    if (publicUser && !user) {
+        return navItems.filter(item => {
+          if (item.isPublicOnly && !publicUser) return false;
+          return item.isPublic || item.href === '/';
+        });
+    }
+
+    // Admin/Moderator logged in
+    if (user) {
+      return navItems.filter(item => {
+        const userRole = user.role;
+        const isAdmin = userRole === 'admin';
+        const isModerator = userRole === 'moderator' || userRole === 'member-moderator';
+
+        if (isAdmin && pagesToHideForAdmin.includes(item.href)) {
+          return false;
+        }
+
+        if (isModerator && pagesToHideForAdmin.includes(item.href)) {
+          return false;
         }
         
-        // Public user logged in
-        if (publicUser && !user) {
-            if(item.isPublicOnly && !publicUser) return false;
-            if (item.href === '/smart-card' && !publicUser) return false;
-            return item.isPublic || item.href === '/';
+        if (isAdmin) {
+          return true;
         }
 
-        // Admin/Moderator logged in
-        if (user) {
-            const userRole = user.role;
-            const isAdmin = userRole === 'admin';
-            const isModerator = userRole === 'moderator' || userRole === 'member-moderator';
-
-            if (isAdmin && pagesToHideForAdmin.includes(item.href)) {
-                return false;
-            }
-
-            if (isModerator && pagesToHideForAdmin.includes(item.href)) {
-                return false;
-            }
-            
-            if (isAdmin) {
-                return true;
-            }
-
-            const hasPermission = item.permissions.length > 0 && item.permissions.some(p => user.permissions?.[p as keyof Member['permissions']]);
-            if (hasPermission) {
-              return true;
-            }
-            
-            if (user.role && item.roles.includes(user.role)) {
-                return true;
-            }
+        if (item.permissions.length > 0) {
+          const hasPermission = item.permissions.some(p => user.permissions?.[p as keyof Member['permissions']]);
+          if (hasPermission) return true;
         }
         
+        if (user.role && item.roles.includes(user.role)) {
+          return true;
+        }
+
         return false;
-    });
+      });
+    }
+    
+    // Fallback for any other case (should not be reached if logic is sound)
+    return navItems.filter(item => guestPages.includes(item.href));
   }, []);
 
   const navLinks = (
