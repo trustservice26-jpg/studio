@@ -19,6 +19,7 @@ import {
   Info,
   HeartHandshake,
   BookUser,
+  Phone,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -47,6 +48,7 @@ const navItems = [
     { href: '/details', label: 'Member Details', bn_label: 'সদস্য বিবরণ', icon: BookUser, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [], isPublic: true },
     { href: '/notice-board', label: 'Notice Board', bn_label: 'নোটিশ বোর্ড', icon: Megaphone, roles: ['admin', 'member'], permissions: [], isPublic: true },
     { href: '/about', label: 'About Us', bn_label: 'আমাদের সম্পর্কে', icon: Info, roles: ['admin', 'member'], permissions: [], isPublic: true },
+    { href: '/contact', label: 'Connect With Us', bn_label: 'যোগাযোগ করুন', icon: Phone, roles: ['admin', 'member'], permissions: [], isPublic: true },
     { href: '/smart-card', label: 'Smart Card', bn_label: 'স্মার্ট কার্ড', icon: CreditCard, roles: ['admin', 'member'], permissions: [], isPublic: true },
     { href: '/dashboard', label: 'Dashboard', bn_label: 'ড্যাশবোর্ড', icon: LayoutDashboard, roles: ['admin'], permissions: [] },
     { href: '/members', label: 'Members', bn_label: 'সদস্য', icon: Users, roles: ['admin'], permissions: ['canManageMembers'] },
@@ -132,12 +134,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   const getNavItems = (user: Member | null, publicUser: Member | null) => {
-    const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card', '/details'];
+    const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card', '/details', '/contact'];
 
     return navItems.filter(item => {
         // Guest user (not public, not admin/mod)
         if (!publicUser && !user) {
-             const publicGuestPages = ['/', '/about', '/notice-board', '/smart-card'];
+             const publicGuestPages = ['/', '/about', '/notice-board', '/smart-card', '/contact'];
              return publicGuestPages.includes(item.href);
         }
         
