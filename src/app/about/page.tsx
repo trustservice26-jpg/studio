@@ -5,7 +5,7 @@ import * as React from 'react';
 import { motion } from 'framer-motion';
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Target, Eye, Users, Scale, HeartHandshake, Quote, Star, Gift } from 'lucide-react';
+import { Target, Eye, Users, Scale, HeartHandshake, Quote, Star, Gift, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DonateDialog } from '@/components/about/donate-dialog';
 
@@ -22,7 +22,6 @@ const cardVariants = {
 
 export default function AboutUsPage() {
   const { language } = useAppContext();
-  const [isDonateOpen, setDonateOpen] = React.useState(false);
 
   const principles = [
     {
@@ -165,14 +164,20 @@ export default function AboutUsPage() {
             <h2 className="text-3xl font-bold mb-4">{language === 'bn' ? 'আমাদের দল' : 'Our Team'}</h2>
             <p className="max-w-2xl mx-auto text-muted-foreground">{language === 'bn' ? 'আমাদের নিবেদিত স্বেচ্ছাসেবক এবং সদস্যদের সাথে দেখা করুন যারা এই উদ্যোগকে সম্ভব করে তুলেছেন। তাদের আবেগ এবং কঠোর পরিশ্রম আমাদের সম্প্রদায়ের চালিকাশক্তি। আমাদের সম্প্রদায়ের শক্তি এবং অগ্রগতির একটি স্বচ্ছ দৃষ্টিভঙ্গি, যা আমাদের প্রতিটি সদস্যকে অনুপ্রাণিত করে, এবং সকলের জন্য একটি খোলামেলা ও বিশ্বাসযোগ্য পরিবেশ নিশ্চিত করে।' : 'Meet our dedicated volunteers and members who make this initiative possible. Their passion and hard work are the driving force behind our community. A transparent view of our community\'s strength and progress, which inspires each of our members and ensures an open and trustworthy environment for all.'}</p>
        </div>
-       <div className="text-center">
-        <Button size="lg" onClick={() => setDonateOpen(true)}>
-          <Gift className="mr-2 h-5 w-5" />
-          {language === 'bn' ? 'এখনই দান করুন' : 'Donate Now'}
-        </Button>
+       <div className="text-center max-w-lg mx-auto">
+        <Card className="border-yellow-500/50 bg-yellow-500/10">
+          <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
+            <ShieldAlert className="h-8 w-8 text-yellow-600" />
+            <p className="font-bold text-yellow-800 dark:text-yellow-300">
+              {language === 'bn' ? 'শীঘ্রই আসছে...' : 'Coming Soon...'}
+            </p>
+            <p className="text-sm text-yellow-700 dark:text-yellow-400">
+              {language === 'bn' ? 'দয়া করে স্ক্যামিং থেকে সতর্ক থাকুন...' : 'Please be aware of Scaming.....'}
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </motion.div>
-    <DonateDialog open={isDonateOpen} onOpenChange={setDonateOpen} />
     </>
   );
 }
