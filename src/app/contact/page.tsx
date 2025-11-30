@@ -3,9 +3,18 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
 import { useAppContext } from '@/context/app-context';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -22,10 +31,26 @@ const cardVariants = {
 const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
-}
+};
+
+const contactFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email." }),
+  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+});
 
 export default function ContactPage() {
   const { language } = useAppContext();
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof contactFormSchema>>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+  });
 
   const contactDetails = [
     {
@@ -45,7 +70,17 @@ export default function ContactPage() {
         title: language === 'bn' ? 'ঠিকানা' : 'Address',
         value: language === 'bn' ? 'চান্দগাঁও, চট্টগ্রাম, বাংলাদেশ' : 'Chandgaon, Chattogram, Bangladesh',
     }
-  ]
+  ];
+
+  function onSubmit(values: z.infer<typeof contactFormSchema>) {
+    console.log(values); // In a real app, you'd send this to a server
+    toast({
+      title: language === 'bn' ? 'বার্তা পাঠানো হয়েছে' : 'Message Sent!',
+      description: language === 'bn' ? 'আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।' : 'We will get back to you shortly.',
+    });
+    form.reset();
+  }
+
 
   return (
     <motion.div
@@ -69,39 +104,97 @@ export default function ContactPage() {
         </motion.p>
       </div>
       
-      <motion.div 
-        className="max-w-3xl mx-auto"
-        variants={cardVariants}
-        >
-        <Card>
-            <CardHeader>
-                <CardTitle className="text-center">{language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Information'}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-                {contactDetails.map((detail, index) => (
-                     <motion.div 
-                        key={index}
-                        className="flex items-center gap-4 p-4 rounded-lg bg-muted/50"
-                        variants={itemVariants}
-                    >
-                        <div className="p-3 bg-primary/10 rounded-full">
-                            {detail.icon}
+      <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <motion.div 
+            variants={itemVariants}
+            >
+            <Card className="h-full">
+                <CardHeader>
+                    <CardTitle className="text-center">{language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Information'}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    {contactDetails.map((detail, index) => (
+                         <div 
+                            key={index}
+                            className="flex items-center gap-4 p-4 rounded-lg bg-muted/50"
+                        >
+                            <div className="p-3 bg-primary/10 rounded-full">
+                                {detail.icon}
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="font-semibold text-lg">{detail.title}</h3>
+                                {detail.href ? (
+                                    <a href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
+                                        {detail.value}
+                                    </a>
+                                ) : (
+                                    <p className="text-muted-foreground">{detail.value}</p>
+                                )}
+                            </div>
                         </div>
-                        <div className="flex-1">
-                            <h3 className="font-semibold text-lg">{detail.title}</h3>
-                            {detail.href ? (
-                                <a href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
-                                    {detail.value}
-                                </a>
-                            ) : (
-                                <p className="text-muted-foreground">{detail.value}</p>
-                            )}
-                        </div>
-                    </motion.div>
-                ))}
-            </CardContent>
-        </Card>
-      </motion.div>
+                    ))}
+                </CardContent>
+            </Card>
+        </motion.div>
+        
+        <motion.div variants={itemVariants}>
+            <Card>
+                <CardHeader>
+                    <CardTitle>{language === 'bn' ? 'আমাদের একটি বার্তা পাঠান' : 'Send us a message'}</CardTitle>
+                    <CardDescription>{language === 'bn' ? 'যেকোনো প্রশ্ন বা অনুসন্ধানের জন্য নিচের ফর্মটি পূরণ করুন।' : 'Fill out the form below for any questions or inquiries.'}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>{language === 'bn' ? 'আপনার নাম' : 'Your Name'}</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder={language === 'bn' ? 'নাম' : 'Name'} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>{language === 'bn' ? 'আপনার ইমেইল' : 'Your Email'}</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder={language === 'bn' ? 'ইমেইল' : 'Email'} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                             <FormField
+                                control={form.control}
+                                name="message"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>{language === 'bn' ? 'আপনার বার্তা' : 'Your Message'}</FormLabel>
+                                    <FormControl>
+                                        <Textarea placeholder={language === 'bn' ? 'এখানে আপনার বার্তা লিখুন...' : 'Type your message here...'} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" className="w-full">
+                                <Send className="mr-2 h-4 w-4" />
+                                {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
+                            </Button>
+                        </form>
+                    </Form>
+                </CardContent>
+            </Card>
+        </motion.div>
+      </div>
 
     </motion.div>
   );
