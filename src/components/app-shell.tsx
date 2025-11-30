@@ -182,7 +182,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   const navLinks = (
      <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
-      {getNavItems(user, publicUser).map(({ href, label, bn_label, icon: Icon }) => (
+      {isClient && getNavItems(user, publicUser).map(({ href, label, bn_label, icon: Icon }) => (
         <Link
           key={label}
           href={href}
