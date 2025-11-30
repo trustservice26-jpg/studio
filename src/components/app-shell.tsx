@@ -46,7 +46,7 @@ import { LanguageSwitcher } from './language-switcher';
 const navItems = [
     { href: '/', label: 'Home', bn_label: 'হোম', icon: Home, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [] },
     { href: '/details', label: 'Member Details', bn_label: 'সদস্য বিবরণ', icon: BookUser, roles: ['admin', 'moderator', 'member-moderator', 'member'], permissions: [], isPublic: true },
-    { href: '/smart-card', label: 'Smart Card', bn_label: 'স্মার্ট কার্ড', icon: CreditCard, roles: ['admin', 'member'], permissions: [], isPublic: true },
+    { href: '/smart-card', label: 'Smart Card', bn_label: 'স্মার্ট কার্ড', icon: CreditCard, roles: ['admin', 'member'], permissions: [], isPublic: true, isPublicOnly: true },
     { href: '/notice-board', label: 'Notice Board', bn_label: 'নোটিশ বোর্ড', icon: Megaphone, roles: ['admin', 'member'], permissions: [], isPublic: true },
     { href: '/about', label: 'About Us', bn_label: 'আমাদের সম্পর্কে', icon: Info, roles: ['admin', 'member'], permissions: [], isPublic: true },
     { href: '/contact', label: 'Connect With Us', bn_label: 'যোগাযোগ করুন', icon: Phone, roles: ['admin', 'member'], permissions: [], isPublic: true },
@@ -133,18 +133,26 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const getNavItems = (user: Member | null, publicUser: Member | null) => {
+  const getNavItems = React.useCallback((user: Member | null, publicUser: Member | null, isClient: boolean) => {
     const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card', '/details', '/contact'];
+    
+    // On the server, or before client has mounted, show a minimal set of links
+    if (!isClient) {
+        const guestPages = ['/', '/about', '/notice-board', '/contact'];
+        return navItems.filter(item => guestPages.includes(item.href));
+    }
 
     return navItems.filter(item => {
         // Guest user (not public, not admin/mod)
         if (!publicUser && !user) {
              const publicGuestPages = ['/', '/about', '/notice-board', '/contact'];
+             if(item.href === '/smart-card') return false;
              return publicGuestPages.includes(item.href);
         }
         
         // Public user logged in
         if (publicUser && !user) {
+            if(item.isPublicOnly && !publicUser) return false;
             return item.isPublic || item.href === '/';
         }
 
@@ -178,11 +186,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         
         return false;
     });
-  }
+  }, []);
 
   const navLinks = (
      <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
-      {isClient && getNavItems(user, publicUser).map(({ href, label, bn_label, icon: Icon }) => (
+      {getNavItems(user, publicUser, isClient).map(({ href, label, bn_label, icon: Icon }) => (
         <Link
           key={label}
           href={href}
@@ -305,3 +313,5 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     </>
   );
 }
+
+    
