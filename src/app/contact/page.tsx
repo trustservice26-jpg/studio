@@ -9,7 +9,7 @@ import * as z from 'zod';
 
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquarePlus, Contact } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -108,7 +108,10 @@ export default function ContactPage() {
         <motion.div variants={itemVariants}>
             <Card>
                 <CardHeader>
-                    <CardTitle>{language === 'bn' ? 'আমাদের একটি বার্তা পাঠান' : 'Send us a message'}</CardTitle>
+                    <CardTitle className="flex items-center gap-2">
+                        <MessageSquarePlus />
+                        {language === 'bn' ? 'আমাদের একটি বার্তা পাঠান' : 'Send us a message'}
+                    </CardTitle>
                     <CardDescription>{language === 'bn' ? 'যেকোনো প্রশ্ন বা অনুসন্ধানের জন্য নিচের ফর্মটি পূরণ করুন।' : 'Fill out the form below for any questions or inquiries.'}</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -167,7 +170,10 @@ export default function ContactPage() {
             >
             <Card className="h-full">
                 <CardHeader>
-                    <CardTitle className="text-center">{language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Information'}</CardTitle>
+                    <CardTitle className="flex items-center justify-center gap-2">
+                        <Contact />
+                        {language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Information'}
+                    </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     {contactDetails.map((detail, index) => (
