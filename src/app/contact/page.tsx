@@ -9,13 +9,14 @@ import * as z from 'zod';
 
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Mail, Phone, MapPin, Send, MessageSquarePlus, Contact } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquarePlus, Contact, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RegisterMemberDialog } from '@/components/home/register-member-dialog';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -43,6 +44,7 @@ const contactFormSchema = z.object({
 export default function ContactPage() {
   const { language } = useAppContext();
   const { toast } = useToast();
+  const [isRegisterOpen, setRegisterOpen] = React.useState(false);
 
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -84,6 +86,7 @@ export default function ContactPage() {
 
 
   return (
+    <>
     <motion.div
       className="container mx-auto flex-1 space-y-12 p-4 md:p-6"
       initial="hidden"
@@ -107,7 +110,7 @@ export default function ContactPage() {
       
       <motion.div className="max-w-3xl mx-auto" variants={itemVariants}>
         <Tabs defaultValue="message" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="message">
                     <MessageSquarePlus className="mr-2 h-4 w-4" />
                     {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
@@ -115,6 +118,10 @@ export default function ContactPage() {
                 <TabsTrigger value="info">
                     <Contact className="mr-2 h-4 w-4" />
                     {language === 'bn' ? 'যোগাযোগের তথ্য' : 'Contact Info'}
+                </TabsTrigger>
+                <TabsTrigger value="register">
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    {language === 'bn' ? 'নিবন্ধন' : 'Register'}
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="message">
@@ -204,9 +211,25 @@ export default function ContactPage() {
                     </CardContent>
                 </Card>
             </TabsContent>
+             <TabsContent value="register">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{language === 'bn' ? 'নতুন সদস্য নিবন্ধন' : 'New Member Registration'}</CardTitle>
+                        <CardDescription>{language === 'bn' ? 'আমাদের সম্প্রদায়ে যোগ দিতে নিবন্ধন বোতামে ক্লিক করুন।' : 'Click the button below to register and join our community.'}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex justify-center items-center h-48">
+                       <Button onClick={() => setRegisterOpen(true)} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                           <UserPlus className="mr-2 h-5 w-5" />
+                           {language === 'bn' ? 'এখন নিবন্ধন করুন' : 'Register Now'}
+                       </Button>
+                    </CardContent>
+                </Card>
+            </TabsContent>
         </Tabs>
       </motion.div>
 
     </motion.div>
+    <RegisterMemberDialog open={isRegisterOpen} onOpenChange={setRegisterOpen} />
+    </>
   );
 }
