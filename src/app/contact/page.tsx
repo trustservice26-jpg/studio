@@ -101,7 +101,7 @@ export default function ContactPage() {
             {language === 'bn' ? 'যোগাযোগ করুন' : 'Connect With Us'}
         </motion.h1>
         <motion.p 
-            className="mt-2 text-lg text-muted-foreground"
+            className="mt-2 text-base md:text-lg text-muted-foreground"
             variants={itemVariants}
         >
           {language === 'bn' ? 'আমরা আপনার কাছ থেকে শুনতে চাই!' : 'We would love to hear from you!'}
