@@ -85,7 +85,7 @@ export default function ContactPage() {
         await sendEmail({
             to: values.email,
             from: 'Hadiya <onboarding@resend.dev>',
-            subject: 'Thank you for your message',
+            subject: language === 'bn' ? 'আপনার বার্তার জন্য ধন্যবাদ!' : 'Thank you for your message!',
             name: values.name,
             message: values.message,
             language
@@ -97,10 +97,11 @@ export default function ContactPage() {
         form.reset();
     } catch (error) {
         console.error("Failed to send email", error);
+        const errorMessage = (error as Error).message || (language === 'bn' ? 'একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন.' : 'There was a problem. Please try again.');
         toast({
             variant: 'destructive',
             title: language === 'bn' ? 'বার্তা পাঠাতে ব্যর্থ' : 'Failed to Send Message',
-            description: language === 'bn' ? 'একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন.' : 'There was a problem. Please try again.',
+            description: errorMessage,
         });
     } finally {
         setIsSubmitting(false);
