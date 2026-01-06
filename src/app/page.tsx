@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, UserPlus, LogIn, ShieldAlert } from 'lucide-react';
+import { Quote, UserPlus, LogIn, ShieldAlert, LayoutDashboard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
-  const { members, language, setPublicUser } = useAppContext();
+  const { members, language, setPublicUser, user } = useAppContext();
   const router = useRouter();
   const { toast } = useToast();
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
@@ -103,54 +103,79 @@ export default function LoginPage() {
                 </CardContent>
             </Card>
         </motion.div>
-
-        <motion.div
-            className="max-w-md mx-auto px-4"
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.6 }}
-        >
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <LogIn />
-                        {language === 'bn' ? 'সদস্য প্রবেশ' : 'Member Entry'}
-                    </CardTitle>
-                    <CardDescription>
-                        {language === 'bn' ? 'বিস্তারিত দেখতে দয়া করে আপনার সদস্য আইডি লিখুন।' : 'Please enter your Member ID to view details.'}
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="member-id">{language === 'bn' ? 'সদস্য আইডি' : 'Member ID'}</Label>
-                        <Input 
-                            id="member-id" 
-                            placeholder={language === 'bn' ? 'আপনার আইডি এখানে লিখুন...' : 'Enter your ID here...'}
-                            value={memberId}
-                            onChange={(e) => setMemberId(e.target.value)}
-                            onKeyUp={(e) => e.key === 'Enter' && handleLogin()}
-                        />
-                    </div>
-                    {error && (
-                        <div className="text-sm text-destructive flex items-center gap-2">
-                            <ShieldAlert className="h-4 w-4" />
-                            <span>{error}</span>
-                        </div>
-                    )}
-                    <Button onClick={handleLogin} className="w-full">
-                        {language === 'bn' ? 'প্রবেশ করুন' : 'Enter'}
-                    </Button>
-                </CardContent>
-            </Card>
-        </motion.div>
         
-        <div className="text-center mt-8">
-            <Button variant="default" onClick={() => setRegisterOpen(true)} className="bg-accent text-accent-foreground hover:bg-accent/90">
-                <UserPlus className="mr-2 h-4 w-4" />
-                {language === 'bn' ? 'নতুন সদস্য হিসেবে নিবন্ধন করুন' : 'Register as a New Member'}
-            </Button>
-        </div>
+        {user ? (
+            <motion.div
+                className="max-w-md mx-auto px-4"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.6 }}
+            >
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                           <LayoutDashboard />
+                           {language === 'bn' ? 'অ্যাডমিন ভিউ' : 'Admin View'}
+                        </CardTitle>
+                        <CardDescription>
+                            {language === 'bn' ? `স্বাগতম, ${user.name}। আপনার সরঞ্জামগুলি অ্যাক্সেস করতে নেভিগেশন মেনু ব্যবহার করুন।` : `Welcome, ${user.name}. Use the navigation menu to access your tools.`}
+                        </CardDescription>
+                    </CardHeader>
+                </Card>
+            </motion.div>
+        ) : (
+        <>
+            <motion.div
+                className="max-w-md mx-auto px-4"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.6 }}
+            >
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <LogIn />
+                            {language === 'bn' ? 'সদস্য প্রবেশ' : 'Member Entry'}
+                        </CardTitle>
+                        <CardDescription>
+                            {language === 'bn' ? 'বিস্তারিত দেখতে দয়া করে আপনার সদস্য আইডি লিখুন।' : 'Please enter your Member ID to view details.'}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="member-id">{language === 'bn' ? 'সদস্য আইডি' : 'Member ID'}</Label>
+                            <Input 
+                                id="member-id" 
+                                placeholder={language === 'bn' ? 'আপনার আইডি এখানে লিখুন...' : 'Enter your ID here...'}
+                                value={memberId}
+                                onChange={(e) => setMemberId(e.target.value)}
+                                onKeyUp={(e) => e.key === 'Enter' && handleLogin()}
+                            />
+                        </div>
+                        {error && (
+                            <div className="text-sm text-destructive flex items-center gap-2">
+                                <ShieldAlert className="h-4 w-4" />
+                                <span>{error}</span>
+                            </div>
+                        )}
+                        <Button onClick={handleLogin} className="w-full">
+                            {language === 'bn' ? 'প্রবেশ করুন' : 'Enter'}
+                        </Button>
+                    </CardContent>
+                </Card>
+            </motion.div>
+            
+            <div className="text-center mt-8">
+                <Button variant="default" onClick={() => setRegisterOpen(true)} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    {language === 'bn' ? 'নতুন সদস্য হিসেবে নিবন্ধন করুন' : 'Register as a New Member'}
+                </Button>
+            </div>
+        </>
+        )}
+
 
       </motion.section>
       
