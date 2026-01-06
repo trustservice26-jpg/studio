@@ -97,11 +97,10 @@ export default function ContactPage() {
         form.reset();
     } catch (error) {
         console.error("Failed to send email", error);
-        const errorMessage = (error as Error).message || (language === 'bn' ? 'একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন.' : 'There was a problem. Please try again.');
         toast({
             variant: 'destructive',
             title: language === 'bn' ? 'বার্তা পাঠাতে ব্যর্থ' : 'Failed to Send Message',
-            description: errorMessage,
+            description: language === 'bn' ? 'একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন.' : 'There was a problem. Please try again.',
         });
     } finally {
         setIsSubmitting(false);
