@@ -42,6 +42,8 @@ const contactFormSchema = z.object({
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
 });
 
+const isEmailConfigured = !!process.env.NEXT_PUBLIC_RESEND_API_KEY_CONFIGURED;
+
 export default function ContactPage() {
   const { language } = useAppContext();
   const { toast } = useToast();
@@ -156,62 +158,69 @@ export default function ContactPage() {
                         <CardDescription>{language === 'bn' ? 'যেকোনো প্রশ্ন বা অনুসন্ধানের জন্য নিচের ফর্মটি পূরণ করুন।' : 'Fill out the form below for any questions or inquiries.'}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                                <FormField
-                                    control={form.control}
-                                    name="name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                        <FormLabel>{language === 'bn' ? 'আপনার নাম' : 'Your Name'}</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder={language === 'bn' ? 'নাম' : 'Name'} {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                        <FormLabel>{language === 'bn' ? 'আপনার ইমেইল' : 'Your Email'}</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder={language === 'bn' ? 'ইমেইল' : 'Email'} {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="message"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                        <FormLabel>{language === 'bn' ? 'আপনার বার্তা' : 'Your Message'}</FormLabel>
-                                        <FormControl>
-                                            <Textarea placeholder={language === 'bn' ? 'এখানে আপনার বার্তা লিখুন...' : 'Type your message here...'} {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                                    {isSubmitting ? (
-                                        <>
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            {language === 'bn' ? 'পাঠানো হচ্ছে...' : 'Sending...'}
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Send className="mr-2 h-4 w-4" />
-                                            {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
-                                        </>
-                                    )}
-                                </Button>
-                            </form>
-                        </Form>
+                         {!isEmailConfigured ? (
+                            <div className="text-center text-destructive border border-destructive/50 rounded-lg p-4">
+                                <p>{language === 'bn' ? 'ইমেল পরিষেবা কনফিগার করা হয়নি।' : 'Email service is not configured.'}</p>
+                                <p className="text-sm text-destructive/80">{language === 'bn' ? 'প্রশাসকের সাথে যোগাযোগ করুন।' : 'Please contact the administrator.'}</p>
+                            </div>
+                         ) : (
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                            <FormLabel>{language === 'bn' ? 'আপনার নাম' : 'Your Name'}</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder={language === 'bn' ? 'নাম' : 'Name'} {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                            <FormLabel>{language === 'bn' ? 'আপনার ইমেইল' : 'Your Email'}</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder={language === 'bn' ? 'ইমেইল' : 'Email'} {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="message"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                            <FormLabel>{language === 'bn' ? 'আপনার বার্তা' : 'Your Message'}</FormLabel>
+                                            <FormControl>
+                                                <Textarea placeholder={language === 'bn' ? 'এখানে আপনার বার্তা লিখুন...' : 'Type your message here...'} {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                                        {isSubmitting ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                {language === 'bn' ? 'পাঠানো হচ্ছে...' : 'Sending...'}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Send className="mr-2 h-4 w-4" />
+                                                {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
+                                            </>
+                                        )}
+                                    </Button>
+                                </form>
+                            </Form>
+                         )}
                     </CardContent>
                 </Card>
             </TabsContent>

@@ -11,8 +11,6 @@ import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const SendEmailInputSchema = z.object({
   to: z.string(),
   from: z.string(),
@@ -35,6 +33,12 @@ const sendEmailFlow = ai.defineFlow(
     outputSchema: z.void(),
   },
   async ({ to, from, subject, name, message, language }) => {
+    if (!process.env.RESEND_API_KEY) {
+        console.error('Resend API key is not configured.');
+        throw new Error('Email service is not configured.');
+    }
+      
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const isBn = language === 'bn';
 
     const htmlContent = `
