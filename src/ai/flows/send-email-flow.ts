@@ -33,12 +33,12 @@ const sendEmailFlow = ai.defineFlow(
     outputSchema: z.void(),
   },
   async ({ to, from, subject, name, message, language }) => {
-    if (!process.env.RESEND_API_KEY) {
+    if (!process.env.NEXT_PUBLIC_RESEND_API_KEY) {
         console.error('Resend API key is not configured.');
         throw new Error('Email service is not configured.');
     }
       
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
     const isBn = language === 'bn';
 
     const htmlContent = `
@@ -64,8 +64,9 @@ const sendEmailFlow = ai.defineFlow(
       });
     } catch (error) {
       console.error('Email sending failed', error);
-      // Optional: Re-throw the error to let the caller handle it
       throw new Error('Failed to send email.');
     }
   }
 );
+
+    

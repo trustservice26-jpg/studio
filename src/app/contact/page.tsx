@@ -42,7 +42,7 @@ const contactFormSchema = z.object({
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
 });
 
-const isEmailConfigured = !!process.env.NEXT_PUBLIC_RESEND_API_KEY_CONFIGURED;
+const isEmailConfigured = !!process.env.NEXT_PUBLIC_RESEND_API_KEY;
 
 export default function ContactPage() {
   const { language } = useAppContext();
@@ -299,3 +299,5 @@ export default function ContactPage() {
     </>
   );
 }
+
+    
