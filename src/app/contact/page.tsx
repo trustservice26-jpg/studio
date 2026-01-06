@@ -9,7 +9,7 @@ import * as z from 'zod';
 
 import { useAppContext } from '@/context/app-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Mail, Phone, MapPin, Send, MessageSquarePlus, Contact, UserPlus, Gift, ShieldAlert } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquarePlus, Contact, UserPlus, Gift, ShieldAlert, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RegisterMemberDialog } from '@/components/home/register-member-dialog';
+import { sendEmail } from '@/ai/flows/send-email-flow';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -45,6 +46,7 @@ export default function ContactPage() {
   const { language } = useAppContext();
   const { toast } = useToast();
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -75,13 +77,32 @@ export default function ContactPage() {
     }
   ];
 
-  function onSubmit(values: z.infer<typeof contactFormSchema>) {
-    console.log(values); // In a real app, you'd send this to a server
-    toast({
-      title: language === 'bn' ? 'বার্তা পাঠানো হয়েছে' : 'Message Sent!',
-      description: language === 'bn' ? 'আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।' : 'We will get back to you shortly.',
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof contactFormSchema>) {
+    setIsSubmitting(true);
+    try {
+        await sendEmail({
+            to: values.email,
+            from: 'Hadiya <onboarding@resend.dev>',
+            subject: 'Thank you for your message',
+            name: values.name,
+            message: values.message,
+            language
+        });
+        toast({
+          title: language === 'bn' ? 'বার্তা পাঠানো হয়েছে' : 'Message Sent!',
+          description: language === 'bn' ? 'আমরা আপনার সাথে শীঘ্রই যোগাযোগ করব।' : 'We will get back to you shortly.',
+        });
+        form.reset();
+    } catch (error) {
+        console.error("Failed to send email", error);
+        toast({
+            variant: 'destructive',
+            title: language === 'bn' ? 'বার্তা পাঠাতে ব্যর্থ' : 'Failed to Send Message',
+            description: language === 'bn' ? 'একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন.' : 'There was a problem. Please try again.',
+        });
+    } finally {
+        setIsSubmitting(false);
+    }
   }
 
 
@@ -176,9 +197,18 @@ export default function ContactPage() {
                                         </FormItem>
                                     )}
                                 />
-                                <Button type="submit" className="w-full">
-                                    <Send className="mr-2 h-4 w-4" />
-                                    {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
+                                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                                    {isSubmitting ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            {language === 'bn' ? 'পাঠানো হচ্ছে...' : 'Sending...'}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="mr-2 h-4 w-4" />
+                                            {language === 'bn' ? 'বার্তা পাঠান' : 'Send Message'}
+                                        </>
+                                    )}
                                 </Button>
                             </form>
                         </Form>
