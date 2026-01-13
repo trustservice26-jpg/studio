@@ -139,7 +139,7 @@ export default function LoginPage() {
                            {publicUser.name}
                         </CardTitle>
                         <CardDescription>
-                            {language === 'bn' ? `স্বাগতম, ${publicUser.name}। আমাদের বিবরণ দেখতে নীচের বোতামে ক্লিক করুন।` : `Welcome, ${publicUser.name}. Click the button below to view our details.`}
+                            {language === 'bn' ? `স্বাগতম, ${publicUser.name}। আমাদের বিবরণ দেখতে নীচের বোতামে ক্লিক করুন।` : `Welcome, ${publicUser.name}. Click the below to view our details.`}
                         </CardDescription>
                     </CardHeader>
                      <CardContent>
