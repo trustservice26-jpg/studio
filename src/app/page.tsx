@@ -136,7 +136,7 @@ export default function LoginPage() {
                         <p className="text-lg font-semibold">{language === 'bn' ? 'আসসালামু আলাইকুম' : 'Assalamualaikum'}</p>
                         <CardTitle className="flex items-center gap-2">
                            <UserCheck />
-                           {language === 'bn' ? 'স্বাগতম' : 'Welcome'}
+                           {publicUser.name}
                         </CardTitle>
                         <CardDescription>
                             {language === 'bn' ? `স্বাগতম, ${publicUser.name}। আমাদের বিবরণ দেখতে নীচের বোতামে ক্লিক করুন।` : `Welcome, ${publicUser.name}. Click the button below to view our details.`}
