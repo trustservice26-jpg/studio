@@ -133,6 +133,7 @@ export default function LoginPage() {
             >
                 <Card>
                     <CardHeader>
+                        <p className="text-lg font-semibold">{language === 'bn' ? 'আসসালামু আলাইকুম' : 'Assalamualaikum'}</p>
                         <CardTitle className="flex items-center gap-2">
                            <UserCheck />
                            {language === 'bn' ? 'স্বাগতম' : 'Welcome'}
