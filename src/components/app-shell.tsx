@@ -134,7 +134,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   const getNavItems = React.useCallback((user: Member | null, publicUser: Member | null, isClient: boolean) => {
-    const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card', '/details', '/contact'];
+    const pagesToHideForAdmin = ['/notice-board', '/about', '/smart-card', '/contact'];
     const guestPages = ['/', '/about', '/notice-board', '/contact'];
 
     // On the server, or before client has mounted, show a minimal set of links for guests.
