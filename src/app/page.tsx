@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, UserPlus, LogIn, ShieldAlert, LayoutDashboard } from 'lucide-react';
+import { Quote, UserPlus, LogIn, ShieldAlert, LayoutDashboard, ArrowRight, UserCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
-  const { members, language, setPublicUser, user } = useAppContext();
+  const { members, language, setPublicUser, user, publicUser } = useAppContext();
   const router = useRouter();
   const { toast } = useToast();
   const [isRegisterOpen, setRegisterOpen] = React.useState(false);
@@ -43,7 +43,6 @@ export default function LoginPage() {
         title: language === 'bn' ? 'স্বাগতম' : 'Welcome',
         description: language === 'bn' ? `${foundMember.name} হিসাবে সফলভাবে প্রবেশ করেছেন।` : `Successfully entered as ${foundMember.name}.`,
       });
-      router.push('/details');
     } else {
       setError(language === 'bn' ? 'সক্রিয় সদস্য খুঁজে পাওয়া যায়নি বা ভুল আইডি।' : 'Active member not found or incorrect ID.');
     }
@@ -122,6 +121,32 @@ export default function LoginPage() {
                             {language === 'bn' ? `স্বাগতম, ${user.name}। আপনার সরঞ্জামগুলি অ্যাক্সেস করতে নেভিগেশন মেনু ব্যবহার করুন।` : `Welcome, ${user.name}. Use the navigation menu to access your tools.`}
                         </CardDescription>
                     </CardHeader>
+                </Card>
+            </motion.div>
+        ) : publicUser ? (
+             <motion.div
+                className="max-w-md mx-auto px-4"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.6 }}
+            >
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                           <UserCheck />
+                           {language === 'bn' ? 'স্বাগতম' : 'Welcome'}
+                        </CardTitle>
+                        <CardDescription>
+                            {language === 'bn' ? `স্বাগতম, ${publicUser.name}। আপনার বিবরণ দেখতে নীচের বোতামে ক্লিক করুন।` : `Welcome, ${publicUser.name}. Click the button below to view your details.`}
+                        </CardDescription>
+                    </CardHeader>
+                     <CardContent>
+                        <Button onClick={() => router.push('/details')} className="w-full">
+                            {language === 'bn' ? 'চালিয়ে যান' : 'Continue'}
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                    </CardContent>
                 </Card>
             </motion.div>
         ) : (
