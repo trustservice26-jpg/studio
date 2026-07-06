@@ -191,7 +191,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                         <SelectTrigger>
                             <SelectValue placeholder={language === 'bn' ? 'বছর' : 'Year'} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-h-[200px]">
                             {availableYears.map(year => (
                             <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
                             ))}
@@ -202,7 +202,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                         <SelectTrigger>
                             <SelectValue placeholder={language === 'bn' ? 'মাস' : 'Month'} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-h-[200px]">
                             {allMonths.map(month => (
                             <SelectItem key={month.value} value={month.value.toString()}>
                                 {language === 'bn' ? month.bn_name : month.name}
@@ -220,7 +220,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                         <SelectTrigger>
                              <SelectValue placeholder={language === 'bn' ? 'বছর' : 'Year'} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-h-[200px]">
                             {availableYears.map(year => (
                             <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
                             ))}
@@ -231,7 +231,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                         <SelectTrigger>
                              <SelectValue placeholder={language === 'bn' ? 'মাস' : 'Month'} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-h-[200px]">
                             {allMonths.map(month => (
                             <SelectItem key={month.value} value={month.value.toString()}>
                                 {language === 'bn' ? month.bn_name : month.name}
