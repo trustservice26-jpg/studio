@@ -23,14 +23,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { useAppContext } from '@/context/app-context';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { cn } from '@/lib/utils';
 
 const transactionSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
@@ -55,6 +52,7 @@ type AddTransactionDialogProps = {
 
 export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactionDialogProps) {
   const { addTransaction, members, language } = useAppContext();
+  const [isPopoverOpen, setPopoverOpen] = React.useState(false);
 
   const form = useForm<z.infer<typeof transactionSchema>>({
     resolver: zodResolver(transactionSchema),
@@ -67,6 +65,7 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
   });
 
   const memberIdValue = form.watch('memberId');
+  const activeMembers = React.useMemo(() => members.filter(m => m.status === 'active'), [members]);
 
   React.useEffect(() => {
     form.reset({
@@ -82,6 +81,7 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
     if (value !== 'other') {
         form.setValue('customDonorName', '');
     }
+    setPopoverOpen(false);
   }
   
   const isDonation = type === 'donation';
@@ -133,22 +133,68 @@ export function AddTransactionDialog({ open, onOpenChange, type }: AddTransactio
                     control={form.control}
                     name="memberId"
                     render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="flex flex-col">
                         <FormLabel>{language === 'bn' ? 'দাতা' : 'Donated By'}</FormLabel>
-                        <Select onValueChange={handleMemberChange} defaultValue={field.value}>
-                        <FormControl>
-                            <SelectTrigger>
-                            <SelectValue placeholder={language === 'bn' ? 'দাতা নির্বাচন করুন' : 'Select a donor'} />
-                            </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            <SelectItem value="anonymous">{language === 'bn' ? 'অজানা' : 'Anonymous'}</SelectItem>
-                            {members.filter(member => member.status === 'active').map(member => (
-                                <SelectItem key={member.id} value={member.id}>{member.name}</SelectItem>
-                            ))}
-                             <SelectItem value="other">{language === 'bn' ? 'অন্যান্য...' : 'Other...'}</SelectItem>
-                        </SelectContent>
-                        </Select>
+                        <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
+                            <PopoverTrigger asChild>
+                                <FormControl>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    className={cn(
+                                    "w-full justify-between",
+                                    !field.value && "text-muted-foreground"
+                                    )}
+                                >
+                                    {field.value === 'anonymous' 
+                                        ? (language === 'bn' ? 'অজানা' : 'Anonymous')
+                                        : field.value === 'other'
+                                        ? (language === 'bn' ? 'অন্যান্য...' : 'Other...')
+                                        : field.value
+                                        ? activeMembers.find(m => m.id === field.value)?.name
+                                        : (language === 'bn' ? 'দাতা নির্বাচন করুন' : "Select a donor")}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                                </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                                <Command>
+                                    <CommandInput placeholder={language === 'bn' ? 'দাতা খুঁজুন...' : 'Search donor...'} />
+                                    <CommandList>
+                                        <CommandEmpty>{language === 'bn' ? 'কোন দাতা পাওয়া যায়নি।' : 'No donor found.'}</CommandEmpty>
+                                        <CommandGroup>
+                                            <CommandItem
+                                                value={language === 'bn' ? 'অজানা anonymous' : 'Anonymous anonymous'}
+                                                onSelect={() => handleMemberChange('anonymous')}
+                                            >
+                                                <Check className={cn("mr-2 h-4 w-4", field.value === 'anonymous' ? "opacity-100" : "opacity-0")} />
+                                                {language === 'bn' ? 'অজানা' : 'Anonymous'}
+                                            </CommandItem>
+                                            {activeMembers.map((member) => (
+                                                <CommandItem
+                                                    value={`${member.name} ${member.memberId}`}
+                                                    key={member.id}
+                                                    onSelect={() => handleMemberChange(member.id)}
+                                                >
+                                                    <Check className={cn("mr-2 h-4 w-4", field.value === member.id ? "opacity-100" : "opacity-0")} />
+                                                    <div className="flex flex-col">
+                                                        <span>{member.name}</span>
+                                                        <span className="text-[10px] text-muted-foreground">{member.memberId}</span>
+                                                    </div>
+                                                </CommandItem>
+                                            ))}
+                                            <CommandItem
+                                                value={language === 'bn' ? 'অন্যান্য other' : 'Other other'}
+                                                onSelect={() => handleMemberChange('other')}
+                                            >
+                                                <Check className={cn("mr-2 h-4 w-4", field.value === 'other' ? "opacity-100" : "opacity-0")} />
+                                                {language === 'bn' ? 'অন্যান্য...' : 'Other...'}
+                                            </CommandItem>
+                                        </CommandGroup>
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
                         <FormMessage />
                     </FormItem>
                     )}

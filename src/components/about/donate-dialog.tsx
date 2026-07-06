@@ -241,7 +241,7 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
                                   <CommandGroup>
                                       {activeMembers.map((member) => (
                                       <CommandItem
-                                          value={member.name}
+                                          value={`${member.name} ${member.memberId}`}
                                           key={member.id}
                                           onSelect={() => handleMemberSelect(member)}
                                       >
@@ -253,7 +253,10 @@ export function DonateDialog({ open, onOpenChange }: DonateDialogProps) {
                                               : "opacity-0"
                                           )}
                                           />
-                                          {member.name}
+                                          <div className="flex flex-col">
+                                              <span>{member.name}</span>
+                                              <span className="text-[10px] text-muted-foreground">{member.memberId}</span>
+                                          </div>
                                       </CommandItem>
                                       ))}
                                   </CommandGroup>
