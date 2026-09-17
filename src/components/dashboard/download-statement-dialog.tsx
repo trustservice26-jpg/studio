@@ -287,7 +287,7 @@ export function DownloadStatementDialog({ open, onOpenChange }: DownloadStatemen
                 </tbody>
             </table>
             
-            <p style={{ marginTop: '20px', fontSize: '10px', fontStyle: 'italic', color: '#555', textAlign: 'center' }}>{language === 'bn' ? `এই স্টেটমেন্টটি ${new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}-এ তৈরি করা হয়েছে।` : `This statement was generated on ${new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}.`}</p>
+            <p style={{ marginTop: '20px', fontSize: '10px', fontStyle: 'italic', color: '#555', textAlign: 'center' }}>{language === 'bn' ? `এই স্টেটমেন্টটি ${new Date().toLocaleDateString('bn-BD')}-এ তৈরি করা হয়েছে।` : `This statement was generated on ${new Date().toLocaleDateString('en-US')}.`}</p>
         </div>
 
         <DialogFooter>
